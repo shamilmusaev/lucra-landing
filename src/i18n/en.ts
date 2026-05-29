@@ -114,4 +114,21 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoCoResult: 'Result',
   heroDemoCoVat: 'VAT',
   heroDemoCoLiquidity: 'Liquidity',
+
+  // ---- Problem (Task 9) ----
+  problemEyebrow: 'The problem',
+  problemTitle: "Business owners shouldn't have to feel uncertain about their finances.",
+  problemSub: 'Small but important questions about bookkeeping, VAT, payroll and results. Too small for formal meetings, too important to ignore. It creates worry for the owner and repetitive support for the firm.',
+  problemCard1Eyebrow: 'Uncertainty',
+  problemCard1Title: 'What do the numbers actually mean?',
+  problemCard1Body: 'Hesitation to contact the firm for small questions. Decisions wait on slow answers, and the worry grows.',
+  problemCard1Cta: 'Get answers instantly',
+  problemCard2Eyebrow: 'The firm',
+  problemCard2Title: 'The same questions every month.',
+  problemCard2Body: 'Small questions are hard to bill. They eat the time that should go to higher-value advisory.',
+  problemCard2Cta: 'Automate the answers',
+  problemCard3Eyebrow: 'The time',
+  problemCard3Title: 'Answers come too late.',
+  problemCard3Body: "Customers expect faster answers than ever. Decisions hinge on a response time that isn't enough.",
+  problemCard3Cta: 'Answers in real time',
 } as const;

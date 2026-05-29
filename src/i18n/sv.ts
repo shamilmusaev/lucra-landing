@@ -112,4 +112,21 @@ export const sv = {
   heroDemoCoResult: 'Resultat',
   heroDemoCoVat: 'Moms',
   heroDemoCoLiquidity: 'Likviditet',
+
+  // ---- Problem (Task 9) ----
+  problemEyebrow: 'Problemet',
+  problemTitle: 'Företagare ska inte behöva känna sig osäkra på sin ekonomi.',
+  problemSub: 'Små men viktiga frågor om bokföring, moms, lön och resultat. För små för formella möten, för viktiga att ignorera. Det skapar oro för företagaren och repetitiv support för byrån.',
+  problemCard1Eyebrow: 'Osäkerhet',
+  problemCard1Title: 'Vad betyder siffrorna egentligen?',
+  problemCard1Body: 'Tveksamhet att kontakta byrån för små frågor. Beslut väntar på svar som dröjer, och oron växer.',
+  problemCard1Cta: 'Få svar direkt',
+  problemCard2Eyebrow: 'Byrån',
+  problemCard2Title: 'Samma frågor varje månad.',
+  problemCard2Body: 'Små frågor är svåra att fakturera. De äter tiden som borde gå till rådgivning med högre värde.',
+  problemCard2Cta: 'Automatisera svaren',
+  problemCard3Eyebrow: 'Tiden',
+  problemCard3Title: 'Svar kommer för sent.',
+  problemCard3Body: 'Kunder förväntar sig snabbare svar än någonsin. Beslut hänger på en svarstid som inte räcker till.',
+  problemCard3Cta: 'Svar i realtid',
 } as const;
