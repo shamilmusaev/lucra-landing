@@ -113,6 +113,33 @@ export const sv = {
   heroDemoCoVat: 'Moms',
   heroDemoCoLiquidity: 'Likviditet',
 
+  // ---- Funktioner (Task 10) ----
+  funktionerEyebrow: 'Funktioner',
+  funktionerTitle: 'Allt du behöver för att förstå siffrorna.',
+  funktionerSub: 'Fyra delar som hänger ihop. Chatten frågar dashboarden, dashboarden hämtar från dokumenten, dokumenten följer bolaget. En sammanhängande arbetsyta.',
+  // Card 1 — AI chat
+  funktionerCard1Title: 'Fråga din ekonomi',
+  funktionerCard1Body: 'Ställ frågor på vanligt språk och få svar direkt från dina data. Lucra hänvisar till exakta poster så du kan följa upp.',
+  funktionerChatQ: 'Vilka kostnader växte mest i Q2?',
+  funktionerChatA: 'Lokal och resor stack ut: lokalkostnad upp <strong>18 %</strong> efter omförhandlingen i april.',
+  // Card 2 — Dashboard
+  funktionerCard2Title: 'Dashboard med insikter',
+  funktionerCard2Body: 'Intäkter, kostnader och nyckeltal i realtid, automatiskt. Inga manuella exporter, inga gamla siffror.',
+  funktionerMetricRevLabel: 'Intäkter',
+  funktionerMetricCostLabel: 'Kostnader',
+  funktionerMetricResultLabel: 'Resultat',
+  funktionerMetricLiqLabel: 'Likviditet',
+  // Card 3 — Documents
+  funktionerCard3Title: 'Samla dina dokument',
+  funktionerCard3Body: 'Ladda upp och organisera underlag på ett ställe. Lucra läser dem och kopplar dem till rätt bolag och period.',
+  funktionerFile1Name: 'Årsredovisning 2025.pdf',
+  funktionerFile2Name: 'Resultaträkning Q1.xlsx',
+  funktionerFile3Name: 'Styrelseunderlag.docx',
+  // Card 4 — Multi-company
+  funktionerCard4Title: 'Flera bolag, en vy',
+  funktionerCard4Body: 'Hantera alla kunder och bolag utan att byta system. Växla i sidopanelen, behåll kontext.',
+  funktionerCoBadgeActive: 'Aktiv',
+
   // ---- Problem (Task 9) ----
   problemEyebrow: 'Problemet',
   problemTitle: 'Företagare ska inte behöva känna sig osäkra på sin ekonomi.',
