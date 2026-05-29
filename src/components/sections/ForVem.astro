@@ -1,0 +1,239 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<section id="for-vem">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">{s.forVemEyebrow}</span>
+      <h2 class="section-title">{s.forVemTitle}</h2>
+      <p class="section-sub">
+        {s.forVemSub}
+      </p>
+    </div>
+
+    <div class="segments-grid">
+      <article class="segment-card reveal">
+        <div class="seg-head">
+          <span class="seg-glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.4"/>
+              <path d="M5.5 19.5a6.5 6.5 0 0 1 13 0"/>
+            </svg>
+          </span>
+          <span>
+            <span class="seg-kicker">{s.forVemKicker}</span>
+            <h3>{s.forVemCard1Title}</h3>
+          </span>
+        </div>
+        <p class="seg-sub">{s.forVemCard1Sub}</p>
+        <span class="seg-listlabel">{s.forVemListLabel}</span>
+        <ul>
+          <li>{s.forVemCard1Li1}</li>
+          <li>{s.forVemCard1Li2}</li>
+          <li>{s.forVemCard1Li3}</li>
+          <li>{s.forVemCard1Li4}</li>
+        </ul>
+      </article>
+      <article class="segment-card reveal delay-1">
+        <div class="seg-head">
+          <span class="seg-glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 21h16"/>
+              <path d="M5.5 21V8.2L12 4l6.5 4.2V21"/>
+              <path d="M9.7 21v-4.6h4.6V21"/>
+              <path d="M9 11h.01M15 11h.01"/>
+            </svg>
+          </span>
+          <span>
+            <span class="seg-kicker">{s.forVemKicker}</span>
+            <h3>{s.forVemCard2Title}</h3>
+          </span>
+        </div>
+        <p class="seg-sub">{s.forVemCard2Sub}</p>
+        <span class="seg-listlabel">{s.forVemListLabel}</span>
+        <ul>
+          <li>{s.forVemCard2Li1}</li>
+          <li>{s.forVemCard2Li2}</li>
+          <li>{s.forVemCard2Li3}</li>
+          <li>{s.forVemCard2Li4}</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+#for-vem {
+  padding-top: 80px;
+}
+
+.segments-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.segment-card {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 36px 34px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 1px 2px rgba(15,23,42,.04),
+    0 18px 44px -30px rgba(61,80,109,.34);
+  transition: border-color .35s ease, transform .35s ease, box-shadow .35s ease;
+}
+
+/* Soft brand glow drifting in the top-right corner */
+.segment-card::before {
+  content: "";
+  position: absolute;
+  top: -90px; right: -90px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(86,179,235,.16) 0%, transparent 70%);
+  opacity: .75;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity .35s ease, transform .55s cubic-bezier(.4,0,.2,1);
+}
+
+/* Gradient hairline along the top edge, brightening on hover */
+.segment-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--hero-headline-gradient);
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.segment-card:hover {
+  border-color: var(--slate-300);
+  transform: translateY(-5px);
+  box-shadow:
+    0 1px 2px rgba(15,23,42,.05),
+    0 32px 64px -28px rgba(61,80,109,.42);
+}
+
+.segment-card:hover::after { opacity: 1; }
+.segment-card:hover::before { opacity: 1; transform: translate(-12px, 12px); }
+.segment-card:hover .seg-glyph { transform: translateY(-2px); }
+
+/* Header: glyph chip + persona label */
+.seg-head { display: flex; align-items: center; gap: 16px; }
+
+.seg-glyph {
+  width: 54px; height: 54px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  background: linear-gradient(145deg, #56739B 0%, #3D506D 55%, #34455E 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 10px 22px -10px rgba(61,80,109,.6);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+
+.seg-glyph svg { width: 27px; height: 27px; }
+
+.seg-head .seg-kicker {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  margin-bottom: 3px;
+}
+
+.segment-card h3 {
+  font-family: 'Plus Jakarta Sans', var(--font-display);
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--brand-primary);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.segment-card .seg-sub {
+  font-size: 14.5px;
+  color: var(--slate-500);
+  line-height: 1.62;
+  margin: 0;
+}
+
+/* Friction list — labelled, with subtle cyan markers (no green) */
+.seg-listlabel {
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seg-listlabel::before {
+  content: "";
+  width: 18px; height: 1.5px;
+  background: linear-gradient(90deg, var(--brand-accent), transparent);
+  border-radius: 2px;
+}
+
+.segment-card ul {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.segment-card li {
+  font-size: 14px;
+  color: var(--slate-600);
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  line-height: 1.5;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.segment-card li:first-child { border-top: 0; padding-top: 4px; }
+
+.segment-card li::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  box-shadow: 0 0 0 4px rgba(86,179,235,.14);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+/* Section-specific reveal animations: cards slide in from opposite sides */
+:global(html.reveal-ready) #for-vem .segment-card.reveal         { transform: translate(-32px, 18px); }
+:global(html.reveal-ready) #for-vem .segment-card.reveal.delay-1 { transform: translate( 32px, 18px); }
+:global(html.reveal-ready) #for-vem .segment-card.reveal.in-view { transform: none; }
+
+@media (max-width: 760px) {
+  .segments-grid { grid-template-columns: 1fr; }
+}
+</style>

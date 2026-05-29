@@ -1,0 +1,33 @@
+---
+// RevealScript — no visible DOM output; only the observer script.
+// Ported from legacy index.html lines 4052–4075.
+---
+<script>
+  // Scroll-reveal — fade + rise + blur as each .reveal enters the viewport.
+  // One-shot: reveal once, then stop observing so nothing re-animates on scroll-up.
+  const targets = document.querySelectorAll<Element>('section:not(.hero) .reveal');
+  if (targets.length > 0) {
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduce || !('IntersectionObserver' in window)) {
+      // No motion / no observer support — show everything immediately.
+      targets.forEach((el) => el.classList.add('in-view'));
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.15 },
+      );
+
+      targets.forEach((el) => io.observe(el));
+    }
+  }
+</script>

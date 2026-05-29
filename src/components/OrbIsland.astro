@@ -1,0 +1,41 @@
+---
+// OrbIsland — the WebGL hero orb (ported from the legacy module, index.html
+// 4919–5277). Renders no visible DOM; it mounts a <canvas> into the existing
+// `#hero-orb` span that Hero.astro already provides. Importing this component
+// in Hero ensures Astro/Vite bundles the script (and `ogl` from npm).
+//
+// The hero load-intro orchestrator (Hero.astro) calls the guarded
+// `window.lucraOrbIntro()` / `window.lucraOrbPulse()` hooks. This module
+// defines those exact hooks when the hero orb mounts.
+---
+
+<script>
+  import { mountOrb } from '../scripts/orb';
+
+  // ── Lazy init ─────────────────────────────────────────────────────────────
+  // Hero centrepiece — wired into the load-intro + fog-wipe orchestration.
+  // The orb sits at the top of the hero, so the IntersectionObserver (with a
+  // 200px rootMargin) fires essentially immediately on load. We still gate on:
+  //   • the element existing,
+  //   • prefers-reduced-motion NOT being set,
+  //   • the orb being near/inside the viewport,
+  // then mount on idle. Defining the window hooks happens INSIDE mountOrb (as
+  // in the legacy), so Hero's guarded `if (window.lucraOrbIntro)` calls simply
+  // no-op for the brief moment before the orb mounts — acceptable and matches
+  // legacy sequencing.
+  const el = document.getElementById('hero-orb');
+  if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ric: (cb: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (cb) => (window as any).requestIdleCallback(cb)
+        : (cb) => { setTimeout(cb, 1); };
+    const start = (): void => ric(() => mountOrb('hero-orb', { intro: true, registerGlobalPulse: true }));
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        obs.disconnect();
+        start();
+      }
+    }, { rootMargin: '200px' });
+    io.observe(el);
+  }
+</script>

@@ -1,0 +1,246 @@
+/* ============================================================
+   Lucra landing page — global / reset / base styles
+   ============================================================ */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg-paper);
+  color: var(--fg-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ============================================================
+   Buttons — shared across Nav, Hero, sections, Footer & CTA.
+   Ported verbatim from legacy index.html (~310–394).
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--brand-primary);
+  color: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary > * { position: relative; z-index: 2; }
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(86,179,235,0.45) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left .65s cubic-bezier(.4, 0, .2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.btn-primary:hover {
+  background: var(--brand-primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(61,80,109,.18);
+}
+.btn-primary:hover::after { left: 140%; }
+.btn-outlined {
+  background: var(--bg-paper);
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-outlined:hover {
+  background: var(--accent-light);
+}
+.btn-ghost {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+  color: var(--slate-600);
+  font-weight: 500;
+}
+.btn-ghost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--bg-active);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity .25s ease, transform .3s cubic-bezier(.4, 0, .2, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-ghost:hover { color: var(--brand-primary); }
+.btn-ghost:hover::before { opacity: 1; transform: scale(1); }
+.btn-lg { height: 48px; padding: 0 22px; font-size: 15px; }
+.btn .arrow {
+  width: 14px; height: 14px;
+  transition: transform .25s ease;
+}
+.btn:hover .arrow { transform: translateX(4px); }
+
+/* ============================================================
+   Base section scaffolding — generic vertical rhythm relied on
+   by every <section> (each section may override its own padding).
+   Ported verbatim from legacy index.html (~397).
+   ============================================================ */
+section { padding: 88px 0; position: relative; }
+
+/* ============================================================
+   Shared section typography — used by Problem, Funktioner,
+   ForVem, Integrationer, Säkerhet, and other content sections.
+   Kept here so each section component does not duplicate it.
+   ============================================================ */
+.section-eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--accent-light);
+  border: 1px solid rgba(61,80,109,.12);
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+.section-eyebrow::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+.section-title {
+  font-family: 'General Sans', var(--font-display);
+  font-weight: 500;
+  font-size: clamp(38px, 4.2vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--brand-primary);
+  margin: 0 0 20px;
+  max-width: 760px;
+  text-wrap: balance;
+}
+.section-sub {
+  font-size: 18px;
+  line-height: 1.62;
+  color: var(--slate-500);
+  margin: 0;
+  max-width: 600px;
+  text-wrap: pretty;
+}
+.section-head { margin-bottom: 56px; }
+.section-head.center { text-align: center; }
+.section-head.center .section-title,
+.section-head.center .section-sub { margin-left: auto; margin-right: auto; }
+
+/* Section background variants */
+.tone-slate {
+  background: linear-gradient(180deg,
+    var(--bg-paper) 0%,
+    var(--bg-app) 140px,
+    var(--bg-app) calc(100% - 140px),
+    var(--bg-paper) 100%);
+}
+.tone-deep {
+  background: var(--brand-primary-dark);
+  color: var(--white);
+}
+.tone-deep .section-title { color: var(--white); }
+.tone-deep .section-sub { color: rgba(255,255,255,.7); }
+.tone-deep .section-eyebrow {
+  background: rgba(86,179,235,.12);
+  border-color: rgba(86,179,235,.22);
+  color: #A7D8F4;
+}
+.tone-deep .section-eyebrow::before { background: var(--brand-accent); }
+
+@media (max-width: 768px) {
+  .section-title { font-size: 30px; }
+}
+
+/* ============================================================
+   SCROLL REVEAL — generic base, shared by every content section.
+   Ported verbatim from legacy index.html (~2865–2937).
+   The gate class `reveal-ready` is added to <html> by the hero
+   script; the IntersectionObserver in RevealScript.astro adds
+   `in-view` to each element as it enters the viewport.
+   Section-specific signatures (#for-vem, #integrationer/tilePop)
+   live scoped inside their own components, so they are NOT
+   duplicated here.
+   ============================================================ */
+/* No-JS / fallback: everything visible. */
+.reveal { opacity: 1; }
+
+/* JS scroll-reveal — premium vocabulary shared with the hero:
+   fade + gentle rise + blur. Only armed once <html> gets .reveal-ready,
+   so content can never stay hidden if the script fails to load. */
+html.reveal-ready section:not(.hero) .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(8px);
+  transition:
+    opacity .85s cubic-bezier(.2,.7,.2,1),
+    transform .85s cubic-bezier(.2,.7,.2,1),
+    filter .85s cubic-bezier(.2,.7,.2,1);
+  will-change: opacity, transform, filter;
+}
+/* Card stagger — reuses the delay-* classes already on the markup. */
+html.reveal-ready section:not(.hero) .reveal.delay-1 { transition-delay: .08s; }
+html.reveal-ready section:not(.hero) .reveal.delay-2 { transition-delay: .16s; }
+html.reveal-ready section:not(.hero) .reveal.delay-3 { transition-delay: .24s; }
+
+/* Revealed state — wins on specificity, clears transform/blur. */
+html.reveal-ready section:not(.hero) .reveal.in-view {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* ---- Section signature: final CTA — panel scales up as it floats in ---- */
+html.reveal-ready .cta-section .cta-panel.reveal { transform: translateY(24px) scale(.96); }
+html.reveal-ready .cta-section .cta-panel.reveal.in-view { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.reveal-ready section:not(.hero) .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,308 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<section id="funktioner" class="tone-slate">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">{s.funktionerEyebrow}</span>
+      <h2 class="section-title">{s.funktionerTitle}</h2>
+      <p class="section-sub">
+        {s.funktionerSub}
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <!-- AI chat -->
+      <div class="feature-card reveal">
+        <div class="feature-icon"><img src="/assets/icons/assistant.svg" alt="" /></div>
+        <h3>{s.funktionerCard1Title}</h3>
+        <p>{s.funktionerCard1Body}</p>
+        <div class="preview fpreview-chat">
+          <div class="uin">{s.funktionerChatQ}</div>
+          <div class="ain">
+            <div class="orb" style="width:22px;height:22px;"></div>
+            <div class="bubble" set:html={s.funktionerChatA}></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard -->
+      <div class="feature-card reveal delay-1">
+        <div class="feature-icon"><img src="/assets/icons/dashboard.svg" alt="" /></div>
+        <h3>{s.funktionerCard2Title}</h3>
+        <p>{s.funktionerCard2Body}</p>
+        <div class="preview fpreview-dash">
+          <div class="mini-metric">
+            <div class="ml">{s.funktionerMetricRevLabel}</div>
+            <div class="mv">487k</div>
+            <div class="mt">↑ 12 %</div>
+          </div>
+          <div class="mini-metric">
+            <div class="ml">{s.funktionerMetricCostLabel}</div>
+            <div class="mv">313k</div>
+            <div class="mt">↓ 4 %</div>
+          </div>
+          <div class="mini-metric">
+            <div class="ml">{s.funktionerMetricResultLabel}</div>
+            <div class="mv">174k</div>
+            <div class="mt">↑ 28 %</div>
+          </div>
+          <div class="mini-metric">
+            <div class="ml">{s.funktionerMetricLiqLabel}</div>
+            <div class="mv">642k</div>
+            <div class="mt">↑ 6 %</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div class="feature-card reveal delay-2">
+        <div class="feature-icon"><img src="/assets/icons/upload-cloud.svg" alt="" /></div>
+        <h3>{s.funktionerCard3Title}</h3>
+        <p>{s.funktionerCard3Body}</p>
+        <div class="preview fpreview-files">
+          <div class="file-row">
+            <span class="icon pdf">PDF</span>
+            <span class="name">{s.funktionerFile1Name}</span>
+            <span class="meta">1 248 kB</span>
+          </div>
+          <div class="file-row">
+            <span class="icon xls">XLS</span>
+            <span class="name">{s.funktionerFile2Name}</span>
+            <span class="meta">86 kB</span>
+          </div>
+          <div class="file-row">
+            <span class="icon doc">DOC</span>
+            <span class="name">{s.funktionerFile3Name}</span>
+            <span class="meta">214 kB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-company -->
+      <div class="feature-card reveal delay-3">
+        <div class="feature-icon"><img src="/assets/icons/clients.svg" alt="" /></div>
+        <h3>{s.funktionerCard4Title}</h3>
+        <p>{s.funktionerCard4Body}</p>
+        <div class="preview fpreview-co">
+          <div class="co-row active">
+            <span class="co-avatar">AA</span>
+            <span class="name">Alma AB</span>
+            <span class="bdg">{s.funktionerCoBadgeActive}</span>
+          </div>
+          <div class="co-row">
+            <span class="co-avatar">BB</span>
+            <span class="name">Bergvik Bygg AB</span>
+          </div>
+          <div class="co-row">
+            <span class="co-avatar">NK</span>
+            <span class="name">Norra Konsult AB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---- Feature grid ---- */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.feature-card {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  min-height: 360px;
+}
+.feature-card:hover {
+  border-color: var(--slate-300);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+}
+.feature-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(150deg, #ffffff, var(--accent-light));
+  border: 1px solid rgba(61,80,109,.10);
+  box-shadow: 0 1px 2px rgba(15,23,42,.05), inset 0 1px 0 rgba(255,255,255,.7);
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.feature-icon img { width: 22px; height: 22px; opacity: .9; }
+.feature-card h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--brand-primary);
+  margin: 0;
+}
+.feature-card p {
+  font-size: 15px;
+  color: var(--slate-500);
+  margin: 0;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+.feature-card .preview {
+  margin-top: auto;
+  background: var(--bg-app);
+  border-radius: var(--radius-xl);
+  padding: 14px;
+  border: 1px solid var(--border);
+}
+
+/* Feature 1 preview: AI chat snippet */
+.fpreview-chat { display: flex; flex-direction: column; gap: 8px; }
+.fpreview-chat .uin {
+  margin-left: auto;
+  max-width: 70%;
+  background: var(--brand-primary);
+  color: white;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 14px 14px 4px 14px;
+  line-height: 1.5;
+}
+.fpreview-chat .ain {
+  display: flex; gap: 8px; align-items: flex-start;
+  max-width: 90%;
+}
+.fpreview-chat .ain .bubble {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-left: 2.5px solid #5B7A9B;
+  font-size: 12px;
+  color: var(--slate-600);
+  padding: 8px 11px;
+  border-radius: 0 12px 12px 12px;
+  line-height: 1.55;
+}
+.fpreview-chat .ain .bubble strong { color: var(--brand-primary); font-weight: 600; }
+
+/* Feature 2 preview: mini dashboard */
+.fpreview-dash {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.mini-metric {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.mini-metric .ml {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate-500);
+  margin-bottom: 4px;
+}
+.mini-metric .mv {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  line-height: 1;
+}
+.mini-metric .mt {
+  font-size: 10px;
+  margin-top: 2px;
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+.mini-metric.placeholder .mv,
+.mini-metric.placeholder .mt {
+  color: var(--slate-400);
+}
+
+/* Feature 3 preview: file list */
+.fpreview-files { display: flex; flex-direction: column; gap: 6px; }
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--slate-600);
+}
+.file-row .icon {
+  width: 22px; height: 22px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--font-display);
+  font-size: 8px;
+  font-weight: 700;
+}
+.file-row .icon.pdf { background: #EF4444; }
+.file-row .icon.xls { background: #22C55E; }
+.file-row .icon.doc { background: #3B82F6; }
+.file-row .name { flex: 1; }
+.file-row .meta { color: var(--slate-400); font-size: 11px; }
+
+/* Feature 4 preview: companies */
+.fpreview-co { display: flex; flex-direction: column; gap: 6px; }
+.co-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--slate-600);
+}
+.co-avatar {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: var(--accent-light);
+  border: 1px solid rgba(61,80,109,.1);
+  color: var(--brand-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.co-row.active { border-color: var(--brand-primary); background: var(--accent-light); }
+.co-row .name { flex: 1; font-weight: 500; }
+.co-row .bdg {
+  font-size: 9px;
+  padding: 2px 7px;
+  background: var(--bg-active);
+  color: var(--brand-primary);
+  border-radius: 999px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Responsive */
+@media (max-width: 760px) {
+  .features-grid { grid-template-columns: 1fr; }
+}
+</style>

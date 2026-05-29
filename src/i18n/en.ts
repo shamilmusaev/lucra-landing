@@ -1,0 +1,271 @@
+import type { sv } from './sv';
+// en must define exactly the same keys as sv (a missing/extra key is a compile error).
+export const en: { [K in keyof typeof sv]: string } = {
+  // ---- Meta (Task 18) ----
+  metaTitle: 'Lucra · AI for Swedish business finances',
+  metaDescription: 'Lucra is an AI finance assistant that helps Swedish business owners understand their finances and accounting firms reduce repetitive client questions — always synced with Fortnox.',
+
+  // ---- Nav (Task 5) ----
+  navProduct: 'Product',
+  navProductFeaturesLabel: 'Features',
+  navProductFeaturesTitle: 'Features',
+  navProductFeaturesDesc: 'The AI assistant that understands your finances',
+  navProductHowTitle: 'How it works',
+  navProductHowDesc: 'From question to answer with your real data',
+  navProductIntegrationsTitle: 'Integrations',
+  navProductIntegrationsDesc: 'Connect Fortnox, Skatteverket and more systems',
+  navProductSecurityTitle: 'Security',
+  navProductSecurityDesc: 'Swedish data handling, GDPR-safe',
+  navPromoEyebrow: 'Lucra for firms',
+  navPromoTitle: 'Scale your accounting firm',
+  navPromoDesc: 'All clients, one interface.',
+  navPromoLink: 'Learn more',
+
+  navResources: 'Resources',
+  navResourcesBlogTitle: 'Blog',
+  navResourcesBlogDesc: 'Insights on finance and AI',
+  navResourcesGuidesTitle: 'Guides',
+  navResourcesGuidesDesc: 'Get started and get more out of it',
+  navResourcesHelpTitle: 'Help center',
+  navResourcesHelpDesc: 'Answers to common questions',
+  navResourcesStoriesTitle: 'Customer stories',
+  navResourcesStoriesDesc: 'How others use Lucra',
+
+  navNews: 'News',
+  navAbout: 'About us',
+  navContact: 'Contact',
+
+  navLogin: 'Log in',
+  navGetStarted: 'Get started',
+
+  // ---- Hero (Task 6) ----
+  heroPillBadge: 'New',
+  heroPillDefault: 'Lucra for accounting firms',
+  heroPillAlt: 'Lucra for business owners',
+  heroHeadline: 'Your AI economist<br />connected to your bookkeeping',
+  heroSub: 'Lucra helps business owners understand their finances and helps accounting firms reduce repetitive client questions — always synced with up-to-date data from Fortnox.',
+  heroCtaPrimary: 'Try Lucra',
+  heroCtaSecondary: 'Book a demo',
+
+  // Product demo window — tabs
+  heroDemoTablistLabel: 'Product demo',
+  heroTabDashboard: 'Understand the finances',
+  heroTabChat: 'Ask AI',
+  heroTabDocs: 'Read documents',
+  heroTabCompanies: 'Manage companies',
+
+  // Product demo window — sidebar
+  heroDemoSearch: 'Search',
+  heroDemoNewChat: 'New chat',
+  heroDemoMonthlyReport: 'Generate monthly report',
+  heroDemoNavDashboard: 'Dashboard',
+  heroDemoNavChat: 'Chat',
+  heroDemoNavFiles: 'Files',
+  heroDemoNavCompanies: 'Companies',
+  heroDemoToday: 'Today',
+  heroDemoChat1: 'June report, Alma AB',
+  heroDemoChat2: 'Cost analysis Q2',
+  heroDemoChat3: 'Unpaid invoices',
+
+  // Product demo window — dashboard panel
+  heroDemoDashTitle: 'Dashboard',
+  heroDemoSyncDashboard: 'Last synced with Fortnox: 3 min ago',
+  heroDemoMetricRevenue: 'Revenue',
+  heroDemoMetricCosts: 'Costs',
+  heroDemoMetricNet: 'Net result',
+  heroDemoMetricLiquidity: 'Liquidity',
+  heroDemoMetricVsQuarter: 'vs previous quarter',
+  heroDemoChartTitle: 'Revenue vs costs',
+  heroDemoChatFloat: 'Revenue is up <strong>12 %</strong> compared to last quarter, mainly from consulting fees.<span class="typing-dot"></span><span class="typing-dot" style="animation-delay:.2s"></span><span class="typing-dot" style="animation-delay:.4s"></span>',
+
+  // Product demo window — chat panel
+  heroDemoChatTitle: 'AI chat',
+  heroDemoSyncChat: 'Connected to Fortnox · Alma AB',
+  heroDemoChatQ1: 'How does cash flow look right now?',
+  heroDemoChatA1: 'Cash flow is <strong>positive</strong> with <strong>+84,200 SEK</strong> during April. Three invoices totaling 142,000 SEK are still unpaid and due within 12 days.',
+  heroDemoChatSrc1: 'Fortnox · Cash & equivalents',
+  heroDemoChatQ2: 'Which customers are behind on payments?',
+  heroDemoChatA2: 'Three customers have overdue invoices: <strong>Nordstream AB</strong> (48,500 SEK, 14 days), <strong>Pixelbit Studio</strong> (62,000 SEK, 9 days) and <strong>Klangstudio</strong> (31,500 SEK, 4 days). Want to send reminders?',
+  heroDemoChatSrc2: 'Fortnox · Accounts receivable',
+
+  // Product demo window — documents panel
+  heroDemoDocsTitle: 'Documents',
+  heroDemoDocsSearch: 'Search 248 documents',
+  heroDemoDocsColDoc: 'Document',
+  heroDemoDocsColSupplier: 'Supplier',
+  heroDemoDocsColAmount: 'Amount',
+  heroDemoDocsColStatus: 'Status',
+  heroDemoDoc1Name: 'Invoice 4821',
+  heroDemoDoc1Meta: '2026-04-22 · VAT 25 %',
+  heroDemoDoc1Status: 'Posted 6212',
+  heroDemoDoc2Name: 'E-invoice 9013',
+  heroDemoDoc2Meta: '2026-04-19 · VAT 25 %',
+  heroDemoDoc2Status: 'Posted 5611',
+  heroDemoDoc3Name: 'Receipt 2261',
+  heroDemoDoc3Meta: '2026-04-18 · VAT 12 %',
+  heroDemoDoc3Status: 'AI suggests 7690',
+  heroDemoDoc4Meta: '2026-04-17 · 23 transactions',
+  heroDemoDoc4Status: 'Posted 3010',
+  heroDemoDoc5Name: 'Invoice 4819',
+  heroDemoDoc5Meta: '2026-04-15 · Missing VAT code',
+  heroDemoDoc5Status: 'Review',
+
+  // Product demo window — companies panel
+  heroDemoCompaniesTitle: 'Companies',
+  heroDemoSyncCompanies: '4 companies · All synced',
+  heroDemoCoBadgeActive: 'Active',
+  heroDemoCoBadgeClient: 'Client',
+  heroDemoCoResult: 'Result',
+  heroDemoCoVat: 'VAT',
+  heroDemoCoLiquidity: 'Liquidity',
+
+  // ---- Funktioner (Task 10) ----
+  funktionerEyebrow: 'Features',
+  funktionerTitle: 'Everything you need to understand the numbers.',
+  funktionerSub: 'Four parts that connect. The chat asks the dashboard, the dashboard pulls from the documents, the documents follow the company. One coherent workspace.',
+  // Card 1 — AI chat
+  funktionerCard1Title: 'Ask your finances',
+  funktionerCard1Body: 'Ask questions in plain language and get answers straight from your data. Lucra points to the exact entries so you can follow up.',
+  funktionerChatQ: 'Which costs grew the most in Q2?',
+  funktionerChatA: 'Premises and travel stood out: premises cost up <strong>18 %</strong> after the renegotiation in April.',
+  // Card 2 — Dashboard
+  funktionerCard2Title: 'Dashboard with insights',
+  funktionerCard2Body: 'Revenue, costs and key metrics in real time, automatically. No manual exports, no stale numbers.',
+  funktionerMetricRevLabel: 'Revenue',
+  funktionerMetricCostLabel: 'Costs',
+  funktionerMetricResultLabel: 'Result',
+  funktionerMetricLiqLabel: 'Liquidity',
+  // Card 3 — Documents
+  funktionerCard3Title: 'Gather your documents',
+  funktionerCard3Body: 'Upload and organize source documents in one place. Lucra reads them and links them to the right company and period.',
+  funktionerFile1Name: 'Annual report 2025.pdf',
+  funktionerFile2Name: 'Income statement Q1.xlsx',
+  funktionerFile3Name: 'Board materials.docx',
+  // Card 4 — Multi-company
+  funktionerCard4Title: 'Multiple companies, one view',
+  funktionerCard4Body: 'Manage all clients and companies without switching systems. Switch in the sidebar, keep context.',
+  funktionerCoBadgeActive: 'Active',
+
+  // ---- ForVem (Task 11) ----
+  forVemEyebrow: "Who it's for",
+  forVemTitle: 'Two sides of the same finances.',
+  forVemSub: 'Lucra adapts to the role. One shared core, two views.',
+  forVemKicker: 'For',
+  forVemListLabel: 'Everyday today',
+  // Card 1 — Business owners
+  forVemCard1Title: 'Business owners',
+  forVemCard1Sub: 'You want to understand how the company is doing, ask when something is unclear, and know when something needs handling right away.',
+  forVemCard1Li1: 'Uncertainty about what the numbers mean',
+  forVemCard1Li2: 'Hesitation to contact the firm for small questions',
+  forVemCard1Li3: 'Waiting for answers when decisions must be made',
+  forVemCard1Li4: 'Worry about missing important deadlines',
+  // Card 2 — Accounting firms
+  forVemCard2Title: 'Accounting firms',
+  forVemCard2Sub: "The firm shouldn't have to spend consulting time on the same simple questions every month when that time could go to qualified advisory.",
+  forVemCard2Li1: 'The same questions recur every month',
+  forVemCard2Li2: 'Small questions are hard to bill',
+  forVemCard2Li3: 'Consultants get less time for advisory',
+  forVemCard2Li4: 'Clients expect faster answers than before',
+
+  // ---- Problem (Task 9) ----
+  problemEyebrow: 'The problem',
+  problemTitle: "Business owners shouldn't have to feel uncertain about their finances.",
+  problemSub: 'Small but important questions about bookkeeping, VAT, payroll and results. Too small for formal meetings, too important to ignore. It creates worry for the owner and repetitive support for the firm.',
+  problemCard1Eyebrow: 'Uncertainty',
+  problemCard1Title: 'What do the numbers actually mean?',
+  problemCard1Body: 'Hesitation to contact the firm for small questions. Decisions wait on slow answers, and the worry grows.',
+  problemCard1Cta: 'Get answers instantly',
+  problemCard2Eyebrow: 'The firm',
+  problemCard2Title: 'The same questions every month.',
+  problemCard2Body: 'Small questions are hard to bill. They eat the time that should go to higher-value advisory.',
+  problemCard2Cta: 'Automate the answers',
+  problemCard3Eyebrow: 'The time',
+  problemCard3Title: 'Answers come too late.',
+  problemCard3Body: "Customers expect faster answers than ever. Decisions hinge on a response time that isn't enough.",
+  problemCard3Cta: 'Answers in real time',
+
+  // ---- Integrationer (Task 13) ----
+  integrationerEyebrow: 'Integrations',
+  integrationerTitle: 'Plug in. Everything syncs.',
+  integrationerSub: 'Lucra connects to the systems where your data already lives. Fortnox is our first deep integration — and via Skatteverket we keep track of taxes and filing.',
+  integrationerFeatureTitle: 'Deep integration with Fortnox',
+  integrationerFeatureBody: 'Vouchers, chart of accounts, customers and suppliers are fetched automatically. Syncing runs in the background so the dashboard always mirrors the bookkeeping.',
+  integrationerSyncLine: 'Last synced: 3 minutes ago',
+  integrationerTile1: 'Vouchers & source data',
+  integrationerTile2: 'Chart of accounts',
+  integrationerTile3: 'VAT & filing',
+  integrationerTile4: 'Customers & suppliers',
+  integrationerTile5: 'P&L & balance',
+  integrationerTile6: 'Skatteverket',
+
+  // ---- Säkerhet (Task 14) ----
+  sakerhetEyebrow: 'Security and trust',
+  sakerhetTitle: 'Your data is safe.',
+  sakerhetSub: 'If you build fintech, you build security from the first line of code. Lucra follows Swedish and European regulations and keeps your records within the EU.',
+  sakerhetCard1Title: 'GDPR compliance',
+  sakerhetCard1Body: 'Personal data is processed under GDPR. Clear roles, consent and data disclosure on request.',
+  sakerhetCard2Title: 'Encryption at rest and in transit',
+  sakerhetCard2Body: 'All data is encrypted with modern standards, both when stored and when moved between systems.',
+  sakerhetCard3Title: 'Data storage within the EU',
+  sakerhetCard3Body: 'All customer data is stored with European providers. No transfers to third countries without a legal basis.',
+  sakerhetCard4Title: 'Granular permissions',
+  sakerhetCard4Body: 'Assign access per company and role. Firms and clients see only what they should.',
+
+  // ---- Så funkar det / howstack (Task 12) ----
+  howstackEyebrow: 'How it works',
+  // Stage 0 — The foundation
+  howstackStage0Kicker: 'The foundation',
+  howstackStage0Title: "It all starts with the company's own numbers.",
+  howstackStage0Body: "Lucra connects to Fortnox and reads the company's actual finances — transactions, VAT, results and payroll. Always up to date, never guessed.",
+  // Stage 1 — The understanding
+  howstackStage1Kicker: 'The understanding',
+  howstackStage1Title: 'Lucra understands what the numbers mean.',
+  howstackStage1Body: 'On top of the data, Lucra builds a living picture of how the company is doing — and answers everyday finance questions in plain language, instantly and around the clock.',
+  // Stage 2 — The expert layer
+  howstackStage2Kicker: 'The expert layer',
+  howstackStage2Title: 'The firm steps in when needed.',
+  howstackStage2Body: 'Complex questions are escalated to the accountant with full context preserved. People handle the qualified work — Lucra handles the everyday.',
+  // Deck layers (bottom-up: 01 → 04)
+  howstackLayer4Tag: 'Expert',
+  howstackLayer4Title: 'The accounting firm',
+  howstackLayer4Body: 'Qualified advisory when the question needs a human.',
+  howstackLayer3Title: 'The Lucra assistant',
+  howstackLayer3Body: 'Answers everyday questions in plain language, around the clock.',
+  howstackLayer2Title: "Lucra's world model",
+  howstackLayer2Body: 'A living picture of how the company is really doing.',
+  howstackLayer1Tag: 'Fortnox',
+  howstackLayer1Title: "The company's finances",
+  howstackLayer1Body: 'Transactions, VAT, results and payroll — synced in real time.',
+  // Final CTA
+  ctaTitle: 'Want to see how Lucra works?',
+  ctaBody: 'Book a short demo and see how Lucra helps business owners understand their finances and accounting firms free up time for qualified advisory.',
+  ctaBookDemo: 'Book a demo',
+  ctaTryLucra: 'Try Lucra',
+
+  // ---- Footer (Task 16) ----
+  footerTagline: 'Your AI economist, connected to your bookkeeping via Fortnox. Built for Swedish business owners and accounting firms.',
+  footerCopy: '© 2026 Lucra AI. All rights reserved.',
+  // Column headings
+  footerColProduct: 'Product',
+  footerColCompany: 'Company',
+  footerColLegal: 'Legal',
+  footerColAccount: 'Account',
+  // Product column links
+  footerLinkFeatures: 'Features',
+  footerLinkHowItWorks: 'How it works',
+  footerLinkIntegrations: 'Integrations',
+  footerLinkSecurity: 'Security',
+  // Company column links
+  footerLinkAbout: 'About us',
+  footerLinkContact: 'Contact',
+  footerLinkCareers: 'Careers',
+  footerLinkBookDemo: 'Book a demo',
+  // Legal column links
+  footerLinkPrivacy: 'Privacy policy',
+  footerLinkTerms: 'Terms of use',
+  footerLinkDpa: 'Data processing agreement',
+  footerLinkSecurityPage: 'Security',
+  // Account column links
+  footerLinkLogin: 'Log in',
+  footerLinkSignup: 'Create account',
+} as const;

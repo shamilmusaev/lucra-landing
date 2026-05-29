@@ -1,0 +1,282 @@
+/* ============================================================
+   Lucra Design System — Colors & Type
+   Source of truth: lucra-frontend/src/theme/theme.ts + index.css
+   Fonts: General Sans (primary, self-hosted .woff2),
+          Plus Jakarta Sans (display fallback, local .ttf)
+   ============================================================ */
+
+/* General Sans (primary brand font, self-hosted) */
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 200; font-display: swap; src: url('/fonts/GeneralSans-200.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 300; font-display: swap; src: url('/fonts/GeneralSans-300.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/GeneralSans-400.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/GeneralSans-500.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/GeneralSans-600.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/GeneralSans-700.woff2') format('woff2'); }
+
+/* Plus Jakarta Sans variable fonts (uploaded brand fonts) */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/fonts/PlusJakartaSans-VariableFont_wght.ttf') format('truetype-variations'),
+       url('/fonts/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: italic;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf') format('truetype-variations'),
+       url('/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+:root {
+  /* -------- Brand -------- */
+  --brand-primary: #3D506D;      /* Deep slate-blue, the Lucra signature */
+  --brand-primary-light: #4A5F7F;
+  --brand-primary-dark: #0F172A;
+  --brand-accent: #56B3EB;       /* Cyan accent from logo stroke */
+
+  /* Signature brand gradient — used on brand wordmark + page titles */
+  --brand-gradient: linear-gradient(90deg, #3D506D, #4A5F7F, #3D506D);
+  --brand-gradient-2: linear-gradient(90deg, #3D506D 0%, #4A5F7F 100%);
+  /* Hero headline gradient — primary slate-blue warming into logo cyan accent */
+  --hero-headline-gradient: linear-gradient(90deg, #3D506D 0%, #4A6B95 60%, #56B3EB 100%);
+
+  /* -------- Neutrals (Slate scale — Tailwind-derived) -------- */
+  --slate-50:  #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-300: #CBD5E1;
+  --slate-400: #94A3B8;
+  --slate-500: #64748B;
+  --slate-600: #475569;
+  --slate-900: #0F172A;
+
+  /* Grays (warm neutral scale used beside slate) */
+  --gray-20:   #DEE0E3;
+  --gray-40:   #9CA3AF;
+  --gray-60:   #B2B4B8;
+  --gray-80:   #6B6D71;
+  --gray-blue: #64748B;
+
+  /* Light tints */
+  --blue-20:      #E0E7FF;
+  --accent-light: #F2F6FB;
+  --white:        #FFFFFF;
+  --white-90:     #FEFEFE;
+
+  /* -------- Semantic surfaces -------- */
+  --bg-app:       #F1F5F9;  /* mainBackground — outer shell */
+  --bg-default:   #F9FAFC;  /* page bg when not on the shell */
+  --bg-paper:     #FFFFFF;  /* cards, modals, the white interior */
+  --bg-subtle:    #F8FAFC;  /* suggestion cards, sidebar search */
+  --bg-chat-ai:   #F1F4F8;
+  --bg-chat-input:#FAFAFA;
+  --bg-active:    #E4ECF5;  /* selected nav row */
+  --border:       #E2E8F0;
+  --border-hover: #E0E0E0;
+
+  /* Text */
+  --fg-primary:   #0F172A;
+  --fg-secondary: #64748B;
+  --fg-tertiary:  #94A3B8;
+  --fg-on-brand:  #FFFFFF;
+
+  /* Status */
+  --success:      #22C55E;
+  --success-light:#4ADE80;
+  --success-dark: #006722;
+  --error:        #EF4444;
+
+  /* Navigation icons */
+  --nav-icon-default: #5B7A9B;
+  --nav-icon-hover:   #4A6580;
+  --nav-icon-badge:   #374151;
+
+  /* Chart */
+  --chart-primary: #3D506D;
+  --chart-mid:     #6B8199;
+  --chart-light:   #A3B8CC;
+  --chart-sky:     #7DD3FC;
+
+  /* Voice orb (speculative gradient accents) */
+  --voice-orb-start: #3B82F6;
+  --voice-orb-end:   #8B5CF6;
+  --voice-orb-light: #56B3EB;
+
+  /* Effects */
+  --shadow-subtle:       rgba(0, 0, 0, 0.05);
+  --shadow-brand-subtle: rgba(61, 80, 109, 0.12);
+  --glass-bg:            rgba(255, 255, 255, 0.8);
+  --blob-top:            rgba(224, 231, 255, 0.4);
+  --blob-bottom:         rgba(238, 242, 255, 0.4);
+
+  /* -------- Elevation -------- */
+  --shadow-sm:   0px 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:   0px 2px 4px rgba(0,0,0,0.05);
+  --shadow-card: 0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-pop:  0px 8px 24px rgba(0,0,0,0.1);
+  --shadow-lift: 0px 4px 20px rgba(0,0,0,0.05);
+  --shadow-auth: 0px 8px 32px -8px rgba(0,0,0,0.08);
+
+  /* -------- Radius -------- */
+  --radius-sm:     8px;
+  --radius-md:     10px;
+  --radius-lg:     12px;
+  --radius-xl:     16px;
+  --radius-2xl:    20px;
+  --radius-card:   24px;
+  --radius-shell:  32px;   /* Sidebar & main-content outer radius — Lucra's signature */
+  --radius-pill:   999px;
+
+  /* -------- Spacing (4-base) -------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* -------- Type families -------- */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* -------- Type tokens -------- */
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   16px;
+  --text-xl:   18px;
+  --text-2xl:  24px;
+  --text-3xl:  28px;
+  --text-display: 36px;
+}
+
+/* ============================================================
+   Semantic typography
+   ============================================================ */
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--fg-primary);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-3xl);        /* 28px; hero variant = 36px */
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--brand-primary);
+  margin: 0;
+}
+
+h1.display, .h1-display {
+  font-size: var(--text-display);
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-2xl);
+  line-height: 1.3;
+  color: var(--slate-600);
+  margin: 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  line-height: 1.3;
+  color: var(--brand-primary);
+  margin: 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  line-height: 1.4;
+  color: var(--slate-600);
+  margin: 0;
+}
+
+.brand-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+}
+
+p, .body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--slate-600);
+  margin: 0;
+}
+
+.caption {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--slate-400);
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--slate-600);
+  line-height: 1;
+}
+
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  line-height: 1;
+}
+
+button, .button {
+  font-family: var(--font-body);
+  font-weight: 500;
+  text-transform: none;
+  font-size: var(--text-base);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
