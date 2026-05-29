@@ -31,4 +31,85 @@ export const sv = {
 
   navLogin: 'Logga in',
   navGetStarted: 'Kom igång',
+
+  // ---- Hero (Task 6) ----
+  heroPillBadge: 'Nyhet',
+  heroPillDefault: 'Lucra för redovisningsbyråer',
+  heroPillAlt: 'Lucra för företagare',
+  heroHeadline: 'Din AI-ekonom<br />kopplad till din bokföring',
+  heroSub: 'Lucra hjälper företagare att förstå sin ekonomi och hjälper redovisningsbyråer att minska repetitiva kundfrågor, alltid synkad med aktuell data från Fortnox.',
+  heroCtaPrimary: 'Testa Lucra',
+  heroCtaSecondary: 'Boka demo',
+
+  // Product demo window — tabs
+  heroDemoTablistLabel: 'Produktdemo',
+  heroTabDashboard: 'Förstå ekonomin',
+  heroTabChat: 'Fråga AI',
+  heroTabDocs: 'Läs dokument',
+  heroTabCompanies: 'Hantera bolag',
+
+  // Product demo window — sidebar
+  heroDemoSearch: 'Sök',
+  heroDemoNewChat: 'Ny chatt',
+  heroDemoMonthlyReport: 'Generera månadsrapport',
+  heroDemoNavDashboard: 'Dashboard',
+  heroDemoNavChat: 'Chatt',
+  heroDemoNavFiles: 'Filer',
+  heroDemoNavCompanies: 'Bolag',
+  heroDemoToday: 'Idag',
+  heroDemoChat1: 'Junirapport, Alma AB',
+  heroDemoChat2: 'Kostnadsanalys Q2',
+  heroDemoChat3: 'Obetalda fakturor',
+
+  // Product demo window — dashboard panel
+  heroDemoDashTitle: 'Dashboard',
+  heroDemoSyncDashboard: 'Senast synkad med Fortnox: 3 min sedan',
+  heroDemoMetricRevenue: 'Intäkter',
+  heroDemoMetricCosts: 'Kostnader',
+  heroDemoMetricNet: 'Nettoresultat',
+  heroDemoMetricLiquidity: 'Likviditet',
+  heroDemoMetricVsQuarter: 'vs föregående kvartal',
+  heroDemoChartTitle: 'Intäkter mot kostnader',
+  heroDemoChatFloat: 'Intäkterna är upp <strong>12 %</strong> jämfört med förra kvartalet, främst från konsultarvoden.<span class="typing-dot"></span><span class="typing-dot" style="animation-delay:.2s"></span><span class="typing-dot" style="animation-delay:.4s"></span>',
+
+  // Product demo window — chat panel
+  heroDemoChatTitle: 'AI-chatt',
+  heroDemoSyncChat: 'Kopplad till Fortnox · Alma AB',
+  heroDemoChatQ1: 'Hur ser kassaflödet ut just nu?',
+  heroDemoChatA1: 'Kassaflödet är <strong>positivt</strong> med <strong>+84 200 SEK</strong> under april. Tre fakturor om totalt 142 000 SEK ligger fortfarande obetalda och förfaller inom 12 dagar.',
+  heroDemoChatSrc1: 'Fortnox · Likvida medel',
+  heroDemoChatQ2: 'Vilka kunder ligger efter med betalningen?',
+  heroDemoChatA2: 'Tre kunder har förfallna fakturor: <strong>Nordstream AB</strong> (48 500 SEK, 14 dagar), <strong>Pixelbit Studio</strong> (62 000 SEK, 9 dagar) och <strong>Klangstudio</strong> (31 500 SEK, 4 dagar). Vill du skicka påminnelser?',
+  heroDemoChatSrc2: 'Fortnox · Kundreskontra',
+
+  // Product demo window — documents panel
+  heroDemoDocsTitle: 'Dokument',
+  heroDemoDocsSearch: 'Sök bland 248 dokument',
+  heroDemoDocsColDoc: 'Dokument',
+  heroDemoDocsColSupplier: 'Leverantör',
+  heroDemoDocsColAmount: 'Belopp',
+  heroDemoDocsColStatus: 'Status',
+  heroDemoDoc1Name: 'Faktura 4821',
+  heroDemoDoc1Meta: '2026-04-22 · Moms 25 %',
+  heroDemoDoc1Status: 'Bokfört 6212',
+  heroDemoDoc2Name: 'E-faktura 9013',
+  heroDemoDoc2Meta: '2026-04-19 · Moms 25 %',
+  heroDemoDoc2Status: 'Bokfört 5611',
+  heroDemoDoc3Name: 'Kvitto 2261',
+  heroDemoDoc3Meta: '2026-04-18 · Moms 12 %',
+  heroDemoDoc3Status: 'AI föreslår 7690',
+  heroDemoDoc4Meta: '2026-04-17 · 23 transaktioner',
+  heroDemoDoc4Status: 'Bokfört 3010',
+  heroDemoDoc5Name: 'Faktura 4819',
+  heroDemoDoc5Meta: '2026-04-15 · Saknar momskod',
+  heroDemoDoc5Status: 'Granska',
+
+  // Product demo window — companies panel
+  heroDemoCompaniesTitle: 'Bolag',
+  heroDemoSyncCompanies: '4 bolag · Allt synkat',
+  heroDemoCoBadgeActive: 'Aktiv',
+  heroDemoCoBadgeClient: 'Klient',
+  heroDemoCoResult: 'Resultat',
+  heroDemoCoVat: 'Moms',
+  heroDemoCoLiquidity: 'Likviditet',
 } as const;

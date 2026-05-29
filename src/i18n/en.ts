@@ -33,4 +33,85 @@ export const en: { [K in keyof typeof sv]: string } = {
 
   navLogin: 'Log in',
   navGetStarted: 'Get started',
+
+  // ---- Hero (Task 6) ----
+  heroPillBadge: 'New',
+  heroPillDefault: 'Lucra for accounting firms',
+  heroPillAlt: 'Lucra for business owners',
+  heroHeadline: 'Your AI economist<br />connected to your bookkeeping',
+  heroSub: 'Lucra helps business owners understand their finances and helps accounting firms reduce repetitive client questions — always synced with up-to-date data from Fortnox.',
+  heroCtaPrimary: 'Try Lucra',
+  heroCtaSecondary: 'Book a demo',
+
+  // Product demo window — tabs
+  heroDemoTablistLabel: 'Product demo',
+  heroTabDashboard: 'Understand the finances',
+  heroTabChat: 'Ask AI',
+  heroTabDocs: 'Read documents',
+  heroTabCompanies: 'Manage companies',
+
+  // Product demo window — sidebar
+  heroDemoSearch: 'Search',
+  heroDemoNewChat: 'New chat',
+  heroDemoMonthlyReport: 'Generate monthly report',
+  heroDemoNavDashboard: 'Dashboard',
+  heroDemoNavChat: 'Chat',
+  heroDemoNavFiles: 'Files',
+  heroDemoNavCompanies: 'Companies',
+  heroDemoToday: 'Today',
+  heroDemoChat1: 'June report, Alma AB',
+  heroDemoChat2: 'Cost analysis Q2',
+  heroDemoChat3: 'Unpaid invoices',
+
+  // Product demo window — dashboard panel
+  heroDemoDashTitle: 'Dashboard',
+  heroDemoSyncDashboard: 'Last synced with Fortnox: 3 min ago',
+  heroDemoMetricRevenue: 'Revenue',
+  heroDemoMetricCosts: 'Costs',
+  heroDemoMetricNet: 'Net result',
+  heroDemoMetricLiquidity: 'Liquidity',
+  heroDemoMetricVsQuarter: 'vs previous quarter',
+  heroDemoChartTitle: 'Revenue vs costs',
+  heroDemoChatFloat: 'Revenue is up <strong>12 %</strong> compared to last quarter, mainly from consulting fees.<span class="typing-dot"></span><span class="typing-dot" style="animation-delay:.2s"></span><span class="typing-dot" style="animation-delay:.4s"></span>',
+
+  // Product demo window — chat panel
+  heroDemoChatTitle: 'AI chat',
+  heroDemoSyncChat: 'Connected to Fortnox · Alma AB',
+  heroDemoChatQ1: 'How does cash flow look right now?',
+  heroDemoChatA1: 'Cash flow is <strong>positive</strong> with <strong>+84,200 SEK</strong> during April. Three invoices totaling 142,000 SEK are still unpaid and due within 12 days.',
+  heroDemoChatSrc1: 'Fortnox · Cash & equivalents',
+  heroDemoChatQ2: 'Which customers are behind on payments?',
+  heroDemoChatA2: 'Three customers have overdue invoices: <strong>Nordstream AB</strong> (48,500 SEK, 14 days), <strong>Pixelbit Studio</strong> (62,000 SEK, 9 days) and <strong>Klangstudio</strong> (31,500 SEK, 4 days). Want to send reminders?',
+  heroDemoChatSrc2: 'Fortnox · Accounts receivable',
+
+  // Product demo window — documents panel
+  heroDemoDocsTitle: 'Documents',
+  heroDemoDocsSearch: 'Search 248 documents',
+  heroDemoDocsColDoc: 'Document',
+  heroDemoDocsColSupplier: 'Supplier',
+  heroDemoDocsColAmount: 'Amount',
+  heroDemoDocsColStatus: 'Status',
+  heroDemoDoc1Name: 'Invoice 4821',
+  heroDemoDoc1Meta: '2026-04-22 · VAT 25 %',
+  heroDemoDoc1Status: 'Posted 6212',
+  heroDemoDoc2Name: 'E-invoice 9013',
+  heroDemoDoc2Meta: '2026-04-19 · VAT 25 %',
+  heroDemoDoc2Status: 'Posted 5611',
+  heroDemoDoc3Name: 'Receipt 2261',
+  heroDemoDoc3Meta: '2026-04-18 · VAT 12 %',
+  heroDemoDoc3Status: 'AI suggests 7690',
+  heroDemoDoc4Meta: '2026-04-17 · 23 transactions',
+  heroDemoDoc4Status: 'Posted 3010',
+  heroDemoDoc5Name: 'Invoice 4819',
+  heroDemoDoc5Meta: '2026-04-15 · Missing VAT code',
+  heroDemoDoc5Status: 'Review',
+
+  // Product demo window — companies panel
+  heroDemoCompaniesTitle: 'Companies',
+  heroDemoSyncCompanies: '4 companies · All synced',
+  heroDemoCoBadgeActive: 'Active',
+  heroDemoCoBadgeClient: 'Client',
+  heroDemoCoResult: 'Result',
+  heroDemoCoVat: 'VAT',
+  heroDemoCoLiquidity: 'Liquidity',
 } as const;
