@@ -1,0 +1,134 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<section id="sakerhet" class="tone-slate">
+  <div class="container">
+    <div class="security">
+      <div class="reveal">
+        <span class="section-eyebrow">{s.sakerhetEyebrow}</span>
+        <h2 class="section-title">{s.sakerhetTitle}</h2>
+        <p class="section-sub">
+          {s.sakerhetSub}
+        </p>
+      </div>
+      <div class="sec-list">
+        <div class="sec-item reveal">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div>
+            <h4>{s.sakerhetCard1Title}</h4>
+            <p>{s.sakerhetCard1Body}</p>
+          </div>
+        </div>
+        <div class="sec-item reveal delay-1">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+          </div>
+          <div>
+            <h4>{s.sakerhetCard2Title}</h4>
+            <p>{s.sakerhetCard2Body}</p>
+          </div>
+        </div>
+        <div class="sec-item reveal delay-2">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          </div>
+          <div>
+            <h4>{s.sakerhetCard3Title}</h4>
+            <p>{s.sakerhetCard3Body}</p>
+          </div>
+        </div>
+        <div class="sec-item reveal delay-3">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div>
+            <h4>{s.sakerhetCard4Title}</h4>
+            <p>{s.sakerhetCard4Body}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+#sakerhet {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+.security {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.sec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 24px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  transition: border-color .2s, transform .2s;
+}
+
+.sec-item:hover {
+  border-color: var(--slate-300);
+  transform: translateY(-2px);
+}
+
+.sec-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(150deg, #ffffff, var(--accent-light));
+  border: 1px solid rgba(61, 80, 109, .10);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .05), inset 0 1px 0 rgba(255, 255, 255, .7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--brand-primary);
+}
+
+.sec-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.sec-item h4 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--brand-primary);
+  margin: 0 0 6px;
+}
+
+.sec-item p {
+  font-size: 14px;
+  color: var(--slate-500);
+  margin: 0;
+  line-height: 1.55;
+}
+
+@media (max-width: 960px) {
+  .security {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+</style>
