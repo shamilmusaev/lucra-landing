@@ -13,7 +13,7 @@ export interface Props {
 const { lang, title, description, path = '/' } = Astro.props;
 const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
 const svUrl = `${site}${path}`;
-const enUrl = `${site}/en${path === '/' ? '' : path}`;
+const enUrl = `${site}/en${path === '/' ? '/' : path}`;
 const canonical = lang === 'sv' ? svUrl : enUrl;
 ---
 <!doctype html>
