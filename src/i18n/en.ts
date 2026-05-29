@@ -237,4 +237,31 @@ export const en: { [K in keyof typeof sv]: string } = {
   ctaBody: 'Book a short demo and see how Lucra helps business owners understand their finances and accounting firms free up time for qualified advisory.',
   ctaBookDemo: 'Book a demo',
   ctaTryLucra: 'Try Lucra',
+
+  // ---- Footer (Task 16) ----
+  footerTagline: 'Your AI economist, connected to your bookkeeping via Fortnox. Built for Swedish business owners and accounting firms.',
+  footerCopy: '© 2026 Lucra AI. All rights reserved.',
+  // Column headings
+  footerColProduct: 'Product',
+  footerColCompany: 'Company',
+  footerColLegal: 'Legal',
+  footerColAccount: 'Account',
+  // Product column links
+  footerLinkFeatures: 'Features',
+  footerLinkHowItWorks: 'How it works',
+  footerLinkIntegrations: 'Integrations',
+  footerLinkSecurity: 'Security',
+  // Company column links
+  footerLinkAbout: 'About us',
+  footerLinkContact: 'Contact',
+  footerLinkCareers: 'Careers',
+  footerLinkBookDemo: 'Book a demo',
+  // Legal column links
+  footerLinkPrivacy: 'Privacy policy',
+  footerLinkTerms: 'Terms of use',
+  footerLinkDpa: 'Data processing agreement',
+  footerLinkSecurityPage: 'Security',
+  // Account column links
+  footerLinkLogin: 'Log in',
+  footerLinkSignup: 'Create account',
 } as const;
