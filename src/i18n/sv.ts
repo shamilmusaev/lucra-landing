@@ -177,4 +177,30 @@ export const sv = {
   problemCard3Title: 'Svar kommer för sent.',
   problemCard3Body: 'Kunder förväntar sig snabbare svar än någonsin. Beslut hänger på en svarstid som inte räcker till.',
   problemCard3Cta: 'Svar i realtid',
+
+  // ---- Så funkar det / howstack (Task 12) ----
+  howstackEyebrow: 'Så funkar det',
+  // Stage 0 — Grunden
+  howstackStage0Kicker: 'Grunden',
+  howstackStage0Title: 'Allt utgår från bolagets egna siffror.',
+  howstackStage0Body: 'Lucra kopplas till Fortnox och läser bolagets faktiska ekonomi — transaktioner, moms, resultat och lön. Alltid uppdaterat, aldrig gissat.',
+  // Stage 1 — Förståelsen
+  howstackStage1Kicker: 'Förståelsen',
+  howstackStage1Title: 'Lucra förstår vad siffrorna betyder.',
+  howstackStage1Body: 'Ovanpå datan bygger Lucra en levande bild av hur bolaget mår — och svarar på vardagens ekonomifrågor på enkel svenska, direkt och dygnet runt.',
+  // Stage 2 — Expertlagret
+  howstackStage2Kicker: 'Expertlagret',
+  howstackStage2Title: 'Byrån kopplas in när det krävs.',
+  howstackStage2Body: 'Komplexa frågor eskaleras till redovisningskonsulten med full kontext bevarad. Människan gör det kvalificerade — Lucra sköter vardagen.',
+  // Deck layers (bottom-up: 01 → 04)
+  howstackLayer4Tag: 'Expert',
+  howstackLayer4Title: 'Redovisningsbyrån',
+  howstackLayer4Body: 'Kvalificerad rådgivning när frågan kräver en människa.',
+  howstackLayer3Title: 'Lucra-assistenten',
+  howstackLayer3Body: 'Svarar på vardagsfrågor på enkel svenska, dygnet runt.',
+  howstackLayer2Title: 'Lucras världsmodell',
+  howstackLayer2Body: 'En levande bild av hur bolaget faktiskt mår.',
+  howstackLayer1Tag: 'Fortnox',
+  howstackLayer1Title: 'Bolagets ekonomi',
+  howstackLayer1Body: 'Transaktioner, moms, resultat och lön — synkat i realtid.',
 } as const;

@@ -179,4 +179,30 @@ export const en: { [K in keyof typeof sv]: string } = {
   problemCard3Title: 'Answers come too late.',
   problemCard3Body: "Customers expect faster answers than ever. Decisions hinge on a response time that isn't enough.",
   problemCard3Cta: 'Answers in real time',
+
+  // ---- Så funkar det / howstack (Task 12) ----
+  howstackEyebrow: 'How it works',
+  // Stage 0 — The foundation
+  howstackStage0Kicker: 'The foundation',
+  howstackStage0Title: "It all starts with the company's own numbers.",
+  howstackStage0Body: "Lucra connects to Fortnox and reads the company's actual finances — transactions, VAT, results and payroll. Always up to date, never guessed.",
+  // Stage 1 — The understanding
+  howstackStage1Kicker: 'The understanding',
+  howstackStage1Title: 'Lucra understands what the numbers mean.',
+  howstackStage1Body: 'On top of the data, Lucra builds a living picture of how the company is doing — and answers everyday finance questions in plain language, instantly and around the clock.',
+  // Stage 2 — The expert layer
+  howstackStage2Kicker: 'The expert layer',
+  howstackStage2Title: 'The firm steps in when needed.',
+  howstackStage2Body: 'Complex questions are escalated to the accountant with full context preserved. People handle the qualified work — Lucra handles the everyday.',
+  // Deck layers (bottom-up: 01 → 04)
+  howstackLayer4Tag: 'Expert',
+  howstackLayer4Title: 'The accounting firm',
+  howstackLayer4Body: 'Qualified advisory when the question needs a human.',
+  howstackLayer3Title: 'The Lucra assistant',
+  howstackLayer3Body: 'Answers everyday questions in plain language, around the clock.',
+  howstackLayer2Title: "Lucra's world model",
+  howstackLayer2Body: 'A living picture of how the company is really doing.',
+  howstackLayer1Tag: 'Fortnox',
+  howstackLayer1Title: "The company's finances",
+  howstackLayer1Body: 'Transactions, VAT, results and payroll — synced in real time.',
 } as const;

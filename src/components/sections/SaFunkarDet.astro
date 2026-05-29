@@ -1,0 +1,395 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<section id="sa-funkar-det" class="tone-slate howstack" data-howstack>
+  <div class="howstack-track">
+    <div class="howstack-sticky">
+      <div class="container">
+        <span class="section-eyebrow hs-eyebrow reveal">{s.howstackEyebrow}</span>
+        <div class="howstack-grid">
+
+          <!-- LEFT: stage text that swaps as you scroll -->
+          <div class="howstack-text">
+            <article class="hs-stage is-active" data-stage="0">
+              <span class="hs-kicker">{s.howstackStage0Kicker}</span>
+              <h3>{s.howstackStage0Title}</h3>
+              <p>{s.howstackStage0Body}</p>
+              <div class="hs-progress"><i></i><i></i><i></i></div>
+            </article>
+            <article class="hs-stage" data-stage="1">
+              <span class="hs-kicker">{s.howstackStage1Kicker}</span>
+              <h3>{s.howstackStage1Title}</h3>
+              <p>{s.howstackStage1Body}</p>
+              <div class="hs-progress"><i></i><i></i><i></i></div>
+            </article>
+            <article class="hs-stage" data-stage="2">
+              <span class="hs-kicker">{s.howstackStage2Kicker}</span>
+              <h3>{s.howstackStage2Title}</h3>
+              <p>{s.howstackStage2Body}</p>
+              <div class="hs-progress"><i></i><i></i><i></i></div>
+            </article>
+          </div>
+
+          <!-- RIGHT: isometric layer stack that builds bottom-up -->
+          <div class="howstack-visual">
+            <div class="lucra-stage">
+              <div class="lucra-deck">
+                <div class="lucra-layer" data-th="0.80">
+                  <span class="ll-tag">{s.howstackLayer4Tag}</span>
+                  <span class="ll-num">04</span>
+                  <h4>{s.howstackLayer4Title}</h4>
+                  <p>{s.howstackLayer4Body}</p>
+                </div>
+
+                <div class="lucra-layer" data-th="0.54">
+                  <span class="ll-num">03</span>
+                  <h4>{s.howstackLayer3Title}</h4>
+                  <p>{s.howstackLayer3Body}</p>
+                </div>
+
+                <div class="lucra-layer" data-th="0.30">
+                  <span class="ll-num">02</span>
+                  <h4>{s.howstackLayer2Title}</h4>
+                  <p>{s.howstackLayer2Body}</p>
+                </div>
+
+                <div class="lucra-layer" data-th="0.05">
+                  <span class="ll-tag">{s.howstackLayer1Tag}</span>
+                  <span class="ll-num">01</span>
+                  <h4>{s.howstackLayer1Title}</h4>
+                  <p>{s.howstackLayer1Body}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ---- HOW IT WORKS — scroll-pinned isometric layer stack ---- */
+.howstack { padding: 0; }
+.howstack-track { position: relative; }
+.howstack-sticky { padding: 88px 0; }
+.howstack-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.hs-eyebrow { margin-bottom: 28px; }
+
+/* ----- LEFT: stage text (dark slate card, brand colours) ----- */
+.howstack-text { position: relative; }
+.hs-stage {
+  background: linear-gradient(155deg, #14233B 0%, #0F172A 100%);
+  border: 1px solid rgba(86,179,235,.14);
+  border-radius: var(--radius-card);
+  padding: 38px 36px 40px;
+  box-shadow: 0 30px 70px -34px rgba(15,23,42,.6);
+  overflow: hidden;
+  position: relative;
+}
+.hs-stage::before {
+  content: "";
+  position: absolute;
+  top: -40%; left: -10%;
+  width: 70%; height: 120%;
+  background: radial-gradient(circle, rgba(86,179,235,.16) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hs-stage .hs-kicker {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: #A7D8F4;
+  margin-bottom: 18px;
+}
+.hs-stage .hs-kicker::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--brand-accent);
+  box-shadow: 0 0 0 4px rgba(86,179,235,.22);
+}
+.hs-stage h3 {
+  font-family: 'Plus Jakarta Sans', var(--font-display);
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--white);
+  margin: 0 0 16px;
+  text-wrap: balance;
+}
+.hs-stage p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(226,232,240,.78);
+  margin: 0;
+  max-width: 30em;
+}
+/* Progress rail — which stage is active */
+.hs-progress {
+  display: flex; gap: 8px;
+  margin-top: 30px;
+}
+.hs-progress i {
+  height: 3px; flex: 1;
+  border-radius: 999px;
+  background: rgba(148,163,184,.28);
+  overflow: hidden;
+  position: relative;
+}
+.hs-progress i::after {
+  content: ""; position: absolute; inset: 0;
+  transform: scaleX(0); transform-origin: left;
+  background: var(--brand-accent);
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+.hs-progress i.seg-on::after { transform: scaleX(1); }
+
+/* ----- RIGHT: the isometric deck ----- */
+.howstack-visual { position: relative; }
+.lucra-stage {
+  position: relative;
+  perspective: 1500px;
+  perspective-origin: 62% 42%;
+}
+.lucra-deck {
+  position: relative;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* Clean Lucra-style card (matches the product/metric cards elsewhere) */
+.lucra-layer {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-paper);
+  padding: 15px 22px;
+  min-height: 60px;
+  box-shadow:
+    0 1px 2px rgba(15,23,42,.04),
+    0 18px 36px -26px rgba(61,80,109,.45);
+}
+.lucra-layer .ll-num {
+  font-family: var(--font-display);
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--slate-400);
+  display: block;
+  margin-bottom: 1px;
+}
+.lucra-layer h4 {
+  font-family: 'Plus Jakarta Sans', var(--font-display);
+  font-size: 15.5px; font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--brand-primary);
+  margin: 0 0 2px;
+}
+.lucra-layer p {
+  font-size: 12px;
+  color: var(--slate-500);
+  line-height: 1.4;
+  margin: 0;
+}
+.lucra-layer .ll-tag {
+  position: absolute;
+  top: 50%; right: 18px;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--slate-400);
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+/* Focused (latest revealed) layer lights up in brand cyan */
+.lucra-layer.is-focus {
+  border-color: rgba(86,179,235,.6);
+  background: linear-gradient(180deg, var(--accent-light), var(--bg-paper));
+  box-shadow:
+    0 1px 2px rgba(15,23,42,.05),
+    0 24px 46px -22px rgba(61,80,109,.5),
+    0 0 0 1px rgba(86,179,235,.25);
+}
+.lucra-layer.is-focus .ll-tag { color: var(--brand-primary); border-color: rgba(86,179,235,.4); background: var(--accent-light); }
+
+/* =========== ENHANCED (wide + motion-OK) — sticky + 3D =========== */
+.howstack.is-ready .howstack-track { height: 340vh; }
+.howstack.is-ready .howstack-sticky {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: flex; align-items: center;
+  padding: 0;
+}
+.howstack.is-ready .howstack-grid {
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 60px;
+}
+.howstack.is-ready .howstack-text { min-height: 360px; }
+.howstack.is-ready .hs-stage {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(6px);
+  transition: opacity .5s ease, transform .6s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+  will-change: opacity, transform;
+}
+.howstack.is-ready .hs-stage.is-active {
+  opacity: 1; transform: translateY(0); filter: blur(0);
+}
+/* The deck is one gently-turned plane of clean cards — uniform tilt (no z-rotation,
+   so nothing reads as crooked), readable, building bottom-up. Tune --deck-rot. */
+.howstack.is-ready .lucra-deck {
+  --deck-rot: rotateX(10deg) rotateY(-22deg);
+  transform: var(--deck-rot);
+  gap: 20px;
+}
+.howstack.is-ready .lucra-layer {
+  /* opacity + translateY are driven per-frame by the scroll controller, so they
+     are NOT transitioned here (that would smear against the live scroll values).
+     Only the focus-state colours animate. */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: border-color .35s ease, background .35s ease, box-shadow .35s ease;
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hs-progress i::after { transition: none; }
+}
+</style>
+
+<script>
+  // "Så funkar det" — scroll-pinned isometric stack that builds bottom-up.
+  // Progressive enhancement: only pins + animates on a wide viewport with
+  // motion allowed. Otherwise the markup renders as a calm static stack.
+  (function () {
+    const section = document.querySelector<HTMLElement>('[data-howstack]');
+    if (!section) return;
+
+    const track = section.querySelector<HTMLElement>('.howstack-track');
+    if (!track) return;
+
+    const stages = Array.from(section.querySelectorAll<HTMLElement>('.hs-stage'));
+    const layers = Array.from(section.querySelectorAll<HTMLElement>('.lucra-layer'));
+    const mark = section.querySelector<HTMLElement>('.lucra-mark');
+
+    // Layers ordered by reveal threshold (low -> high) so we can pick the focus.
+    const ordered = layers.slice().sort(function (a, b) {
+      return parseFloat(a.dataset.th ?? '0') - parseFloat(b.dataset.th ?? '0');
+    });
+
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let ready = false;
+    let ticking = false;
+
+    function enable() {
+      if (ready) return;
+      ready = true;
+      section!.classList.add('is-ready');
+      onScroll();
+    }
+    function disable() {
+      if (!ready) return;
+      ready = false;
+      section!.classList.remove('is-ready');
+      // Reset to the calm static state — clear scroll-linked inline styles.
+      layers.forEach(function (l) {
+        l.classList.remove('is-on', 'is-focus');
+        l.style.opacity = '';
+        l.style.transform = '';
+      });
+      if (mark) mark.classList.remove('is-on');
+      stages.forEach(function (st, i) {
+        st.classList.toggle('is-active', i === 0);
+        st.querySelectorAll<HTMLElement>('.hs-progress i').forEach(function (seg) {
+          seg.classList.remove('seg-on');
+        });
+      });
+    }
+
+    // smoothstep — eases the 0..1 reveal so cards glide in/out, never snap.
+    function smooth(x: number): number {
+      x = x < 0 ? 0 : x > 1 ? 1 : x;
+      return x * x * (3 - 2 * x);
+    }
+
+    function apply(progress: number) {
+      // Text stage.
+      const stageIdx = progress < 0.34 ? 0 : progress < 0.7 ? 1 : 2;
+      stages.forEach(function (st, i) {
+        st.classList.toggle('is-active', i === stageIdx);
+      });
+      // Progress bars inside the active stage.
+      const active = stages[stageIdx];
+      if (active) {
+        const segs = active.querySelectorAll<HTMLElement>('.hs-progress i');
+        segs.forEach(function (seg, i) {
+          seg.classList.toggle('seg-on', i <= stageIdx);
+        });
+      }
+      // Layers reveal bottom-up, continuously tied to scroll: each card eases in
+      // over a band just after its threshold, so motion tracks the wheel smoothly.
+      const BAND = 0.18;
+      let focusEl: HTMLElement | null = null;
+      ordered.forEach(function (l) {
+        const f = smooth((progress - parseFloat(l.dataset.th ?? '0')) / BAND);
+        l.style.opacity = String(f);
+        l.style.transform = 'translateY(' + ((1 - f) * 30).toFixed(2) + 'px)';
+        if (f >= 0.5) focusEl = l;
+      });
+      layers.forEach(function (l) {
+        l.classList.remove('is-focus');
+      });
+      if (focusEl) (focusEl as HTMLElement).classList.add('is-focus');
+      if (mark) mark.classList.toggle('is-on', progress >= 0.34);
+    }
+
+    function onScroll() {
+      if (!ready) return;
+      const rect = track!.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const total = rect.height - vh;
+      let progress = total > 0 ? -rect.top / total : 0;
+      progress = Math.max(0, Math.min(1, progress));
+      apply(progress);
+    }
+
+    function check() {
+      const wide = window.innerWidth >= 920;
+      if (wide && !reduce) enable();
+      else disable();
+    }
+
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(function () {
+            onScroll();
+            ticking = false;
+          });
+        }
+      },
+      { passive: true },
+    );
+    window.addEventListener('resize', check);
+    check();
+  })();
+</script>
