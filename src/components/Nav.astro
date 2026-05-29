@@ -2,7 +2,6 @@
 import { getStrings, type Lang } from '../i18n/utils';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
-const otherLangHref = lang === 'sv' ? '/en/' : '/';
 ---
 
 <nav class="nav" id="nav">
@@ -102,10 +101,6 @@ const otherLangHref = lang === 'sv' ? '/en/' : '/';
     </div>
     </div>
     <div class="nav-right">
-      <div class="lang-switch" role="group" aria-label="Språk / Language" data-no-i18n>
-        <a class={`lang-opt${lang === 'sv' ? ' is-active' : ''}`} href={lang === 'sv' ? undefined : otherLangHref} aria-current={lang === 'sv' ? 'true' : undefined}>SV</a>
-        <a class={`lang-opt${lang === 'en' ? ' is-active' : ''}`} href={lang === 'en' ? undefined : otherLangHref} aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
-      </div>
       <a class="btn btn-ghost" href="/login">{s.navLogin}</a>
       <a class="btn btn-primary" href="/signup">
         {s.navGetStarted}
@@ -233,33 +228,6 @@ const otherLangHref = lang === 'sv' ? '/en/' : '/';
 }
 .nav-link:hover { color: var(--brand-primary); }
 .nav-right { display: flex; align-items: center; gap: 12px; grid-column: 3; justify-self: end; }
-
-/* ---------- Language switcher (SV / EN) ---------- */
-.lang-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--bg-paper);
-}
-.lang-opt {
-  font-family: 'General Sans', var(--font-body);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--slate-500);
-  padding: 5px 11px;
-  border: 0;
-  background: transparent;
-  border-radius: 999px;
-  cursor: pointer;
-  line-height: 1;
-  transition: color .2s ease, background .2s ease;
-}
-.lang-opt:hover { color: var(--brand-primary); }
-.lang-opt.is-active { background: var(--brand-primary); color: #fff; }
 
 /* ---------- Mega-menu dropdowns ---------- */
 .nav-item { position: relative; display: flex; align-items: center; }
