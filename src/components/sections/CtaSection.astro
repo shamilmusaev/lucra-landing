@@ -1,0 +1,308 @@
+---
+// CtaSection — the final call-to-action (ported from index.html 3961–3983).
+// Two effects layer here:
+//   • a 2D-canvas particle field (`.cta-particles`) behind the content, and
+//   • a small WebGL orb (`#cta-orb`) reusing the shared `mountOrb` module.
+// Both are lazy (IntersectionObserver + reduced-motion guarded) — the section
+// sits far down the page, so they defer until the user scrolls near.
+import { getStrings, type Lang } from '../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-panel reveal">
+      <canvas class="cta-particles" aria-hidden="true"></canvas>
+      <div class="cta-inner">
+        <span class="cta-orb" id="cta-orb" aria-hidden="true"></span>
+        <h2>{s.ctaTitle}</h2>
+        <p>{s.ctaBody}</p>
+        <div class="cta-btns">
+          <a class="btn btn-primary btn-lg" href="[CALENDLY_URL]">
+            {s.ctaBookDemo}
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a class="btn btn-outlined btn-lg" href="/signup">{s.ctaTryLucra}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding: 96px 0 110px;
+  }
+  .cta-panel {
+    background: var(--brand-primary-dark);
+    color: white;
+    border-radius: var(--radius-shell);
+    padding: 72px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-panel::before {
+    content: "";
+    position: absolute;
+    top: -100px; right: -120px;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    background: rgba(86,179,235,0.18);
+    filter: blur(80px);
+  }
+  .cta-panel::after {
+    content: "";
+    position: absolute;
+    bottom: -120px; left: -80px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: rgba(61,80,109,0.6);
+    filter: blur(100px);
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  /* Antigravity-style particle field — sits above the brand bg + blobs,
+     below .cta-inner. Sized to the panel box by JS. */
+  .cta-particles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 0;
+    pointer-events: none;
+  }
+  /* WebGL orb — CTA centrepiece (same shader as the hero orb). */
+  .cta-orb {
+    display: block;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 26px;
+    position: relative;
+    pointer-events: auto;   /* clickable: tap to ripple */
+    cursor: pointer;
+  }
+  .cta-orb canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  @media (max-width: 720px) {
+    .cta-orb { width: 96px; height: 96px; }
+  }
+  .cta-panel h2 {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 auto 18px;
+    max-width: 720px;
+    color: white;
+    text-wrap: balance;
+  }
+  .cta-panel p {
+    font-size: 17px;
+    color: rgba(255,255,255,.7);
+    margin: 0 auto 36px;
+    max-width: 540px;
+  }
+  .cta-btns {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cta-btns .btn-primary {
+    background: white;
+    color: var(--brand-primary-dark);
+  }
+  .cta-btns .btn-primary:hover {
+    background: var(--accent-light);
+  }
+  .cta-btns .btn-outlined {
+    background: transparent;
+    color: white;
+    border-color: rgba(255,255,255,.4);
+  }
+  .cta-btns .btn-outlined:hover {
+    border-color: white;
+    background: rgba(255,255,255,.08);
+  }
+</style>
+
+<script>
+  // ── CTA particle field (ported from index.html 4797–4914) ──────────────────
+  // An Antigravity-style rotating dot-cloud drawn on a 2D canvas. Wrapped in the
+  // lazy IntersectionObserver + reduced-motion guard (mirrors OrbIsland /
+  // HeroParticles): the section is far down the page, so it only inits once the
+  // user scrolls near.
+  function mountCtaParticles(): void {
+    const canvas = document.querySelector<HTMLCanvasElement>('.cta-particles');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Muted Antigravity-ish palette: mostly dim white, sparse colour accents.
+    const PALETTE: number[][] = [
+      [255, 255, 255], [255, 255, 255], [255, 255, 255], [255, 255, 255],
+      [120, 200, 130],   // green
+      [240, 170, 70],    // amber
+      [225, 90, 70],     // red
+      [90, 160, 235],    // blue
+    ];
+
+    // Seeded PRNG so the cloud is stable across resizes (no Math.random flicker).
+    let seed = 0x9e3779b9;
+    function rnd(): number {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return seed / 4294967296;
+    }
+
+    interface Pt {
+      x: number; y: number; z: number;
+      col: number[];
+      base: number; tw: number; tws: number;
+    }
+
+    // Build a dome/sphere of points — denser toward the centre, fading outward.
+    const COUNT = 180;
+    const pts: Pt[] = [];
+    for (let i = 0; i < COUNT; i++) {
+      // Spherical-ish distribution, biased so more points cluster mid-radius.
+      const u = rnd() * 2 - 1;                 // cos(phi) in [-1,1]
+      const theta = rnd() * Math.PI * 2;
+      const r = Math.pow(rnd(), 0.6);          // radius bias toward the rim
+      const sph = Math.sqrt(1 - u * u);
+      const col = PALETTE[(rnd() * PALETTE.length) | 0];
+      pts.push({
+        x: sph * Math.cos(theta) * r,
+        y: u * r * 0.72,                       // squash vertically → perspective bowl
+        z: sph * Math.sin(theta) * r,
+        col: col,
+        base: 0.35 + rnd() * 0.65,             // base brightness
+        tw: rnd() * Math.PI * 2,               // twinkle phase
+        tws: 0.6 + rnd() * 1.2,                // twinkle speed
+      });
+    }
+
+    let W = 0, H = 0, dpr = 1;
+    function resize(): void {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = rect.width; H = rect.height;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+    }
+
+    function render(timeMs: number): void {
+      if (!ctx) return;
+      if (!W || !H) { resize(); if (!W || !H) return; }
+      const t = timeMs * 0.001;
+      const rot = reduceMotion ? 0.6 : t * 0.08;   // slow rotation around Y
+      const cos = Math.cos(rot), sin = Math.sin(rot);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+
+      const cx = W * 0.5, cy = H * 0.5;
+      const spread = Math.min(W, H) * 0.62;   // cloud radius on screen
+      const FOV = 2.4;
+
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        // rotate around Y
+        const x = p.x * cos - p.z * sin;
+        const z = p.x * sin + p.z * cos;
+        const y = p.y;
+        // perspective projection
+        const persp = FOV / (FOV - z);
+        const sx = cx + x * spread * persp;
+        const sy = cy + y * spread * persp;
+
+        const depth = (z + 1) * 0.5;                       // 0 (far) .. 1 (near)
+        const twinkle = reduceMotion ? 1 : (0.7 + 0.3 * Math.sin(t * p.tws + p.tw));
+        const alpha = p.base * (0.25 + depth * 0.75) * twinkle;
+        const radius = (0.6 + depth * 1.7) * persp;
+
+        const c = p.col;
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + alpha.toFixed(3) + ')';
+        ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    let rafId = 0, running = false;
+    function loop(ts: number): void { render(ts); rafId = requestAnimationFrame(loop); }
+    function start(): void { if (running) return; running = true; rafId = requestAnimationFrame(loop); }
+    function stop(): void { running = false; if (rafId) cancelAnimationFrame(rafId); rafId = 0; }
+
+    window.addEventListener('resize', resize, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas);
+    resize();
+
+    if (reduceMotion) {
+      // Single static frame — no animation loop.
+      requestAnimationFrame(render);
+    } else if ('IntersectionObserver' in window) {
+      // Only animate while the panel is on-screen.
+      new IntersectionObserver(function (entries) {
+        if (entries[0] && entries[0].isIntersecting) start(); else stop();
+      }, { threshold: 0.05 }).observe(canvas);
+    } else {
+      start();
+    }
+  }
+
+  // Lazy particle init: gate on the canvas existing, reduced-motion NOT set,
+  // and the element being near/inside the viewport, then init on idle.
+  const particleEl = document.querySelector<HTMLElement>('.cta-particles');
+  if (particleEl && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ric: (cb: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (cb) => (window as any).requestIdleCallback(cb)
+        : (cb) => { setTimeout(cb, 1); };
+    const start = (): void => ric(() => mountCtaParticles());
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        obs.disconnect();
+        start();
+      }
+    }, { rootMargin: '200px' });
+    io.observe(particleEl);
+  }
+</script>
+
+<script>
+  // ── CTA WebGL orb (shared module; mounted with no global coupling) ──────────
+  import { mountOrb } from '../../scripts/orb';
+
+  // Lazy orb init — same pattern as the hero orb (OrbIsland), but with
+  // { intro: false, registerGlobalPulse: false }: the CTA orb does NOT arm a
+  // load-intro and does NOT register the global lucraOrbIntro/Pulse hooks. It
+  // ripples on direct click only. IntersectionObserver (200px rootMargin)
+  // defers mounting until the user scrolls near this far-down section.
+  const orbEl = document.getElementById('cta-orb');
+  if (orbEl && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ric: (cb: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (cb) => (window as any).requestIdleCallback(cb)
+        : (cb) => { setTimeout(cb, 1); };
+    const start = (): void => ric(() => mountOrb('cta-orb', { intro: false, registerGlobalPulse: false }));
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        obs.disconnect();
+        start();
+      }
+    }, { rootMargin: '200px' });
+    io.observe(orbEl);
+  }
+</script>
