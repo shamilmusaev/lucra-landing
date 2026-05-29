@@ -180,6 +180,20 @@ export const en: { [K in keyof typeof sv]: string } = {
   problemCard3Body: "Customers expect faster answers than ever. Decisions hinge on a response time that isn't enough.",
   problemCard3Cta: 'Answers in real time',
 
+  // ---- Integrationer (Task 13) ----
+  integrationerEyebrow: 'Integrations',
+  integrationerTitle: 'Plug in. Everything syncs.',
+  integrationerSub: 'Lucra connects to the systems where your data already lives. Fortnox is our first deep integration — and via Skatteverket we keep track of taxes and filing.',
+  integrationerFeatureTitle: 'Deep integration with Fortnox',
+  integrationerFeatureBody: 'Vouchers, chart of accounts, customers and suppliers are fetched automatically. Syncing runs in the background so the dashboard always mirrors the bookkeeping.',
+  integrationerSyncLine: 'Last synced: 3 minutes ago',
+  integrationerTile1: 'Vouchers & source data',
+  integrationerTile2: 'Chart of accounts',
+  integrationerTile3: 'VAT & filing',
+  integrationerTile4: 'Customers & suppliers',
+  integrationerTile5: 'P&L & balance',
+  integrationerTile6: 'Skatteverket',
+
   // ---- Så funkar det / howstack (Task 12) ----
   howstackEyebrow: 'How it works',
   // Stage 0 — The foundation

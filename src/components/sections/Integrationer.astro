@@ -1,0 +1,193 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<section id="integrationer">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">{s.integrationerEyebrow}</span>
+      <h2 class="section-title">{s.integrationerTitle}</h2>
+      <p class="section-sub">
+        {s.integrationerSub}
+      </p>
+    </div>
+
+    <div class="integrations-wrap reveal">
+      <div class="intg-feature">
+        <div class="fortnox-big">
+          <span class="fortnox-mark">F</span>
+          <span class="name">Fortnox</span>
+        </div>
+        <h3>{s.integrationerFeatureTitle}</h3>
+        <p>{s.integrationerFeatureBody}</p>
+        <div class="sync-line">
+          <span class="pulse"></span>
+          {s.integrationerSyncLine}
+        </div>
+      </div>
+
+      <div class="intg-grid">
+        <div class="intg-tile reveal"><div class="ic">V</div><div class="nm">{s.integrationerTile1}</div></div>
+        <div class="intg-tile reveal"><div class="ic">K</div><div class="nm">{s.integrationerTile2}</div></div>
+        <div class="intg-tile reveal"><div class="ic">M</div><div class="nm">{s.integrationerTile3}</div></div>
+        <div class="intg-tile reveal"><div class="ic">KL</div><div class="nm">{s.integrationerTile4}</div></div>
+        <div class="intg-tile reveal"><div class="ic">R</div><div class="nm">{s.integrationerTile5}</div></div>
+        <div class="intg-tile reveal"><div class="ic">S</div><div class="nm">{s.integrationerTile6}</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+#integrationer {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+.integrations-wrap {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-shell);
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+}
+.intg-feature {
+  background: var(--bg-app);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  border: 1px solid var(--border);
+}
+.intg-feature .fortnox-big {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.intg-feature .fortnox-big .fortnox-mark {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  font-size: 18px;
+}
+.intg-feature .fortnox-big .name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+.intg-feature h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--brand-primary);
+  margin: 0 0 8px;
+}
+.intg-feature p {
+  font-size: 14px;
+  color: var(--slate-500);
+  margin: 0;
+  line-height: 1.6;
+}
+.intg-feature .sync-line {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px;
+  color: var(--slate-500);
+}
+.intg-feature .sync-line .pulse {
+  width: 8px; height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(34,197,94,.5);
+  animation: intgPulse 2s infinite;
+}
+
+@keyframes intgPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(34,197,94,.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+
+.intg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.intg-tile {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 18px 16px;
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  transition: border-color .2s, background .2s;
+}
+.intg-tile:hover {
+  border-color: var(--slate-300);
+  background: var(--bg-subtle);
+}
+.intg-tile .ic {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(150deg, #ffffff, var(--accent-light));
+  border: 1px solid rgba(61,80,109,.10);
+  box-shadow: 0 1px 2px rgba(15,23,42,.05), inset 0 1px 0 rgba(255,255,255,.7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--brand-primary);
+}
+.intg-tile .nm {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--slate-500);
+  font-family: var(--font-display);
+}
+
+/* ---- Reveal signature: tiles pop in (scale + slight overshoot) ---- */
+:global(html.reveal-ready) #integrationer .intg-tile.reveal {
+  opacity: 0;
+  transform: none;
+  filter: none;
+  transition: border-color .2s, background .2s;
+}
+:global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view {
+  animation: tilePop .55s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes tilePop {
+  0%   { opacity: 0; transform: scale(.85); filter: blur(4px); }
+  100% { opacity: 1; transform: scale(1);   filter: blur(0); }
+}
+:global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view:nth-child(1) { animation-delay: 0s; }
+:global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view:nth-child(2) { animation-delay: .06s; }
+:global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view:nth-child(3) { animation-delay: .12s; }
+:global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view:nth-child(4) { animation-delay: .18s; }
+:global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view:nth-child(5) { animation-delay: .24s; }
+:global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view:nth-child(6) { animation-delay: .30s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .intg-feature .sync-line .pulse { animation: none; }
+  :global(html.reveal-ready) #integrationer .intg-tile.reveal,
+  :global(html.reveal-ready) #integrationer .intg-tile.reveal.in-view { opacity: 1; animation: none; }
+}
+@media (max-width: 1100px) {
+  .integrations-wrap { padding: 36px; gap: 36px; }
+}
+@media (max-width: 960px) {
+  .integrations-wrap { grid-template-columns: 1fr; padding: 32px; gap: 32px; }
+}
+</style>
