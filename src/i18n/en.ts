@@ -1,6 +1,10 @@
 import type { sv } from './sv';
 // en must define exactly the same keys as sv (a missing/extra key is a compile error).
 export const en: { [K in keyof typeof sv]: string } = {
+  // ---- Meta (Task 18) ----
+  metaTitle: 'Lucra · AI for Swedish business finances',
+  metaDescription: 'Lucra is an AI finance assistant that helps Swedish business owners understand their finances and accounting firms reduce repetitive client questions — always synced with Fortnox.',
+
   // ---- Nav (Task 5) ----
   navProduct: 'Product',
   navProductFeaturesLabel: 'Features',
