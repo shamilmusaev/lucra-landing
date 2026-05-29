@@ -115,6 +115,33 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoCoVat: 'VAT',
   heroDemoCoLiquidity: 'Liquidity',
 
+  // ---- Funktioner (Task 10) ----
+  funktionerEyebrow: 'Features',
+  funktionerTitle: 'Everything you need to understand the numbers.',
+  funktionerSub: 'Four parts that connect. The chat asks the dashboard, the dashboard pulls from the documents, the documents follow the company. One coherent workspace.',
+  // Card 1 — AI chat
+  funktionerCard1Title: 'Ask your finances',
+  funktionerCard1Body: 'Ask questions in plain language and get answers straight from your data. Lucra points to the exact entries so you can follow up.',
+  funktionerChatQ: 'Which costs grew the most in Q2?',
+  funktionerChatA: 'Premises and travel stood out: premises cost up <strong>18 %</strong> after the renegotiation in April.',
+  // Card 2 — Dashboard
+  funktionerCard2Title: 'Dashboard with insights',
+  funktionerCard2Body: 'Revenue, costs and key metrics in real time, automatically. No manual exports, no stale numbers.',
+  funktionerMetricRevLabel: 'Revenue',
+  funktionerMetricCostLabel: 'Costs',
+  funktionerMetricResultLabel: 'Result',
+  funktionerMetricLiqLabel: 'Liquidity',
+  // Card 3 — Documents
+  funktionerCard3Title: 'Gather your documents',
+  funktionerCard3Body: 'Upload and organize source documents in one place. Lucra reads them and links them to the right company and period.',
+  funktionerFile1Name: 'Annual report 2025.pdf',
+  funktionerFile2Name: 'Income statement Q1.xlsx',
+  funktionerFile3Name: 'Board materials.docx',
+  // Card 4 — Multi-company
+  funktionerCard4Title: 'Multiple companies, one view',
+  funktionerCard4Body: 'Manage all clients and companies without switching systems. Switch in the sidebar, keep context.',
+  funktionerCoBadgeActive: 'Active',
+
   // ---- Problem (Task 9) ----
   problemEyebrow: 'The problem',
   problemTitle: "Business owners shouldn't have to feel uncertain about their finances.",
