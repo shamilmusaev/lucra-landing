@@ -1,5 +1,6 @@
 ---
 import { getStrings, type Lang } from '../i18n/utils';
+import OrbIsland from './OrbIsland.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -21,6 +22,7 @@ const s = getStrings(lang);
   <div class="hero-beams" aria-hidden="true"><span></span></div>
   <div class="container hero-inner">
     <span class="hero-orb reveal" id="hero-orb" aria-hidden="true"></span>
+    <OrbIsland />
     <a class="hero-pill reveal" href="#funktioner">
       <span class="pill-badge">{s.heroPillBadge}</span>
       <span class="pill-text">
