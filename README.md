@@ -1,43 +1,61 @@
-# Astro Starter Kit: Minimal
+# Lucra — Landing Page
 
-```sh
-npm create astro@latest -- --template minimal
+Marketing landing page for [lucra.se](https://lucra.se) — an AI-powered personal finance platform for the Swedish market.
+
+Built with Astro 6 as a fully static site. Swedish (`/`) and English (`/en/`) routes are generated from shared component templates and separate i18n string files.
+
+## Stack
+
+- **Framework:** Astro 6 (`output: static`)
+- **Styling:** Scoped CSS per component + shared design tokens (`src/styles/colors_and_type.css`)
+- **Fonts:** General Sans (woff2), Plus Jakarta Sans variable (ttf) — self-hosted
+- **WebGL orb:** `ogl` (bundled and tree-shaken by Astro)
+- **Smooth scroll:** Lenis (`@studio-freight/lenis`)
+- **Sitemap:** `@astrojs/sitemap` (auto-generated on build)
+
+## Structure
+
+```
+src/
+├── components/
+│   ├── sections/       # One file per page section (Problem, Hero, Nav, …)
+│   ├── HeroParticles.astro
+│   ├── OrbIsland.astro
+│   ├── SmoothScroll.astro
+│   └── RevealScript.astro
+├── i18n/
+│   ├── sv.ts           # Swedish strings (default)
+│   ├── en.ts           # English strings
+│   └── utils.ts
+├── layouts/
+│   └── BaseLayout.astro  # SEO head, hreflang, canonical
+├── pages/
+│   ├── index.astro       # / (Swedish)
+│   └── en/index.astro    # /en/ (English)
+├── scripts/
+│   └── orb.ts            # WebGL orb (OGL)
+└── styles/
+    ├── colors_and_type.css  # Design tokens — source of truth
+    └── global.css
+public/
+├── assets/              # SVG icons, premium PNGs
+└── fonts/               # Self-hosted woff2/ttf
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm install          # Install dependencies (Node >=22.12 required)
+npm run dev          # Dev server at http://localhost:4321
+npm run build        # Build to ./dist/
+npm run preview      # Preview built site locally
+npx astro check      # TypeScript + Astro type check
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## i18n
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+To add or update copy, edit `src/i18n/sv.ts` (Swedish) or `src/i18n/en.ts` (English). Both files export a typed object — TypeScript will flag any missing keys.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Design tokens
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+All colors, typography, and font declarations live in `src/styles/colors_and_type.css`. The same file is the source of truth for the main `lucra-frontend` app (`src/theme/theme.ts`). Do not hardcode hex values — use `var(--token-name)`.
