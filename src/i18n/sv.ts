@@ -230,4 +230,9 @@ export const sv = {
   howstackLayer1Tag: 'Fortnox',
   howstackLayer1Title: 'Bolagets ekonomi',
   howstackLayer1Body: 'Transaktioner, moms, resultat och lön — synkat i realtid.',
+  // Final CTA
+  ctaTitle: 'Vill du se hur Lucra fungerar?',
+  ctaBody: 'Boka en kort demo och se hur Lucra hjälper företagare att förstå sin ekonomi och redovisningsbyråer att frigöra tid för kvalificerad rådgivning.',
+  ctaBookDemo: 'Boka demo',
+  ctaTryLucra: 'Testa Lucra',
 } as const;

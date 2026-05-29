@@ -232,4 +232,9 @@ export const en: { [K in keyof typeof sv]: string } = {
   howstackLayer1Tag: 'Fortnox',
   howstackLayer1Title: "The company's finances",
   howstackLayer1Body: 'Transactions, VAT, results and payroll — synced in real time.',
+  // Final CTA
+  ctaTitle: 'Want to see how Lucra works?',
+  ctaBody: 'Book a short demo and see how Lucra helps business owners understand their finances and accounting firms free up time for qualified advisory.',
+  ctaBookDemo: 'Book a demo',
+  ctaTryLucra: 'Try Lucra',
 } as const;
