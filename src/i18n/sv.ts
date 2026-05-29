@@ -140,6 +140,27 @@ export const sv = {
   funktionerCard4Body: 'Hantera alla kunder och bolag utan att byta system. Växla i sidopanelen, behåll kontext.',
   funktionerCoBadgeActive: 'Aktiv',
 
+  // ---- ForVem (Task 11) ----
+  forVemEyebrow: 'För vem',
+  forVemTitle: 'Två sidor av samma ekonomi.',
+  forVemSub: 'Lucra anpassar sig efter rollen. En gemensam kärna, två vyer.',
+  forVemKicker: 'För',
+  forVemListLabel: 'Vardagen idag',
+  // Card 1 — Företagare
+  forVemCard1Title: 'Företagare',
+  forVemCard1Sub: 'Du vill förstå hur bolaget går, kunna fråga när något är oklart och veta när något behöver hanteras direkt.',
+  forVemCard1Li1: 'Osäkerhet om vad siffrorna betyder',
+  forVemCard1Li2: 'Tveksamhet att kontakta byrån för små frågor',
+  forVemCard1Li3: 'Väntan på svar när beslut behöver tas',
+  forVemCard1Li4: 'Oro för att missa viktiga deadlines',
+  // Card 2 — Redovisningsbyråer
+  forVemCard2Title: 'Redovisningsbyråer',
+  forVemCard2Sub: 'Byrån ska inte behöva lägga konsulttid på samma enkla frågor varje månad när den tiden kan användas till kvalificerad rådgivning.',
+  forVemCard2Li1: 'Samma frågor återkommer varje månad',
+  forVemCard2Li2: 'Små frågor är svåra att fakturera',
+  forVemCard2Li3: 'Konsulter får mindre tid till rådgivning',
+  forVemCard2Li4: 'Kunder förväntar sig snabbare svar än tidigare',
+
   // ---- Problem (Task 9) ----
   problemEyebrow: 'Problemet',
   problemTitle: 'Företagare ska inte behöva känna sig osäkra på sin ekonomi.',

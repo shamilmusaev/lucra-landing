@@ -142,6 +142,27 @@ export const en: { [K in keyof typeof sv]: string } = {
   funktionerCard4Body: 'Manage all clients and companies without switching systems. Switch in the sidebar, keep context.',
   funktionerCoBadgeActive: 'Active',
 
+  // ---- ForVem (Task 11) ----
+  forVemEyebrow: "Who it's for",
+  forVemTitle: 'Two sides of the same finances.',
+  forVemSub: 'Lucra adapts to the role. One shared core, two views.',
+  forVemKicker: 'For',
+  forVemListLabel: 'Everyday today',
+  // Card 1 — Business owners
+  forVemCard1Title: 'Business owners',
+  forVemCard1Sub: 'You want to understand how the company is doing, ask when something is unclear, and know when something needs handling right away.',
+  forVemCard1Li1: 'Uncertainty about what the numbers mean',
+  forVemCard1Li2: 'Hesitation to contact the firm for small questions',
+  forVemCard1Li3: 'Waiting for answers when decisions must be made',
+  forVemCard1Li4: 'Worry about missing important deadlines',
+  // Card 2 — Accounting firms
+  forVemCard2Title: 'Accounting firms',
+  forVemCard2Sub: "The firm shouldn't have to spend consulting time on the same simple questions every month when that time could go to qualified advisory.",
+  forVemCard2Li1: 'The same questions recur every month',
+  forVemCard2Li2: 'Small questions are hard to bill',
+  forVemCard2Li3: 'Consultants get less time for advisory',
+  forVemCard2Li4: 'Clients expect faster answers than before',
+
   // ---- Problem (Task 9) ----
   problemEyebrow: 'The problem',
   problemTitle: "Business owners shouldn't have to feel uncertain about their finances.",
