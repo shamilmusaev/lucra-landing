@@ -1,0 +1,41 @@
+---
+import '../styles/colors_and_type.css';
+import '../styles/global.css';
+
+export interface Props {
+  lang: 'sv' | 'en';
+  title: string;
+  description: string;
+  /** Path of the current page without language prefix, e.g. "/" */
+  path?: string;
+}
+
+const { lang, title, description, path = '/' } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const svUrl = `${site}${path}`;
+const enUrl = `${site}/en${path === '/' ? '' : path}`;
+const canonical = lang === 'sv' ? svUrl : enUrl;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="sv" href={svUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={svUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" href="/fonts/GeneralSans-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/GeneralSans-500.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
