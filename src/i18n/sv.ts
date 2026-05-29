@@ -192,6 +192,19 @@ export const sv = {
   integrationerTile5: 'Resultat & balans',
   integrationerTile6: 'Skatteverket',
 
+  // ---- Säkerhet (Task 14) ----
+  sakerhetEyebrow: 'Säkerhet och förtroende',
+  sakerhetTitle: 'Dina data är trygga.',
+  sakerhetSub: 'Bygger man fintech bygger man också säkerhet från första raden kod. Lucra följer svenska och europeiska regelverk och håller dina underlag inom EU.',
+  sakerhetCard1Title: 'GDPR-efterlevnad',
+  sakerhetCard1Body: 'Personuppgifter behandlas enligt GDPR. Tydliga roller, samtycke och utlämnande av data på begäran.',
+  sakerhetCard2Title: 'Kryptering i vila och i transit',
+  sakerhetCard2Body: 'All data krypteras med moderna standarder, både när den lagras och när den flyttas mellan systemen.',
+  sakerhetCard3Title: 'Datalagring inom EU',
+  sakerhetCard3Body: 'All kunddata lagras hos europeiska leverantörer. Inga överföringar till tredje land utan rättslig grund.',
+  sakerhetCard4Title: 'Granulär behörighet',
+  sakerhetCard4Body: 'Tilldela åtkomst per bolag och roll. Byråer och kunder ser bara det de ska se.',
+
   // ---- Så funkar det / howstack (Task 12) ----
   howstackEyebrow: 'Så funkar det',
   // Stage 0 — Grunden

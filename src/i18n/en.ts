@@ -194,6 +194,19 @@ export const en: { [K in keyof typeof sv]: string } = {
   integrationerTile5: 'P&L & balance',
   integrationerTile6: 'Skatteverket',
 
+  // ---- Säkerhet (Task 14) ----
+  sakerhetEyebrow: 'Security and trust',
+  sakerhetTitle: 'Your data is safe.',
+  sakerhetSub: 'If you build fintech, you build security from the first line of code. Lucra follows Swedish and European regulations and keeps your records within the EU.',
+  sakerhetCard1Title: 'GDPR compliance',
+  sakerhetCard1Body: 'Personal data is processed under GDPR. Clear roles, consent and data disclosure on request.',
+  sakerhetCard2Title: 'Encryption at rest and in transit',
+  sakerhetCard2Body: 'All data is encrypted with modern standards, both when stored and when moved between systems.',
+  sakerhetCard3Title: 'Data storage within the EU',
+  sakerhetCard3Body: 'All customer data is stored with European providers. No transfers to third countries without a legal basis.',
+  sakerhetCard4Title: 'Granular permissions',
+  sakerhetCard4Body: 'Assign access per company and role. Firms and clients see only what they should.',
+
   // ---- Så funkar det / howstack (Task 12) ----
   howstackEyebrow: 'How it works',
   // Stage 0 — The foundation
