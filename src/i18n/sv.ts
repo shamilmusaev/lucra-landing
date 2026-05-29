@@ -235,4 +235,31 @@ export const sv = {
   ctaBody: 'Boka en kort demo och se hur Lucra hjälper företagare att förstå sin ekonomi och redovisningsbyråer att frigöra tid för kvalificerad rådgivning.',
   ctaBookDemo: 'Boka demo',
   ctaTryLucra: 'Testa Lucra',
+
+  // ---- Footer (Task 16) ----
+  footerTagline: 'Din AI-ekonom, kopplad till bokföringen via Fortnox. Byggd för svenska företagare och redovisningsbyråer.',
+  footerCopy: '© 2026 Lucra AI. Alla rättigheter förbehållna.',
+  // Column headings
+  footerColProduct: 'Produkt',
+  footerColCompany: 'Företag',
+  footerColLegal: 'Juridik',
+  footerColAccount: 'Konto',
+  // Product column links
+  footerLinkFeatures: 'Funktioner',
+  footerLinkHowItWorks: 'Så funkar det',
+  footerLinkIntegrations: 'Integrationer',
+  footerLinkSecurity: 'Säkerhet',
+  // Company column links
+  footerLinkAbout: 'Om oss',
+  footerLinkContact: 'Kontakt',
+  footerLinkCareers: 'Karriär',
+  footerLinkBookDemo: 'Boka demo',
+  // Legal column links
+  footerLinkPrivacy: 'Integritetspolicy',
+  footerLinkTerms: 'Användarvillkor',
+  footerLinkDpa: 'Personuppgiftsbiträdesavtal',
+  footerLinkSecurityPage: 'Säkerhet',
+  // Account column links
+  footerLinkLogin: 'Logga in',
+  footerLinkSignup: 'Skapa konto',
 } as const;
