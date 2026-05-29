@@ -178,6 +178,20 @@ export const sv = {
   problemCard3Body: 'Kunder förväntar sig snabbare svar än någonsin. Beslut hänger på en svarstid som inte räcker till.',
   problemCard3Cta: 'Svar i realtid',
 
+  // ---- Integrationer (Task 13) ----
+  integrationerEyebrow: 'Integrationer',
+  integrationerTitle: 'Plugga in. Allt synkar.',
+  integrationerSub: 'Lucra ansluter till systemen där dina data redan finns. Fortnox är vår första djupa integration — och via Skatteverket håller vi koll på skatt och deklaration.',
+  integrationerFeatureTitle: 'Djup integration mot Fortnox',
+  integrationerFeatureBody: 'Verifikat, kontoplan, kunder och leverantörer hämtas automatiskt. Synkroniseringen körs i bakgrunden så dashboarden alltid speglar bokföringen.',
+  integrationerSyncLine: 'Senast synkad: 3 minuter sedan',
+  integrationerTile1: 'Verifikat & underlag',
+  integrationerTile2: 'Kontoplan',
+  integrationerTile3: 'Moms & deklaration',
+  integrationerTile4: 'Kunder & leverantörer',
+  integrationerTile5: 'Resultat & balans',
+  integrationerTile6: 'Skatteverket',
+
   // ---- Så funkar det / howstack (Task 12) ----
   howstackEyebrow: 'Så funkar det',
   // Stage 0 — Grunden
