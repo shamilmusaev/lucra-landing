@@ -1,5 +1,6 @@
 ---
 import { getStrings, type Lang } from '../../i18n/utils';
+import Icon from '../Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -17,7 +18,7 @@ const s = getStrings(lang);
       <div class="sec-list">
         <div class="sec-item reveal">
           <div class="sec-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            <Icon name="shield-check" />
           </div>
           <div>
             <h4>{s.sakerhetCard1Title}</h4>
@@ -26,7 +27,7 @@ const s = getStrings(lang);
         </div>
         <div class="sec-item reveal delay-1">
           <div class="sec-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+            <Icon name="lock" />
           </div>
           <div>
             <h4>{s.sakerhetCard2Title}</h4>
@@ -35,7 +36,7 @@ const s = getStrings(lang);
         </div>
         <div class="sec-item reveal delay-2">
           <div class="sec-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            <Icon name="globe" />
           </div>
           <div>
             <h4>{s.sakerhetCard3Title}</h4>
@@ -44,7 +45,7 @@ const s = getStrings(lang);
         </div>
         <div class="sec-item reveal delay-3">
           <div class="sec-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/><circle cx="12" cy="12" r="3"/></svg>
+            <Icon name="key-round" />
           </div>
           <div>
             <h4>{s.sakerhetCard4Title}</h4>

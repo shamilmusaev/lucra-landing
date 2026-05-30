@@ -3,9 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import Problem from '../components/sections/Problem.astro';
-import Funktioner from '../components/sections/Funktioner.astro';
+import Jamforelse from '../components/sections/Jamforelse.astro';
+import FeatureShowcase from '../components/sections/FeatureShowcase.astro';
 import ForVem from '../components/sections/ForVem.astro';
 import Sakerhet from '../components/sections/Sakerhet.astro';
+import Upplagg from '../components/sections/Upplagg.astro';
+import FaqSection from '../components/sections/FaqSection.astro';
 import CtaSection from '../components/sections/CtaSection.astro';
 import Footer from '../components/Footer.astro';
 import RevealScript from '../components/RevealScript.astro';
@@ -17,9 +20,12 @@ const s = getStrings(lang);
   <Nav lang={lang} />
   <Hero lang={lang} />
   <Problem lang={lang} />
-  <Funktioner lang={lang} />
+  <FeatureShowcase lang={lang} />
+  <Jamforelse lang={lang} />
   <ForVem lang={lang} />
   <Sakerhet lang={lang} />
+  <Upplagg lang={lang} />
+  <FaqSection lang={lang} />
   <CtaSection lang={lang} />
   <Footer lang={lang} />
   <RevealScript />

@@ -1,5 +1,6 @@
 ---
 import { getStrings, type Lang } from '../../i18n/utils';
+import Icon from '../Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -26,7 +27,7 @@ const s = getStrings(lang);
           <p>{s.problemCard1Body}</p>
           <a class="problem-pill" href="#funktioner">
             {s.problemCard1Cta}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <Icon name="arrow-right" />
           </a>
         </div>
       </article>
@@ -42,7 +43,7 @@ const s = getStrings(lang);
           <p>{s.problemCard2Body}</p>
           <a class="problem-pill" href="#funktioner">
             {s.problemCard2Cta}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <Icon name="arrow-right" />
           </a>
         </div>
       </article>
@@ -58,7 +59,7 @@ const s = getStrings(lang);
           <p>{s.problemCard3Body}</p>
           <a class="problem-pill" href="#funktioner">
             {s.problemCard3Cta}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <Icon name="arrow-right" />
           </a>
         </div>
       </article>
@@ -147,7 +148,7 @@ const s = getStrings(lang);
   gap: 8px;
 }
 .problem-card h3 {
-  font-family: 'General Sans', var(--font-display);
+  font-family: var(--font-display);
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.02em;

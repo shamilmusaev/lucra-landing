@@ -1,5 +1,6 @@
 ---
 import { getStrings, type Lang } from '../../i18n/utils';
+import Icon from '../Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -18,10 +19,7 @@ const s = getStrings(lang);
       <article class="segment-card reveal">
         <div class="seg-head">
           <span class="seg-glyph">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="8" r="3.4"/>
-              <path d="M5.5 19.5a6.5 6.5 0 0 1 13 0"/>
-            </svg>
+            <Icon name="user" />
           </span>
           <span>
             <span class="seg-kicker">{s.forVemKicker}</span>
@@ -40,12 +38,7 @@ const s = getStrings(lang);
       <article class="segment-card reveal delay-1">
         <div class="seg-head">
           <span class="seg-glyph">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 21h16"/>
-              <path d="M5.5 21V8.2L12 4l6.5 4.2V21"/>
-              <path d="M9.7 21v-4.6h4.6V21"/>
-              <path d="M9 11h.01M15 11h.01"/>
-            </svg>
+            <Icon name="building-2" />
           </span>
           <span>
             <span class="seg-kicker">{s.forVemKicker}</span>
@@ -161,7 +154,7 @@ const s = getStrings(lang);
 }
 
 .segment-card h3 {
-  font-family: 'Plus Jakarta Sans', var(--font-display);
+  font-family: var(--font-display);
   font-size: 23px;
   font-weight: 700;
   letter-spacing: -0.02em;

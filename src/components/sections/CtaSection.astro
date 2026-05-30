@@ -6,6 +6,7 @@
 // Both are lazy (IntersectionObserver + reduced-motion guarded) — the section
 // sits far down the page, so they defer until the user scrolls near.
 import { getStrings, type Lang } from '../../i18n/utils';
+import Icon from '../Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -21,7 +22,7 @@ const s = getStrings(lang);
         <div class="cta-btns">
           <a class="btn btn-primary btn-lg" href="[CALENDLY_URL]">
             {s.ctaBookDemo}
-            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <Icon name="arrow-right" class="arrow" />
           </a>
           <a class="btn btn-outlined btn-lg" href="/signup">{s.ctaTryLucra}</a>
         </div>

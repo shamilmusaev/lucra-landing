@@ -1,5 +1,6 @@
 ---
 import { getStrings, type Lang } from '../i18n/utils';
+import Icon from './Icon.astro';
 import OrbIsland from './OrbIsland.astro';
 import HeroParticles from './HeroParticles.astro';
 const { lang } = Astro.props as { lang: Lang };
@@ -112,16 +113,16 @@ const s = getStrings(lang);
           <div class="sb-divider"></div>
 
           <div class="sidebar-item active" data-panel="dashboard">
-            <img src="/assets/icons/dashboard.svg" alt="" /> {s.heroDemoNavDashboard}
+            <Icon name="layout-dashboard" size={16} /> {s.heroDemoNavDashboard}
           </div>
           <div class="sidebar-item" data-panel="chat">
-            <img src="/assets/icons/chat.svg" alt="" /> {s.heroDemoNavChat}
+            <Icon name="message-circle" size={16} /> {s.heroDemoNavChat}
           </div>
           <div class="sidebar-item" data-panel="docs">
-            <img src="/assets/icons/file-text.svg" alt="" /> {s.heroDemoNavFiles}
+            <Icon name="file-text" size={16} /> {s.heroDemoNavFiles}
           </div>
           <div class="sidebar-item" data-panel="companies">
-            <img src="/assets/icons/clients.svg" alt="" /> {s.heroDemoNavCompanies}
+            <Icon name="users" size={16} /> {s.heroDemoNavCompanies}
           </div>
 
           <div class="nav-section-label">{s.heroDemoToday}</div>
@@ -554,7 +555,7 @@ const s = getStrings(lang);
   border-radius: 999px;
   background: var(--brand-gradient);
   color: var(--white);
-  font-family: 'General Sans', var(--font-body);
+  font-family: var(--font-body);
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -637,7 +638,7 @@ const s = getStrings(lang);
 }
 
 .hero h1 {
-  font-family: 'General Sans', var(--font-display);
+  font-family: var(--font-display);
   font-weight: 500;
   font-size: clamp(44px, 5.4vw, 70px);
   line-height: 1.04;
@@ -665,7 +666,7 @@ const s = getStrings(lang);
 @property --mx { syntax: '<percentage>'; inherits: true; initial-value: 80%; }
 @property --my { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
 .hero-sub {
-  font-family: 'General Sans', var(--font-body);
+  font-family: var(--font-body);
   font-weight: 500;
   font-size: 18px;
   line-height: 1.6;
@@ -682,7 +683,7 @@ const s = getStrings(lang);
   margin-bottom: 22px;
 }
 .hero-ctas .btn {
-  font-family: 'General Sans', var(--font-body);
+  font-family: var(--font-body);
   font-weight: 500;
 }
 /* Tailark-style frame around the primary CTA. On hover the headline's cyan
@@ -890,8 +891,8 @@ const s = getStrings(lang);
   color: var(--brand-primary);
   font-weight: 600;
 }
-.sidebar-item img { width: 16px; height: 16px; opacity: .8; }
-.sidebar-item.active img { opacity: 1; }
+.sidebar-item svg { width: 16px; height: 16px; opacity: .8; }
+.sidebar-item.active svg { opacity: 1; }
 .sidebar-chat-row {
   font-size: 12.5px;
   padding: 7px 10px;
@@ -1167,7 +1168,7 @@ const s = getStrings(lang);
   border: 0;
   background: transparent;
   border-radius: 999px;
-  font-family: 'General Sans', var(--font-body);
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 500;
   color: var(--slate-500);

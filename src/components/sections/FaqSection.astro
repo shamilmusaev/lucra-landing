@@ -1,0 +1,232 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+
+const faqs = [
+  { q: s.faqQ1, a: s.faqA1 },
+  { q: s.faqQ2, a: s.faqA2 },
+  { q: s.faqQ3, a: s.faqA3 },
+  { q: s.faqQ4, a: s.faqA4 },
+  { q: s.faqQ5, a: s.faqA5 },
+  { q: s.faqQ6, a: s.faqA6 },
+  { q: s.faqQ7, a: s.faqA7 },
+  { q: s.faqQ8, a: s.faqA8 },
+];
+---
+
+<section id="faq">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="faq-head reveal">
+        <span class="section-eyebrow">{s.faqEyebrow}</span>
+        <h2 class="section-title">{s.faqTitle}</h2>
+        <p class="section-sub">{s.faqSub}</p>
+      </div>
+
+      <ul class="faq-list">
+        {faqs.map((faq, index) => (
+          <li class="faq-item reveal" class:list={[`delay-${(index % 3) + 1}`]} data-faq>
+            <h3 class="faq-q-wrap">
+              <button
+                type="button"
+                class="faq-q"
+                aria-expanded="false"
+                aria-controls={`faq-a-${index}`}
+                id={`faq-q-${index}`}
+              >
+                <span class="faq-q-text">{faq.q}</span>
+                <span class="faq-ic" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div
+              class="faq-a"
+              id={`faq-a-${index}`}
+              role="region"
+              aria-labelledby={`faq-q-${index}`}
+            >
+              <div class="faq-a-inner">
+                <p>{faq.a}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+#faq {
+  padding-top: 112px;
+  padding-bottom: 112px;
+  background:
+    radial-gradient(120% 70% at 100% 0%, rgba(86, 179, 235, 0.05), transparent 60%),
+    var(--bg-default);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.faq-head {
+  position: sticky;
+  top: 120px;
+}
+.faq-head .section-title { margin-bottom: 18px; }
+.faq-head .section-sub { font-size: 16px; }
+
+/* ---- Accordion list ---- */
+.faq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faq-item {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, .04),
+    0 14px 36px -30px rgba(61, 80, 109, .3);
+  transition: border-color .35s ease, box-shadow .35s ease;
+}
+.faq-item.is-open {
+  border-color: color-mix(in srgb, var(--brand-primary) 40%, transparent);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, .05),
+    0 22px 48px -28px rgba(61, 80, 109, .4);
+}
+
+.faq-q-wrap {
+  margin: 0;
+  font: inherit;
+}
+
+.faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 26px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  color: var(--brand-primary);
+  border-radius: var(--radius-card);
+  transition: background-color .25s ease;
+}
+.faq-q:hover { background: var(--bg-subtle); }
+.faq-q:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: -3px;
+}
+
+.faq-q-text {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+/* Plus icon → minus when open (vertical bar collapses). */
+.faq-ic {
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+.faq-ic::before,
+.faq-ic::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--slate-400);
+  border-radius: 2px;
+  transition: transform .3s cubic-bezier(.2, .7, .2, 1), background-color .3s ease;
+}
+.faq-ic::before {
+  width: 16px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+.faq-ic::after {
+  width: 2px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+}
+.faq-item.is-open .faq-ic::before,
+.faq-item.is-open .faq-ic::after { background: var(--brand-primary); }
+.faq-item.is-open .faq-ic::after { transform: translate(-50%, -50%) scaleY(0); }
+
+/* CSS-only height animation via grid-template-rows. */
+.faq-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .35s cubic-bezier(.2, .7, .2, 1);
+}
+.faq-item.is-open .faq-a { grid-template-rows: 1fr; }
+
+.faq-a-inner { overflow: hidden; }
+.faq-a-inner p {
+  margin: 0;
+  padding: 0 26px 24px;
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--slate-500);
+  text-wrap: pretty;
+}
+
+@media (max-width: 860px) {
+  #faq { padding-top: 72px; padding-bottom: 72px; }
+  .faq-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .faq-head {
+    position: static;
+    top: auto;
+  }
+  .faq-q { padding: 20px; gap: 16px; }
+  .faq-q-text { font-size: 16.5px; }
+  .faq-a-inner p { padding: 0 20px 22px; }
+}
+</style>
+
+<script>
+  const items = Array.from(document.querySelectorAll<HTMLLIElement>('#faq [data-faq]'));
+
+  items.forEach((item) => {
+    const trigger = item.querySelector<HTMLButtonElement>('.faq-q');
+    if (trigger === null) return;
+
+    trigger.addEventListener('click', () => {
+      const willOpen = !item.classList.contains('is-open');
+
+      // Single-open: collapse every item, then open the clicked one if it was closed.
+      items.forEach((other) => {
+        other.classList.remove('is-open');
+        other.querySelector('.faq-q')?.setAttribute('aria-expanded', 'false');
+      });
+
+      if (willOpen) {
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>

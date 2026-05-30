@@ -1,35 +1,16 @@
 /* ============================================================
    Lucra Design System — Colors & Type
    Source of truth: lucra-frontend/src/theme/theme.ts + index.css
-   Fonts: General Sans (primary, self-hosted .woff2),
-          Plus Jakarta Sans (display fallback, local .ttf)
+   Fonts: General Sans (single brand typeface, self-hosted .woff2)
    ============================================================ */
 
-/* General Sans (primary brand font, self-hosted) */
+/* General Sans (single brand font, self-hosted — used for display and body) */
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 200; font-display: swap; src: url('/fonts/GeneralSans-200.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 300; font-display: swap; src: url('/fonts/GeneralSans-300.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/GeneralSans-400.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/GeneralSans-500.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/GeneralSans-600.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/GeneralSans-700.woff2') format('woff2'); }
-
-/* Plus Jakarta Sans variable fonts (uploaded brand fonts) */
-@font-face {
-  font-family: 'Plus Jakarta Sans';
-  font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url('/fonts/PlusJakartaSans-VariableFont_wght.ttf') format('truetype-variations'),
-       url('/fonts/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Plus Jakarta Sans';
-  font-style: italic;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url('/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf') format('truetype-variations'),
-       url('/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf') format('truetype');
-}
 
 :root {
   /* -------- Brand -------- */
@@ -143,8 +124,8 @@
   --space-12: 48px;
 
   /* -------- Type families -------- */
-  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-display: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:    'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* -------- Type tokens -------- */

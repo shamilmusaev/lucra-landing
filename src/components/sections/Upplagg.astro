@@ -1,0 +1,265 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+import Icon from '../Icon.astro';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+
+const pilotFeats = [
+  s.priPilotFeat1,
+  s.priPilotFeat2,
+  s.priPilotFeat3,
+  s.priPilotFeat4,
+  s.priPilotFeat5,
+  s.priPilotFeat6,
+];
+const partnerFeats = [
+  s.priPartnerFeat1,
+  s.priPartnerFeat2,
+  s.priPartnerFeat3,
+  s.priPartnerFeat4,
+  s.priPartnerFeat5,
+  s.priPartnerFeat6,
+  s.priPartnerFeat7,
+];
+---
+
+<section id="upplagg">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="section-eyebrow">{s.priEyebrow}</span>
+      <h2 class="section-title">{s.priTitle}</h2>
+      <p class="section-sub">{s.priSub}</p>
+    </div>
+
+    <div class="plans">
+      <!-- Pilot — recommended, highlighted card -->
+      <article class="plan plan-featured reveal">
+        <div class="plan-tag"><span class="plan-badge">{s.priPilotBadge}</span></div>
+        <h3 class="plan-name">{s.priPilotName}</h3>
+        <p class="plan-desc">{s.priPilotDesc}</p>
+        <span class="plan-incl">{s.priInclLabel}</span>
+        <ul class="plan-feats">
+          {pilotFeats.map((feat) => (
+            <li>
+              <span class="feat-ic" aria-hidden="true">
+                <Icon name="check" />
+              </span>
+              <span>{feat}</span>
+            </li>
+          ))}
+        </ul>
+        <a class="btn btn-primary btn-lg plan-cta" href="[CALENDLY_URL]">
+          {s.priPilotCta}
+          <Icon name="arrow-right" class="arrow" />
+        </a>
+      </article>
+
+      <!-- Partner -->
+      <article class="plan reveal delay-1">
+        <div class="plan-tag"></div>
+        <h3 class="plan-name">{s.priPartnerName}</h3>
+        <p class="plan-desc">{s.priPartnerDesc}</p>
+        <span class="plan-incl">{s.priInclLabel}</span>
+        <ul class="plan-feats">
+          {partnerFeats.map((feat) => (
+            <li>
+              <span class="feat-ic" aria-hidden="true">
+                <Icon name="check" />
+              </span>
+              <span>{feat}</span>
+            </li>
+          ))}
+        </ul>
+        <a class="btn btn-outlined btn-lg plan-cta" href="[CALENDLY_URL]">
+          {s.priPartnerCta}
+          <Icon name="arrow-right" class="arrow" />
+        </a>
+      </article>
+    </div>
+
+    <p class="plan-footnote reveal delay-2">{s.priFootnote}</p>
+  </div>
+</section>
+
+<style>
+#upplagg {
+  padding-top: 112px;
+  padding-bottom: 112px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(61, 80, 109, 0.04), transparent 60%),
+    var(--bg-default);
+}
+
+.section-head.center { margin-bottom: 56px; }
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1040px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+/* ============================================================
+   Plan card — single light surface; CTA pinned to the bottom so
+   both cards' buttons align regardless of feature count.
+   ============================================================ */
+.plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 36px 34px;
+  border-radius: var(--radius-card);
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 1px 2px rgba(15,23,42,.04),
+    0 18px 44px -30px rgba(61,80,109,.30);
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+.plan:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 1px 2px rgba(15,23,42,.05),
+    0 32px 64px -28px rgba(61,80,109,.38);
+}
+
+/* Featured (Pilot): brand border + soft brand glow (no bright fill). */
+.plan-featured {
+  border-color: color-mix(in srgb, var(--brand-primary) 40%, transparent);
+  box-shadow:
+    var(--shadow-pop),
+    0 40px 90px -52px color-mix(in srgb, var(--brand-primary) 45%, transparent);
+}
+.plan-featured:hover {
+  box-shadow:
+    var(--shadow-pop),
+    0 56px 110px -52px color-mix(in srgb, var(--brand-primary) 52%, transparent);
+}
+
+/* Tag row — reserved on both cards so the plan names line up. */
+.plan-tag { min-height: 30px; margin-bottom: 18px; }
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--brand-primary);
+  background: var(--bg-active);
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+}
+.plan-badge::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+.plan-name {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--brand-primary);
+  margin: 0 0 12px;
+}
+.plan-desc {
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--slate-500);
+  margin: 0 0 24px;
+  text-wrap: pretty;
+}
+
+/* Divider into "what's included". */
+.plan-incl {
+  display: block;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  margin-bottom: 16px;
+}
+.plan-featured .plan-incl {
+  border-top-color: color-mix(in srgb, var(--brand-primary) 14%, transparent);
+}
+
+.plan-feats {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.plan-feats li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--slate-600);
+}
+
+/* Ticks — muted slate-blue, consistent on both cards (no bright cyan). */
+.feat-ic {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--brand-primary) 9%, var(--bg-paper));
+  color: var(--brand-primary);
+}
+.feat-ic svg { width: 12px; height: 12px; }
+/* Featured ticks: solid brand fill — subtle emphasis, still muted. */
+.plan-featured .feat-ic {
+  background: var(--brand-primary);
+  color: var(--white);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 22%, transparent);
+}
+
+/* CTA pinned to the bottom so both cards' buttons align. */
+.plan-cta {
+  margin-top: auto;
+  width: 100%;
+  height: 50px;
+}
+
+.plan-footnote {
+  max-width: 640px;
+  margin: 36px auto 0;
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--slate-400);
+  text-wrap: pretty;
+}
+
+/* Section reveal: cards slide in from opposite sides (mirrors #for-vem). */
+:global(html.reveal-ready) #upplagg .plan.reveal         { transform: translate(-32px, 18px); }
+:global(html.reveal-ready) #upplagg .plan.reveal.delay-1 { transform: translate( 32px, 18px); }
+:global(html.reveal-ready) #upplagg .plan.reveal.in-view { transform: none; }
+
+@media (max-width: 860px) {
+  #upplagg { padding-top: 72px; padding-bottom: 72px; }
+  .plans { grid-template-columns: 1fr; }
+  .plan { padding: 30px 26px; }
+  .plan-name { font-size: 28px; }
+  .plan:not(.plan-featured) .plan-tag { display: none; }
+}
+</style>

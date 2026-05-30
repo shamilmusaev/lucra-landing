@@ -1,0 +1,241 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+import Icon from '../Icon.astro';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+
+const rows = [
+  { label: s.cmpRow1Label, gpt: s.cmpRow1Gpt, lucra: s.cmpRow1Lucra },
+  { label: s.cmpRow2Label, gpt: s.cmpRow2Gpt, lucra: s.cmpRow2Lucra },
+  { label: s.cmpRow3Label, gpt: s.cmpRow3Gpt, lucra: s.cmpRow3Lucra },
+  { label: s.cmpRow4Label, gpt: s.cmpRow4Gpt, lucra: s.cmpRow4Lucra },
+  { label: s.cmpRow5Label, gpt: s.cmpRow5Gpt, lucra: s.cmpRow5Lucra },
+  { label: s.cmpRow6Label, gpt: s.cmpRow6Gpt, lucra: s.cmpRow6Lucra },
+  { label: s.cmpRow7Label, gpt: s.cmpRow7Gpt, lucra: s.cmpRow7Lucra },
+];
+// Explicit row tracks: header + one per row. With implicit rows, the spanning
+// glass panel (grid-row: 1 / -1) collapses to the header only — -1 counts to
+// the first explicit line. Declaring the tracks lets it reach every row.
+const gridRows = `auto repeat(${rows.length}, auto)`;
+---
+
+<section id="jamforelse">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="section-eyebrow">{s.cmpEyebrow}</span>
+      <h2 class="section-title">{s.cmpTitle}</h2>
+    </div>
+
+    <div class="cmp reveal delay-1">
+      <div class="cmp-grid" style={`grid-template-rows:${gridRows}`}>
+        <!-- The dark "glass" panel framing the Lucra column, with an inner
+             aurora glow. Spans every row beneath the cells; hidden on mobile
+             where the Lucra cells become individual dark cards instead. -->
+        <div class="cmp-panel" aria-hidden="true"></div>
+
+        <div class="cmp-cell cmp-head c1" style="grid-row:1"></div>
+        <div class="cmp-cell cmp-head c2" style="grid-row:1">{s.cmpColGpt}</div>
+        <div class="cmp-cell cmp-head cmp-head-lucra c3" style="grid-row:1">
+          <span class="cmp-head-dot" aria-hidden="true"></span>{s.cmpColLucra}
+        </div>
+
+        {rows.map((row, i) => (
+          <>
+            <div class="cmp-cell cmp-label c1" style={`grid-row:${i + 2}`}>{row.label}</div>
+            <div class="cmp-cell cmp-gpt c2" style={`grid-row:${i + 2}`}>
+              <span class="cmp-ic" aria-hidden="true">
+                <Icon name="minus" />
+              </span>
+              <span>{row.gpt}</span>
+            </div>
+            <div class="cmp-cell cmp-lucra c3" style={`grid-row:${i + 2}`}>
+              <span class="cmp-ic" aria-hidden="true">
+                <Icon name="check" />
+              </span>
+              <span>{row.lucra}</span>
+            </div>
+          </>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+#jamforelse {
+  padding-top: 128px;
+  padding-bottom: 128px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(61, 80, 109, 0.04), transparent 60%),
+    var(--bg-default);
+}
+
+.section-head.center { margin-bottom: 56px; }
+
+.cmp {
+  max-width: 1040px;
+  margin: 0 auto;
+  /* Breathing room so the panel can overhang the Lucra column edge. */
+  padding: 22px 16px 0 0;
+}
+
+.cmp-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.9fr) 1.1fr 1.15fr;
+  column-gap: 6px;
+  position: relative;
+}
+
+/* ============================================================
+   Highlighted Lucra column — light premium panel (no dark glass)
+   ============================================================ */
+.cmp-panel {
+  grid-column: 3;
+  grid-row: 1 / -1;
+  margin: -16px -16px -20px 0;
+  border-radius: var(--radius-shell);
+  overflow: hidden;
+  background: var(--bg-paper);
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 14%, transparent);
+  box-shadow:
+    var(--shadow-pop),
+    0 40px 90px -52px color-mix(in srgb, var(--brand-primary) 50%, transparent);
+  z-index: 0;
+  transition:
+    transform .6s cubic-bezier(.32, .72, 0, 1),
+    box-shadow .6s cubic-bezier(.32, .72, 0, 1);
+}
+.cmp:hover .cmp-panel {
+  transform: translateY(-4px);
+  box-shadow:
+    var(--shadow-pop),
+    0 56px 110px -52px color-mix(in srgb, var(--brand-primary) 60%, transparent);
+}
+
+/* ============================================================
+   Cells
+   ============================================================ */
+.cmp-cell {
+  position: relative;
+  z-index: 1;
+  padding: 20px 28px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Explicit columns so the Lucra cells overlay the panel (column 3) instead of
+   being pushed into an implicit 4th column by grid auto-placement. */
+.cmp-cell.c1 { grid-column: 1; }
+.cmp-cell.c2 { grid-column: 2; }
+.cmp-cell.c3 { grid-column: 3; }
+
+/* Row dividers: hairline everywhere (light). */
+.cmp-cell:not(.cmp-head) { border-top: 1px solid var(--border); }
+
+/* ---- Headers ---- */
+.cmp-head {
+  padding-top: 6px;
+  padding-bottom: 20px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  border-top: none;
+}
+.cmp-head.c2 { color: var(--slate-400); }
+.cmp-head-lucra {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--brand-primary);
+  padding-top: 2px;
+}
+.cmp-head-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  flex-shrink: 0;
+}
+
+/* ---- Row content ---- */
+.cmp-label {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--brand-primary);
+}
+.cmp-gpt { color: var(--slate-500); }
+.cmp-lucra { color: var(--slate-600); font-weight: 500; }
+
+/* ---- Indicators (brand palette, no green) ---- */
+.cmp-ic {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cmp-ic svg { width: 12px; height: 12px; }
+/* Positive — Lucra: muted brand slate-blue tick (no bright cyan). */
+.cmp-lucra .cmp-ic {
+  background: var(--brand-primary);
+  color: var(--white);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 22%, transparent);
+}
+/* Neutral — ChatGPT: muted minus. */
+.cmp-gpt .cmp-ic {
+  background: var(--bg-active);
+  border: 1px solid var(--border);
+  color: var(--slate-400);
+}
+
+/* ============================================================
+   Mobile: stack. Each Lucra value becomes its own light brand card.
+   ============================================================ */
+@media (max-width: 760px) {
+  #jamforelse { padding-top: 80px; padding-bottom: 80px; }
+  .cmp { padding: 0; }
+
+  .cmp-grid { display: block; }
+  .cmp-panel,
+  .cmp-head { display: none; }
+
+  .cmp-cell { padding: 8px 0; border-top: none; }
+
+  .cmp-label {
+    padding-top: 24px;
+    margin-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+  .cmp-grid > .cmp-label:first-of-type {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .cmp-lucra {
+    margin-top: 10px;
+    padding: 14px 16px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-paper);
+    border: 1px solid color-mix(in srgb, var(--brand-primary) 14%, transparent);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmp-panel { transition: none; }
+  .cmp:hover .cmp-panel { transform: none; }
+}
+</style>

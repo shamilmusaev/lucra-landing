@@ -1,0 +1,43 @@
+---
+// Single source for all UI icons — Lucide, rendered inline at build time from
+// the @iconify-json/lucide data (no client runtime). Every icon shares the same
+// 24×24 viewBox, currentColor and stroke width, so icons stay visually uniform
+// across the whole site. Brand/social logos are NOT Lucide — keep those as-is.
+import lucide from '@iconify-json/lucide/icons.json';
+
+interface Props {
+  name: string;
+  size?: number;
+  stroke?: number;
+  class?: string;
+}
+
+const { name, size = 20, stroke = 2, class: className } = Astro.props as Props;
+
+const set = lucide as unknown as {
+  icons: Record<string, { body: string }>;
+  width?: number;
+  height?: number;
+};
+const icon = set.icons[name];
+if (!icon) {
+  throw new Error(`[Icon] Unknown Lucide icon: "${name}"`);
+}
+const w = set.width ?? 24;
+const h = set.height ?? 24;
+---
+
+<svg
+  class={className}
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox={`0 0 ${w} ${h}`}
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={icon.body}
+></svg>
