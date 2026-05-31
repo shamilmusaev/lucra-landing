@@ -9,13 +9,21 @@ export interface Props {
   description: string;
   /** Path of the current page without language prefix, e.g. "/" */
   path?: string;
+  /**
+   * Pages that exist in a single language only (e.g. the blog). When true the
+   * canonical points at the page's own URL and no sv/en hreflang pair is emitted.
+   */
+  singleLang?: boolean;
+  /** Absolute or root-relative image URL for OG / Twitter cards. */
+  image?: string;
 }
 
-const { lang, title, description, path = '/' } = Astro.props;
+const { lang, title, description, path = '/', singleLang = false, image } = Astro.props;
 const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
 const svUrl = `${site}${path}`;
 const enUrl = `${site}/en${path === '/' ? '/' : path}`;
-const canonical = lang === 'sv' ? svUrl : enUrl;
+const canonical = singleLang ? `${site}${path}` : lang === 'sv' ? svUrl : enUrl;
+const ogImage = image ? new URL(image, `${site}/`).toString() : undefined;
 ---
 <!doctype html>
 <html lang={lang}>
@@ -25,14 +33,20 @@ const canonical = lang === 'sv' ? svUrl : enUrl;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="sv" href={svUrl} />
-    <link rel="alternate" hreflang="en" href={enUrl} />
-    <link rel="alternate" hreflang="x-default" href={svUrl} />
+    {!singleLang && (
+      <>
+        <link rel="alternate" hreflang="sv" href={svUrl} />
+        <link rel="alternate" hreflang="en" href={enUrl} />
+        <link rel="alternate" hreflang="x-default" href={svUrl} />
+      </>
+    )}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content="summary_large_image" />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
     <link rel="preload" href="/fonts/GeneralSans-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/GeneralSans-500.woff2" as="font" type="font/woff2" crossorigin />
   </head>

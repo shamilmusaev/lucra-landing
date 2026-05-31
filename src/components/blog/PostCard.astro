@@ -1,0 +1,164 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getStrings, type Lang } from '../../i18n/utils';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  lang: Lang;
+  /** Larger editorial treatment for the lead article. */
+  featured?: boolean;
+}
+
+const { post, lang, featured = false } = Astro.props;
+const s = getStrings(lang);
+const { title, summary, coverImage, publishedDate } = post.data;
+const href = `/blog/${post.id}`;
+const dateLabel = new Intl.DateTimeFormat(lang === 'sv' ? 'sv-SE' : 'en-GB', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(publishedDate);
+---
+
+<article class:list={['post-card', { featured }]}>
+  <a class="post-link" href={href} aria-label={title}>
+    <div class="post-media">
+      {coverImage ? (
+        <img src={coverImage} alt="" loading="lazy" decoding="async" />
+      ) : (
+        <span class="post-media-fallback" aria-hidden="true"></span>
+      )}
+    </div>
+    <div class="post-body">
+      <time class="post-date" datetime={publishedDate.toISOString()}>{dateLabel}</time>
+      <h3 class="post-title">{title}</h3>
+      <p class="post-summary">{summary}</p>
+      <span class="post-cta">
+        {s.blogReadArticle}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .post-card {
+    position: relative;
+    height: 100%;
+  }
+  .post-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s cubic-bezier(.2,.7,.2,1), border-color .3s ease;
+  }
+  .post-link:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-soft-hover);
+    border-color: color-mix(in srgb, var(--brand-primary) 22%, var(--border));
+  }
+  .post-link:focus-visible {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 3px;
+  }
+
+  .post-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--bg-subtle);
+  }
+  .post-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .post-link:hover .post-media img { transform: scale(1.04); }
+  /* Branded placeholder when an article has no cover image. */
+  .post-media-fallback {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120% 90% at 18% 0%, color-mix(in srgb, var(--brand-accent) 22%, transparent), transparent 60%),
+      linear-gradient(150deg, var(--brand-primary-light) 0%, var(--brand-primary) 55%, var(--brand-primary-dark) 100%);
+  }
+
+  .post-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 26px 26px 28px;
+    flex: 1;
+  }
+  .post-date {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand-primary);
+  }
+  .post-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    color: var(--brand-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .post-summary {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--slate-500);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-cta {
+    margin-top: auto;
+    padding-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand-primary);
+  }
+  .post-cta svg {
+    width: 15px;
+    height: 15px;
+    transition: transform .25s ease;
+  }
+  .post-link:hover .post-cta svg { transform: translateX(4px); }
+
+  /* ---- Featured (lead) article — image beside the text on wide screens ---- */
+  @media (min-width: 880px) {
+    .post-card.featured .post-link { flex-direction: row; }
+    .post-card.featured .post-media { aspect-ratio: auto; flex: 1 1 58%; min-height: 340px; }
+    .post-card.featured .post-body {
+      flex: 1 1 42%;
+      justify-content: center;
+      padding: 48px 48px 48px 44px;
+      gap: 16px;
+    }
+    .post-card.featured .post-title { font-size: 30px; line-height: 1.16; }
+    .post-card.featured .post-summary { font-size: 16px; -webkit-line-clamp: 4; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-link, .post-media img, .post-cta svg { transition: none; }
+    .post-link:hover { transform: none; }
+    .post-link:hover .post-media img { transform: none; }
+  }
+</style>

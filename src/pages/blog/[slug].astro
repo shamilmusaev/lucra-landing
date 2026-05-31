@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import RevealScript from '../../components/RevealScript.astro';
+import ArticleLayout from '../../components/blog/ArticleLayout.astro';
+import { getStrings } from '../../i18n/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const lang = 'sv' as const;
+const s = getStrings(lang);
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Reading-time estimate from the raw Markdoc source (~200 words/min).
+const words = (post.body ?? '').trim().split(/\s+/).filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.round(words / 200));
+---
+<BaseLayout
+  lang={lang}
+  title={`${post.data.title} · ${s.blogEyebrow} · Lucra`}
+  description={post.data.summary}
+  path={`/blog/${post.id}`}
+  singleLang
+  image={post.data.coverImage ?? undefined}
+>
+  <Nav lang={lang} />
+  <ArticleLayout
+    lang={lang}
+    title={post.data.title}
+    summary={post.data.summary}
+    publishedDate={post.data.publishedDate}
+    coverImage={post.data.coverImage}
+    readingMinutes={readingMinutes}
+  >
+    <Content />
+  </ArticleLayout>
+  <Footer lang={lang} />
+  <RevealScript />
+  <script>
+    document.documentElement.classList.add('reveal-ready');
+  </script>
+</BaseLayout>

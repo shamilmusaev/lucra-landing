@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import RevealScript from '../../components/RevealScript.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import { getStrings } from '../../i18n/utils';
+
+const lang = 'sv' as const;
+const s = getStrings(lang);
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime(),
+);
+---
+<BaseLayout
+  lang={lang}
+  title={s.blogMetaTitle}
+  description={s.blogMetaDescription}
+  path="/blog"
+  singleLang
+>
+  <Nav lang={lang} />
+
+  <section class="blog-hero">
+    <div class="container">
+      <span class="section-eyebrow reveal">{s.blogEyebrow}</span>
+      <h1 class="section-title reveal">{s.blogTitle}</h1>
+      <p class="section-sub reveal">{s.blogSubtitle}</p>
+    </div>
+  </section>
+
+  <section class="blog-list">
+    <div class="container">
+      {posts.length === 0 ? (
+        <p class="blog-empty reveal">{s.blogEmpty}</p>
+      ) : (
+        <div class="post-grid">
+          {posts.map((post, index) => (
+            <div class:list={['reveal', { 'is-featured': index === 0, 'delay-1': index === 1, 'delay-2': index === 2 }]}>
+              <PostCard post={post} lang={lang} featured={index === 0} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <Footer lang={lang} />
+  <RevealScript />
+  <script>
+    // Blog pages have no hero orchestrator, so arm the shared scroll-reveal here.
+    document.documentElement.classList.add('reveal-ready');
+  </script>
+</BaseLayout>
+
+<style>
+  .blog-hero {
+    padding-top: calc(var(--section-py) + 44px);
+    padding-bottom: 56px;
+    background:
+      radial-gradient(120% 70% at 50% 0%,
+        color-mix(in srgb, var(--brand-primary) 5%, transparent), transparent 60%),
+      var(--bg-paper);
+  }
+  .blog-hero .section-title {
+    background: var(--hero-headline-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    max-width: 14ch;
+  }
+  .blog-hero .section-sub { margin-top: 4px; }
+
+  .blog-list { padding-top: 24px; }
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+    align-items: stretch;
+  }
+  /* Each grid cell stretches so cards in a row share height. */
+  .post-grid > * { display: flex; }
+  .post-grid > * > :global(.post-card) { width: 100%; }
+  /* Lead article spans the full row for an editorial side-by-side layout. */
+  .post-grid > .is-featured { grid-column: 1 / -1; }
+
+  .blog-empty {
+    font-size: 18px;
+    color: var(--slate-500);
+    text-align: center;
+    padding: 48px 0 24px;
+  }
+
+  @media (max-width: 720px) {
+    .post-grid { grid-template-columns: 1fr; gap: 22px; }
+  }
+</style>

@@ -349,4 +349,15 @@ export const en: { [K in keyof typeof sv]: string } = {
   faqA7: 'Lucra bases all answers on current bookkeeping data from Fortnox and is specialized for Swedish finance and accounting. Human oversight is always available – questions that require deeper analysis or expertise are escalated to an accounting consultant. The firm has full visibility into all questions and answers.',
   faqQ8: 'Can a human consultant review the AI answers?',
   faqA8: 'Yes, the accounting firm has full control and visibility. The firm can see all questions and answers, escalate questions to a human consultant when needed, and review AI answers before they reach the client. Lucra is built to complement the firm, not replace it.',
+
+  // ---- Blog ----
+  blogMetaTitle: 'Blog · Lucra',
+  blogMetaDescription: 'Insights on finance, AI and accounting for Swedish business owners and accounting firms.',
+  blogEyebrow: 'Blog',
+  blogTitle: 'Insights on finance and AI',
+  blogSubtitle: 'Thoughts, guides and perspectives for Swedish business owners and accounting firms.',
+  blogEmpty: 'No articles published yet. Check back soon.',
+  blogReadArticle: 'Read article',
+  blogBackToBlog: 'Back to the blog',
+  blogReadingTimeSuffix: 'min read',
 } as const;
