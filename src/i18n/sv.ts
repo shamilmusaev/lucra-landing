@@ -45,14 +45,14 @@ export const sv = {
   heroCtaPrimary: 'Testa Lucra',
   heroCtaSecondary: 'Boka demo',
 
-  // Product demo window — tabs
+  // Product demo window – tabs
   heroDemoTablistLabel: 'Produktdemo',
   heroTabDashboard: 'Förstå ekonomin',
   heroTabChat: 'Fråga AI',
   heroTabDocs: 'Läs dokument',
   heroTabCompanies: 'Hantera bolag',
 
-  // Product demo window — sidebar
+  // Product demo window – sidebar
   heroDemoSearch: 'Sök',
   heroDemoNewChat: 'Ny chatt',
   heroDemoMonthlyReport: 'Generera månadsrapport',
@@ -65,7 +65,7 @@ export const sv = {
   heroDemoChat2: 'Kostnadsanalys Q2',
   heroDemoChat3: 'Obetalda fakturor',
 
-  // Product demo window — dashboard panel
+  // Product demo window – dashboard panel
   heroDemoDashTitle: 'Dashboard',
   heroDemoSyncDashboard: 'Senast synkad med Fortnox: 3 min sedan',
   heroDemoMetricRevenue: 'Intäkter',
@@ -76,7 +76,7 @@ export const sv = {
   heroDemoChartTitle: 'Intäkter mot kostnader',
   heroDemoChatFloat: 'Intäkterna är upp <strong>12 %</strong> jämfört med förra kvartalet, främst från konsultarvoden.<span class="typing-dot"></span><span class="typing-dot" style="animation-delay:.2s"></span><span class="typing-dot" style="animation-delay:.4s"></span>',
 
-  // Product demo window — chat panel
+  // Product demo window – chat panel
   heroDemoChatTitle: 'AI-chatt',
   heroDemoSyncChat: 'Kopplad till Fortnox · Alma AB',
   heroDemoChatQ1: 'Hur ser kassaflödet ut just nu?',
@@ -86,7 +86,7 @@ export const sv = {
   heroDemoChatA2: 'Tre kunder har förfallna fakturor: <strong>Nordstream AB</strong> (48 500 SEK, 14 dagar), <strong>Pixelbit Studio</strong> (62 000 SEK, 9 dagar) och <strong>Klangstudio</strong> (31 500 SEK, 4 dagar). Vill du skicka påminnelser?',
   heroDemoChatSrc2: 'Fortnox · Kundreskontra',
 
-  // Product demo window — documents panel
+  // Product demo window – documents panel
   heroDemoDocsTitle: 'Dokument',
   heroDemoDocsSearch: 'Sök bland 248 dokument',
   heroDemoDocsColDoc: 'Dokument',
@@ -108,7 +108,7 @@ export const sv = {
   heroDemoDoc5Meta: '2026-04-15 · Saknar momskod',
   heroDemoDoc5Status: 'Granska',
 
-  // Product demo window — companies panel
+  // Product demo window – companies panel
   heroDemoCompaniesTitle: 'Bolag',
   heroDemoSyncCompanies: '4 bolag · Allt synkat',
   heroDemoCoBadgeActive: 'Aktiv',
@@ -120,52 +120,65 @@ export const sv = {
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpEyebrow: 'Jämförelse',
   cmpTitle: 'Lucra är byggt för ekonomi, inte för allt',
-  cmpColGpt: 'ChatGPT',
   cmpColLucra: 'Lucra',
+  cmpColGpt: 'ChatGPT',
+  cmpColGenAi: 'Generella AI-verktyg',
+  cmpColStatus: 'Status quo',
   cmpRow1Label: 'Ekonomisk kontext',
-  cmpRow1Gpt: 'Kräver manuell uppladdning av filer',
   cmpRow1Lucra: 'Kopplad till aktuell bokföringsdata via Fortnox',
+  cmpRow1Gpt: 'Kräver manuell uppladdning av filer',
+  cmpRow1GenAi: 'Saknar koppling till din bokföring',
+  cmpRow1Status: 'Siffror utspridda i Excel och pärmar',
   cmpRow2Label: 'Specialisering',
-  cmpRow2Gpt: 'Generell AI för alla ämnen',
   cmpRow2Lucra: 'Specialiserad på ekonomi och redovisningsfrågor',
+  cmpRow2Gpt: 'Generell AI för alla ämnen',
+  cmpRow2GenAi: 'Bred assistent utan ekonomifokus',
+  cmpRow2Status: 'Förlitar sig på enskilda personers kunskap',
   cmpRow3Label: 'Källhänvisning',
-  cmpRow3Gpt: 'Kan hitta på siffror utan källa',
   cmpRow3Lucra: 'Hänvisar till exakta poster i bokföringen',
+  cmpRow3Gpt: 'Kan hitta på siffror utan källa',
+  cmpRow3GenAi: 'Generella svar utan verifierbar källa',
+  cmpRow3Status: 'Manuell spårning, lätt att tappa bort',
   cmpRow4Label: 'Aktualitet',
-  cmpRow4Gpt: 'Tränad på äldre, statisk data',
   cmpRow4Lucra: 'Realtidsdata, alltid synkad med Fortnox',
+  cmpRow4Gpt: 'Tränad på äldre, statisk data',
+  cmpRow4GenAi: 'Begränsad till modellens träningsdata',
+  cmpRow4Status: 'Uppdateras först vid månadsbokslut',
   cmpRow5Label: 'Proaktivitet',
-  cmpRow5Gpt: 'Svarar endast när användaren frågar',
   cmpRow5Lucra: 'Kan ge månadsöversikter och flagga avvikelser',
+  cmpRow5Gpt: 'Svarar endast när användaren frågar',
+  cmpRow5GenAi: 'Reagerar bara på dina frågor',
+  cmpRow5Status: 'Inga insikter förrän du letar själv',
   cmpRow6Label: 'Datahantering',
-  cmpRow6Gpt: 'Data behandlas globalt, oklart var',
   cmpRow6Lucra: 'Svensk datahantering inom EU, GDPR-säkert',
+  cmpRow6Gpt: 'Data behandlas globalt, oklart var',
+  cmpRow6GenAi: 'Data kan behandlas utanför EU',
+  cmpRow6Status: 'Filer mejlas och sparas lokalt',
   cmpRow7Label: 'Byråkontroll',
-  cmpRow7Gpt: 'Ingen koppling till redovisningsbyrå',
   cmpRow7Lucra: 'Kan eskalera frågor till konsult vid behov',
+  cmpRow7Gpt: 'Ingen koppling till redovisningsbyrå',
+  cmpRow7GenAi: 'Ingen koppling till din byrå',
+  cmpRow7Status: 'Mejl och telefon fram och tillbaka',
 
   // ---- Feature showcase (GitBook-style cards: visual on top, copy below) ----
   showcaseEyebrow: 'Möjligheter',
   showcaseTitle: 'Ekonomiverktyg för dig som vill ha kontroll',
   showcaseSub: 'Effektivisera ekonomin med ett smartare flöde och proaktiv, relevant AI.',
-  // Card 1 — AI chat (real WebGL orb + self-playing conversation; «...» marks the highlighted stat)
-  showcaseCard1Kicker: 'AI-assistent',
-  showcaseCard1Title: 'Fråga din ekonomi — få svar direkt',
-  showcaseCard1Body: 'Ställ frågor på vanlig svenska om resultat, kassaflöde och rapporter. Lucra läser din bokföring och svarar på sekunder — utan formler, utan väntan.',
+  // Card 1 – AI chat (real WebGL orb + self-playing conversation; «...» marks the highlighted stat)
+  showcaseCard1Title: 'Fråga din ekonomi – få svar direkt',
+  showcaseCard1Body: 'Ställ frågor på vanlig svenska om resultat, kassaflöde och rapporter. Lucra läser din bokföring och svarar på sekunder – utan formler, utan väntan.',
   showcaseCard1Pill: 'AI-chatt',
   showcaseChatPlaceholder: 'Fråga om din ekonomi…',
   showcaseChatUser: 'Hur gick Q3 jämfört med förra året?',
-  showcaseChatAi: 'Omsättningen i Q3 ökade med «+12,4 %» mot förra året — främst tack vare högre försäljning i september.',
-  // Card 2 — Dashboard (Remotion-rendered loop video)
-  showcaseCard2Kicker: 'Dashboard',
+  showcaseChatAi: 'Omsättningen i Q3 ökade med «+12,4 %» mot förra året – främst tack vare högre försäljning i september.',
+  // Card 2 – Dashboard (Remotion-rendered loop video)
   showcaseCard2Title: 'Se hela din ekonomi i realtid',
-  showcaseCard2Body: 'Intäkter, kostnader, resultat och likviditet — uppdaterat automatiskt. Lucra lyfter fram vad som förändrats och varför, så du ser läget på sekunder.',
+  showcaseCard2Body: 'Intäkter, kostnader, resultat och likviditet – uppdaterat automatiskt. Lucra lyfter fram vad som förändrats och varför, så du ser läget på sekunder.',
   showcaseCard2Pill: 'Dashboard',
   showcaseCard2VideoAlt: 'Lucras dashboard med AI-insikter och nyckeltal som uppdateras automatiskt.',
-  // Card 3 — Documents (DOM: file table + scan-line + AI badge)
-  showcaseCard3Kicker: 'Dokument',
-  showcaseCard3Title: 'Lägg in dina underlag — Lucra förstår dem',
-  showcaseCard3Body: 'Ladda upp fakturor, kvitton och rapporter. Lucra läser dem, föreslår rätt konto och kopplar till bolag och period — automatiskt.',
+  // Card 3 – Documents (DOM: file table + scan-line + AI badge)
+  showcaseCard3Title: 'Lägg in dina underlag – Lucra förstår dem',
+  showcaseCard3Body: 'Ladda upp fakturor, kvitton och rapporter. Lucra läser dem, föreslår rätt konto och kopplar till bolag och period – automatiskt.',
   showcaseCard3Pill: 'Dokument',
   showcaseDocPanelTitle: 'Filer & underlag',
   showcaseDocFile1: 'Faktura 4821.pdf',
@@ -174,65 +187,57 @@ export const sv = {
   showcaseDocReading: 'Läser…',
   showcaseDocSuggest: 'AI föreslår 7690',
   showcaseDocPosted: 'Bokfört',
-  // Card 4 — Fortnox sync (DOM: pulse along connector)
-  showcaseCard4Kicker: 'Alltid synkad',
+  // Card 4 – Fortnox sync (DOM: pulse along connector)
   showcaseCard4Title: 'Byggd på din faktiska bokföring',
-  showcaseCard4Body: 'Lucra kopplas till Fortnox och läser din riktiga ekonomi i realtid — verifikat, moms och resultat. Inga gissningar, alltid aktuellt.',
+  showcaseCard4Body: 'Lucra kopplas till Fortnox och läser din riktiga ekonomi i realtid – verifikat, moms och resultat. Inga gissningar, alltid aktuellt.',
   showcaseCard4Pill: 'Integrationer',
   showcaseSyncLine: 'Senast synkad: 3 min sedan',
   showcaseSyncItem1: 'Verifikat',
   showcaseSyncItem2: 'Moms',
   showcaseSyncItem3: 'Resultat',
-  // Card 5 — Multi-company (DOM: company switcher)
-  showcaseCard5Kicker: 'Flera bolag',
+  // Card 5 – Multi-company (DOM: company switcher)
   showcaseCard5Title: 'Alla klienter, en vy',
-  showcaseCard5Body: 'Hantera alla bolag och kunder utan att byta system. Växla i sidopanelen — varje bolag synkat och redo. Byggt för redovisningsbyråer.',
+  showcaseCard5Body: 'Hantera alla bolag och kunder utan att byta system. Växla i sidopanelen – varje bolag synkat och redo. Byggt för redovisningsbyråer.',
   showcaseCard5Pill: 'Flera bolag',
   showcaseCoSearch: 'Sök företag…',
   showcaseCoManage: 'Hantera företag',
+  // Carousel navigation
+  showcaseNavPrev: 'Föregående',
+  showcaseNavNext: 'Nästa',
 
-  // ---- ForVem (Task 11) ----
+  // ---- ForVem (Task 11) – stacking situation cards ----
   forVemEyebrow: 'För vem',
-  forVemTitle: 'Två sidor av samma ekonomi.',
-  forVemSub: 'Lucra anpassar sig efter rollen. En gemensam kärna, två vyer.',
-  forVemKicker: 'För',
-  forVemListLabel: 'Vardagen idag',
-  // Card 1 — Företagare
-  forVemCard1Title: 'Företagare',
-  forVemCard1Sub: 'Du vill förstå hur bolaget går, kunna fråga när något är oklart och veta när något behöver hanteras direkt.',
-  forVemCard1Li1: 'Osäkerhet om vad siffrorna betyder',
-  forVemCard1Li2: 'Tveksamhet att kontakta byrån för små frågor',
-  forVemCard1Li3: 'Väntan på svar när beslut behöver tas',
-  forVemCard1Li4: 'Oro för att missa viktiga deadlines',
-  // Card 2 — Redovisningsbyråer
-  forVemCard2Title: 'Redovisningsbyråer',
-  forVemCard2Sub: 'Byrån ska inte behöva lägga konsulttid på samma enkla frågor varje månad när den tiden kan användas till kvalificerad rådgivning.',
-  forVemCard2Li1: 'Samma frågor återkommer varje månad',
-  forVemCard2Li2: 'Små frågor är svåra att fakturera',
-  forVemCard2Li3: 'Konsulter får mindre tid till rådgivning',
-  forVemCard2Li4: 'Kunder förväntar sig snabbare svar än tidigare',
+  forVemTitle: 'Din ekonomi, begriplig varje dag.',
+  forVemSub: 'Lucra tar vardagens ekonomifrågor — för företagaren och för byrån. En gemensam kärna, två sidor av samma ekonomi.',
+  forVemCta: 'Boka demo',
+  forVemTodayLabel: 'Idag',
+  forVemLucraLabel: 'Med Lucra',
+  // Card 1 – Understand the numbers
+  forVemCard1Tab: 'Siffror',
+  forVemCard1Today: 'Rapporten kommer varje månad, men vad betyder den egentligen? Du gissar dig fram – eller låter den ligga oläst.',
+  forVemCard1Lucra: 'Fråga med egna ord och få siffrorna förklarade i klartext, direkt. Du ser hur bolaget faktiskt mår.',
+  // Card 2 – Quick questions
+  forVemCard2Tab: 'Frågor',
+  forVemCard2Today: 'En liten fråga känns för obetydlig för att mejla byrån – så den blir aldrig ställd.',
+  forVemCard2Lucra: 'Ställ frågan när den dyker upp. Lucra svarar dygnet runt och skickar bara vidare det som verkligen kräver en människa.',
+  // Card 3 – Decisions on time
+  forVemCard3Tab: 'Beslut',
+  forVemCard3Today: 'Du väntar på svar medan beslutet inte kan vänta. Möjligheten hinner passera.',
+  forVemCard3Lucra: 'Få underlaget direkt, så att beslut tas när de ska – inte en vecka senare.',
+  // Card 4 – Deadlines
+  forVemCard4Tab: 'Deadlines',
+  forVemCard4Today: 'Moms, lön och bokslut – det är lätt att missa ett datum när ingen påminner i tid.',
+  forVemCard4Lucra: 'Lucra håller koll på datumen och säger till i god tid, innan det blir bråttom.',
+  // Card 5 – The firm's time
+  forVemCard5Tab: 'Byrån',
+  forVemCard5Today: 'Konsulterna lägger timmar på samma enkla frågor varje månad – tid som är svår att fakturera.',
+  forVemCard5Lucra: 'Lucra tar de återkommande frågorna, så att byrån kan lägga tiden på kvalificerad rådgivning.',
 
-  // ---- Problem (Task 9) ----
-  problemEyebrow: 'Problemet',
-  problemTitle: 'Företagare ska inte behöva känna sig osäkra på sin ekonomi.',
-  problemSub: 'Små men viktiga frågor om bokföring, moms, lön och resultat. För små för formella möten, för viktiga att ignorera. Det skapar oro för företagaren och repetitiv support för byrån.',
-  problemCard1Eyebrow: 'Osäkerhet',
-  problemCard1Title: 'Vad betyder siffrorna egentligen?',
-  problemCard1Body: 'Tveksamhet att kontakta byrån för små frågor. Beslut väntar på svar som dröjer, och oron växer.',
-  problemCard1Cta: 'Få svar direkt',
-  problemCard2Eyebrow: 'Byrån',
-  problemCard2Title: 'Samma frågor varje månad.',
-  problemCard2Body: 'Små frågor är svåra att fakturera. De äter tiden som borde gå till rådgivning med högre värde.',
-  problemCard2Cta: 'Automatisera svaren',
-  problemCard3Eyebrow: 'Tiden',
-  problemCard3Title: 'Svar kommer för sent.',
-  problemCard3Body: 'Kunder förväntar sig snabbare svar än någonsin. Beslut hänger på en svarstid som inte räcker till.',
-  problemCard3Cta: 'Svar i realtid',
 
   // ---- Integrationer (Task 13) ----
   integrationerEyebrow: 'Integrationer',
   integrationerTitle: 'Plugga in. Allt synkar.',
-  integrationerSub: 'Lucra ansluter till systemen där dina data redan finns. Fortnox är vår första djupa integration — och via Skatteverket håller vi koll på skatt och deklaration.',
+  integrationerSub: 'Lucra ansluter till systemen där dina data redan finns. Fortnox är vår första djupa integration – och via Skatteverket håller vi koll på skatt och deklaration.',
   integrationerFeatureTitle: 'Djup integration mot Fortnox',
   integrationerFeatureBody: 'Verifikat, kontoplan, kunder och leverantörer hämtas automatiskt. Synkroniseringen körs i bakgrunden så dashboarden alltid speglar bokföringen.',
   integrationerSyncLine: 'Senast synkad: 3 minuter sedan',
@@ -258,18 +263,18 @@ export const sv = {
 
   // ---- Så funkar det / howstack (Task 12) ----
   howstackEyebrow: 'Så funkar det',
-  // Stage 0 — Grunden
+  // Stage 0 – Grunden
   howstackStage0Kicker: 'Grunden',
   howstackStage0Title: 'Allt utgår från bolagets egna siffror.',
-  howstackStage0Body: 'Lucra kopplas till Fortnox och läser bolagets faktiska ekonomi — transaktioner, moms, resultat och lön. Alltid uppdaterat, aldrig gissat.',
-  // Stage 1 — Förståelsen
+  howstackStage0Body: 'Lucra kopplas till Fortnox och läser bolagets faktiska ekonomi – transaktioner, moms, resultat och lön. Alltid uppdaterat, aldrig gissat.',
+  // Stage 1 – Förståelsen
   howstackStage1Kicker: 'Förståelsen',
   howstackStage1Title: 'Lucra förstår vad siffrorna betyder.',
-  howstackStage1Body: 'Ovanpå datan bygger Lucra en levande bild av hur bolaget mår — och svarar på vardagens ekonomifrågor på enkel svenska, direkt och dygnet runt.',
-  // Stage 2 — Expertlagret
+  howstackStage1Body: 'Ovanpå datan bygger Lucra en levande bild av hur bolaget mår – och svarar på vardagens ekonomifrågor på enkel svenska, direkt och dygnet runt.',
+  // Stage 2 – Expertlagret
   howstackStage2Kicker: 'Expertlagret',
   howstackStage2Title: 'Byrån kopplas in när det krävs.',
-  howstackStage2Body: 'Komplexa frågor eskaleras till redovisningskonsulten med full kontext bevarad. Människan gör det kvalificerade — Lucra sköter vardagen.',
+  howstackStage2Body: 'Komplexa frågor eskaleras till redovisningskonsulten med full kontext bevarad. Människan gör det kvalificerade – Lucra sköter vardagen.',
   // Deck layers (bottom-up: 01 → 04)
   howstackLayer4Tag: 'Expert',
   howstackLayer4Title: 'Redovisningsbyrån',
@@ -280,7 +285,7 @@ export const sv = {
   howstackLayer2Body: 'En levande bild av hur bolaget faktiskt mår.',
   howstackLayer1Tag: 'Fortnox',
   howstackLayer1Title: 'Bolagets ekonomi',
-  howstackLayer1Body: 'Transaktioner, moms, resultat och lön — synkat i realtid.',
+  howstackLayer1Body: 'Transaktioner, moms, resultat och lön – synkat i realtid.',
   // Final CTA
   ctaTitle: 'Vill du se hur Lucra fungerar?',
   ctaBody: 'Boka en kort demo och se hur Lucra hjälper företagare att förstå sin ekonomi och redovisningsbyråer att frigöra tid för kvalificerad rådgivning.',

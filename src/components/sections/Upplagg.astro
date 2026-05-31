@@ -1,6 +1,7 @@
 ---
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
+import ParticleField from '../ParticleField.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
@@ -24,6 +25,7 @@ const partnerFeats = [
 ---
 
 <section id="upplagg">
+  <ParticleField mask="radial-gradient(ellipse 100% 80% at 50% 46%, #000 0%, #000 48%, transparent 90%)" />
   <div class="container">
     <div class="section-head center reveal">
       <span class="section-eyebrow">{s.priEyebrow}</span>
@@ -83,12 +85,15 @@ const partnerFeats = [
 
 <style>
 #upplagg {
+  position: relative;
   padding-top: 112px;
   padding-bottom: 112px;
   background:
     radial-gradient(120% 70% at 50% 0%, rgba(61, 80, 109, 0.04), transparent 60%),
     var(--bg-default);
 }
+/* Content sits above the cursor-reactive dot field. */
+#upplagg > .container { position: relative; z-index: 1; }
 
 .section-head.center { margin-bottom: 56px; }
 

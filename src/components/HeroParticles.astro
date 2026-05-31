@@ -1,265 +1,50 @@
 ---
-// HeroParticles — the hero dot-field "fog wipe" (ported from the legacy module,
-// index.html 4226–4490). Renders no visible DOM of its own; it injects a
-// <canvas class="hero-falling__canvas"> into the existing `.hero-falling`
-// container that Hero.astro already provides (Hero's <style> carries the
-// .hero-falling__canvas rule).
-//
-// The hero load-intro orchestrator (Hero.astro) calls the guarded
-// `window.lucraFogIntro()` hook at the orb-pulse moment to burst the dots in.
-// This module defines that exact hook (plus reads `window.lucraOrbPulse`) when
-// the field mounts. Importing this component in Hero ensures Astro/Vite bundles
-// the script.
+// HeroParticles — the hero dot-field "fog wipe". The core (cursor-reactive
+// wipe, glow, refog) lives in the shared `src/scripts/particleField.ts` module
+// so it can be reused on other sections (see ParticleField.astro). This file
+// adds the hero-only choreography: the canvas is injected into the existing
+// `.hero-falling` container (Hero.astro carries the .hero-falling__canvas rule),
+// the intro reveal bursts the dots out from the orb, and clicking the orb sweeps
+// the field clean. The load-intro orchestrator (Hero.astro) calls the guarded
+// `window.lucraFogIntro()` hook at the orb-pulse moment to play that intro.
 ---
 
 <script>
-  // Hero dot-field "fog wipe". The dots are drawn on a canvas and treated
-  // like mist on glass: the cursor erases them along its path with a soft
-  // brush, and the cleared trail slowly fogs back over ~1.6s. A separate
-  // single-channel "fog" buffer tracks how misted each pixel is (1 = full
-  // fog, 0 = wiped); the visible canvas = dot pattern masked by that buffer.
-  function initParticles(field: HTMLElement): void {
+  import { initParticleField } from '../scripts/particleField';
+
+  function initHeroParticles(field: HTMLElement): void {
     const hero = document.querySelector<HTMLElement>('.hero');
     const orb = document.getElementById('hero-orb');
-    if (!hero || typeof document.createElement('canvas').getContext !== 'function') return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!hero) return;
 
-    const DOT = 24;                 // grid spacing (matches the CSS fallback)
-    const DOT_R = 1.05;             // dot radius
-    const DOT_RGB = '61,80,109';    // Lucra slate
-    const DOT_A = 0.24;             // dot opacity when fully fogged
-    const REFOG = 0.012;            // per-frame fog regrowth (lower = slower, smoother return)
-    const BRUSH_MIN = 92;           // wipe radius when moving slowly (precise)
-    const BRUSH_MAX = 210;          // wipe radius when moving fast (sweeping)
-    const CYAN = '86,179,235';      // Lucra accent #56B3EB — glow / wiped-edge tint
-    const GLOW_R = 175;             // cursor glow radius (px)
-    const GLOW_TINT = 0.55;         // how strongly the rim dots go cyan
-    const GLOW_WASH = 0.06;         // faint cyan light in the cleared centre
+    const controller = initParticleField({
+      canvasParent: field,
+      surface: hero,
+      canvasClass: 'hero-falling__canvas',
+      startCleared: true,
+    });
+    if (!controller) return;
 
-    const canvas = document.createElement('canvas');
-    canvas.className = 'hero-falling__canvas';
-    field.appendChild(canvas);
-    field.style.backgroundImage = 'none';            // canvas replaces the static fallback
-    const ctx = canvas.getContext('2d');
-
-    // Offscreen layers: a tiled dot pattern + the fog buffer.
-    const pat = document.createElement('canvas');
-    const pctx = pat.getContext('2d');
-    const fog = document.createElement('canvas');
-    const fctx = fog.getContext('2d');
-    if (!ctx || !pctx || !fctx) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let W = 0, H = 0;
-    let px = 0, py = 0, hasPrev = false;  // previous pointer position (device px)
-    let dirtyUntil = 0;                   // keep animating until this timestamp
-    let running = false;
-    let gx = 0, gy = 0, glowA = 0;        // eased glow position + intensity (0..1)
-    let curBrush = BRUSH_MIN;             // eased brush radius (px, CSS)
-    let lastMoveT = 0;                    // timestamp of previous pointermove
-    let introDone = false;                // first-load reveal plays only once
-    let holdUntil = 0;                    // pause fog regrowth until this time (orb-clear hold)
-
-    function buildPattern(): void {
-      const s = DOT * dpr;
-      pat.width = s; pat.height = s;
-      pctx!.clearRect(0, 0, s, s);
-      pctx!.fillStyle = 'rgba(' + DOT_RGB + ',' + DOT_A + ')';
-      pctx!.beginPath();
-      pctx!.arc(s / 2, s / 2, DOT_R * dpr, 0, Math.PI * 2);
-      pctx!.fill();
-    }
-
+    // Orb centre in CSS px relative to the hero (the field's coordinate space).
     function orbCenter(): { x: number; y: number } {
       const hr = hero!.getBoundingClientRect();
       const or = orb ? orb.getBoundingClientRect() : null;
       return {
-        x: (or ? (or.left + or.width / 2) - hr.left : hr.width / 2) * dpr,
-        y: (or ? (or.top + or.height / 2) - hr.top : hr.height * 0.18) * dpr
+        x: or ? (or.left + or.width / 2) - hr.left : hr.width / 2,
+        y: or ? (or.top + or.height / 2) - hr.top : hr.height * 0.18,
       };
     }
 
-    function resize(): void {
-      const r = hero!.getBoundingClientRect();
-      W = Math.max(1, Math.round(r.width * dpr));
-      H = Math.max(1, Math.round(r.height * dpr));
-      canvas.width = W; canvas.height = H;
-      canvas.style.width = r.width + 'px';
-      canvas.style.height = r.height + 'px';
-      fog.width = W; fog.height = H;
-      fctx!.globalCompositeOperation = 'source-over';
-      buildPattern();
-      hasPrev = false;
-      if (!introDone) {
-        // First load: start cleared and WAIT — the load-intro orchestrator calls
-        // window.lucraFogIntro() at the orb pulse so the dots burst in then.
-        introDone = true;
-        fctx!.clearRect(0, 0, W, H);
-        kick(200);
-      } else {
-        // Later resizes: just reset to fully fogged.
-        fctx!.fillStyle = '#fff';
-        fctx!.fillRect(0, 0, W, H);
-        kick(900);
-      }
-    }
-
-    // Intro — fog condenses outward from the orb, materialising the dots once.
-    function introReveal(): void {
-      const c = orbCenter(), ox = c.x, oy = c.y;
-      const maxR = Math.hypot(Math.max(ox, W - ox), Math.max(oy, H - oy)) + 8 * dpr;
-      const t0 = performance.now();
-      const DUR = 1000;
-      (function grow() {
-        const t = Math.min(1, (performance.now() - t0) / DUR);
-        const R = (1 - Math.pow(1 - t, 3)) * maxR;      // ease-out expansion
-        fctx!.globalCompositeOperation = 'source-over';
-        const g = fctx!.createRadialGradient(ox, oy, Math.max(0, R - 70 * dpr), ox, oy, R);
-        g.addColorStop(0, 'rgba(255,255,255,1)');
-        g.addColorStop(1, 'rgba(255,255,255,0)');
-        fctx!.fillStyle = g;
-        fctx!.beginPath();
-        fctx!.arc(ox, oy, R, 0, Math.PI * 2);
-        fctx!.fill();
-        kick(200);
-        if (t < 1) { requestAnimationFrame(grow); }
-        else { fctx!.fillStyle = '#fff'; fctx!.fillRect(0, 0, W, H); kick(200); }
-      })();
-    }
-
-    function eraseSegment(x0: number, y0: number, x1: number, y1: number, brushCss: number): void {
-      // Stamp soft brush dabs from the previous point to the current one so
-      // fast moves still clear a continuous stroke.
-      const dx = x1 - x0, dy = y1 - y0;
-      const dist = Math.hypot(dx, dy);
-      const br = (brushCss || BRUSH_MIN) * dpr;
-      const step = Math.max(br * 0.28, 1);
-      const n = Math.max(1, Math.ceil(dist / step));
-      fctx!.globalCompositeOperation = 'destination-out';
-      for (let i = 0; i <= n; i++) {
-        const t = i / n;
-        const x = x0 + dx * t, y = y0 + dy * t;
-        const g = fctx!.createRadialGradient(x, y, 0, x, y, br);
-        g.addColorStop(0, 'rgba(0,0,0,0.92)');
-        g.addColorStop(0.45, 'rgba(0,0,0,0.6)');
-        g.addColorStop(1, 'rgba(0,0,0,0)');
-        fctx!.fillStyle = g;
-        fctx!.beginPath();
-        fctx!.arc(x, y, br, 0, Math.PI * 2);
-        fctx!.fill();
-      }
-    }
-
-    function frame(): void {
-      // 1) Fog slowly regrows everywhere (alpha climbs back toward 1) — unless
-      //    an orb-clear is holding the field clear for its dwell time.
-      if (performance.now() >= holdUntil) {
-        fctx!.globalCompositeOperation = 'source-over';
-        fctx!.fillStyle = 'rgba(255,255,255,' + REFOG + ')';
-        fctx!.fillRect(0, 0, W, H);
-      }
-
-      // 2) Compose visible canvas: full dot pattern, masked by the fog alpha.
-      ctx!.globalCompositeOperation = 'source-over';
-      ctx!.clearRect(0, 0, W, H);
-      const pattern = ctx!.createPattern(pat, 'repeat');
-      ctx!.fillStyle = pattern!;
-      ctx!.fillRect(0, 0, W, H);
-      ctx!.globalCompositeOperation = 'destination-in';
-      ctx!.drawImage(fog, 0, 0);
-
-      // 3) Cursor glow: ease toward the pointer, decay intensity. The cursor
-      //    clears the dots at its centre, so a cyan tint lands on the *ring* of
-      //    surviving dots, plus a faint cyan wash fills the cleared middle —
-      //    reads as a luminous, on-brand squeegee.
-      gx += (px - gx) * 0.22;
-      gy += (py - gy) * 0.22;
-      if (glowA > 0.004) {
-        const gr = GLOW_R * dpr;
-        // tint only the dots (source-atop respects existing alpha = the dot mask)
-        ctx!.globalCompositeOperation = 'source-atop';
-        const gt = ctx!.createRadialGradient(gx, gy, 0, gx, gy, gr);
-        gt.addColorStop(0, 'rgba(' + CYAN + ',' + (GLOW_TINT * glowA).toFixed(3) + ')');
-        gt.addColorStop(0.7, 'rgba(' + CYAN + ',' + (GLOW_TINT * glowA * 0.35).toFixed(3) + ')');
-        gt.addColorStop(1, 'rgba(' + CYAN + ',0)');
-        ctx!.fillStyle = gt;
-        ctx!.fillRect(0, 0, W, H);
-        // soft cyan light over the cleared centre (source-over, very faint)
-        ctx!.globalCompositeOperation = 'source-over';
-        const gw = ctx!.createRadialGradient(gx, gy, 0, gx, gy, gr * 0.82);
-        gw.addColorStop(0, 'rgba(' + CYAN + ',' + (GLOW_WASH * glowA).toFixed(3) + ')');
-        gw.addColorStop(1, 'rgba(' + CYAN + ',0)');
-        ctx!.fillStyle = gw;
-        ctx!.fillRect(0, 0, W, H);
-        glowA *= 0.9;
-      }
-      ctx!.globalCompositeOperation = 'source-over';
-
-      if (performance.now() < dirtyUntil || glowA > 0.02) {
-        requestAnimationFrame(frame);
-      } else {
-        running = false;
-      }
-    }
-
-    function kick(ms: number): void {
-      dirtyUntil = Math.max(dirtyUntil, performance.now() + (ms || 1700));
-      if (!running) { running = true; requestAnimationFrame(frame); }
-    }
-
-    hero.addEventListener('pointermove', function(e: PointerEvent) {
-      const r = hero!.getBoundingClientRect();
-      const x = (e.clientX - r.left) * dpr;
-      const y = (e.clientY - r.top) * dpr;
-      const now = performance.now();
-      if (!hasPrev) { px = x; py = y; gx = x; gy = y; hasPrev = true; lastMoveT = now; }
-
-      // Velocity-aware brush: fast cursor → wider, sweeping wipe; slow → tighter.
-      const dt = Math.max(1, now - lastMoveT);
-      const speed = Math.hypot(x - px, y - py) / dpr / dt;     // CSS px per ms
-      const target = BRUSH_MIN + (BRUSH_MAX - BRUSH_MIN) * Math.min(1, speed / 2.4);
-      curBrush += (target - curBrush) * 0.35;                  // ease to avoid jitter
-      lastMoveT = now;
-
-      eraseSegment(px, py, x, y, curBrush);
-      px = x; py = y;
-      glowA = 1;                  // light up the glow under the cursor
-      kick(2800);                 // keep refogging running for a bit after we stop
-    });
-    hero.addEventListener('pointerleave', function() { hasPrev = false; kick(2800); });
-
-    // Orb click — sweep the whole hero clean from the orb outward, then let
-    // the fog drift back in on its own (slow, smooth).
-    function orbClear(): void {
-      const c = orbCenter(), ox = c.x, oy = c.y;
-      const maxR = Math.hypot(Math.max(ox, W - ox), Math.max(oy, H - oy)) + 8 * dpr;
-      const t0 = performance.now();
-      const DUR = 560;
-      // Ripple the orb itself (its WebGL shader), synced with the sweep.
-      const orbPulse = (window as any).lucraOrbPulse;
-      if (orbPulse) orbPulse();
-      // Keep the hero cleared for ~8s, then let the fog drift back in.
-      holdUntil = performance.now() + 8000;
-      (function grow() {
-        const t = Math.min(1, (performance.now() - t0) / DUR);
-        const R = (1 - Math.pow(1 - t, 3)) * maxR;     // ease-out expansion
-        fctx!.globalCompositeOperation = 'destination-out';
-        const g = fctx!.createRadialGradient(ox, oy, Math.max(0, R - 40 * dpr), ox, oy, R);
-        g.addColorStop(0, 'rgba(0,0,0,1)');
-        g.addColorStop(1, 'rgba(0,0,0,0)');
-        fctx!.fillStyle = g;
-        fctx!.beginPath();
-        fctx!.arc(ox, oy, R, 0, Math.PI * 2);
-        fctx!.fill();
-        kick(300);
-        if (t < 1) requestAnimationFrame(grow);
-        else kick(8000 + 3800);                       // hold cleared ~8s, then refog
-      })();
-    }
+    // Orb click — sweep the hero clean from the orb outward, rippling the orb's
+    // WebGL shader in sync, then hold ~8s before the fog drifts back in.
     if (orb) {
       orb.style.pointerEvents = 'auto';
       orb.style.cursor = 'pointer';
-      orb.addEventListener('click', orbClear);
+      orb.addEventListener('click', function () {
+        const orbPulse = (window as any).lucraOrbPulse;
+        if (orbPulse) orbPulse();
+        controller.clear(orbCenter, 8000);
+      });
     }
 
     // Exposed for the load-intro orchestrator: burst the dots in from the orb at
@@ -268,38 +53,26 @@
     const fogIntro = function (): void {
       if (fogIntroPlayed) return;
       fogIntroPlayed = true;
-      introReveal();
+      controller.reveal(orbCenter);
     };
     (window as any).lucraFogIntro = fogIntro;
     setTimeout(function () { fogIntro(); }, 2500);
-
-    let rt: ReturnType<typeof setTimeout>;
-    window.addEventListener('resize', function() {
-      clearTimeout(rt);
-      rt = setTimeout(resize, 150);
-    });
-    resize();
   }
 
   // ── Lazy init ─────────────────────────────────────────────────────────────
   // The fog field lives at the top of the page, so the IntersectionObserver
-  // (with a 200px rootMargin) fires essentially immediately on load. We still
-  // gate on:
-  //   • `.hero-falling` existing,
-  //   • prefers-reduced-motion NOT being set,
-  //   • the field being near/inside the viewport,
-  // then init on idle. Defining `window.lucraFogIntro` happens INSIDE
-  // initParticles (as in the legacy), so Hero's guarded `if (window.lucraFogIntro)`
-  // call simply no-ops for the brief moment before the field inits — acceptable
-  // and matches legacy sequencing. The internal 2500ms watchdog reveals the dots
-  // even if the orchestrator never fires.
+  // (with a 200px rootMargin) fires essentially immediately on load. Defining
+  // `window.lucraFogIntro` happens inside initHeroParticles, so Hero's guarded
+  // `if (window.lucraFogIntro)` call simply no-ops for the brief moment before
+  // the field inits — acceptable and matches legacy sequencing. The internal
+  // 2500ms watchdog reveals the dots even if the orchestrator never fires.
   const el = document.querySelector<HTMLElement>('.hero-falling');
   if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const ric: (cb: () => void) => void =
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)
         : (cb) => { setTimeout(cb, 1); };
-    const start = (): void => ric(() => initParticles(el));
+    const start = (): void => ric(() => initHeroParticles(el));
     const io = new IntersectionObserver((entries, obs) => {
       if (entries.some((entry) => entry.isIntersecting)) {
         obs.disconnect();

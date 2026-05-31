@@ -3,57 +3,44 @@ import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
+
+const cards = [
+  { icon: 'trending-up', tab: s.forVemCard1Tab, today: s.forVemCard1Today, lucra: s.forVemCard1Lucra },
+  { icon: 'message-circle', tab: s.forVemCard2Tab, today: s.forVemCard2Today, lucra: s.forVemCard2Lucra },
+  { icon: 'target', tab: s.forVemCard3Tab, today: s.forVemCard3Today, lucra: s.forVemCard3Lucra },
+  { icon: 'calendar-clock', tab: s.forVemCard4Tab, today: s.forVemCard4Today, lucra: s.forVemCard4Lucra },
+  { icon: 'building-2', tab: s.forVemCard5Tab, today: s.forVemCard5Today, lucra: s.forVemCard5Lucra },
+];
 ---
 
 <section id="for-vem">
-  <div class="container">
-    <div class="section-head reveal">
+  <div class="container fv-layout">
+    <aside class="fv-aside reveal">
       <span class="section-eyebrow">{s.forVemEyebrow}</span>
       <h2 class="section-title">{s.forVemTitle}</h2>
-      <p class="section-sub">
-        {s.forVemSub}
-      </p>
-    </div>
+      <p class="section-sub">{s.forVemSub}</p>
+      <a class="btn btn-primary btn-lg fv-cta" href="[CALENDLY_URL]">{s.forVemCta}</a>
+    </aside>
 
-    <div class="segments-grid">
-      <article class="segment-card reveal">
-        <div class="seg-head">
-          <span class="seg-glyph">
-            <Icon name="user" />
+    <div class="fv-stack">
+      {cards.map((card, index) => (
+        <article class="fv-card" style={`--i:${index}`}>
+          <span class="fv-tab">
+            <Icon name={card.icon} size={15} stroke={2} />
+            {card.tab}
           </span>
-          <span>
-            <span class="seg-kicker">{s.forVemKicker}</span>
-            <h3>{s.forVemCard1Title}</h3>
-          </span>
-        </div>
-        <p class="seg-sub">{s.forVemCard1Sub}</p>
-        <span class="seg-listlabel">{s.forVemListLabel}</span>
-        <ul>
-          <li>{s.forVemCard1Li1}</li>
-          <li>{s.forVemCard1Li2}</li>
-          <li>{s.forVemCard1Li3}</li>
-          <li>{s.forVemCard1Li4}</li>
-        </ul>
-      </article>
-      <article class="segment-card reveal delay-1">
-        <div class="seg-head">
-          <span class="seg-glyph">
-            <Icon name="building-2" />
-          </span>
-          <span>
-            <span class="seg-kicker">{s.forVemKicker}</span>
-            <h3>{s.forVemCard2Title}</h3>
-          </span>
-        </div>
-        <p class="seg-sub">{s.forVemCard2Sub}</p>
-        <span class="seg-listlabel">{s.forVemListLabel}</span>
-        <ul>
-          <li>{s.forVemCard2Li1}</li>
-          <li>{s.forVemCard2Li2}</li>
-          <li>{s.forVemCard2Li3}</li>
-          <li>{s.forVemCard2Li4}</li>
-        </ul>
-      </article>
+          <div class="fv-body">
+            <div class="fv-block fv-block-today">
+              <span class="fv-blocklabel fv-today-label">{s.forVemTodayLabel}</span>
+              <p class="fv-text fv-today">{card.today}</p>
+            </div>
+            <div class="fv-block fv-block-lucra">
+              <span class="fv-blocklabel fv-lucra-label">{s.forVemLucraLabel}</span>
+              <p class="fv-text fv-lucra">{card.lucra}</p>
+            </div>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </section>
@@ -63,170 +50,224 @@ const s = getStrings(lang);
   padding-top: 80px;
 }
 
-.segments-grid {
+.fv-layout {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  /* Columns sized to content and centered, so leftover space sits at the
+     edges instead of as a big gap between the cards and the text */
+  grid-template-columns: minmax(0, 500px) minmax(0, 430px);
+  justify-content: center;
+  gap: clamp(40px, 5vw, 96px);
+  align-items: start;
 }
 
-.segment-card {
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  padding: 36px 34px 30px;
+.fv-stack { order: 1; }
+
+/* Right column pins while the card stack scrolls past */
+.fv-aside {
+  order: 2;
+  position: sticky;
+  top: 120px;
+  align-self: start;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
+}
+
+/* Eyebrow hugs its text instead of stretching the full column */
+.fv-aside .section-eyebrow {
+  align-self: flex-start;
+}
+
+.fv-aside .section-eyebrow,
+.fv-aside .section-title,
+.fv-aside .section-sub {
+  margin-bottom: 0;
+}
+
+.fv-cta {
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+/* Card stack — pure-CSS sticky stacking */
+.fv-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.fv-card {
+  position: sticky;
+  /* All cards pin at the same height; tabs fan out sideways like a drawer */
+  top: 120px;
+  /* Shrinks toward its top edge as the next card covers it (recede-into-depth) */
+  transform-origin: center top;
+  will-change: transform;
+  /* Tight, soft shadow traces the tab + body silhouette as one folder shape */
+  filter: drop-shadow(0 6px 14px rgba(15, 23, 42, .07));
+}
+
+/* Narrow folder tab with soft flared base corners (browser-tab technique) */
+.fv-tab {
   position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  box-shadow:
-    0 1px 2px rgba(15,23,42,.04),
-    0 18px 44px -30px rgba(61,80,109,.34);
-  transition: border-color .35s ease, transform .35s ease, box-shadow .35s ease;
-}
-
-/* Soft brand glow drifting in the top-right corner */
-.segment-card::before {
-  content: "";
-  position: absolute;
-  top: -90px; right: -90px;
-  width: 280px; height: 280px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(86,179,235,.16) 0%, transparent 70%);
-  opacity: .75;
-  pointer-events: none;
-  z-index: -1;
-  transition: opacity .35s ease, transform .55s cubic-bezier(.4,0,.2,1);
-}
-
-/* Gradient hairline along the top edge, brightening on hover */
-.segment-card::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 3px;
-  background: var(--hero-headline-gradient);
-  opacity: 0;
-  transition: opacity .35s ease;
-}
-
-.segment-card:hover {
-  border-color: var(--slate-300);
-  transform: translateY(-5px);
-  box-shadow:
-    0 1px 2px rgba(15,23,42,.05),
-    0 32px 64px -28px rgba(61,80,109,.42);
-}
-
-.segment-card:hover::after { opacity: 1; }
-.segment-card:hover::before { opacity: 1; transform: translate(-12px, 12px); }
-.segment-card:hover .seg-glyph { transform: translateY(-2px); }
-
-/* Header: glyph chip + persona label */
-.seg-head { display: flex; align-items: center; gap: 16px; }
-
-.seg-glyph {
-  width: 54px; height: 54px;
-  flex-shrink: 0;
-  border-radius: 16px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: var(--white);
-  background: linear-gradient(145deg, #56739B 0%, #3D506D 55%, #34455E 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.22),
-    0 10px 22px -10px rgba(61,80,109,.6);
-  transition: transform .35s cubic-bezier(.4,0,.2,1);
+  gap: 7px;
+  width: fit-content;
+  /* Each tab steps right by index so the back tabs stay visible, not buried */
+  margin-left: calc(14px + var(--i) * clamp(76px, 18%, 100px));
+  padding: 8px 16px;
+  background: var(--bg-paper);
+  border-radius: 12px 12px 0 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  color: var(--brand-primary);
 }
 
-.seg-glyph svg { width: 27px; height: 27px; }
+.fv-tab svg {
+  width: 15px;
+  height: 15px;
+  color: var(--brand-accent);
+  flex-shrink: 0;
+}
 
-.seg-head .seg-kicker {
-  display: block;
+.fv-tab::before,
+.fv-tab::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--bg-paper);
+}
+
+.fv-tab::before {
+  left: -12px;
+  -webkit-mask: radial-gradient(circle at top left, transparent 12px, #000 12.5px);
+          mask: radial-gradient(circle at top left, transparent 12px, #000 12.5px);
+}
+
+.fv-tab::after {
+  right: -12px;
+  -webkit-mask: radial-gradient(circle at top right, transparent 12px, #000 12.5px);
+          mask: radial-gradient(circle at top right, transparent 12px, #000 12.5px);
+}
+
+.fv-body {
+  background: var(--bg-paper);
+  border-radius: var(--radius-card);
+  /* overlap the tab by 1px so the two white shapes read as one */
+  margin-top: -1px;
+  padding: 36px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.fv-block {
+  border-left: 2px solid var(--slate-300);
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fv-block-lucra {
+  border-left-color: var(--brand-primary);
+}
+
+.fv-blocklabel {
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--slate-400);
-  margin-bottom: 3px;
 }
 
-.segment-card h3 {
-  font-family: var(--font-display);
-  font-size: 23px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--brand-primary);
+.fv-today-label { color: var(--slate-400); }
+.fv-lucra-label { color: var(--brand-primary); }
+
+.fv-text {
   margin: 0;
-  line-height: 1.1;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
-.segment-card .seg-sub {
-  font-size: 14.5px;
-  color: var(--slate-500);
-  line-height: 1.62;
-  margin: 0;
+.fv-today { color: var(--slate-500); }
+.fv-lucra { color: var(--fg-primary); }
+
+@media (max-width: 860px) {
+  .fv-layout { grid-template-columns: 1fr; }
+  /* Restore source order: heading first, cards below */
+  .fv-aside { order: 0; position: static; }
+  .fv-stack { order: 0; }
+  .fv-card { position: static; }
+  .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
 }
 
-/* Friction list — labelled, with subtle cyan markers (no green) */
-.seg-listlabel {
-  font-family: var(--font-display);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand-accent);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.seg-listlabel::before {
-  content: "";
-  width: 18px; height: 1.5px;
-  background: linear-gradient(90deg, var(--brand-accent), transparent);
-  border-radius: 2px;
-}
-
-.segment-card ul {
-  list-style: none;
-  margin: 6px 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.segment-card li {
-  font-size: 14px;
-  color: var(--slate-600);
-  display: flex;
-  align-items: flex-start;
-  gap: 13px;
-  line-height: 1.5;
-  padding: 12px 0;
-  border-top: 1px solid var(--border);
-}
-
-.segment-card li:first-child { border-top: 0; padding-top: 4px; }
-
-.segment-card li::before {
-  content: "";
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--brand-accent);
-  box-shadow: 0 0 0 4px rgba(86,179,235,.14);
-  flex-shrink: 0;
-  margin-top: 7px;
-}
-
-/* Section-specific reveal animations: cards slide in from opposite sides */
-:global(html.reveal-ready) #for-vem .segment-card.reveal         { transform: translate(-32px, 18px); }
-:global(html.reveal-ready) #for-vem .segment-card.reveal.delay-1 { transform: translate( 32px, 18px); }
-:global(html.reveal-ready) #for-vem .segment-card.reveal.in-view { transform: none; }
-
-@media (max-width: 760px) {
-  .segments-grid { grid-template-columns: 1fr; }
+/* No scroll-driven overlap when motion is reduced — plain stacked list */
+@media (prefers-reduced-motion: reduce) {
+  .fv-aside { position: static; }
+  .fv-card { position: static; }
 }
 </style>
+
+<script>
+  // As each card pins, the next one rising over it makes it shrink + dim —
+  // the covered card recedes into depth while the new one lays on top.
+  const section = document.getElementById('for-vem');
+  const cards = section
+    ? Array.from(section.querySelectorAll<HTMLElement>('.fv-card'))
+    : [];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (cards.length > 1 && !reduce) {
+    const PIN = 120; // must match .fv-card top
+    const COVER = 440; // distance over which the previous card recedes
+    let active = false;
+    let ticking = false;
+
+    const frame = (): void => {
+      ticking = false;
+      // Only run the stack effect while cards are actually sticky (desktop)
+      if (window.getComputedStyle(cards[0]).position !== 'sticky') {
+        cards.forEach((card) => {
+          card.style.transform = '';
+        });
+        return;
+      }
+      for (let index = 0; index < cards.length; index++) {
+        const next = cards[index + 1];
+        let progress = 0;
+        if (next) {
+          const nextTop = next.getBoundingClientRect().top;
+          progress = Math.min(1, Math.max(0, 1 - (nextTop - PIN) / COVER));
+        }
+        const scale = 1 - progress * 0.05;
+        const lift = -progress * 14;
+        cards[index].style.transform = `translateY(${lift}px) scale(${scale})`;
+      }
+    };
+
+    const onScroll = (): void => {
+      if (active && !ticking) {
+        ticking = true;
+        requestAnimationFrame(frame);
+      }
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        active = entries[0].isIntersecting;
+        if (active) frame();
+      },
+      { rootMargin: '120px' },
+    );
+    io.observe(section!);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    frame();
+  }
+</script>

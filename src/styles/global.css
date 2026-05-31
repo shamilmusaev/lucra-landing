@@ -17,7 +17,10 @@ button { font: inherit; }
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  /* Scales with the viewport up to 1800px so content fills wide screens and
+     lines up with the nav (which uses the same cap), instead of leaving large
+     empty gutters. max-width only caps — smaller screens stay fluid. */
+  max-width: clamp(1200px, 94vw, 1800px);
   margin: 0 auto;
   padding: 0 32px;
 }

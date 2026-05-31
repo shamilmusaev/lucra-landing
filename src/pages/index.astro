@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
-import Problem from '../components/sections/Problem.astro';
 import Jamforelse from '../components/sections/Jamforelse.astro';
 import FeatureShowcase from '../components/sections/FeatureShowcase.astro';
 import ForVem from '../components/sections/ForVem.astro';
@@ -19,7 +18,6 @@ const s = getStrings(lang);
 <BaseLayout lang={lang} title={s.metaTitle} description={s.metaDescription} path="/">
   <Nav lang={lang} />
   <Hero lang={lang} />
-  <Problem lang={lang} />
   <FeatureShowcase lang={lang} />
   <Jamforelse lang={lang} />
   <ForVem lang={lang} />

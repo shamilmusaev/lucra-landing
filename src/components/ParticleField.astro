@@ -1,0 +1,88 @@
+---
+// Reusable cursor-reactive dot-field — the hero "fog wipe" effect, droppable
+// behind any section. Renders a self-positioned background layer (absolute,
+// inset:0, behind content) and lazily mounts the shared particleField core on
+// it. The host section only needs `position: relative` and content above z-index 0.
+//
+// The pointer listener binds to the nearest enclosing <section> so moving the
+// cursor over the section's content still wipes the dots behind it.
+//
+// Props:
+//   mask     — CSS mask-image used to fade the dot cloud at the edges (optional).
+//   dotAlpha — dot opacity when fully fogged (optional, default 0.2).
+//   class    — extra class on the layer (optional).
+interface Props {
+  mask?: string;
+  dotAlpha?: number;
+  class?: string;
+}
+const { mask, dotAlpha, class: className } = Astro.props as Props;
+const style = [
+  mask ? `--pf-mask:${mask}` : null,
+  dotAlpha != null ? `--pf-dot-alpha:${dotAlpha}` : null,
+].filter(Boolean).join(';') || undefined;
+---
+
+<div
+  class:list={['particle-field', className]}
+  data-particle-field
+  data-dot-alpha={dotAlpha ?? 0.2}
+  aria-hidden="true"
+  style={style}
+></div>
+
+<style>
+  .particle-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    /* Static fallback dot grid (shown when JS/canvas is unavailable or motion
+       is reduced); the canvas replaces it once the field mounts. */
+    background-image: radial-gradient(circle, rgba(61, 80, 109, 0.16) 1px, transparent 1.6px);
+    background-size: 24px 24px;
+    --pf-mask: radial-gradient(ellipse 94% 84% at 50% 50%, #000 0%, #000 54%, transparent 92%);
+    -webkit-mask-image: var(--pf-mask);
+            mask-image: var(--pf-mask);
+  }
+  .particle-field :global(.particle-field__canvas) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  import { initParticleField } from '../scripts/particleField';
+
+  function mountField(field: HTMLElement): void {
+    const pointer = field.closest('section') ?? field.parentElement ?? field;
+    const dotAlpha = Number(field.dataset.dotAlpha);
+    initParticleField({
+      canvasParent: field,
+      pointer: pointer as HTMLElement,
+      canvasClass: 'particle-field__canvas',
+      dotAlpha: Number.isFinite(dotAlpha) ? dotAlpha : undefined,
+    });
+  }
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ric: (cb: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (cb) => (window as any).requestIdleCallback(cb)
+        : (cb) => { setTimeout(cb, 1); };
+    const fields = document.querySelectorAll<HTMLElement>('[data-particle-field]');
+    fields.forEach((field) => {
+      const io = new IntersectionObserver((entries, obs) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          obs.disconnect();
+          ric(() => mountField(field));
+        }
+      }, { rootMargin: '200px' });
+      io.observe(field);
+    });
+  }
+</script>
