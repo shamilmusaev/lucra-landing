@@ -25,6 +25,10 @@ export interface ParticleFieldOptions {
   startCleared?: boolean;
   /** Dot opacity when fully fogged (0..1). Default 0.24. */
   dotAlpha?: number;
+  /** Hero-only: cursor makes nearby dots grow + glow cyan, and softens the wipe. Default false. */
+  interactiveBloom?: boolean;
+  /** Bloom only: CSS selector for elements whose area must stay calm (dots there don't grow/glow). */
+  bloomExcludeSelector?: string;
 }
 
 export interface ParticleFieldController {
@@ -54,6 +58,14 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   const GLOW_TINT = 0.55;               // how strongly the rim dots go cyan
   const GLOW_WASH = 0.06;               // faint cyan light in the cleared centre
 
+  const bloomEnabled = !!opts.interactiveBloom;
+  const BLOOM_R = 180;                  // influence radius (px) for the grow/glow
+  const BLOOM_SCALE = 2.8;              // max dot-size multiplier under the cursor
+  const BLOOM_A = 0.9;                  // peak cyan alpha of a bloomed dot
+  const BLOOM_FEATHER = 56;             // px: soft ramp around keep-out zones (no hard dot-line)
+  const FOLLOW = bloomEnabled ? 0.14 : 0.22;  // glow trailing speed (lower = smoother)
+  const BLOOM_EXCLUDE = opts.bloomExcludeSelector ?? '';  // areas (text/orb/UI) kept calm
+
   const canvas = document.createElement('canvas');
   canvas.className = opts.canvasClass;
   canvasParent.appendChild(canvas);
@@ -65,7 +77,9 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   const pctx = pat.getContext('2d');
   const fog = document.createElement('canvas');
   const fctx = fog.getContext('2d');
-  if (!ctx || !pctx || !fctx) return null;
+  const bloom = document.createElement('canvas');
+  const bctx = bloom.getContext('2d');
+  if (!ctx || !pctx || !fctx || !bctx) return null;
 
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   let W = 0, H = 0;
@@ -77,6 +91,9 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   let lastMoveT = 0;                    // timestamp of previous pointermove
   let firstResize = true;               // first sizing decides fogged vs cleared
   let holdUntil = 0;                    // pause fog regrowth until this time (clear hold)
+  let pointerInside = false;            // bloom: hold the glow alive while the cursor hovers
+  let excludeRects: number[][] = [];    // bloom: [x0,y0,x1,y1] device-px boxes (text/orb/UI) to skip
+  let excludeFresh = false;             // bloom: recompute exclude boxes once after layout settles
 
   function buildPattern(): void {
     const s = DOT * dpr;
@@ -96,9 +113,12 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     canvas.style.width = r.width + 'px';
     canvas.style.height = r.height + 'px';
     fog.width = W; fog.height = H;
+    bloom.width = W; bloom.height = H;
     fctx!.globalCompositeOperation = 'source-over';
     buildPattern();
     hasPrev = false;
+    refreshExclude();
+    excludeFresh = false;
     if (firstResize && opts.startCleared) {
       // First load (hero): start cleared and WAIT — reveal() bursts the dots in.
       firstResize = false;
@@ -111,6 +131,24 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
       fctx!.fillRect(0, 0, W, H);
       kick(900);
     }
+  }
+
+  // Bloom: snapshot the no-bloom zones (text/orb/UI) as device-px boxes relative
+  // to the surface. Scroll-invariant (element and surface move together), so this
+  // only needs refreshing on layout changes — call it on resize + once on first move.
+  function refreshExclude(): void {
+    if (!bloomEnabled || !BLOOM_EXCLUDE) { excludeRects = []; return; }
+    const sr = surface.getBoundingClientRect();
+    const pad = 6 * dpr;
+    excludeRects = Array.from(document.querySelectorAll(BLOOM_EXCLUDE)).map((el) => {
+      const r = el.getBoundingClientRect();
+      return [
+        (r.left - sr.left) * dpr - pad,
+        (r.top - sr.top) * dpr - pad,
+        (r.right - sr.left) * dpr + pad,
+        (r.bottom - sr.top) * dpr + pad,
+      ];
+    });
   }
 
   // Convert a CSS-px centre (relative to the surface) into device-px.
@@ -210,8 +248,64 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     // 3) Cursor glow: ease toward the pointer, decay intensity. The cursor
     //    clears the dots at its centre, so a cyan tint lands on the *ring* of
     //    surviving dots, plus a faint cyan wash fills the cleared middle.
-    gx += (px - gx) * 0.22;
-    gy += (py - gy) * 0.22;
+    gx += (px - gx) * FOLLOW;
+    gy += (py - gy) * FOLLOW;
+
+    // Bloom holds while the cursor rests inside the hero (not just on movement):
+    // keep the glow lit and the loop alive; it only decays once the pointer leaves.
+    if (bloomEnabled && pointerInside) { glowA = 1; kick(700); }
+
+    // 3a) Bloom (hero only): dots near the cursor grow and glow cyan. Drawn on
+    //     its own layer, then masked by the fog so swept-clean zones stay empty.
+    if (bloomEnabled && glowA > 0.01) {
+      const s = DOT * dpr;                 // grid spacing in device px
+      const R = BLOOM_R * dpr;
+      bctx!.globalCompositeOperation = 'source-over';
+      bctx!.clearRect(0, 0, W, H);
+      const iMin = Math.floor((gx - R - s / 2) / s);
+      const iMax = Math.ceil((gx + R - s / 2) / s);
+      const jMin = Math.floor((gy - R - s / 2) / s);
+      const jMax = Math.ceil((gy + R - s / 2) / s);
+      for (let i = iMin; i <= iMax; i++) {
+        const x = s / 2 + i * s;
+        if (x < 0 || x > W) continue;
+        for (let j = jMin; j <= jMax; j++) {
+          const y = s / 2 + j * s;
+          if (y < 0 || y > H) continue;
+          const d = Math.hypot(x - gx, y - gy);
+          if (d > R) continue;
+          // Feathered keep-out: dots inside a text/orb/UI box stay silent; just
+          // outside they ramp back over BLOOM_FEATHER px, so there is no hard
+          // dot-line hugging the box edge.
+          let mask = 1;
+          const feather = BLOOM_FEATHER * dpr;
+          for (let k = 0; k < excludeRects.length; k++) {
+            const er = excludeRects[k];
+            const ox = Math.max(er[0] - x, 0, x - er[2]);
+            const oy = Math.max(er[1] - y, 0, y - er[3]);
+            const od = Math.hypot(ox, oy);
+            if (od <= 0) { mask = 0; break; }
+            const tt = Math.min(1, od / feather);
+            const m = tt * tt * (3 - 2 * tt);
+            if (m < mask) mask = m;
+          }
+          if (mask <= 0) continue;
+          const f = 1 - d / R;
+          const ease = f * f * (3 - 2 * f) * mask;  // distance falloff × keep-out feather
+          const rad = DOT_R * dpr * (1 + (BLOOM_SCALE - 1) * ease);
+          bctx!.fillStyle = 'rgba(' + CYAN + ',' + (BLOOM_A * ease * glowA).toFixed(3) + ')';
+          bctx!.beginPath();
+          bctx!.arc(x, y, rad, 0, Math.PI * 2);
+          bctx!.fill();
+        }
+      }
+      bctx!.globalCompositeOperation = 'destination-in';
+      bctx!.drawImage(fog, 0, 0);
+      bctx!.globalCompositeOperation = 'source-over';
+      ctx!.globalCompositeOperation = 'source-over';
+      ctx!.drawImage(bloom, 0, 0);
+    }
+
     if (glowA > 0.004) {
       const gr = GLOW_R * dpr;
       ctx!.globalCompositeOperation = 'source-atop';
@@ -257,12 +351,14 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     curBrush += (target - curBrush) * 0.35;                  // ease to avoid jitter
     lastMoveT = now;
 
-    eraseSegment(px, py, x, y, curBrush);
+    if (!bloomEnabled) eraseSegment(px, py, x, y, curBrush);  // hero (bloom): no wipe, dots stay intact
+    if (bloomEnabled && !excludeFresh) { refreshExclude(); excludeFresh = true; }  // catch settled layout
     px = x; py = y;
     glowA = 1;                  // light up the glow under the cursor
+    pointerInside = true;
     kick(2800);                 // keep refogging running for a bit after we stop
   });
-  pointer.addEventListener('pointerleave', function () { hasPrev = false; kick(2800); });
+  pointer.addEventListener('pointerleave', function () { hasPrev = false; pointerInside = false; kick(2800); });
 
   let rt: ReturnType<typeof setTimeout>;
   window.addEventListener('resize', function () {

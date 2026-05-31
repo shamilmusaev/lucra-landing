@@ -312,6 +312,11 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     display: flex;
     flex-direction: column;
   }
+  /* On wide screens cap the card width so three-up cards don't grow huge (and
+     tall) — the next card peeks in, signalling the track scrolls. */
+  @media (min-width: 1024px) {
+    .showcase-card { max-width: 440px; }
+  }
   @media (max-width: 1023px) {
     .showcase-card { flex-basis: calc((100% - 24px) / 2); }
   }

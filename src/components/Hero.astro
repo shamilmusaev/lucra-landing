@@ -3,6 +3,7 @@ import { getStrings, type Lang } from '../i18n/utils';
 import Icon from './Icon.astro';
 import OrbIsland from './OrbIsland.astro';
 import HeroParticles from './HeroParticles.astro';
+import HeroBeams from './HeroBeams.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -26,6 +27,7 @@ const s = getStrings(lang);
     <span class="hero-orb reveal" id="hero-orb" aria-hidden="true"></span>
     <OrbIsland />
     <HeroParticles />
+    <HeroBeams />
     <a class="hero-pill reveal" href="#funktioner">
       <span class="pill-badge">{s.heroPillBadge}</span>
       <span class="pill-text">
@@ -443,6 +445,21 @@ const s = getStrings(lang);
     rgba(61,80,109,0.04) 60%,
     transparent 100%);
 }
+/* Animated canvas beams (HeroBeams island). Soft, blurred slate shafts that
+   multiply onto the light page so they stay low-key. Once it mounts, the static
+   blobs above are hidden (they remain the reduced-motion / no-JS fallback). */
+.hero-beams__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: blur(14px);
+  mix-blend-mode: multiply;
+}
+.hero-beams.is-animated::before,
+.hero-beams.is-animated::after,
+.hero-beams.is-animated span { display: none; }
 /* ----------------------------------------------------------------
    Hero dot field — the dotted "cloud" from Landing.html, refined.
    A slate dot grid that fades out toward the edges. The dots are

@@ -1,0 +1,153 @@
+---
+// HeroBeams — animated diagonal "light shaft" beams behind the hero copy.
+// A canvas is injected into the existing `.hero-beams` container; the static
+// CSS blobs there remain as the no-JS / reduced-motion fallback (hidden once
+// the canvas is live via the `.is-animated` class). Each beam is an elongated
+// radial glow (soft on every edge) rather than a hard-edged rectangle, with
+// varied angle/width/length and a slight lateral sway, so on the light page it
+// reads as organic light haze instead of flat parallel lines. Drawn in Lucra
+// slate with `mix-blend-mode: multiply` (canvas styling in Hero.astro) to stay
+// low-key. Lazy-init mirrors HeroParticles: IntersectionObserver +
+// requestIdleCallback, skipped for prefers-reduced-motion.
+---
+
+<script>
+  interface Beam {
+    x: number;
+    y: number;
+    width: number;
+    length: number;
+    angle: number;
+    speed: number;
+    opacity: number;
+    tint: number; // 0..1 — slate base drifting toward a faint slate-blue
+    pulse: number;
+    pulseSpeed: number;
+    sway: number;
+  }
+
+  const BEAM_COUNT = 14;
+
+  function createBeam(width: number, height: number): Beam {
+    return {
+      x: Math.random() * width * 1.4 - width * 0.2,
+      y: Math.random() * height * 1.6 - height * 0.3,
+      width: 140 + Math.random() * 260,
+      length: height * (0.9 + Math.random() * 1.2),
+      angle: -46 + Math.random() * 26,
+      speed: 0.22 + Math.random() * 0.4,
+      opacity: 0.1 + Math.random() * 0.09,
+      tint: Math.random(),
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.01 + Math.random() * 0.014,
+      sway: 0.08 + Math.random() * 0.22,
+    };
+  }
+
+  function initHeroBeams(container: HTMLElement): void {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'hero-beams__canvas';
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    container.appendChild(canvas);
+    container.classList.add('is-animated');
+
+    let beams: Beam[] = [];
+    let frame = 0;
+    let cssWidth = 0;
+    let cssHeight = 0;
+
+    function resize(): void {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = container.getBoundingClientRect();
+      cssWidth = rect.width;
+      cssHeight = rect.height;
+      canvas.width = Math.round(cssWidth * dpr);
+      canvas.height = Math.round(cssHeight * dpr);
+      context!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      beams = Array.from({ length: BEAM_COUNT }, () => createBeam(cssWidth, cssHeight));
+    }
+
+    function resetBeam(beam: Beam): void {
+      beam.y = cssHeight + beam.length * 0.4 + Math.random() * 200;
+      beam.x = Math.random() * cssWidth * 1.4 - cssWidth * 0.2;
+      beam.width = 140 + Math.random() * 260;
+      beam.length = cssHeight * (0.9 + Math.random() * 1.2);
+      beam.angle = -46 + Math.random() * 26;
+      beam.speed = 0.22 + Math.random() * 0.4;
+      beam.opacity = 0.1 + Math.random() * 0.09;
+      beam.tint = Math.random();
+    }
+
+    function drawBeam(beam: Beam): void {
+      const pulsing = beam.opacity * (0.8 + Math.sin(beam.pulse) * 0.2);
+      // Slate (#3D506D) drifting toward a faint slate-blue (#4A6B95) — never the
+      // bright logo cyan, so the wash stays on-brand and low-key on the light page.
+      const red = Math.round(61 + beam.tint * 13);
+      const green = Math.round(80 + beam.tint * 27);
+      const blue = Math.round(109 + beam.tint * 40);
+
+      context!.save();
+      context!.translate(beam.x, beam.y);
+      context!.rotate((beam.angle * Math.PI) / 180);
+      // Squash X so a radial circle becomes a long, soft-edged ellipse — no hard
+      // sides, which is what made the rectangular beams look like flat lines.
+      context!.scale(beam.width / beam.length, 1);
+
+      const radius = beam.length / 2;
+      const gradient = context!.createRadialGradient(0, 0, 0, 0, 0, radius);
+      gradient.addColorStop(0, `rgba(${red},${green},${blue},${pulsing})`);
+      gradient.addColorStop(0.4, `rgba(${red},${green},${blue},${pulsing * 0.55})`);
+      gradient.addColorStop(1, `rgba(${red},${green},${blue},0)`);
+
+      context!.fillStyle = gradient;
+      context!.beginPath();
+      context!.arc(0, 0, radius, 0, Math.PI * 2);
+      context!.fill();
+      context!.restore();
+    }
+
+    function render(): void {
+      context!.clearRect(0, 0, cssWidth, cssHeight);
+      for (const beam of beams) {
+        beam.y -= beam.speed;
+        beam.x += Math.sin(beam.pulse) * beam.sway;
+        beam.pulse += beam.pulseSpeed;
+        if (beam.y < -beam.length) resetBeam(beam);
+        drawBeam(beam);
+      }
+      frame = requestAnimationFrame(render);
+    }
+
+    function start(): void { if (!frame) frame = requestAnimationFrame(render); }
+    function stop(): void { if (frame) { cancelAnimationFrame(frame); frame = 0; } }
+
+    resize();
+    start();
+
+    let resizeTimer = 0;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(resize, 200);
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop(); else start();
+    });
+  }
+
+  const container = document.querySelector<HTMLElement>('.hero-beams');
+  if (container && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ric: (cb: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (cb) => (window as any).requestIdleCallback(cb)
+        : (cb) => { setTimeout(cb, 1); };
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        obs.disconnect();
+        ric(() => initHeroBeams(container));
+      }
+    }, { rootMargin: '200px' });
+    io.observe(container);
+  }
+</script>
