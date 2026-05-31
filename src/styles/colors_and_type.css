@@ -4,9 +4,8 @@
    Fonts: General Sans (single brand typeface, self-hosted .woff2)
    ============================================================ */
 
-/* General Sans (single brand font, self-hosted — used for display and body) */
-@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 200; font-display: swap; src: url('/fonts/GeneralSans-200.woff2') format('woff2'); }
-@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 300; font-display: swap; src: url('/fonts/GeneralSans-300.woff2') format('woff2'); }
+/* General Sans (single brand font, self-hosted — used for display and body).
+   Only the weights the page actually uses: 400 (body), 500, 600, 700. */
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/GeneralSans-400.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/GeneralSans-500.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/GeneralSans-600.woff2') format('woff2'); }
@@ -68,6 +67,7 @@
   /* Status */
   --success:      #22C55E;
   --success-light:#4ADE80;
+  --success-strong:#16A34A;
   --success-dark: #006722;
   --error:        #EF4444;
 
@@ -101,6 +101,9 @@
   --shadow-pop:  0px 8px 24px rgba(0,0,0,0.1);
   --shadow-lift: 0px 4px 20px rgba(0,0,0,0.05);
   --shadow-auth: 0px 8px 32px -8px rgba(0,0,0,0.08);
+  /* Shared content-card elevation — brand-tinted, used across content sections */
+  --shadow-soft:       0 1px 2px rgba(15,23,42,.04), 0 18px 44px -30px rgba(61,80,109,.30);
+  --shadow-soft-hover: 0 1px 2px rgba(15,23,42,.05), 0 32px 64px -28px rgba(61,80,109,.38);
 
   /* -------- Radius -------- */
   --radius-sm:     8px;
@@ -122,6 +125,9 @@
   --space-8: 32px;
   --space-10: 40px;
   --space-12: 48px;
+
+  /* Unified vertical rhythm for every page <section> (mobile override in global.css) */
+  --section-py: 112px;
 
   /* -------- Type families -------- */
   --font-display: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

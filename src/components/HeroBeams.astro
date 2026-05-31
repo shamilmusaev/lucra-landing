@@ -120,7 +120,8 @@
       frame = requestAnimationFrame(render);
     }
 
-    function start(): void { if (!frame) frame = requestAnimationFrame(render); }
+    let onScreen = true;
+    function start(): void { if (!frame && onScreen && !document.hidden) frame = requestAnimationFrame(render); }
     function stop(): void { if (frame) { cancelAnimationFrame(frame); frame = 0; } }
 
     resize();
@@ -131,6 +132,12 @@
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(resize, 200);
     });
+    // Pause the beams once the hero scrolls out of view; resume on return.
+    const beamObserver = new IntersectionObserver((entries) => {
+      onScreen = entries.some((entry) => entry.isIntersecting);
+      if (onScreen) start(); else stop();
+    });
+    beamObserver.observe(container);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) stop(); else start();
     });

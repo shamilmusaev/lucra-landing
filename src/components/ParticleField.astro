@@ -8,18 +8,25 @@
 // cursor over the section's content still wipes the dots behind it.
 //
 // Props:
-//   mask     — CSS mask-image used to fade the dot cloud at the edges (optional).
-//   dotAlpha — dot opacity when fully fogged (optional, default 0.2).
-//   class    — extra class on the layer (optional).
+//   mask            — CSS mask-image used to fade the dot cloud at the edges (optional).
+//   dotAlpha        — dot opacity when fully fogged (optional, default 0.2).
+//   dotColor        — dot RGB triple, e.g. '255,255,255' for dark panels (optional, default slate).
+//   interactiveBloom — cursor makes nearby dots grow + glow cyan instead of wiping (optional).
+//   bloomExclude    — CSS selector for elements kept calm under the bloom (text/orb/UI).
+//   class           — extra class on the layer (optional).
 interface Props {
   mask?: string;
   dotAlpha?: number;
+  dotColor?: string;
+  interactiveBloom?: boolean;
+  bloomExclude?: string;
   class?: string;
 }
-const { mask, dotAlpha, class: className } = Astro.props as Props;
+const { mask, dotAlpha, dotColor, interactiveBloom, bloomExclude, class: className } = Astro.props as Props;
 const style = [
   mask ? `--pf-mask:${mask}` : null,
   dotAlpha != null ? `--pf-dot-alpha:${dotAlpha}` : null,
+  dotColor ? `--pf-dot-rgb:${dotColor}` : null,
 ].filter(Boolean).join(';') || undefined;
 ---
 
@@ -27,6 +34,9 @@ const style = [
   class:list={['particle-field', className]}
   data-particle-field
   data-dot-alpha={dotAlpha ?? 0.2}
+  data-dot-color={dotColor}
+  data-bloom={interactiveBloom ? '1' : undefined}
+  data-bloom-exclude={bloomExclude}
   aria-hidden="true"
   style={style}
 ></div>
@@ -40,7 +50,8 @@ const style = [
     overflow: hidden;
     /* Static fallback dot grid (shown when JS/canvas is unavailable or motion
        is reduced); the canvas replaces it once the field mounts. */
-    background-image: radial-gradient(circle, rgba(61, 80, 109, 0.16) 1px, transparent 1.6px);
+    --pf-dot-rgb: 61, 80, 109;
+    background-image: radial-gradient(circle, rgba(var(--pf-dot-rgb), 0.16) 1px, transparent 1.6px);
     background-size: 24px 24px;
     --pf-mask: radial-gradient(ellipse 94% 84% at 50% 50%, #000 0%, #000 54%, transparent 92%);
     -webkit-mask-image: var(--pf-mask);
@@ -66,6 +77,9 @@ const style = [
       pointer: pointer as HTMLElement,
       canvasClass: 'particle-field__canvas',
       dotAlpha: Number.isFinite(dotAlpha) ? dotAlpha : undefined,
+      dotColor: field.dataset.dotColor || undefined,
+      interactiveBloom: field.dataset.bloom === '1',
+      bloomExcludeSelector: field.dataset.bloomExclude || undefined,
     });
   }
 

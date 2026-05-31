@@ -119,7 +119,7 @@ button { font: inherit; }
    by every <section> (each section may override its own padding).
    Ported verbatim from legacy index.html (~397).
    ============================================================ */
-section { padding: 88px 0; position: relative; }
+section { padding: var(--section-py) 0; position: relative; }
 
 /* ============================================================
    Shared section typography — used by Problem, Funktioner,
@@ -174,11 +174,10 @@ section { padding: 88px 0; position: relative; }
 
 /* Section background variants */
 .tone-slate {
-  background: linear-gradient(180deg,
-    var(--bg-paper) 0%,
-    var(--bg-app) 140px,
-    var(--bg-app) calc(100% - 140px),
-    var(--bg-paper) 100%);
+  background:
+    radial-gradient(120% 70% at 50% 0%,
+      color-mix(in srgb, var(--brand-primary) 4%, transparent), transparent 60%),
+    var(--bg-app);
 }
 .tone-deep {
   background: var(--brand-primary-dark);
@@ -194,6 +193,7 @@ section { padding: 88px 0; position: relative; }
 .tone-deep .section-eyebrow::before { background: var(--brand-accent); }
 
 @media (max-width: 768px) {
+  :root { --section-py: 72px; }
   .section-title { font-size: 30px; }
 }
 

@@ -228,7 +228,7 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
       alpha: true,
       premultipliedAlpha: false,
       antialias: true,
-      dpr: window.devicePixelRatio || 1,
+      dpr: Math.min(window.devicePixelRatio || 1, 2),
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -263,7 +263,7 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
 
     const resize = (): void => {
       if (!container || !renderer) return;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const width = container.clientWidth;
       const height = container.clientHeight;
       if (width < 1 || height < 1) {
@@ -318,9 +318,20 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
       container.addEventListener('click', pulse);
     }
 
+    // Render only while the orb is on-screen and the tab is foregrounded.
+    // A continuous WebGL noise shader is costly; pausing it offscreen frees
+    // frames for scrolling without changing how the orb looks when visible.
+    let running = false;
+    let onScreen = true;
+    let resetClock = false;
+    const shouldRun = (): boolean => onScreen && !document.hidden;
+
     const update = (time: number): void => {
+      if (!shouldRun()) { running = false; return; }
       rafId = requestAnimationFrame(update);
       if (!program) return;
+      // After a pause, re-anchor the clock so deltaTime doesn't spike.
+      if (resetClock) { lastTime = time; resetClock = false; }
       const deltaTime = (time - lastTime) * 0.001;
       lastTime = time;
       const tSec = time * 0.001;
@@ -357,7 +368,24 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       if (renderer) renderer.render({ scene: mesh });
     };
-    rafId = requestAnimationFrame(update);
+
+    const start = (): void => {
+      if (running || !shouldRun()) return;
+      running = true;
+      resetClock = true;
+      rafId = requestAnimationFrame(update);
+    };
+
+    // Pause when the orb scrolls out of view; resume when it returns.
+    const visObserver = new IntersectionObserver((entries) => {
+      onScreen = entries.some((entry) => entry.isIntersecting);
+      if (onScreen) start();
+    });
+    visObserver.observe(container);
+    // Pause on background tab; resume on return.
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
+
+    start();
     void rafId;
     void resizeTimeoutId;
   } catch (e) {

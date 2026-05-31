@@ -16,7 +16,6 @@ const cards = [
 <section id="for-vem">
   <div class="container fv-layout">
     <aside class="fv-aside reveal">
-      <span class="section-eyebrow">{s.forVemEyebrow}</span>
       <h2 class="section-title">{s.forVemTitle}</h2>
       <p class="section-sub">{s.forVemSub}</p>
       <a class="btn btn-primary btn-lg fv-cta" href="[CALENDLY_URL]">{s.forVemCta}</a>
@@ -46,10 +45,6 @@ const cards = [
 </section>
 
 <style>
-#for-vem {
-  padding-top: 80px;
-}
-
 .fv-layout {
   display: grid;
   /* Columns sized to content and centered, so leftover space sits at the
@@ -73,12 +68,6 @@ const cards = [
   gap: 22px;
 }
 
-/* Eyebrow hugs its text instead of stretching the full column */
-.fv-aside .section-eyebrow {
-  align-self: flex-start;
-}
-
-.fv-aside .section-eyebrow,
 .fv-aside .section-title,
 .fv-aside .section-sub {
   margin-bottom: 0;

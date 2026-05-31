@@ -6,16 +6,15 @@ const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
 const rows = [
-  { label: s.cmpRow1Label, lucra: s.cmpRow1Lucra, gpt: s.cmpRow1Gpt, genai: s.cmpRow1GenAi, status: s.cmpRow1Status },
-  { label: s.cmpRow2Label, lucra: s.cmpRow2Lucra, gpt: s.cmpRow2Gpt, genai: s.cmpRow2GenAi, status: s.cmpRow2Status },
-  { label: s.cmpRow3Label, lucra: s.cmpRow3Lucra, gpt: s.cmpRow3Gpt, genai: s.cmpRow3GenAi, status: s.cmpRow3Status },
-  { label: s.cmpRow4Label, lucra: s.cmpRow4Lucra, gpt: s.cmpRow4Gpt, genai: s.cmpRow4GenAi, status: s.cmpRow4Status },
-  { label: s.cmpRow5Label, lucra: s.cmpRow5Lucra, gpt: s.cmpRow5Gpt, genai: s.cmpRow5GenAi, status: s.cmpRow5Status },
-  { label: s.cmpRow6Label, lucra: s.cmpRow6Lucra, gpt: s.cmpRow6Gpt, genai: s.cmpRow6GenAi, status: s.cmpRow6Status },
-  { label: s.cmpRow7Label, lucra: s.cmpRow7Lucra, gpt: s.cmpRow7Gpt, genai: s.cmpRow7GenAi, status: s.cmpRow7Status },
+  { label: s.cmpRow1Label, lucra: s.cmpRow1Lucra, genai: s.cmpRow1GenAi, status: s.cmpRow1Status },
+  { label: s.cmpRow2Label, lucra: s.cmpRow2Lucra, genai: s.cmpRow2GenAi, status: s.cmpRow2Status },
+  { label: s.cmpRow3Label, lucra: s.cmpRow3Lucra, genai: s.cmpRow3GenAi, status: s.cmpRow3Status },
+  { label: s.cmpRow4Label, lucra: s.cmpRow4Lucra, genai: s.cmpRow4GenAi, status: s.cmpRow4Status },
+  { label: s.cmpRow5Label, lucra: s.cmpRow5Lucra, genai: s.cmpRow5GenAi, status: s.cmpRow5Status },
+  { label: s.cmpRow6Label, lucra: s.cmpRow6Lucra, genai: s.cmpRow6GenAi, status: s.cmpRow6Status },
+  { label: s.cmpRow7Label, lucra: s.cmpRow7Lucra, genai: s.cmpRow7GenAi, status: s.cmpRow7Status },
 ];
 const competitors = [
-  { key: 'gpt' as const, name: s.cmpColGpt },
   { key: 'genai' as const, name: s.cmpColGenAi },
   { key: 'status' as const, name: s.cmpColStatus },
 ];
@@ -26,11 +25,10 @@ const competitors = [
 const gridRows = `auto repeat(${rows.length}, auto)`;
 ---
 
-<section id="jamforelse">
+<section id="jamforelse" class="tone-slate">
   <ParticleField mask="radial-gradient(ellipse 100% 76% at 50% 42%, #000 0%, #000 46%, transparent 90%)" />
   <div class="container">
     <div class="section-head center reveal">
-      <span class="section-eyebrow">{s.cmpEyebrow}</span>
       <h2 class="section-title">{s.cmpTitle}</h2>
     </div>
 
@@ -82,11 +80,6 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
 <style>
 #jamforelse {
   position: relative;
-  padding-top: 128px;
-  padding-bottom: 128px;
-  background:
-    radial-gradient(120% 70% at 50% 0%, rgba(61, 80, 109, 0.04), transparent 60%),
-    var(--bg-default);
 }
 /* Content sits above the cursor-reactive dot field. */
 #jamforelse > .container { position: relative; z-index: 1; }
@@ -102,7 +95,7 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
 
 .cmp-grid {
   display: grid;
-  grid-template-columns: minmax(150px, 1.05fr) 1.22fr repeat(3, 1fr);
+  grid-template-columns: minmax(150px, 1.05fr) 1.22fr repeat(2, 1fr);
   position: relative;
   border: 1px solid var(--border);
   border-radius: var(--radius-shell);
@@ -152,7 +145,7 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
   position: relative;
   z-index: 1;
   padding: 18px 24px;
-  font-size: 14.5px;
+  font-size: var(--text-md);
   line-height: 1.5;
   display: flex;
   flex-direction: column;
@@ -163,7 +156,6 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
 .cmp-cell.c2 { grid-column: 2; }
 .cmp-cell.c3 { grid-column: 3; }
 .cmp-cell.c4 { grid-column: 4; }
-.cmp-cell.c5 { grid-column: 5; }
 
 /* The per-cell column tag only shows in the mobile stacked layout. */
 .cmp-tag { display: none; }
@@ -199,8 +191,8 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
 /* Row dividers: hairline for the outer columns, soft white inside the panel. */
 .cmp-cell:not(.cmp-head):not(.cmp-lucra) { border-top: 1px solid var(--border); }
 .cmp-lucra:not(.is-first) { border-top: 1px solid color-mix(in srgb, var(--white) 14%, transparent); }
-/* Faint vertical separators between the competitor columns. */
-.cmp-cell.c4, .cmp-cell.c5 { border-left: 1px solid color-mix(in srgb, var(--border) 65%, transparent); }
+/* Faint vertical separator between the competitor columns. */
+.cmp-cell.c4 { border-left: 1px solid color-mix(in srgb, var(--border) 65%, transparent); }
 
 /* ---- Headers ---- */
 .cmp-head {
@@ -209,9 +201,9 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
   padding-bottom: 20px;
   border-top: none;
 }
-.cmp-head.c3, .cmp-head.c4, .cmp-head.c5 {
+.cmp-head.c3, .cmp-head.c4 {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -260,7 +252,6 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
    competitors list beneath it with their column name as a tag.
    ============================================================ */
 @media (max-width: 880px) {
-  #jamforelse { padding-top: 80px; padding-bottom: 80px; }
   .cmp { margin-top: 0; }
 
   .cmp-grid {

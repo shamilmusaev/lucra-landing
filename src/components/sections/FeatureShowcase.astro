@@ -21,7 +21,6 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
   <div class="container">
     <div class="showcase-head reveal">
       <div class="showcase-head-text">
-        <span class="section-eyebrow">{s.showcaseEyebrow}</span>
         <h2 class="section-title">{s.showcaseTitle}</h2>
         <p class="section-sub">{s.showcaseSub}</p>
       </div>
@@ -334,18 +333,14 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     border: 1px solid var(--border);
     background:
       radial-gradient(120% 90% at 50% 0%, rgba(86, 179, 235, 0.08), transparent 60%),
-      linear-gradient(180deg, var(--bg-app), #f8fafc);
-    box-shadow:
-      0 1px 2px rgba(15, 23, 42, 0.04),
-      0 18px 40px -26px rgba(61, 80, 109, 0.28);
+      linear-gradient(180deg, var(--bg-app), var(--slate-50));
+    box-shadow: var(--shadow-soft);
     transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   }
   .showcase-card:hover .showcase-visual {
     transform: translateY(-6px);
     border-color: var(--slate-300);
-    box-shadow:
-      0 1px 2px rgba(15, 23, 42, 0.05),
-      0 34px 64px -30px rgba(61, 80, 109, 0.36);
+    box-shadow: var(--shadow-soft-hover);
   }
 
   /* ---- Section entrance signature — when the section scrolls into view the
@@ -656,7 +651,7 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
   .showcase-pill:hover svg { transform: translateX(3px); }
   .showcase-card h3 {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: var(--text-2xl);
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.25;
@@ -664,7 +659,7 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     margin: 0;
   }
   .showcase-card p {
-    font-size: 14.5px;
+    font-size: var(--text-md);
     color: var(--slate-500);
     line-height: 1.6;
     margin: 0;
@@ -742,13 +737,13 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     font-size: 8px;
     font-weight: 700;
   }
-  .doc-ic-pdf { background: #EF4444; }
-  .doc-ic-jpg { background: #22C55E; }
-  .doc-ic-doc { background: #3B82F6; }
+  .doc-ic-pdf { background: var(--error); }
+  .doc-ic-jpg { background: var(--success); }
+  .doc-ic-doc { background: var(--voice-orb-start); }
   .doc-name {
     flex: 1;
     min-width: 0;
-    font-size: 12.5px;
+    font-size: var(--text-sm);
     color: var(--slate-600);
     white-space: nowrap;
     overflow: hidden;
@@ -758,8 +753,8 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     flex-shrink: 0;
     font-size: 11px;
     font-weight: 600;
-    color: #16A34A;
-    background: rgba(34, 197, 94, 0.12);
+    color: var(--success-strong);
+    background: color-mix(in srgb, var(--success) 12%, transparent);
     border-radius: 999px;
     padding: 3px 9px;
   }
@@ -781,7 +776,7 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
   .doc-state svg { width: 11px; height: 11px; }
   .doc-state-read { color: var(--slate-500); background: var(--bg-active); animation: docRead 6s linear infinite; }
   .doc-state-suggest { color: var(--brand-primary); background: var(--accent-light); animation: docSuggest 6s linear infinite; }
-  .doc-state-posted { color: #16A34A; background: rgba(34, 197, 94, 0.12); animation: docPosted 6s linear infinite; }
+  .doc-state-posted { color: var(--success-strong); background: color-mix(in srgb, var(--success) 12%, transparent); animation: docPosted 6s linear infinite; }
   @keyframes docRead    { 0%, 2% { opacity: 0; } 6%, 20% { opacity: 1; } 26%, 100% { opacity: 0; } }
   @keyframes docSuggest { 0%, 28% { opacity: 0; } 32%, 52% { opacity: 1; } 58%, 100% { opacity: 0; } }
   @keyframes docPosted  { 0%, 60% { opacity: 0; } 64%, 100% { opacity: 1; } }
@@ -857,7 +852,7 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     font-weight: 600;
     color: var(--slate-500);
   }
-  .sync-status svg { width: 15px; height: 15px; color: #16A34A; flex-shrink: 0; }
+  .sync-status svg { width: 15px; height: 15px; color: var(--success-strong); flex-shrink: 0; }
   .sync-items { display: flex; gap: 8px; flex-wrap: wrap; }
   .sync-item {
     font-size: 11px;

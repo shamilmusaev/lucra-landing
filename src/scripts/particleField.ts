@@ -29,6 +29,8 @@ export interface ParticleFieldOptions {
   interactiveBloom?: boolean;
   /** Bloom only: CSS selector for elements whose area must stay calm (dots there don't grow/glow). */
   bloomExcludeSelector?: string;
+  /** Dot RGB triple, e.g. '255,255,255' for dark panels. Default '61,80,109' (slate, for the light page). */
+  dotColor?: string;
 }
 
 export interface ParticleFieldController {
@@ -48,7 +50,7 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
 
   const DOT = 24;                       // grid spacing (matches the CSS fallback)
   const DOT_R = 1.05;                   // dot radius
-  const DOT_RGB = '61,80,109';          // Lucra slate
+  const DOT_RGB = opts.dotColor ?? '61,80,109';  // Lucra slate (light page); pass light rgb for dark panels
   const DOT_A = opts.dotAlpha ?? 0.24;  // dot opacity when fully fogged
   const REFOG = 0.012;                  // per-frame fog regrowth (lower = slower, smoother return)
   const BRUSH_MIN = 92;                 // wipe radius when moving slowly (precise)
@@ -106,12 +108,16 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   }
 
   function resize(): void {
-    const r = surface.getBoundingClientRect();
-    W = Math.max(1, Math.round(r.width * dpr));
-    H = Math.max(1, Math.round(r.height * dpr));
+    // Use the untransformed layout size (clientWidth/Height ignore CSS
+    // transforms) — getBoundingClientRect would bake in any in-flight reveal
+    // scale (e.g. the CTA panel's scale(.96)), leaving the canvas undersized.
+    const cw = surface.clientWidth;
+    const ch = surface.clientHeight;
+    W = Math.max(1, Math.round(cw * dpr));
+    H = Math.max(1, Math.round(ch * dpr));
     canvas.width = W; canvas.height = H;
-    canvas.style.width = r.width + 'px';
-    canvas.style.height = r.height + 'px';
+    canvas.style.width = cw + 'px';
+    canvas.style.height = ch + 'px';
     fog.width = W; fog.height = H;
     bloom.width = W; bloom.height = H;
     fctx!.globalCompositeOperation = 'source-over';
@@ -185,13 +191,13 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     const maxR = Math.hypot(Math.max(ox, W - ox), Math.max(oy, H - oy)) + 8 * dpr;
     const hold = holdMs ?? 8000;
     const t0 = performance.now();
-    const DUR = 560;
+    const DUR = 1300;
     holdUntil = performance.now() + hold;
     (function grow() {
       const t = Math.min(1, (performance.now() - t0) / DUR);
-      const R = (1 - Math.pow(1 - t, 3)) * maxR;     // ease-out expansion
+      const R = t * maxR;                            // constant-speed wavefront from the orb
       fctx!.globalCompositeOperation = 'destination-out';
-      const g = fctx!.createRadialGradient(ox, oy, Math.max(0, R - 40 * dpr), ox, oy, R);
+      const g = fctx!.createRadialGradient(ox, oy, Math.max(0, R - 150 * dpr), ox, oy, R);
       g.addColorStop(0, 'rgba(0,0,0,1)');
       g.addColorStop(1, 'rgba(0,0,0,0)');
       fctx!.fillStyle = g;
@@ -228,6 +234,10 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   }
 
   function frame(): void {
+    // Don't paint while the field is offscreen or the tab is backgrounded —
+    // the canvas keeps its last frame, so this is invisible when it returns.
+    if (!visible()) { running = false; return; }
+
     // 1) Fog slowly regrows everywhere (alpha climbs back toward 1) — unless a
     //    clear() is holding the field clear for its dwell time.
     if (performance.now() >= holdUntil) {
@@ -334,8 +344,24 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
 
   function kick(ms: number): void {
     dirtyUntil = Math.max(dirtyUntil, performance.now() + (ms || 1700));
-    if (!running) { running = true; requestAnimationFrame(frame); }
+    if (!running && visible()) { running = true; requestAnimationFrame(frame); }
   }
+
+  // Render-gate: only animate while the field is on-screen and the tab is active.
+  let onScreen = true;
+  const visible = (): boolean => onScreen && !document.hidden;
+  function resume(): void {
+    if (!running && visible() && (performance.now() < dirtyUntil || glowA > 0.02)) {
+      running = true;
+      requestAnimationFrame(frame);
+    }
+  }
+  const fieldObserver = new IntersectionObserver((entries) => {
+    onScreen = entries.some((entry) => entry.isIntersecting);
+    if (onScreen) resume();
+  });
+  fieldObserver.observe(surface);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) resume(); });
 
   pointer.addEventListener('pointermove', function (event: PointerEvent) {
     const r = surface.getBoundingClientRect();
@@ -357,14 +383,23 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     glowA = 1;                  // light up the glow under the cursor
     pointerInside = true;
     kick(2800);                 // keep refogging running for a bit after we stop
-  });
-  pointer.addEventListener('pointerleave', function () { hasPrev = false; pointerInside = false; kick(2800); });
+  }, { passive: true });
+  pointer.addEventListener('pointerleave', function () { hasPrev = false; pointerInside = false; kick(2800); }, { passive: true });
 
   let rt: ReturnType<typeof setTimeout>;
   window.addEventListener('resize', function () {
     clearTimeout(rt);
     rt = setTimeout(resize, 150);
   });
+  // Re-sync the canvas to the surface's real (untransformed) box whenever it
+  // settles — covers the post-reveal scale snap-back and any later reflow.
+  // Skip ResizeObserver's mandatory initial callback: the sync resize() below
+  // already sizes correctly (clientWidth ignores transforms), and a second
+  // resize() at mount would re-fog the hero and clobber its intro reveal().
+  if (typeof ResizeObserver === 'function') {
+    let roPrimed = false;
+    new ResizeObserver(() => { if (roPrimed) resize(); else roPrimed = true; }).observe(surface);
+  }
   resize();
 
   return { reveal, clear, resize };

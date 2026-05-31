@@ -23,6 +23,7 @@ const s = getStrings(lang);
 <section class="hero">
   <div class="hero-falling" aria-hidden="true"></div>
   <div class="hero-beams" aria-hidden="true"><span></span></div>
+  <div class="hero-fade" aria-hidden="true"></div>
   <div class="container hero-inner">
     <span class="hero-orb reveal" id="hero-orb" aria-hidden="true"></span>
     <OrbIsland />
@@ -517,6 +518,18 @@ const s = getStrings(lang);
 }
 @media (prefers-reduced-motion: reduce) {
   .hero::after { animation: none; transform: translateX(-50%); }
+}
+/* Bottom fade — washes any clipped hero effects (dot field, beams, light blob)
+   to solid page-white before the hard section edge, so the hero blends
+   seamlessly into the next (white) section instead of leaving a visible seam.
+   Sits above the effects (z:0) but below the content/chrome (z:1). */
+.hero-fade {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 200px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--bg-paper));
 }
 .hero-inner { position: relative; z-index: 1; text-align: center; }
 
