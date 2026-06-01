@@ -83,6 +83,13 @@ const s = getStrings(lang);
       {s.heroDemoCtaPill}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
+    <div class="demo-drift" aria-hidden="true">
+      <span class="drift-card d1"></span>
+      <span class="drift-card d2"></span>
+      <span class="drift-card d3"></span>
+      <span class="drift-card d4"></span>
+      <span class="drift-card d5"></span>
+    </div>
     <div class="browser-chrome">
       <div class="browser-bar" aria-hidden="true">
         <span class="dot red"></span>
@@ -90,12 +97,22 @@ const s = getStrings(lang);
         <span class="dot green"></span>
       </div>
 
-      <!-- Per-tab explainer callouts — float in the window title bar, scaling with
-           the window; shown for the active panel only (toggled by the orchestrator). -->
-      <div class="coach is-shown" data-coach="chat"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachChat}</p></div>
-      <div class="coach" data-coach="dashboard"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachDashboard}</p></div>
-      <div class="coach" data-coach="docs"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachDocs}</p></div>
-      <div class="coach" data-coach="companies"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachCompanies}</p></div>
+      <!-- Per-tab explainer callouts: arrowed, anchored to real elements, revealed
+           one after another for the active panel (positioned + sequenced in JS). -->
+      <div class="coach-layer" data-coach-group="chat" aria-hidden="true">
+        <div class="coach" data-target=".chat-input" data-side="bottom"><p>{s.heroCoachChat1}</p></div>
+      </div>
+      <div class="coach-layer" data-coach-group="dashboard" aria-hidden="true">
+        <div class="coach" data-target=".ai-insights" data-side="bottom"><p>{s.heroCoachDashboard1}</p></div>
+        <div class="coach" data-target=".metric-grid .metric" data-side="top"><p>{s.heroCoachDashboard2}</p></div>
+      </div>
+      <div class="coach-layer" data-coach-group="docs" aria-hidden="true">
+        <div class="coach" data-target=".files-tabs" data-side="bottom"><p>{s.heroCoachDocs1}</p></div>
+        <div class="coach" data-target=".files-list .files-row" data-side="top"><p>{s.heroCoachDocs2}</p></div>
+      </div>
+      <div class="coach-layer" data-coach-group="companies" aria-hidden="true">
+        <div class="coach" data-target=".co-row:not(.co-thead)" data-side="bottom"><p>{s.heroCoachCompanies1}</p></div>
+      </div>
 
       <div class="product-shell">
       <div class="product-shell-inner">
@@ -133,10 +150,12 @@ const s = getStrings(lang);
             <span>{s.heroDemoHistory}</span>
             <svg class="hist-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </div>
-          <div class="sb-history-date">{s.heroDemoHistoryDate}</div>
-          <div class="sidebar-chat-row">{s.heroDemoChat1}</div>
-          <div class="sidebar-chat-row">{s.heroDemoChat2}</div>
-          <div class="sidebar-chat-row">{s.heroDemoChat3}</div>
+          <div class="sb-history-date">{s.heroDemoHistoryToday}</div>
+          <div class="sidebar-chat-row" data-hist-live data-default={s.heroDemoChatDefault} data-title={s.heroChatTitleGenerated} aria-hidden="true"></div>
+          <div class="sidebar-chat-row">{s.heroDemoChatRecent1}</div>
+          <div class="sb-history-date">{s.heroDemoHistoryYesterday}</div>
+          <div class="sidebar-chat-row">{s.heroDemoChatRecent2}</div>
+          <div class="sidebar-chat-row">{s.heroDemoChatRecent3}</div>
 
           <div class="sb-spacer"></div>
 
@@ -352,7 +371,7 @@ const s = getStrings(lang);
                 <div class="chat-tpl" hidden>
                   <div class="uin" data-tpl="uin"><span class="utext"></span><span class="utime"></span></div>
                   <div class="ain" data-tpl="ain">
-                    <span class="orb-gl"></span>
+                    <span class="ain-orb"></span>
                     <div class="bubble">
                       <span class="chat-answer"></span>
                       <span class="chat-dots"><i></i><i></i><i></i></span>
@@ -915,10 +934,7 @@ const s = getStrings(lang);
   background: var(--bg-app);
   border-radius: var(--radius-shell);
   padding: 16px;
-  box-shadow:
-    0 1px 1px rgba(15,23,42,.04),
-    0 30px 60px -20px rgba(61,80,109,.18),
-    0 60px 120px -40px rgba(15,23,42,.18);
+  box-shadow: var(--shadow-window);
   border: 1px solid rgba(226,232,240,.8);
 }
 .product-shell-inner {
@@ -1027,6 +1043,33 @@ const s = getStrings(lang);
   border-radius: var(--radius-md);
   overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
 }
+/* Live "AI is naming this chat" row: collapsed until the chat opens it, then it
+   slides in (as the default label), shimmers, and the generated title types in. */
+.sidebar-chat-row[data-hist-live] { display: none; }
+.sidebar-chat-row[data-hist-live].is-new {
+  display: block;
+  background: var(--bg-active);
+  color: var(--brand-primary);
+  font-weight: 600;
+  animation: histRowIn .42s var(--ease-out-expo) both;
+}
+@keyframes histRowIn {
+  from { opacity: 0; transform: translateY(-6px); max-height: 0; padding-top: 0; padding-bottom: 0; }
+  to   { opacity: 1; transform: none; max-height: 40px; }
+}
+.sidebar-chat-row[data-hist-live].is-generating {
+  background-image: linear-gradient(100deg, var(--bg-active) 0%, var(--bg-active) 35%, rgba(86,179,235,.22) 50%, var(--bg-active) 65%, var(--bg-active) 100%);
+  background-size: 220% 100%;
+  animation: histShimmer 1s linear infinite;
+}
+@keyframes histShimmer {
+  from { background-position: 180% 0; }
+  to   { background-position: -40% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-chat-row[data-hist-live].is-new { animation: none; }
+  .sidebar-chat-row[data-hist-live].is-generating { animation: none; background-image: none; }
+}
 /* Push the user footer to the bottom */
 .sb-spacer { flex: 1 1 auto; min-height: 10px; }
 .sb-user {
@@ -1057,7 +1100,7 @@ const s = getStrings(lang);
 .product-main-head {
   display: flex; align-items: flex-start; justify-content: space-between;
   gap: 16px; flex-wrap: wrap;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 .dash-title {
   font-family: var(--font-display);
@@ -1082,29 +1125,30 @@ const s = getStrings(lang);
 }
 .sync-chip .pulse {
   width: 6px; height: 6px;
-  background: var(--success);
+  background: var(--brand-primary);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(34,197,94,.5);
+  box-shadow: 0 0 0 0 rgba(61,80,109,.5);
   animation: pulse 2s infinite;
 }
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(34,197,94,.5); }
-  70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
-  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  0% { box-shadow: 0 0 0 0 rgba(61,80,109,.5); }
+  70% { box-shadow: 0 0 0 8px rgba(61,80,109,0); }
+  100% { box-shadow: 0 0 0 0 rgba(61,80,109,0); }
 }
 /* Dashboard header: title + subtitle on the left, sync chip + period segment on the right */
 .dash-head-left { display: flex; flex-direction: column; gap: 2px; }
-.dash-sub { font-size: 13px; color: var(--slate-500); margin: 0; }
+.dash-sub { font-size: 14px; color: var(--slate-500); margin: 0; }
 .dash-head-right { display: flex; align-items: center; gap: 10px; }
 .period-seg {
   display: flex; gap: 4px;
+  height: 30px; align-items: center;
   padding: 4px;
   background: var(--bg-app);
   border-radius: var(--radius-lg);
 }
 .period-opt {
   padding: 5px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 12px;
   font-weight: 500;
   color: var(--slate-500);
@@ -1119,36 +1163,45 @@ const s = getStrings(lang);
 /* AI Insights panel */
 .ai-insights {
   background: linear-gradient(135deg, var(--slate-50) 0%, var(--slate-100) 100%);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(61,80,109,0.10);
+  box-shadow: 0 1px 2px rgba(61,80,109,0.04);
   border-radius: var(--radius-2xl);
-  padding: 18px 20px;
+  padding: 22px;
   margin-bottom: 16px;
 }
 .ai-head { display: flex; align-items: center; gap: 12px; }
 .ai-chev { width: 18px; height: 18px; color: var(--slate-400); flex-shrink: 0; }
 .ai-orb {
-  width: 30px; height: 30px;
+  position: relative;
+  width: 32px; height: 32px;
   flex-shrink: 0;
+}
+/* Conic ring shown only until the real WebGL orb mounts (then .orb-live hides it). */
+.ai-orb::before {
+  content: "";
+  position: absolute; inset: 0;
   border-radius: 50%;
   background: conic-gradient(from 210deg, #56B3EB, #4A6B95, #3D506D, #4A6B95, #56B3EB);
   -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%);
           mask: radial-gradient(closest-side, transparent 56%, #000 60%);
   box-shadow: 0 0 10px rgba(86,179,235,.4);
+  transition: opacity .3s ease;
 }
-.ai-orb canvas { display: block; width: 100% !important; height: 100% !important; border-radius: 50%; }
+.ai-orb.orb-live::before { opacity: 0; }
+.ai-orb canvas { display: block; width: 100% !important; height: 100% !important; }
 .ai-titles { display: flex; flex-direction: column; }
-.ai-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--brand-primary); }
+.ai-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--brand-primary); }
 .ai-sub { font-size: 12px; font-weight: 500; color: var(--slate-500); }
-.ai-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.ai-list { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
 .ai-item {
   display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   background: var(--bg-paper);
-  border: 1px solid var(--slate-100);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
 }
 .ai-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); margin-top: 7px; flex-shrink: 0; }
-.ai-item p { margin: 0; font-size: 13px; font-weight: 500; line-height: 1.5; color: var(--slate-500); }
+.ai-item p { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.6; color: var(--slate-500); }
 .ai-item p strong { color: var(--brand-primary); font-weight: 600; }
 
 .metric-grid {
@@ -1163,12 +1216,12 @@ const s = getStrings(lang);
   background: var(--bg-paper);
   border: 1px solid var(--border);
   border-radius: var(--radius-2xl);
-  padding: 14px 16px 0;
-  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 18px 0;
+  display: flex; flex-direction: column; gap: 8px;
 }
 .metric .eyebrow {
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1176,21 +1229,21 @@ const s = getStrings(lang);
 }
 .metric .val {
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--brand-primary);
   line-height: 1;
   display: flex; align-items: baseline;
 }
-.metric .val .suf { font-size: 16px; font-weight: 700; }
+.metric .val .suf { font-size: 18px; font-weight: 700; }
 .metric .val .cur {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--slate-500);
   font-weight: 500;
   margin-left: 5px;
 }
 .metric .trend {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
@@ -1199,32 +1252,46 @@ const s = getStrings(lang);
 }
 .metric .trend.up { color: var(--brand-primary); }
 .metric .trend.down { color: var(--error); }
-.metric .trend .ti { width: 13px; height: 13px; }
-.metric .trend .lbl { color: var(--slate-400); font-weight: 500; font-size: 10px; margin-left: 4px; }
-.metric .spark { width: calc(100% + 32px); height: 40px; display: block; margin: 0 -16px -1px; }
-.spark-area { fill: url(#sparkFill); opacity: 0; transition: opacity .5s ease .35s; }
+.metric .trend .ti { width: 14px; height: 14px; }
+.metric .trend .lbl { color: var(--slate-400); font-weight: 500; font-size: 11px; margin-left: 4px; }
+.metric .spark { width: calc(100% + 36px); height: 40px; display: block; margin: 0 -18px -1px; }
+.spark-area { fill: url(#sparkFill); opacity: 0; transition: opacity .5s ease; }
 .spark-line {
   fill: none; stroke: var(--brand-primary); stroke-width: 2;
   stroke-linecap: round; stroke-linejoin: round;
   stroke-dasharray: 1; stroke-dashoffset: 1;
 }
-.demo-panel[data-panel="dashboard"].is-active .spark-line { animation: drawPath .9s cubic-bezier(.4,0,.2,1) forwards .25s; }
+/* Power-on stagger — each metric card's sparkline draws a beat after the last,
+   left-to-right / top-to-bottom (step .07s). */
+.demo-panel[data-panel="dashboard"].is-active .spark-line { animation: drawPath .9s var(--ease-out-expo) forwards; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(1) .spark-line { animation-delay: .18s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(2) .spark-line { animation-delay: .25s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(3) .spark-line { animation-delay: .32s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(4) .spark-line { animation-delay: .39s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(5) .spark-line { animation-delay: .46s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(6) .spark-line { animation-delay: .53s; }
 .demo-panel[data-panel="dashboard"].is-active .spark-area { opacity: 1; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(1) .spark-area { transition-delay: .28s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(2) .spark-area { transition-delay: .35s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(3) .spark-area { transition-delay: .42s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(4) .spark-area { transition-delay: .49s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(5) .spark-area { transition-delay: .56s; }
+.demo-panel[data-panel="dashboard"].is-active .metric:nth-child(6) .spark-area { transition-delay: .63s; }
 @keyframes drawPath { to { stroke-dashoffset: 0; } }
 
 .chart-card {
   background: var(--bg-paper);
   border: 1px solid var(--border);
   border-radius: var(--radius-2xl);
-  padding: 18px;
+  padding: 22px 24px;
 }
 .chart-card-head {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 .chart-card-head h3 {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--brand-primary);
   margin: 0;
@@ -1267,27 +1334,88 @@ const s = getStrings(lang);
 .ch-pt-rev { stroke: var(--brand-primary); }
 .ch-pt-exp { stroke: var(--error); }
 .demo-panel[data-panel="dashboard"].is-active .ch-area { opacity: 1; }
-.demo-panel[data-panel="dashboard"].is-active .ch-line { animation: drawPath 1.1s cubic-bezier(.4,0,.2,1) forwards .2s; }
+.demo-panel[data-panel="dashboard"].is-active .ch-line { animation: drawPath 1.1s var(--ease-out-expo) forwards .2s; }
 .demo-panel[data-panel="dashboard"].is-active .ch-pt { animation: ptIn .35s ease forwards; animation-delay: var(--d); }
 @keyframes ptIn { to { opacity: 1; transform: scale(1); } }
 
-/* Small avatar orbs — a lightweight CSS ring echoing the hero orb (cyan→slate
-   gradient ring + glow, transparent centre). Used for every chat answer, so it
-   stays CSS (no per-message WebGL contexts). */
-.orb-gl {
+/* Small answer avatar orb — hosts the real WebGL orb (same as the welcome orb,
+   just 28px). The conic ring is only a fallback shown until the orb mounts and
+   under reduced motion; `.orb-live` (added on successful mount) fades it out. */
+.ain-orb {
+  position: relative;
   width: 28px; height: 28px;
   flex-shrink: 0;
+}
+.ain-orb::before {
+  content: "";
+  position: absolute; inset: 0;
   border-radius: 50%;
   background: conic-gradient(from 210deg, #56B3EB, #4A6B95, #3D506D, #4A6B95, #56B3EB);
   -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%);
           mask: radial-gradient(closest-side, transparent 56%, #000 60%);
   box-shadow: 0 0 10px rgba(86,179,235,.4);
+  transition: opacity .3s ease;
 }
+.ain-orb.orb-live::before { opacity: 0; }
+.ain-orb canvas { display: block; width: 100% !important; height: 100% !important; }
 
 /* ============================================================
    DEMO TABS (scroll-reveal, auto-rotate) + macOS browser chrome
    ============================================================ */
 .hero-chrome-wrap { position: relative; }
+
+/* Background drift — abstract, faded slate "app window" silhouettes that float
+   slowly in the hero margins behind the demo window, giving the section depth and
+   life (GitBook-style) without competing with the real product. Decorative only. */
+.demo-drift {
+  position: absolute;
+  left: -34%; right: -34%; top: -7%; bottom: -7%;
+  z-index: 0;
+  pointer-events: none;
+  /* Fade the centre (where the window sits) and the far edges so cards only
+     whisper in the side margins. */
+  -webkit-mask: radial-gradient(115% 92% at 50% 48%, transparent 30%, #000 64%, transparent 96%);
+          mask: radial-gradient(115% 92% at 50% 48%, transparent 30%, #000 64%, transparent 96%);
+}
+.drift-card {
+  position: absolute;
+  width: 168px; height: 122px;
+  border-radius: 14px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px -28px rgba(61,80,109,.30);
+  opacity: .5;
+  will-change: transform;
+}
+/* Abstract window header + content lines (slate placeholders, not real screens). */
+.drift-card::before {
+  content: ""; position: absolute; left: 12px; top: 12px; width: 34px; height: 7px;
+  border-radius: 4px; background: var(--slate-200);
+  box-shadow: 44px 0 0 -1px var(--slate-100), 78px 0 0 -1px var(--slate-100);
+}
+.drift-card::after {
+  content: ""; position: absolute; left: 12px; right: 12px; top: 34px; height: 60px;
+  border-radius: 8px;
+  background:
+    linear-gradient(var(--slate-100) 0 0) left 0 top 0 / 100% 8px no-repeat,
+    linear-gradient(var(--slate-100) 0 0) left 0 top 18px / 72% 8px no-repeat,
+    linear-gradient(var(--slate-100) 0 0) left 0 top 36px / 88% 8px no-repeat,
+    linear-gradient(var(--slate-100) 0 0) left 0 top 54px / 60% 8px no-repeat;
+}
+.drift-card.d1 { left: 1%;  top: 16%; width: 156px; animation: driftA 26s ease-in-out infinite; }
+.drift-card.d2 { left: 11%; top: 62%; width: 122px; opacity: .42; animation: driftC 31s ease-in-out infinite -5s; }
+.drift-card.d3 { right: 2%; top: 12%; width: 172px; animation: driftB 24s ease-in-out infinite -2s; }
+.drift-card.d4 { right: 9%; top: 60%; width: 128px; opacity: .42; animation: driftA 29s ease-in-out infinite -7s; }
+.drift-card.d5 { left: 47%; top: -7%; width: 104px; opacity: .36; animation: driftB 34s ease-in-out infinite -11s; }
+@keyframes driftA { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-22px) rotate(-1.5deg); } }
+@keyframes driftB { 0%, 100% { transform: translateY(0) rotate(3deg); } 50% { transform: translateY(-16px) rotate(4.5deg); } }
+@keyframes driftC { 0%, 100% { transform: translate(0, 0) rotate(-2deg); } 50% { transform: translate(8px, -26px) rotate(-3.5deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .demo-drift .drift-card { animation: none; }
+}
+@media (max-width: 960px) {
+  .demo-drift { display: none; }
+}
 
 /* macOS window — clean slate canvas, traffic-light dots, soft deep shadow */
 .browser-chrome {
@@ -1295,24 +1423,22 @@ const s = getStrings(lang);
   border: 1px solid rgba(226,232,240,.9);
   border-radius: var(--radius-shell);
   overflow: hidden;
-  box-shadow:
-    0 1px 1px rgba(15,23,42,.04),
-    0 30px 60px -20px rgba(61,80,109,.18),
-    0 60px 120px -40px rgba(15,23,42,.18);
+  box-shadow: var(--shadow-window);
 }
 .browser-bar {
   display: flex;
   align-items: center;
   gap: 9px;
   padding: 17px 20px 13px;
-  background: transparent;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+  border-bottom: 1px solid rgba(61,80,109,0.07);
 }
 .browser-bar .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   display: inline-block;
-  box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.12);
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.06), inset 0 1px 1px rgba(255,255,255,0.45);
 }
 .browser-bar .dot.red    { background: #FF5F57; }
 .browser-bar .dot.yellow { background: #FEBC2E; }
@@ -1338,12 +1464,12 @@ const s = getStrings(lang);
   background: var(--bg-paper);
   border: 1px solid var(--border);
   border-radius: 999px;
-  box-shadow: 0 12px 32px -10px rgba(15,23,42,.18), 0 2px 4px rgba(15,23,42,.04);
+  box-shadow: 0 12px 32px -12px rgba(61,80,109,0.20), 0 2px 4px rgba(15,23,42,0.04);
   z-index: 12;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -18px);
-  transition: opacity .45s ease, transform .55s cubic-bezier(.4,0,.2,1);
+  transition: opacity .45s ease, transform .55s var(--ease-out-expo);
 }
 .hero-chrome-wrap.tabs-visible .demo-tabs {
   opacity: 1;
@@ -1417,14 +1543,14 @@ const s = getStrings(lang);
   font-weight: 600;
   font-size: 14px;
   border-radius: 999px;
-  box-shadow: 0 12px 28px -10px rgba(15,23,42,.5);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 10px 24px -10px rgba(61,80,109,0.45), 0 4px 10px -6px rgba(15,23,42,0.25);
   opacity: 0;
   transform: translate(-50%, 10px);
   transition: opacity .5s ease, transform .5s ease, box-shadow .25s ease;
 }
 .hero-chrome-wrap.tabs-visible .demo-cta { opacity: 1; transform: translate(-50%, 0); }
 .demo-cta svg { width: 16px; height: 16px; transition: transform .25s ease; }
-.demo-cta:hover { box-shadow: 0 16px 34px -10px rgba(15,23,42,.6); }
+.demo-cta:hover { box-shadow: 0 1px 0 rgba(255,255,255,0.14) inset, 0 16px 32px -10px rgba(61,80,109,0.50); }
 .demo-cta:hover svg { transform: translateX(3px); }
 
 /* Panel stack with cross-fade */
@@ -1434,18 +1560,26 @@ const s = getStrings(lang);
   inset: 22px 24px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(8px);
+  transform: translateY(4px);
   transition:
     opacity .35s ease,
-    transform .45s cubic-bezier(.4,0,.2,1),
+    transform .45s var(--ease-out-expo),
     visibility 0s linear .45s;
 }
 .demo-panel.is-active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  transition: opacity .4s ease, transform .5s cubic-bezier(.4,0,.2,1);
+  transition: opacity .32s ease, transform .5s var(--ease-out-expo);
 }
+/* Active panel children rise in a short stagger after the surface fades, so a
+   tab switch feels composed. Targets only direct block children — the chat
+   panel's absolute scenes live one level deeper and stay untouched. */
+.demo-panel.is-active > * { animation: panelChildIn .5s var(--ease-out-expo) both; }
+.demo-panel.is-active > *:nth-child(2) { animation-delay: .05s; }
+.demo-panel.is-active > *:nth-child(3) { animation-delay: .09s; }
+.demo-panel.is-active > *:nth-child(n+4) { animation-delay: .14s; }
+@keyframes panelChildIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 /* Dashboard & Files are tall, scrolling views (like the real app) — let the panel
    scroll internally with a slim, unobtrusive scrollbar. */
 .demo-panel[data-panel="dashboard"],
@@ -1460,43 +1594,46 @@ const s = getStrings(lang);
 .demo-panel[data-panel="dashboard"]::-webkit-scrollbar-thumb,
 .demo-panel[data-panel="docs"]::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 999px; }
 
-/* Per-tab explainer callouts — a coach mark naming what each panel does. Shown
-   for the active panel only (toggled by the tab orchestrator), above the CTA. */
+/* Per-tab explainer callouts — arrowed coach marks that point at real elements
+   and reveal one after another for the active panel. The layer fills the (scaled)
+   window so JS can position each pill in chrome-local coordinates. */
+.coach-layer { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
 .coach {
   position: absolute;
-  left: 50%; top: 9px;
-  z-index: 12;
-  width: max-content; max-width: min(82%, 440px);
-  display: flex; align-items: center; gap: 9px;
-  padding: 10px 15px;
-  background: var(--brand-primary);
-  color: #fff;
-  border-radius: 13px;
-  box-shadow: var(--shadow-pop);
-  font-size: 12.5px; font-weight: 500; line-height: 1.4;
-  opacity: 0; pointer-events: none;
-  transform: translate(-50%, -8px);
+  left: 0; top: 0;
+  width: max-content; max-width: 232px;
+  padding: 9px 13px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px -8px rgba(15,23,42,.22), 0 1px 2px rgba(15,23,42,.06);
+  font-size: 12px; font-weight: 500; line-height: 1.4;
+  color: var(--slate-600);
+  opacity: 0;
+  transform: translate(-50%, 6px) scale(.96);
+  transform-origin: center top;
   transition: opacity .3s ease, transform .3s ease;
 }
-.coach p { margin: 0; color: #fff; }
-.coach-ic { width: 15px; height: 15px; flex-shrink: 0; color: #A7D8F4; }
-/* downward pointer into the panel content below */
+.coach p { margin: 0; color: var(--slate-600); }
+.coach p strong { color: var(--brand-primary); font-weight: 600; }
+/* Pointer toward the target: a rotated square that borrows the pill's border seam. */
 .coach::after {
   content: "";
-  position: absolute; left: 50%; bottom: -5px;
-  width: 11px; height: 11px;
-  background: var(--brand-primary);
-  border-radius: 0 0 3px 0;
+  position: absolute; left: 50%;
+  width: 10px; height: 10px;
+  background: var(--white);
   transform: translateX(-50%) rotate(45deg);
 }
-.hero-chrome-wrap.tabs-visible .coach.is-shown {
+.coach[data-side="bottom"]::after { top: -5px; border-left: 1px solid var(--border); border-top: 1px solid var(--border); }
+.coach[data-side="top"]::after { bottom: -5px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.coach.is-shown {
   opacity: 1;
-  transform: translate(-50%, 0);
-  transition: opacity .45s ease .5s, transform .5s cubic-bezier(.4,0,.2,1) .5s;
+  transform: translate(-50%, 0) scale(1);
+  transition: opacity .4s ease, transform .5s var(--ease-out-expo);
 }
 @media (prefers-reduced-motion: reduce) {
-  .coach { transition: opacity .2s ease; }
-  .hero-chrome-wrap.tabs-visible .coach.is-shown { opacity: 1; transform: translate(-50%, 0); transition: opacity .2s ease; }
+  .coach { transition: opacity .2s ease; transform: translate(-50%, 0); }
+  .coach.is-shown { opacity: 1; transform: translate(-50%, 0); transition: opacity .2s ease; }
 }
 
 /* ============================================================
@@ -1542,7 +1679,7 @@ const s = getStrings(lang);
   font-family: var(--font-display);
   font-weight: 400;
   font-size: 19px;
-  color: var(--slate-400);
+  color: var(--slate-500);
   margin: 0 0 28px;
 }
 .welcome-subtitle .g { font-weight: 600; color: var(--slate-600); }
@@ -1715,13 +1852,14 @@ const s = getStrings(lang);
 .chat-dots i {
   width: 5px; height: 5px; border-radius: 50%;
   background: #5B7A9B;
-  animation: chatDot 1.4s infinite both;
+  animation: chatDot 1.6s infinite both;
+  animation-timing-function: cubic-bezier(.4,0,.2,1);
 }
 .chat-dots i:nth-child(2) { animation-delay: .2s; }
 .chat-dots i:nth-child(3) { animation-delay: .4s; }
 @keyframes chatDot {
   0%, 80%, 100% { opacity: .25; transform: translateY(0); }
-  40%           { opacity: 1; transform: translateY(-3px); }
+  40%           { opacity: 1; transform: translateY(-2.5px); }
 }
 
 /* ----- Files panel ----- */
@@ -1803,7 +1941,7 @@ const s = getStrings(lang);
   grid-template-columns: 40px 1fr 100px 64px;
   align-items: center;
   gap: 12px;
-  padding: 11px 18px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--slate-100);
   font-size: 14px;
 }
@@ -1823,21 +1961,22 @@ const s = getStrings(lang);
   display: block;
 }
 .fname {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; gap: 16px;
   min-width: 0;
   font-weight: 500; color: var(--slate-600);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .fileic {
-  width: 34px; height: 34px;
+  width: 36px; height: 36px;
   flex-shrink: 0;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   display: inline-flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, var(--slate-50), var(--bg-app));
   color: var(--slate-500);
   transition: background .2s ease, color .2s ease;
 }
 .fileic svg { width: 18px; height: 18px; }
+.files-list .files-row:hover { background: var(--slate-50); }
 .files-row:hover .fileic { background: var(--bg-active); color: var(--brand-primary); }
 .fsize-h, .fsize { color: var(--slate-500); }
 .fsize { font-weight: 500; }
@@ -1888,7 +2027,7 @@ const s = getStrings(lang);
 .cell-co, .cell-owner { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .co-mark {
   width: 30px; height: 30px; flex-shrink: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--bg-active);
   border: 1px solid rgba(61,80,109,.1);
   display: inline-flex; align-items: center; justify-content: center;
@@ -1931,6 +2070,9 @@ const s = getStrings(lang);
 
 @media (prefers-reduced-motion: reduce) {
   .demo-tabs, .demo-panel, .demo-tab-ind { transition: none; }
+  .demo-panel[data-panel="dashboard"].is-active .spark-line { animation: none; }
+  .demo-panel[data-panel="dashboard"].is-active .spark-area { transition: none; opacity: 1; }
+  .demo-panel.is-active > * { animation: none; }
 }
 
 /* ============================================================
@@ -1951,9 +2093,9 @@ const s = getStrings(lang);
   transform: translateY(20px) scale(.985);
   filter: blur(8px);
   transition:
-    opacity .7s cubic-bezier(.2,.7,.2,1),
-    transform .7s cubic-bezier(.2,.7,.2,1),
-    filter .7s cubic-bezier(.2,.7,.2,1);
+    opacity .62s var(--ease-out-expo),
+    transform .62s var(--ease-out-expo),
+    filter .62s var(--ease-out-expo);
   will-change: opacity, transform, filter;
   /* Safety net: reveal even if the JS timeline never fires. */
   animation: heroIntroSafety 1ms linear 3.2s forwards;
@@ -2016,7 +2158,7 @@ const s = getStrings(lang);
     var nav = document.getElementById('nav');           // fixed top nav — steps aside while the demo is in focus
     var navInner = nav && (nav.querySelector('.nav-inner') as HTMLElement | null);
 
-    var MIN = 0.85, MAX = 1.0;
+    var MIN = 0.9, MAX = 1.0;
     var MAX_BLUR = 8;   // px the hero copy blurs by at full zoom
     var ticking = false;
 
@@ -2030,12 +2172,16 @@ const s = getStrings(lang);
       var start = vh * 0.72;   // begin zooming when the window top passes here
       var end = vh * 0.08;     // fully zoomed when it nears the top
       var p = clamp01((start - r.top) / (start - end));
-      var scale = MIN + (MAX - MIN) * p;
+      // Shape the raw linear progress with an ease-out so the window decelerates
+      // into its final size instead of tracking the scrollbar 1:1. Stays monotonic
+      // (reversible on scroll-up). Nav focus below keeps the raw p so it never lags.
+      var pe = 1 - Math.pow(1 - p, 2.2);
+      var scale = MIN + (MAX - MIN) * pe;
       chromeEl.style.transform = 'scale(' + scale.toFixed(4) + ')';
       // Depth-of-field: as the window advances, the copy above it recedes — blur + slight fade.
       if (inner) {
-        inner.style.filter = p > 0 ? 'blur(' + (p * MAX_BLUR).toFixed(2) + 'px)' : '';
-        inner.style.opacity = (1 - p * 0.5).toFixed(3);
+        inner.style.filter = pe > 0 ? 'blur(' + (pe * MAX_BLUR).toFixed(2) + 'px)' : '';
+        inner.style.opacity = (1 - pe * 0.5).toFixed(3);
       }
       // Nav slides up out of view (it does NOT fade) while the window's TOP edge is in
       // the collision zone near the top. As that edge scrolls above the top, focus drops
@@ -2095,7 +2241,9 @@ const s = getStrings(lang);
       SELECTORS.forEach(function (sel) { var el = heroEl.querySelector(sel); if (el) els.push(el); });
       if (!els.length) { revealAll(); return; }
       els.forEach(function (el, i) {
-        setTimeout(function () { el.classList.add('lucra-lit'); }, i * 110);
+        // Tapered cascade — first blocks lead, later ones follow faster.
+        var d = i < 2 ? i * 90 : 180 + (i - 2) * 65;
+        setTimeout(function () { el.classList.add('lucra-lit'); }, d);
       });
     }
 
@@ -2148,7 +2296,11 @@ const s = getStrings(lang);
     var tabs     = wrapEl.querySelectorAll('.demo-tab') as NodeListOf<HTMLElement>;
     var panels   = wrapEl.querySelectorAll('.demo-panel') as NodeListOf<HTMLElement>;
     var sideItems= wrapEl.querySelectorAll('.sidebar-item[data-panel]') as NodeListOf<HTMLElement>;
-    var coaches  = wrapEl.querySelectorAll('.coach[data-coach]') as NodeListOf<HTMLElement>;
+    var coachLayers = wrapEl.querySelectorAll('.coach-layer[data-coach-group]') as NodeListOf<HTMLElement>;
+    var chromeEl = wrapEl.querySelector('.browser-chrome') as HTMLElement | null;
+    var coachReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var coachTimers: ReturnType<typeof setTimeout>[] = [];
+    var coachActive: string | null = null;
     var ind      = wrapEl.querySelector('.demo-tab-ind') as (HTMLElement & { _settle?: ReturnType<typeof setTimeout> }) | null;
     if (!tabBar || !tabs.length || !panels.length) return;
     var tabBarEl = tabBar;
@@ -2183,6 +2335,80 @@ const s = getStrings(lang);
       }
       indEl.classList.add('ready');
     }
+    // --- Anchored coach callouts --------------------------------------------
+    // Position pills in chrome-local (unscaled) coordinates so they ride the
+    // scroll-zoom scale and stay glued to their target.
+    function liveScale(): number {
+      if (!chromeEl) return 1;
+      var w = chromeEl.offsetWidth;
+      return w ? chromeEl.getBoundingClientRect().width / w : 1;
+    }
+    function positionCoach(coach: HTMLElement, target: Element) {
+      if (!chromeEl) return;
+      var scale = liveScale();
+      var cr = chromeEl.getBoundingClientRect();
+      var tr = target.getBoundingClientRect();
+      var side = coach.dataset.side || 'bottom';
+      var pillH = coach.offsetHeight, halfW = coach.offsetWidth / 2;
+      var localW = cr.width / scale;
+      var cx = (tr.left + tr.width / 2 - cr.left) / scale;
+      cx = Math.max(halfW + 12, Math.min(localW - halfW - 12, cx));
+      var top = side === 'top'
+        ? (tr.top - cr.top) / scale - pillH - 11
+        : (tr.bottom - cr.top) / scale + 11;
+      coach.style.left = cx + 'px';
+      coach.style.top = Math.max(8, top) + 'px';
+    }
+    function clearCoaches() {
+      coachTimers.forEach(function(t) { clearTimeout(t); });
+      coachTimers = [];
+      coachLayers.forEach(function(layer) {
+        layer.querySelectorAll('.coach').forEach(function(c) { (c as HTMLElement).classList.remove('is-shown'); });
+      });
+      (window as any).lucraCoachBusy = false;
+      coachActive = null;
+    }
+    (window as any).lucraClearCoaches = clearCoaches;
+    function bringIntoView(panel: HTMLElement | null, target: Element) {
+      if (!panel || panel.scrollHeight <= panel.clientHeight + 4) return;
+      var scale = liveScale();
+      var pr = panel.getBoundingClientRect();
+      var tr = target.getBoundingClientRect();
+      panel.scrollTop = Math.max(0, panel.scrollTop + (tr.top - pr.top) / scale - 70);
+    }
+    function playCoaches(key: string | undefined) {
+      clearCoaches();
+      if (!visible || !key) return;
+      var layer = wrapEl.querySelector('.coach-layer[data-coach-group="' + key + '"]') as HTMLElement | null;
+      if (!layer) return;
+      var steps = Array.prototype.slice.call(layer.querySelectorAll('.coach')) as HTMLElement[];
+      if (!steps.length) return;
+      coachActive = key;
+      (window as any).lucraCoachBusy = true;
+      var panel = wrapEl.querySelector('.demo-panel[data-panel="' + key + '"]') as HTMLElement | null;
+      var maxStep = coachReduce ? 1 : steps.length;
+      var dwell = 2300;
+      steps.slice(0, maxStep).forEach(function(coach, stepIdx) {
+        coachTimers.push(setTimeout(function() {
+          if (coachActive !== key) return;
+          var target = (panel && panel.querySelector(coach.dataset.target || '')) || wrapEl.querySelector(coach.dataset.target || '');
+          if (!target) return;
+          // One callout at a time: hide the previous, scroll the next target into
+          // view, then place + reveal — a guided tour that never orphans a pill.
+          steps.forEach(function(s) { s.classList.remove('is-shown'); });
+          bringIntoView(panel, target);
+          coachTimers.push(setTimeout(function() {
+            if (coachActive !== key) return;
+            positionCoach(coach, target as Element);
+            coach.classList.add('is-shown');
+            if (stepIdx === maxStep - 1) {
+              coachTimers.push(setTimeout(function() { (window as any).lucraCoachBusy = false; }, 2000));
+            }
+          }, 90));
+        }, 500 + stepIdx * dwell));
+      });
+    }
+
     function activate(i: number, animate?: boolean) {
       idx = i;
       var key = tabs[i].dataset.panel;
@@ -2191,16 +2417,16 @@ const s = getStrings(lang);
       tabs.forEach(function(t, j) { t.classList.toggle('is-active', j === i); });
       panels.forEach(function(p) { p.classList.toggle('is-active', p.dataset.panel === key); });
       sideItems.forEach(function(s) { s.classList.toggle('active', s.dataset.panel === key); });
-      coaches.forEach(function(c) { c.classList.toggle('is-shown', c.dataset.coach === key); });
+      playCoaches(key);
       moveIndicator(animate !== false);
     }
     function tick() {
       if (!auto || !visible) return;
       if (timer) clearTimeout(timer);
       timer = setTimeout(function() {
-        // Hold on the current tab while the chat demo is still playing out, so
-        // the multi-turn conversation is never cut off mid-stream.
-        if ((window as any).lucraChatBusy) { tick(); return; }
+        // Hold on the current tab while the chat demo is still playing out or the
+        // coach callouts are still narrating, so nothing is cut off mid-stream.
+        if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy) { tick(); return; }
         activate((idx + 1) % tabs.length);
         tick();
       }, ROT_MS);
@@ -2224,10 +2450,12 @@ const s = getStrings(lang);
       wrapEl.classList.toggle('tabs-visible', v);
       if (v) {
         moveIndicator(false);
+        playCoaches(tabs[idx].dataset.panel);
         tick();
       } else {
         if (timer) clearTimeout(timer);
         timer = null;
+        clearCoaches();
       }
     }
     function onScroll() {
@@ -2263,6 +2491,11 @@ const s = getStrings(lang);
     if (!uinTpl || !ainTpl) return;
     var uinTplEl = uinTpl, ainTplEl = ainTpl;
     var TIMES = ['09:24', '09:25', '09:27'];
+    // Real WebGL orbs for answers (disposed on replay so contexts never leak).
+    var liveOrbs: { dispose(): void }[] = [];
+    var orbSeq = 0;
+    // The sidebar "live" history row that demonstrates AI title generation.
+    var histLive = document.querySelector('[data-hist-live]') as HTMLElement | null;
 
     var EXCHANGES: { q: string; a: string }[] = [];
     for (var k = 1; k <= 3; k++) {
@@ -2288,10 +2521,11 @@ const s = getStrings(lang);
             var span = document.createElement('span');
             span.textContent = part;
             span.style.opacity = '0';
-            span.style.transition = 'opacity .26s ease';
+            span.style.transform = 'translateY(4px)';
+            span.style.transition = 'opacity .24s ease, transform .24s cubic-bezier(.22,1,.36,1)';
             frag.appendChild(span);
             (function(target: HTMLElement, delay: number) {
-              timers.push(setTimeout(function() { target.style.opacity = '1'; }, delay));
+              timers.push(setTimeout(function() { target.style.opacity = '1'; target.style.transform = 'none'; }, delay));
             })(span, counter.i * 55);
             counter.i++;
           });
@@ -2326,15 +2560,26 @@ const s = getStrings(lang);
       var dots = el.querySelector('.chat-dots') as HTMLElement;
       dots.classList.add('show');
       threadEl.appendChild(el);
+      if (!reduce) {
+        var orbHost = el.querySelector('.ain-orb') as HTMLElement | null;
+        if (orbHost && (window as any).lucraMountAnswerOrb) {
+          orbHost.id = 'ain-orb-' + (++orbSeq);
+          var handle = (window as any).lucraMountAnswerOrb(orbHost.id);
+          if (handle) { liveOrbs.push(handle); orbHost.classList.add('orb-live'); }
+        }
+      }
       return { ans: ans, dots: dots };
     }
     function reset() {
       clearTimers();
+      liveOrbs.forEach(function(h) { try { h.dispose(); } catch (e) { /* ignore */ } });
+      liveOrbs = [];
       (window as any).lucraChatBusy = false;
       sceneEl.classList.remove('is-typing', 'is-typing2', 'is-sent');
       welcomeTypedEl.textContent = '';
       barTypedEl.textContent = '';
       threadEl.innerHTML = '';
+      if (histLive) { histLive.textContent = ''; histLive.classList.remove('is-new', 'is-generating'); }
     }
     function showFinal() {
       sceneEl.classList.add('is-sent');
@@ -2345,11 +2590,13 @@ const s = getStrings(lang);
         ai.dots.remove();
         ai.ans.innerHTML = ex.a;
       });
+      if (histLive) { histLive.textContent = histLive.dataset.title || ''; histLive.classList.add('is-new'); }
     }
     // Type `text` into `el` char by char; returns false if cancelled mid-way.
     async function typeInto(el: HTMLElement, text: string, myGen: number) {
       for (var n = 0; n < text.length; n++) {
-        await wait(36); if (myGen !== gen) return false;
+        var ch = text[n];
+        await wait(/\s/.test(ch) ? 52 : /[.,:]/.test(ch) ? 120 : 34); if (myGen !== gen) return false;
         el.textContent = text.slice(0, n + 1);
       }
       return true;
@@ -2368,6 +2615,10 @@ const s = getStrings(lang);
           await wait(460); if (myGen !== gen) return;
           sceneEl.classList.remove('is-typing');
           sceneEl.classList.add('is-sent');
+          // The conversation opened — clear the chat coach so it never points at
+          // the now-hidden welcome input, and seed the new history row.
+          if ((window as any).lucraClearCoaches) (window as any).lucraClearCoaches();
+          if (histLive) { histLive.textContent = histLive.dataset.default || ''; histLive.classList.add('is-new'); }
         } else {
           sceneEl.classList.add('is-typing2');
           if (!(await typeInto(barTypedEl, ex.q, myGen))) return;
@@ -2386,6 +2637,15 @@ const s = getStrings(lang);
         scrollDown();
         await wait(counter.i * 55 + 1700); if (myGen !== gen) return;
         scrollDown();
+        // After the first answer, the app names the conversation: shimmer over the
+        // default label, then "type" the generated title into the history row.
+        if (i === 0 && histLive) {
+          histLive.classList.add('is-generating');
+          await wait(900); if (myGen !== gen) return;
+          histLive.classList.remove('is-generating');
+          histLive.textContent = '';
+          if (!(await typeInto(histLive, histLive.dataset.title || '', myGen))) return;
+        }
       }
       (window as any).lucraChatBusy = false;
     }
@@ -2410,18 +2670,22 @@ const s = getStrings(lang);
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var numbers = panelEl.querySelectorAll('.metric .num[data-count]') as NodeListOf<HTMLElement>;
     function countUp() {
-      numbers.forEach(function(element) {
+      numbers.forEach(function(element, index) {
         var target = parseInt(element.dataset.count || '0', 10);
         if (reduce) { element.textContent = String(target); return; }
-        var startTime = performance.now();
-        var duration = 1100;
-        function step(now: number) {
-          var progress = Math.min(1, (now - startTime) / duration);
-          var eased = 1 - Math.pow(1 - progress, 3);
-          element.textContent = String(Math.round(target * eased));
-          if (progress < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+        // Stagger each card's count-up by index so the dashboard powers on
+        // left-to-right / top-to-bottom rather than flashing all at once.
+        setTimeout(function() {
+          var startTime = performance.now();
+          var duration = 950;
+          function step(now: number) {
+            var progress = Math.min(1, (now - startTime) / duration);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            element.textContent = String(Math.round(target * eased));
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }, index * 70);
       });
     }
     function onActivate() { panelEl.scrollTop = 0; countUp(); }
@@ -2486,10 +2750,14 @@ const s = getStrings(lang);
       const io = new IntersectionObserver((entries, obs) => {
         if (entries.some((entry) => entry.isIntersecting)) {
           obs.disconnect();
-          ric(() => mountOrb(id, { intro: false, registerGlobalPulse: false }));
+          ric(() => { if (mountOrb(id, { intro: false, registerGlobalPulse: false })) el.classList.add('orb-live'); });
         }
       }, { rootMargin: '200px' });
       io.observe(el);
     });
+    // Small WebGL orb on demand for chat answers (the chat IIFE lives in another
+    // module). Returns a disposable handle so answer orbs are released on replay.
+    (window as any).lucraMountAnswerOrb = (id: string) =>
+      mountOrb(id, { intro: false, registerGlobalPulse: false, maxDpr: 1.5 });
   }
 </script>

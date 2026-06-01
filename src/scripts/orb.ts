@@ -11,11 +11,20 @@ import { Renderer, Program, Mesh, Triangle, Vec3 } from 'ogl';
 export interface MountOpts {
   intro?: boolean;
   registerGlobalPulse?: boolean;
+  /** Cap the device-pixel-ratio for tiny orbs (e.g. 1.5 for 28px chat avatars). Default 2. */
+  maxDpr?: number;
 }
 
-export function mountOrb(containerId: string, opts: MountOpts = {}): void {
+export interface OrbHandle {
+  /** Tear down the orb: stop rendering, drop listeners, release the WebGL context. */
+  dispose(): void;
+}
+
+export function mountOrb(containerId: string, opts: MountOpts = {}): OrbHandle | null {
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container) return null;
+
+  const dprCap = opts.maxDpr ?? 2;
 
   const COLOR_LIGHT = '#56B3EB'; // voiceOrbLight
   const COLOR_START = '#3B82F6'; // voiceOrbStart
@@ -228,7 +237,7 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
       alpha: true,
       premultipliedAlpha: false,
       antialias: true,
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr: Math.min(window.devicePixelRatio || 1, dprCap),
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -263,7 +272,7 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
 
     const resize = (): void => {
       if (!container || !renderer) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
       const width = container.clientWidth;
       const height = container.clientHeight;
       if (width < 1 || height < 1) {
@@ -324,7 +333,8 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
     let running = false;
     let onScreen = true;
     let resetClock = false;
-    const shouldRun = (): boolean => onScreen && !document.hidden;
+    let disposed = false;
+    const shouldRun = (): boolean => !disposed && onScreen && !document.hidden;
 
     const update = (time: number): void => {
       if (!shouldRun()) { running = false; return; }
@@ -383,12 +393,37 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): void {
     });
     visObserver.observe(container);
     // Pause on background tab; resume on return.
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
+    const onVisibilityChange = (): void => { if (!document.hidden) start(); };
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     start();
     void rafId;
     void resizeTimeoutId;
+
+    return {
+      dispose(): void {
+        if (disposed) return;
+        disposed = true;
+        running = false;
+        if (rafId) cancelAnimationFrame(rafId);
+        if (resizeTimeoutId) clearTimeout(resizeTimeoutId);
+        window.removeEventListener('resize', resize);
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+        if (!opts.registerGlobalPulse) container.removeEventListener('click', pulse);
+        visObserver.disconnect();
+        // Release the WebGL context immediately so tiny short-lived orbs (chat
+        // answers, recreated on every replay) never exhaust the browser's limit.
+        try {
+          const lose = gl.getExtension('WEBGL_lose_context');
+          if (lose) lose.loseContext();
+        } catch { /* ignore */ }
+        if (gl.canvas.parentNode === container) container.removeChild(gl.canvas);
+        program = null;
+        renderer = null;
+      },
+    };
   } catch (e) {
     console.warn('Orb failed to init:', e);
+    return null;
   }
 }

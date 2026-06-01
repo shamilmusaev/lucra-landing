@@ -62,10 +62,13 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoNavDashboard: 'Dashboard',
   heroDemoNavFiles: 'Files',
   heroDemoHistory: 'History',
-  heroDemoHistoryDate: 'April 28',
-  heroDemoChat1: 'New chat',
-  heroDemoChat2: 'Which customers are behind…',
-  heroDemoChat3: 'New chat',
+  heroDemoHistoryToday: 'Today',
+  heroDemoHistoryYesterday: 'Yesterday',
+  heroDemoChatDefault: 'New conversation',
+  heroChatTitleGenerated: 'Sole trader vs limited company',
+  heroDemoChatRecent1: 'Cash flow in April',
+  heroDemoChatRecent2: 'Overdue invoices',
+  heroDemoChatRecent3: 'VAT Q2',
 
   // Product demo window – dashboard panel
   heroDemoDashTitle: 'Dashboard',
@@ -133,10 +136,12 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroCoAct5: '1 week ago',
 
   // Product demo window – per-tab explainer callouts
-  heroCoachChat: 'Ask in plain language – Lucra answers from your real Fortnox bookkeeping.',
-  heroCoachDashboard: 'AI summarizes your finances and flags anomalies, always synced with Fortnox.',
-  heroCoachDocs: 'Upload source documents and grab generated reports – all in one place.',
-  heroCoachCompanies: 'All client companies your firm is connected to, in one view.',
+  heroCoachChat1: 'Ask in plain language – Lucra answers from your Fortnox data.',
+  heroCoachDashboard1: 'AI summarizes your finances and flags anomalies.',
+  heroCoachDashboard2: 'Real-time KPIs, always synced with Fortnox.',
+  heroCoachDocs1: 'Uploaded documents and generated reports in one place.',
+  heroCoachDocs2: 'Lucra generates reports for you.',
+  heroCoachCompanies1: 'Every client company your firm is linked to, in one view.',
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra is built for finance, not for everything',

@@ -110,6 +110,8 @@
   /* Shared content-card elevation — brand-tinted, used across content sections */
   --shadow-soft:       0 1px 2px rgba(15,23,42,.04), 0 18px 44px -30px rgba(61,80,109,.30);
   --shadow-soft-hover: 0 1px 2px rgba(15,23,42,.05), 0 32px 64px -28px rgba(61,80,109,.38);
+  --ease-out-expo: cubic-bezier(.22,1,.36,1);
+  --shadow-window: 0 0 0 1px rgba(61,80,109,.04), 0 2px 4px -1px rgba(15,23,42,.06), 0 30px 60px -20px rgba(61,80,109,.18), 0 60px 120px -40px rgba(15,23,42,.16);
 
   /* -------- Radius -------- */
   --radius-sm:     8px;

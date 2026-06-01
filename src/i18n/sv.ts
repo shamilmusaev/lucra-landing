@@ -60,10 +60,13 @@ export const sv = {
   heroDemoNavDashboard: 'Dashboard',
   heroDemoNavFiles: 'Filer',
   heroDemoHistory: 'Historik',
-  heroDemoHistoryDate: '28 april',
-  heroDemoChat1: 'Ny chatt',
-  heroDemoChat2: 'Vilka kunder ligger efter…',
-  heroDemoChat3: 'Ny chatt',
+  heroDemoHistoryToday: 'Idag',
+  heroDemoHistoryYesterday: 'Igår',
+  heroDemoChatDefault: 'Ny konversation',
+  heroChatTitleGenerated: 'Enskild firma vs aktiebolag',
+  heroDemoChatRecent1: 'Kassaflöde i april',
+  heroDemoChatRecent2: 'Förfallna fakturor',
+  heroDemoChatRecent3: 'Moms Q2',
 
   // Product demo window – dashboard panel
   heroDemoDashTitle: 'Dashboard',
@@ -131,10 +134,12 @@ export const sv = {
   heroCoAct5: '1 vecka sedan',
 
   // Product demo window – per-tab explainer callouts
-  heroCoachChat: 'Ställ frågor på vanlig svenska – Lucra svarar utifrån din faktiska bokföring i Fortnox.',
-  heroCoachDashboard: 'AI sammanfattar din ekonomi och flaggar avvikelser, alltid synkat med Fortnox.',
-  heroCoachDocs: 'Ladda upp underlag och hämta genererade rapporter – samlat på ett ställe.',
-  heroCoachCompanies: 'Alla klientbolag din byrå är kopplad till, i en samlad vy.',
+  heroCoachChat1: 'Ställ frågor på vanlig svenska – Lucra svarar från din Fortnox-data.',
+  heroCoachDashboard1: 'AI sammanfattar din ekonomi och flaggar avvikelser.',
+  heroCoachDashboard2: 'Nyckeltal i realtid, alltid synkat med Fortnox.',
+  heroCoachDocs1: 'Uppladdade underlag och genererade rapporter på ett ställe.',
+  heroCoachDocs2: 'Lucra genererar rapporter åt dig.',
+  heroCoachCompanies1: 'Alla klientbolag din byrå är kopplad till, i en vy.',
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra är byggt för ekonomi, inte för allt',
