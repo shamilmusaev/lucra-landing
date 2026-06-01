@@ -122,8 +122,8 @@ export const en: { [K in keyof typeof sv]: string } = {
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra is built for finance, not for everything',
-  cmpColLucra: 'Lucra',  cmpColGenAi: 'ChatGPT & general AI tools',
-  cmpColStatus: 'Status quo',
+  cmpColLucra: 'Lucra',  cmpColGenAi: 'ChatGPT & AI tools',
+  cmpColStatus: 'Doing it manually',
   cmpRow1Label: 'Financial context',
   cmpRow1Lucra: 'Connected to live bookkeeping data via Fortnox',  cmpRow1GenAi: 'No connection to your bookkeeping',
   cmpRow1Status: 'Numbers scattered across Excel and binders',

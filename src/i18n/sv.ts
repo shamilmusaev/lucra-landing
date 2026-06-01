@@ -119,8 +119,8 @@ export const sv = {
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra är byggt för ekonomi, inte för allt',
-  cmpColLucra: 'Lucra',  cmpColGenAi: 'ChatGPT & generella AI-verktyg',
-  cmpColStatus: 'Status quo',
+  cmpColLucra: 'Lucra',  cmpColGenAi: 'ChatGPT & AI-verktyg',
+  cmpColStatus: 'Manuellt idag',
   cmpRow1Label: 'Ekonomisk kontext',
   cmpRow1Lucra: 'Kopplad till aktuell bokföringsdata via Fortnox',  cmpRow1GenAi: 'Saknar koppling till din bokföring',
   cmpRow1Status: 'Siffror utspridda i Excel och pärmar',

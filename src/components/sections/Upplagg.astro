@@ -25,7 +25,12 @@ const partnerFeats = [
 ---
 
 <section id="upplagg">
-  <ParticleField mask="radial-gradient(ellipse 100% 80% at 50% 46%, #000 0%, #000 48%, transparent 90%)" />
+  <ParticleField
+    mask="radial-gradient(ellipse 100% 80% at 50% 46%, #000 0%, #000 48%, transparent 90%)"
+    interactiveBloom
+    bloomZone=".plan"
+    bloomStrength={1.4}
+  />
   <div class="container">
     <div class="section-head center reveal">
       <h2 class="section-title">{s.priTitle}</h2>
@@ -111,7 +116,11 @@ const partnerFeats = [
   flex-direction: column;
   padding: 36px 34px;
   border-radius: var(--radius-card);
-  background: var(--bg-paper);
+  /* Frosted glass: the cursor-reactive dot field stays visible through the card,
+     softened — matches the comparison table in Jamforelse. */
+  background: color-mix(in srgb, var(--bg-paper) 1%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(2px);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
   transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;

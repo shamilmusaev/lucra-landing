@@ -26,7 +26,12 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
 ---
 
 <section id="jamforelse" class="tone-slate">
-  <ParticleField mask="radial-gradient(ellipse 100% 76% at 50% 42%, #000 0%, #000 46%, transparent 90%)" />
+  <ParticleField
+    mask="radial-gradient(ellipse 100% 76% at 50% 42%, #000 0%, #000 46%, transparent 90%)"
+    interactiveBloom
+    bloomZone=".cmp-grid"
+    bloomStrength={1.6}
+  />
   <div class="container">
     <div class="section-head center reveal">
       <h2 class="section-title">{s.cmpTitle}</h2>

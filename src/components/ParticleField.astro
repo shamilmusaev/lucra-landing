@@ -20,9 +20,12 @@ interface Props {
   dotColor?: string;
   interactiveBloom?: boolean;
   bloomExclude?: string;
+  bloomStrength?: number;
+  bloomZone?: string;
+  clearOnClick?: string;
   class?: string;
 }
-const { mask, dotAlpha, dotColor, interactiveBloom, bloomExclude, class: className } = Astro.props as Props;
+const { mask, dotAlpha, dotColor, interactiveBloom, bloomExclude, bloomStrength, bloomZone, clearOnClick, class: className } = Astro.props as Props;
 const style = [
   mask ? `--pf-mask:${mask}` : null,
   dotAlpha != null ? `--pf-dot-alpha:${dotAlpha}` : null,
@@ -37,6 +40,9 @@ const style = [
   data-dot-color={dotColor}
   data-bloom={interactiveBloom ? '1' : undefined}
   data-bloom-exclude={bloomExclude}
+  data-bloom-strength={bloomStrength != null ? String(bloomStrength) : undefined}
+  data-bloom-zone={bloomZone}
+  data-clear-on-click={clearOnClick}
   aria-hidden="true"
   style={style}
 ></div>
@@ -72,7 +78,8 @@ const style = [
   function mountField(field: HTMLElement): void {
     const pointer = field.closest('section') ?? field.parentElement ?? field;
     const dotAlpha = Number(field.dataset.dotAlpha);
-    initParticleField({
+    const bloomStrength = Number(field.dataset.bloomStrength);
+    const controller = initParticleField({
       canvasParent: field,
       pointer: pointer as HTMLElement,
       canvasClass: 'particle-field__canvas',
@@ -80,7 +87,26 @@ const style = [
       dotColor: field.dataset.dotColor || undefined,
       interactiveBloom: field.dataset.bloom === '1',
       bloomExcludeSelector: field.dataset.bloomExclude || undefined,
+      bloomStrength: Number.isFinite(bloomStrength) ? bloomStrength : undefined,
+      bloomZoneSelector: field.dataset.bloomZone || undefined,
     });
+
+    // Optional: clicking an element (e.g. the CTA orb) sweeps the field clean
+    // from that element's centre outward — same effect as the hero orb click.
+    const clearSel = field.dataset.clearOnClick;
+    if (controller && clearSel) {
+      const trigger = (field.closest('section') ?? document).querySelector(clearSel);
+      if (trigger) {
+        trigger.addEventListener('click', () => {
+          const fr = field.getBoundingClientRect();
+          const tr = trigger.getBoundingClientRect();
+          controller.clear(() => ({
+            x: tr.left + tr.width / 2 - fr.left,
+            y: tr.top + tr.height / 2 - fr.top,
+          }), 8000);
+        });
+      }
+    }
   }
 
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
