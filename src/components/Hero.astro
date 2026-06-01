@@ -62,13 +62,13 @@ const s = getStrings(lang);
   <div class="container hero-chrome-wrap reveal delay-3">
     <div class="demo-tabs" role="tablist" aria-label={s.heroDemoTablistLabel}>
       <span class="demo-tab-ind" aria-hidden="true"></span>
-      <button class="demo-tab is-active" data-panel="dashboard" role="tab" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-        {s.heroTabDashboard}
-      </button>
-      <button class="demo-tab" data-panel="chat" role="tab" type="button">
+      <button class="demo-tab is-active" data-panel="chat" role="tab" type="button">
         <svg viewBox="0 0 19 19" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.9125 15.6319C7.58251 16.4886 9.50357 16.7206 11.3295 16.2862C13.1555 15.8518 14.7662 14.7795 15.8715 13.2625C16.9768 11.7456 17.504 9.88375 17.358 8.01252C17.212 6.14129 16.4025 4.38373 15.0753 3.05655C13.7482 1.72937 11.9906 0.919847 10.1194 0.773866C8.24813 0.627885 6.38629 1.15504 4.86934 2.26034C3.3524 3.36564 2.28011 4.9764 1.84569 6.80235C1.41128 8.6283 1.64332 10.5494 2.5 12.2194L0.75 17.3819L5.9125 15.6319Z"/></svg>
         {s.heroTabChat}
+      </button>
+      <button class="demo-tab" data-panel="dashboard" role="tab" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        {s.heroTabDashboard}
       </button>
       <button class="demo-tab" data-panel="docs" role="tab" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V7.5L14.5 2Z"/><path d="M14 2V8H20"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
@@ -79,12 +79,24 @@ const s = getStrings(lang);
         {s.heroTabCompanies}
       </button>
     </div>
+    <a class="demo-cta" href="/signup">
+      {s.heroDemoCtaPill}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
     <div class="browser-chrome">
       <div class="browser-bar" aria-hidden="true">
         <span class="dot red"></span>
         <span class="dot yellow"></span>
         <span class="dot green"></span>
       </div>
+
+      <!-- Per-tab explainer callouts — float in the window title bar, scaling with
+           the window; shown for the active panel only (toggled by the orchestrator). -->
+      <div class="coach is-shown" data-coach="chat"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachChat}</p></div>
+      <div class="coach" data-coach="dashboard"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachDashboard}</p></div>
+      <div class="coach" data-coach="docs"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachDocs}</p></div>
+      <div class="coach" data-coach="companies"><svg class="coach-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z"/></svg><p>{s.heroCoachCompanies}</p></div>
+
       <div class="product-shell">
       <div class="product-shell-inner">
         <aside class="product-sidebar">
@@ -104,31 +116,24 @@ const s = getStrings(lang);
             {s.heroDemoSearch}
           </div>
 
-          <div class="sb-action primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-            {s.heroDemoNewChat}
+          <div class="sidebar-item active" data-panel="chat">
+            <Icon name="square-pen" size={16} /> {s.heroDemoNewChat}
           </div>
-          <div class="sb-action">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>
-            {s.heroDemoMonthlyReport}
+          <div class="sidebar-item disabled">
+            <Icon name="file-plus-2" size={16} /> {s.heroDemoMonthlyReport}
           </div>
-
-          <div class="sb-divider"></div>
-
-          <div class="sidebar-item active" data-panel="dashboard">
-            <Icon name="layout-dashboard" size={16} /> {s.heroDemoNavDashboard}
-          </div>
-          <div class="sidebar-item" data-panel="chat">
-            <Icon name="message-circle" size={16} /> {s.heroDemoNavChat}
+          <div class="sidebar-item" data-panel="dashboard">
+            <Icon name="layout-grid" size={16} /> {s.heroDemoNavDashboard}
           </div>
           <div class="sidebar-item" data-panel="docs">
-            <Icon name="file-text" size={16} /> {s.heroDemoNavFiles}
-          </div>
-          <div class="sidebar-item" data-panel="companies">
-            <Icon name="users" size={16} /> {s.heroDemoNavCompanies}
+            <Icon name="folder" size={16} /> {s.heroDemoNavFiles}
           </div>
 
-          <div class="nav-section-label">{s.heroDemoToday}</div>
+          <div class="sb-history-head">
+            <span>{s.heroDemoHistory}</span>
+            <svg class="hist-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="sb-history-date">{s.heroDemoHistoryDate}</div>
           <div class="sidebar-chat-row">{s.heroDemoChat1}</div>
           <div class="sidebar-chat-row">{s.heroDemoChat2}</div>
           <div class="sidebar-chat-row">{s.heroDemoChat3}</div>
@@ -146,241 +151,331 @@ const s = getStrings(lang);
         </aside>
 
         <main class="product-main">
-          <!-- Panel 1: Dashboard -->
-          <div class="demo-panel is-active" data-panel="dashboard">
+          <!-- Panel: Dashboard -->
+          <div class="demo-panel" data-panel="dashboard">
             <div class="product-main-head">
-              <div class="dash-title">{s.heroDemoDashTitle}</div>
-              <div class="sync-chip">
-                <span class="pulse"></span>
-                {s.heroDemoSyncDashboard}
+              <div class="dash-head-left">
+                <div class="dash-title">{s.heroDemoDashTitle}</div>
+                <p class="dash-sub">{s.heroDemoDashSubtitle}</p>
+              </div>
+              <div class="dash-head-right">
+                <div class="sync-chip">
+                  <span class="pulse"></span>
+                  {s.heroDemoSyncDashboard}
+                </div>
+                <div class="period-seg" aria-hidden="true">
+                  <span class="period-opt">{s.heroDemoPeriodMonth}</span>
+                  <span class="period-opt">{s.heroDemoPeriodQuarter}</span>
+                  <span class="period-opt is-active">{s.heroDemoPeriodYear}</span>
+                </div>
               </div>
             </div>
+
+            <!-- AI Insights -->
+            <div class="ai-insights">
+              <div class="ai-head">
+                <svg class="ai-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                <span class="ai-orb" id="dash-insights-orb"></span>
+                <span class="ai-titles">
+                  <span class="ai-title">{s.heroDemoAiTitle}</span>
+                  <span class="ai-sub">{s.heroDemoAiSubtitle}</span>
+                </span>
+              </div>
+              <div class="ai-list">
+                <div class="ai-item"><span class="ai-bullet"></span><p set:html={s.heroDemoAiInsight1}></p></div>
+                <div class="ai-item"><span class="ai-bullet"></span><p set:html={s.heroDemoAiInsight2}></p></div>
+                <div class="ai-item"><span class="ai-bullet"></span><p set:html={s.heroDemoAiInsight3}></p></div>
+              </div>
+            </div>
+
+            <!-- Metric cards -->
+            <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+              <linearGradient id="sparkFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#3D506D" stop-opacity="0.16"/><stop offset="100%" stop-color="#3D506D" stop-opacity="0"/></linearGradient>
+            </defs></svg>
             <div class="metric-grid">
               <div class="metric">
                 <span class="eyebrow">{s.heroDemoMetricRevenue}</span>
-                <div class="val">487 200<span class="cur">SEK</span></div>
-                <div class="trend up">↑ 12 %<span class="lbl">{s.heroDemoMetricVsQuarter}</span></div>
+                <div class="val"><span class="num" data-count="658">0</span><span class="suf">k</span><span class="cur">SEK</span></div>
+                <div class="trend up"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+28 %<span class="lbl">{s.heroDemoMetricVsYear}</span></div>
+                <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><path class="spark-area" d="M 0 39 L 40 29.9 L 80 5 L 120 14.1 L 160 9.5 L 200 18.6 L 200 44 L 0 44 Z"/><path class="spark-line" pathLength="1" vector-effect="non-scaling-stroke" d="M 0 39 L 40 29.9 L 80 5 L 120 14.1 L 160 9.5 L 200 18.6"/></svg>
               </div>
               <div class="metric">
                 <span class="eyebrow">{s.heroDemoMetricCosts}</span>
-                <div class="val">312 850<span class="cur">SEK</span></div>
-                <div class="trend up">↓ 4 %<span class="lbl">{s.heroDemoMetricVsQuarter}</span></div>
+                <div class="val"><span class="num" data-count="435">0</span><span class="suf">k</span><span class="cur">SEK</span></div>
+                <div class="trend up"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+24 %<span class="lbl">{s.heroDemoMetricVsYear}</span></div>
+                <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><path class="spark-area" d="M 0 39 L 40 32.2 L 80 5 L 120 15.2 L 160 11.8 L 200 18.6 L 200 44 L 0 44 Z"/><path class="spark-line" pathLength="1" vector-effect="non-scaling-stroke" d="M 0 39 L 40 32.2 L 80 5 L 120 15.2 L 160 11.8 L 200 18.6"/></svg>
               </div>
               <div class="metric">
                 <span class="eyebrow">{s.heroDemoMetricNet}</span>
-                <div class="val">174 350<span class="cur">SEK</span></div>
-                <div class="trend up">↑ 28 %<span class="lbl">{s.heroDemoMetricVsQuarter}</span></div>
+                <div class="val"><span class="num" data-count="223">0</span><span class="suf">k</span><span class="cur">SEK</span></div>
+                <div class="trend up"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+35 %<span class="lbl">{s.heroDemoMetricVsYear}</span></div>
+                <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><path class="spark-area" d="M 0 39 L 40 25.4 L 80 5 L 120 11.8 L 160 5 L 200 18.6 L 200 44 L 0 44 Z"/><path class="spark-line" pathLength="1" vector-effect="non-scaling-stroke" d="M 0 39 L 40 25.4 L 80 5 L 120 11.8 L 160 5 L 200 18.6"/></svg>
               </div>
               <div class="metric">
-                <span class="eyebrow">{s.heroDemoMetricLiquidity}</span>
-                <div class="val">642 100<span class="cur">SEK</span></div>
-                <div class="trend up">↑ 6 %<span class="lbl">{s.heroDemoMetricVsQuarter}</span></div>
+                <span class="eyebrow">{s.heroDemoMetricCashFlow}</span>
+                <div class="val"><span class="num" data-count="200">0</span><span class="suf">k</span><span class="cur">SEK</span></div>
+                <div class="trend up"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+35 %<span class="lbl">{s.heroDemoMetricVsYear}</span></div>
+                <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><path class="spark-area" d="M 0 39 L 40 30.5 L 80 5 L 120 13.5 L 160 5 L 200 22 L 200 44 L 0 44 Z"/><path class="spark-line" pathLength="1" vector-effect="non-scaling-stroke" d="M 0 39 L 40 30.5 L 80 5 L 120 13.5 L 160 5 L 200 22"/></svg>
+              </div>
+              <div class="metric">
+                <span class="eyebrow">{s.heroDemoMetricEbitda}</span>
+                <div class="val"><span class="num" data-count="257">0</span><span class="suf">k</span><span class="cur">SEK</span></div>
+                <div class="trend up"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+35 %<span class="lbl">{s.heroDemoMetricVsYear}</span></div>
+                <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><path class="spark-area" d="M 0 39 L 40 27.7 L 80 5 L 120 10.7 L 160 5 L 200 16.3 L 200 44 L 0 44 Z"/><path class="spark-line" pathLength="1" vector-effect="non-scaling-stroke" d="M 0 39 L 40 27.7 L 80 5 L 120 10.7 L 160 5 L 200 16.3"/></svg>
+              </div>
+              <div class="metric">
+                <span class="eyebrow">{s.heroDemoMetricVat}</span>
+                <div class="val"><span class="num" data-count="9">0</span><span class="suf">k</span><span class="cur">SEK</span></div>
+                <div class="trend up"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>+39 %<span class="lbl">{s.heroDemoMetricVsYear}</span></div>
+                <svg class="spark" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><path class="spark-area" d="M 0 39 L 40 39 L 80 5 L 120 5 L 160 5 L 200 39 L 200 44 L 0 44 Z"/><path class="spark-line" pathLength="1" vector-effect="non-scaling-stroke" d="M 0 39 L 40 39 L 80 5 L 120 5 L 160 5 L 200 39"/></svg>
               </div>
             </div>
+
+            <!-- Income vs Expenses -->
             <div class="chart-card">
               <div class="chart-card-head">
                 <h3>{s.heroDemoChartTitle}</h3>
                 <div class="chart-legend">
-                  <span><i style="background:#3D506D"></i>{s.heroDemoMetricRevenue}</span>
-                  <span><i style="background:#A3B8CC"></i>{s.heroDemoMetricCosts}</span>
+                  <span class="leg-pill"><i class="dot-rev"></i>{s.heroDemoMetricRevenue}</span>
+                  <span class="leg-pill"><i class="dot-exp"></i>{s.heroDemoMetricCosts}</span>
                 </div>
               </div>
-              <svg id="hero-chart" viewBox="0 0 640 180" style="width:100%;height:180px;display:block;">
+              <svg class="dash-chart" viewBox="0 0 660 244" role="img" aria-hidden="true">
                 <defs>
-                  <linearGradient id="incFillHero" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stop-color="#3D506D" stop-opacity="0.18"/>
-                    <stop offset="100%" stop-color="#3D506D" stop-opacity="0"/>
-                  </linearGradient>
+                  <linearGradient id="chRev" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#3D506D" stop-opacity="0.14"/><stop offset="100%" stop-color="#3D506D" stop-opacity="0"/></linearGradient>
+                  <linearGradient id="chExp" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#EF4444" stop-opacity="0.12"/><stop offset="100%" stop-color="#EF4444" stop-opacity="0"/></linearGradient>
                 </defs>
-                <line x1="20" x2="620" y1="20" y2="20" stroke="#F1F5F9" stroke-width="1"/>
-                <line x1="20" x2="620" y1="73" y2="73" stroke="#F1F5F9" stroke-width="1"/>
-                <line x1="20" x2="620" y1="127" y2="127" stroke="#F1F5F9" stroke-width="1"/>
-                <line x1="20" x2="620" y1="160" y2="160" stroke="#F1F5F9" stroke-width="1"/>
-                <path d="M 20 120 L 75 105 L 130 110 L 185 88 L 240 75 L 295 80 L 350 60 L 405 40 L 460 50 L 515 30 L 570 22 L 620 16 L 620 160 L 20 160 Z" fill="url(#incFillHero)"/>
-                <path d="M 20 120 L 75 105 L 130 110 L 185 88 L 240 75 L 295 80 L 350 60 L 405 40 L 460 50 L 515 30 L 570 22 L 620 16" fill="none" stroke="#3D506D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M 20 140 L 75 138 L 130 135 L 185 132 L 240 128 L 295 130 L 350 120 L 405 115 L 460 110 L 515 105 L 570 102 L 620 96" fill="none" stroke="#A3B8CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line class="ch-grid" x1="46" x2="636" y1="212" y2="212"/>
+                <text class="ch-ytick" x="36" y="215">0k</text>
+                <line class="ch-grid" x1="46" x2="636" y1="145.3" y2="145.3"/>
+                <text class="ch-ytick" x="36" y="148.3">50k</text>
+                <line class="ch-grid" x1="46" x2="636" y1="78.7" y2="78.7"/>
+                <text class="ch-ytick" x="36" y="81.7">100k</text>
+                <line class="ch-grid" x1="46" x2="636" y1="12" y2="12"/>
+                <text class="ch-ytick" x="36" y="15">150k</text>
+                <path class="ch-area ch-area-exp" d="M 46 140 L 99.6 137.3 L 153.3 129.3 L 206.9 132 L 260.5 130.7 L 314.2 134.7 L 367.8 122.7 L 421.5 120 L 475.1 109.3 L 528.7 113.3 L 582.4 112 L 636 114.7 L 636 212 L 46 212 Z"/>
+                <path class="ch-area ch-area-rev" d="M 46 106.7 L 99.6 102.7 L 153.3 90.7 L 206.9 94.7 L 260.5 92 L 314.2 97.3 L 367.8 77.3 L 421.5 72 L 475.1 57.3 L 528.7 62.7 L 582.4 60 L 636 65.3 L 636 212 L 46 212 Z"/>
+                <path class="ch-line ch-line-exp" pathLength="1" d="M 46 140 L 99.6 137.3 L 153.3 129.3 L 206.9 132 L 260.5 130.7 L 314.2 134.7 L 367.8 122.7 L 421.5 120 L 475.1 109.3 L 528.7 113.3 L 582.4 112 L 636 114.7"/>
+                <path class="ch-line ch-line-rev" pathLength="1" d="M 46 106.7 L 99.6 102.7 L 153.3 90.7 L 206.9 94.7 L 260.5 92 L 314.2 97.3 L 367.8 77.3 L 421.5 72 L 475.1 57.3 L 528.7 62.7 L 582.4 60 L 636 65.3"/>
+                <circle class="ch-pt ch-pt-exp" cx="46" cy="140" r="3.5" style="--d:0.60s"/>
+                <circle class="ch-pt ch-pt-exp" cx="99.6" cy="137.3" r="3.5" style="--d:0.65s"/>
+                <circle class="ch-pt ch-pt-exp" cx="153.3" cy="129.3" r="3.5" style="--d:0.70s"/>
+                <circle class="ch-pt ch-pt-exp" cx="206.9" cy="132" r="3.5" style="--d:0.75s"/>
+                <circle class="ch-pt ch-pt-exp" cx="260.5" cy="130.7" r="3.5" style="--d:0.80s"/>
+                <circle class="ch-pt ch-pt-exp" cx="314.2" cy="134.7" r="3.5" style="--d:0.85s"/>
+                <circle class="ch-pt ch-pt-exp" cx="367.8" cy="122.7" r="3.5" style="--d:0.90s"/>
+                <circle class="ch-pt ch-pt-exp" cx="421.5" cy="120" r="3.5" style="--d:0.95s"/>
+                <circle class="ch-pt ch-pt-exp" cx="475.1" cy="109.3" r="3.5" style="--d:1.00s"/>
+                <circle class="ch-pt ch-pt-exp" cx="528.7" cy="113.3" r="3.5" style="--d:1.05s"/>
+                <circle class="ch-pt ch-pt-exp" cx="582.4" cy="112" r="3.5" style="--d:1.10s"/>
+                <circle class="ch-pt ch-pt-exp" cx="636" cy="114.7" r="3.5" style="--d:1.15s"/>
+                <circle class="ch-pt ch-pt-rev" cx="46" cy="106.7" r="3.5" style="--d:0.60s"/>
+                <circle class="ch-pt ch-pt-rev" cx="99.6" cy="102.7" r="3.5" style="--d:0.65s"/>
+                <circle class="ch-pt ch-pt-rev" cx="153.3" cy="90.7" r="3.5" style="--d:0.70s"/>
+                <circle class="ch-pt ch-pt-rev" cx="206.9" cy="94.7" r="3.5" style="--d:0.75s"/>
+                <circle class="ch-pt ch-pt-rev" cx="260.5" cy="92" r="3.5" style="--d:0.80s"/>
+                <circle class="ch-pt ch-pt-rev" cx="314.2" cy="97.3" r="3.5" style="--d:0.85s"/>
+                <circle class="ch-pt ch-pt-rev" cx="367.8" cy="77.3" r="3.5" style="--d:0.90s"/>
+                <circle class="ch-pt ch-pt-rev" cx="421.5" cy="72" r="3.5" style="--d:0.95s"/>
+                <circle class="ch-pt ch-pt-rev" cx="475.1" cy="57.3" r="3.5" style="--d:1.00s"/>
+                <circle class="ch-pt ch-pt-rev" cx="528.7" cy="62.7" r="3.5" style="--d:1.05s"/>
+                <circle class="ch-pt ch-pt-rev" cx="582.4" cy="60" r="3.5" style="--d:1.10s"/>
+                <circle class="ch-pt ch-pt-rev" cx="636" cy="65.3" r="3.5" style="--d:1.15s"/>
+                <text class="ch-xtick" x="46" y="232">01-2025</text>
+                <text class="ch-xtick" x="99.6" y="232">02-2025</text>
+                <text class="ch-xtick" x="153.3" y="232">03-2025</text>
+                <text class="ch-xtick" x="206.9" y="232">04-2025</text>
+                <text class="ch-xtick" x="260.5" y="232">05-2025</text>
+                <text class="ch-xtick" x="314.2" y="232">06-2025</text>
+                <text class="ch-xtick" x="367.8" y="232">01-2026</text>
+                <text class="ch-xtick" x="421.5" y="232">02-2026</text>
+                <text class="ch-xtick" x="475.1" y="232">03-2026</text>
+                <text class="ch-xtick" x="528.7" y="232">04-2026</text>
+                <text class="ch-xtick" x="582.4" y="232">05-2026</text>
+                <text class="ch-xtick" x="636" y="232">06-2026</text>
               </svg>
             </div>
-            <div class="hero-chat-float">
-              <div class="orb"></div>
-              <div class="msg" set:html={s.heroDemoChatFloat}></div>
-            </div>
           </div>
 
-          <!-- Panel 2: Chat -->
-          <div class="demo-panel" data-panel="chat">
-            <div class="product-main-head">
-              <div class="dash-title">{s.heroDemoChatTitle}</div>
-              <div class="sync-chip">
-                <span class="pulse"></span>
-                {s.heroDemoSyncChat}
-              </div>
-            </div>
-            <div class="chat-feed">
-              <div class="uin">{s.heroDemoChatQ1}</div>
-              <div class="ain">
-                <div class="orb"></div>
-                <div class="bubble">
-                  <span set:html={s.heroDemoChatA1}></span>
-                  <div class="mini-chart">
-                    <svg viewBox="0 0 240 60" preserveAspectRatio="none">
-                      <path d="M 0 42 L 30 38 L 60 30 L 90 34 L 120 22 L 150 18 L 180 14 L 210 10 L 240 6" fill="none" stroke="#3D506D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M 0 42 L 30 38 L 60 30 L 90 34 L 120 22 L 150 18 L 180 14 L 210 10 L 240 6 L 240 60 L 0 60 Z" fill="#56B3EB" fill-opacity="0.12"/>
-                    </svg>
+          <!-- Panel: Chat (welcome-home → auto-typed conversation) -->
+          <div class="demo-panel is-active" data-panel="chat">
+            <div class="chat-scene" data-chat
+                 data-q1={s.heroChatAutoQ} data-a1={s.heroChatAutoA}
+                 data-q2={s.heroChatQ2} data-a2={s.heroChatA2}
+                 data-q3={s.heroChatQ3} data-a3={s.heroChatA3}>
+              <!-- Welcome / resting state -->
+              <div class="chat-welcome">
+                <span class="welcome-orb" id="chat-welcome-orb" aria-hidden="true"></span>
+                <h2 class="welcome-greeting">{s.heroChatGreeting}</h2>
+                <p class="welcome-subtitle" set:html={s.heroChatSubtitle}></p>
+                <div class="chat-input">
+                  <span class="chat-co">Alma AB</span>
+                  <div class="chat-input-body">
+                    <span class="chat-typed" data-chat-typed></span><span class="chat-caret" data-chat-caret aria-hidden="true"></span>
+                    <span class="chat-placeholder" data-chat-placeholder>{s.heroChatPlaceholder}</span>
                   </div>
-                  <span class="src">{s.heroDemoChatSrc1}</span>
+                  <div class="chat-input-foot">
+                    <button class="chat-send" type="button" tabindex="-1" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="chat-chips">
+                  <button class="chat-chip" type="button" tabindex="-1">
+                    <span class="chip-head">
+                      <span class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+                      <span class="chip-t">{s.heroChatChip1Title}</span>
+                    </span>
+                    <span class="chip-d">{s.heroChatChip1Desc}</span>
+                  </button>
+                  <button class="chat-chip" type="button" tabindex="-1">
+                    <span class="chip-head">
+                      <span class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 6-6"/></svg></span>
+                      <span class="chip-t">{s.heroChatChip2Title}</span>
+                    </span>
+                    <span class="chip-d">{s.heroChatChip2Desc}</span>
+                  </button>
+                  <button class="chat-chip" type="button" tabindex="-1">
+                    <span class="chip-head">
+                      <span class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+                      <span class="chip-t">{s.heroChatChip3Title}</span>
+                    </span>
+                    <span class="chip-d">{s.heroChatChip3Desc}</span>
+                  </button>
                 </div>
               </div>
-              <div class="uin">{s.heroDemoChatQ2}</div>
-              <div class="ain">
-                <div class="orb"></div>
-                <div class="bubble">
-                  <span set:html={s.heroDemoChatA2}></span>
-                  <span class="src">{s.heroDemoChatSrc2}</span>
+              <!-- Conversation — built up message by message by the demo script -->
+              <div class="chat-convo" data-chat-convo aria-hidden="true">
+                <div class="chat-thread" data-chat-thread></div>
+                <!-- Hidden message templates — cloned by the script. Kept in the
+                     markup so Astro's scoped styles apply to the clones. -->
+                <div class="chat-tpl" hidden>
+                  <div class="uin" data-tpl="uin"><span class="utext"></span><span class="utime"></span></div>
+                  <div class="ain" data-tpl="ain">
+                    <span class="orb-gl"></span>
+                    <div class="bubble">
+                      <span class="chat-answer"></span>
+                      <span class="chat-dots"><i></i><i></i><i></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-bar">
+                  <span class="chat-bar-body">
+                    <span class="chat-typed2" data-chat-typed2></span><span class="chat-caret" data-chat-caret2 aria-hidden="true"></span>
+                    <span class="chat-bar-ph" data-chat-ph2>{s.heroChatPlaceholder}</span>
+                  </span>
+                  <button class="chat-send" type="button" tabindex="-1" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Panel 3: Documents -->
-          <div class="demo-panel" data-panel="docs">
-            <div class="product-main-head">
-              <div class="dash-title">{s.heroDemoDocsTitle}</div>
-              <div class="docs-search">{s.heroDemoDocsSearch}</div>
+          <!-- Panel: Files -->
+          <div class="demo-panel files-panel" data-panel="docs">
+            <div class="files-head">
+              <h2 class="files-title">{s.heroDemoFilesTitle}</h2>
+              <p class="files-sub">{s.heroDemoFilesSubtitle}</p>
             </div>
-            <div class="docs-table">
-              <div class="row head">
-                <span></span>
-                <span>{s.heroDemoDocsColDoc}</span>
-                <span>{s.heroDemoDocsColSupplier}</span>
-                <span>{s.heroDemoDocsColAmount}</span>
-                <span>{s.heroDemoDocsColStatus}</span>
+            <div class="files-tabs" role="tablist">
+              <button class="files-tab is-active" data-ftab="uploaded" type="button" tabindex="-1">{s.heroDemoFilesTabUploaded}</button>
+              <button class="files-tab" data-ftab="generated" type="button" tabindex="-1">{s.heroDemoFilesTabGenerated}</button>
+            </div>
+            <div class="files-toolbar">
+              <div class="files-stats">
+                <span class="fs-label">{s.heroDemoFilesStatsLabel}</span>
+                <span class="fs-count" data-files-count>(10)</span>
+                <span class="fs-size" data-files-size>4.58 MB</span>
               </div>
-              <div class="row">
-                <span class="icon pdf">PDF</span>
-                <div>
-                  <div class="name">{s.heroDemoDoc1Name}</div>
-                  <div class="meta">{s.heroDemoDoc1Meta}</div>
-                </div>
-                <span>Telia Sverige</span>
-                <span class="amount">3 240 SEK</span>
-                <span class="tag">{s.heroDemoDoc1Status}</span>
+              <div class="files-top-actions">
+                <span class="files-btn-ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>{s.heroDemoFilesFortnox}</span>
+                <span class="files-btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M12 12v9M8 17l4-4 4 4"/></svg>{s.heroDemoFilesAdd}</span>
               </div>
-              <div class="row">
-                <span class="icon xml">XML</span>
-                <div>
-                  <div class="name">{s.heroDemoDoc2Name}</div>
-                  <div class="meta">{s.heroDemoDoc2Meta}</div>
-                </div>
-                <span>Spotify Business</span>
-                <span class="amount">1 980 SEK</span>
-                <span class="tag">{s.heroDemoDoc2Status}</span>
+            </div>
+            <div class="files-table">
+              <div class="files-row files-head-row">
+                <span class="fcb"><span class="fcheck"></span></span>
+                <span>{s.heroDemoFilesColName}</span>
+                <span class="fsize-h">{s.heroDemoFilesColSize}</span>
+                <span class="facts-h">{s.heroDemoFilesColActions}</span>
               </div>
-              <div class="row">
-                <span class="icon pdf">PDF</span>
-                <div>
-                  <div class="name">{s.heroDemoDoc3Name}</div>
-                  <div class="meta">{s.heroDemoDoc3Meta}</div>
-                </div>
-                <span>Espresso House</span>
-                <span class="amount">412 SEK</span>
-                <span class="ai-note">{s.heroDemoDoc3Status}</span>
+              <div class="files-list" data-flist="uploaded">
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Annual_Report_2025.pdf</span><span class="fsize">2.46 MB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Bank_Statement_SEB_2026-Q1.pdf</span><span class="fsize">541.7 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Rent_Agreement_Stockholm_Office.pdf</span><span class="fsize">488.45 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Employment_Contract_Anna_Lindqvist.pdf</span><span class="fsize">312.32 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>VAT_Declaration_2026-Q1.pdf</span><span class="fsize">210.94 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Invoice_2026-04_Spotify_AB.pdf</span><span class="fsize">184.32 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Supplier_Invoice_AWS_2026-03.pdf</span><span class="fsize">145.41 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Receipt_Office_Supplies_March.pdf</span><span class="fsize">96.26 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Payroll_April_2026.xlsx</span><span class="fsize">72.7 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Receipt_Business_Lunch_Sturehof.pdf</span><span class="fsize">67.58 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
               </div>
-              <div class="row">
-                <span class="icon xls">XLS</span>
-                <div>
-                  <div class="name">Stripe payout</div>
-                  <div class="meta">{s.heroDemoDoc4Meta}</div>
-                </div>
-                <span>Stripe Payments</span>
-                <span class="amount">62 480 SEK</span>
-                <span class="tag">{s.heroDemoDoc4Status}</span>
-              </div>
-              <div class="row">
-                <span class="icon pdf">PDF</span>
-                <div>
-                  <div class="name">{s.heroDemoDoc5Name}</div>
-                  <div class="meta">{s.heroDemoDoc5Meta}</div>
-                </div>
-                <span>Klangstudio AB</span>
-                <span class="amount">8 750 SEK</span>
-                <span class="tag pending">{s.heroDemoDoc5Status}</span>
+              <div class="files-list" data-flist="generated" hidden>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Cash_Flow_Forecast_2026.pdf</span><span class="fsize">414.72 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Revenue_Analysis_2025_vs_2026.pdf</span><span class="fsize">354.3 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Financial_Summary_2026-Q1.pdf</span><span class="fsize">319.49 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Profit_Loss_Statement_2025.pdf</span><span class="fsize">287.74 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Expense_Breakdown_April_2026.pdf</span><span class="fsize">197.63 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>VAT_Report_2026-Q1.pdf</span><span class="fsize">176.13 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
+                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Tax_Estimate_2026.pdf</span><span class="fsize">141.31 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
               </div>
             </div>
           </div>
 
-          <!-- Panel 4: Companies -->
+          <!-- Panel: Companies (firm clients table) -->
           <div class="demo-panel" data-panel="companies">
-            <div class="product-main-head">
-              <div class="dash-title">{s.heroDemoCompaniesTitle}</div>
-              <div class="sync-chip">
-                <span class="pulse"></span>
-                {s.heroDemoSyncCompanies}
-              </div>
+            <div class="co-head">
+              <h2 class="co-title">{s.heroCoTitle}</h2>
+              <p class="co-sub">{s.heroCoSubtitle}</p>
             </div>
-            <div class="co-grid">
-              <div class="co-card is-current">
-                <div class="top">
-                  <span class="av">AA</span>
-                  <div>
-                    <div class="name">Alma AB</div>
-                    <div class="org">559123-4567</div>
-                  </div>
-                  <span class="bdg">{s.heroDemoCoBadgeActive}</span>
-                </div>
-                <div class="kpis">
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoResult}</span><span class="val">174k</span><span class="delta">↑ 28 %</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoVat}</span><span class="val">42k</span><span class="delta">Q2</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoLiquidity}</span><span class="val">642k</span><span class="delta">↑ 6 %</span></div>
-                </div>
+            <div class="co-table">
+              <div class="co-row co-thead">
+                <span>{s.heroCoColCompany}</span>
+                <span>{s.heroCoColOwner}</span>
+                <span>{s.heroCoColStatus}</span>
+                <span>{s.heroCoColActivity}</span>
+                <span></span>
               </div>
-              <div class="co-card">
-                <div class="top">
-                  <span class="av">NS</span>
-                  <div>
-                    <div class="name">Nordstream AB</div>
-                    <div class="org">556789-1234</div>
-                  </div>
-                  <span class="bdg">{s.heroDemoCoBadgeClient}</span>
-                </div>
-                <div class="kpis">
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoResult}</span><span class="val">96k</span><span class="delta">↑ 8 %</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoVat}</span><span class="val">28k</span><span class="delta">Q2</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoLiquidity}</span><span class="val">312k</span><span class="delta down">↓ 3 %</span></div>
-                </div>
+              <div class="co-row">
+                <span class="cell-co"><span class="co-mark">AA</span><span class="co-meta"><span class="co-name">Alma AB</span><span class="co-reg">559123-4567</span></span></span>
+                <span class="cell-owner"><span class="co-av">EK</span><span class="co-meta"><span class="co-oname">Erik Karlsson</span><span class="co-omail">erik@almaab.se</span></span></span>
+                <span><span class="co-status connected">{s.heroCoConnected}</span></span>
+                <span class="co-act">{s.heroCoAct1}</span>
+                <span class="co-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
               </div>
-              <div class="co-card">
-                <div class="top">
-                  <span class="av">PB</span>
-                  <div>
-                    <div class="name">Pixelbit Studio</div>
-                    <div class="org">559456-7890</div>
-                  </div>
-                  <span class="bdg">{s.heroDemoCoBadgeClient}</span>
-                </div>
-                <div class="kpis">
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoResult}</span><span class="val">214k</span><span class="delta">↑ 42 %</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoVat}</span><span class="val">61k</span><span class="delta">Q2</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoLiquidity}</span><span class="val">498k</span><span class="delta">↑ 11 %</span></div>
-                </div>
+              <div class="co-row">
+                <span class="cell-co"><span class="co-mark">NS</span><span class="co-meta"><span class="co-name">Nordstream AB</span><span class="co-reg">556789-1234</span></span></span>
+                <span class="cell-owner"><span class="co-av">SL</span><span class="co-meta"><span class="co-oname">Sofia Lind</span><span class="co-omail">sofia@nordstream.se</span></span></span>
+                <span><span class="co-status connected">{s.heroCoConnected}</span></span>
+                <span class="co-act">{s.heroCoAct2}</span>
+                <span class="co-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
               </div>
-              <div class="co-card">
-                <div class="top">
-                  <span class="av">KS</span>
-                  <div>
-                    <div class="name">Klangstudio AB</div>
-                    <div class="org">556321-9876</div>
-                  </div>
-                  <span class="bdg">{s.heroDemoCoBadgeClient}</span>
-                </div>
-                <div class="kpis">
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoResult}</span><span class="val">58k</span><span class="delta down">↓ 12 %</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoVat}</span><span class="val">14k</span><span class="delta">Q2</span></div>
-                  <div class="kpi"><span class="lbl">{s.heroDemoCoLiquidity}</span><span class="val">186k</span><span class="delta">↑ 2 %</span></div>
-                </div>
+              <div class="co-row">
+                <span class="cell-co"><span class="co-mark">PB</span><span class="co-meta"><span class="co-name">Pixelbit Studio</span><span class="co-reg">559456-7890</span></span></span>
+                <span class="cell-owner"><span class="co-av">JB</span><span class="co-meta"><span class="co-oname">Johan Berg</span><span class="co-omail">johan@pixelbit.se</span></span></span>
+                <span><span class="co-status connected">{s.heroCoConnected}</span></span>
+                <span class="co-act">{s.heroCoAct3}</span>
+                <span class="co-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+              </div>
+              <div class="co-row">
+                <span class="cell-co"><span class="co-mark">KS</span><span class="co-meta"><span class="co-name">Klangstudio AB</span><span class="co-reg">556321-9876</span></span></span>
+                <span class="cell-owner"><span class="co-av">MH</span><span class="co-meta"><span class="co-oname">Maria Holm</span><span class="co-omail">maria@klangstudio.se</span></span></span>
+                <span><span class="co-status pending">{s.heroCoPending}</span></span>
+                <span class="co-act">{s.heroCoAct4}</span>
+                <span class="co-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+              </div>
+              <div class="co-row">
+                <span class="cell-co"><span class="co-mark">LK</span><span class="co-meta"><span class="co-name">Lundgren Konsult</span><span class="co-reg">556782-1140</span></span></span>
+                <span class="cell-owner"><span class="co-av">EL</span><span class="co-meta"><span class="co-oname">Erik Lundgren</span><span class="co-omail">erik@lundgren.se</span></span></span>
+                <span><span class="co-status connected">{s.heroCoConnected}</span></span>
+                <span class="co-act">{s.heroCoAct5}</span>
+                <span class="co-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
               </div>
             </div>
           </div>
+
         </main>
       </div>
       </div>
@@ -808,6 +903,12 @@ const s = getStrings(lang);
   padding: 0;
   position: relative;
   z-index: 1;
+  /* Inside the demo window only, swap the brand typeface for the real app's
+     fonts (Inter body / Plus Jakarta Sans headings) so it reads 1:1 with the
+     product. Redefining the vars here re-points every var(--font-*) below. */
+  --font-display: var(--demo-font-head);
+  --font-body: var(--demo-font-body);
+  font-family: var(--demo-font-body);
 }
 /* Crisp mac window — no top fade (GitBook-style). */
 .product-shell {
@@ -852,27 +953,24 @@ const s = getStrings(lang);
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
-/* Company selector — matches the real app's company switcher */
+/* Company selector — circular gradient avatar + name + chevron */
 .sb-company {
   display: flex; align-items: center; gap: 10px;
-  height: 40px;
-  padding: 0 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg-paper);
-  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-app);
+  margin-bottom: 10px;
 }
 .sb-company .av {
-  width: 24px; height: 24px; flex-shrink: 0;
-  border-radius: 7px;
-  background: var(--bg-active);
-  border: 1px solid rgba(61,80,109,.1);
+  width: 36px; height: 36px; flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3D506D 0%, #4A5F7F 55%, #56B3EB 130%);
   display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-weight: 700; font-size: 10px;
-  color: var(--brand-primary);
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  color: #fff;
 }
-.sb-company .nm { flex: 1; font-size: 13px; font-weight: 600; color: var(--brand-primary); }
-.sb-company .chev { width: 14px; height: 14px; color: var(--slate-400); }
+.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--brand-primary); line-height: 1.2; }
+.sb-company .chev { width: 16px; height: 16px; color: var(--slate-400); flex-shrink: 0; }
 /* Search */
 .sb-search {
   display: flex; align-items: center; gap: 8px;
@@ -885,27 +983,7 @@ const s = getStrings(lang);
   margin-bottom: 8px;
 }
 .sb-search svg { width: 15px; height: 15px; flex-shrink: 0; }
-/* Quick actions: New chat / Generate report */
-.sb-action {
-  display: flex; align-items: center; gap: 10px;
-  height: 38px; padding: 0 10px;
-  border-radius: var(--radius-md);
-  font-size: 13px; font-weight: 500;
-  color: var(--nav-icon-default);
-  cursor: default;
-}
-.sb-action svg { width: 17px; height: 17px; flex-shrink: 0; }
-.sb-action.primary { color: var(--brand-primary); font-weight: 600; }
-.sb-divider { height: 1px; background: var(--border); margin: 8px 4px; }
-.product-sidebar .nav-section-label {
-  font-family: var(--font-display);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--slate-400);
-  padding: 14px 10px 6px;
-  font-weight: 700;
-}
+/* Nav rows: New chat / Generate report / Dashboard / Files */
 .sidebar-item {
   display: flex; align-items: center; gap: 10px;
   height: 38px;
@@ -921,19 +999,33 @@ const s = getStrings(lang);
   color: var(--brand-primary);
   font-weight: 600;
 }
+.sidebar-item.disabled { color: var(--slate-300); }
+.sidebar-item.disabled svg { opacity: .5; }
 .sidebar-item svg { width: 16px; height: 16px; opacity: .8; }
 .sidebar-item.active svg { opacity: 1; }
-.sidebar-chat-row {
-  font-size: 12.5px;
-  padding: 7px 10px;
-  color: var(--slate-500);
-  border-radius: var(--radius-md);
-  display: flex; align-items: center; gap: 8px;
-  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+/* History */
+.sb-history-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 10px 4px;
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--slate-400);
 }
-.sidebar-chat-row::before {
-  content: ""; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--slate-300); flex-shrink: 0;
+.sb-history-head .hist-chev { width: 14px; height: 14px; color: var(--slate-400); }
+.sb-history-date {
+  padding: 6px 10px 4px;
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--slate-300);
+}
+.sidebar-chat-row {
+  font-size: 13px;
+  padding: 7px 10px;
+  color: var(--slate-600);
+  border-radius: var(--radius-md);
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
 }
 /* Push the user footer to the bottom */
 .sb-spacer { flex: 1 1 auto; min-height: 10px; }
@@ -963,7 +1055,8 @@ const s = getStrings(lang);
   position: relative;
 }
 .product-main-head {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
   margin-bottom: 18px;
 }
 .dash-title {
@@ -999,17 +1092,78 @@ const s = getStrings(lang);
   70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
   100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
 }
+/* Dashboard header: title + subtitle on the left, sync chip + period segment on the right */
+.dash-head-left { display: flex; flex-direction: column; gap: 2px; }
+.dash-sub { font-size: 13px; color: var(--slate-500); margin: 0; }
+.dash-head-right { display: flex; align-items: center; gap: 10px; }
+.period-seg {
+  display: flex; gap: 4px;
+  padding: 4px;
+  background: var(--bg-app);
+  border-radius: var(--radius-lg);
+}
+.period-opt {
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--slate-500);
+}
+.period-opt.is-active {
+  background: var(--bg-paper);
+  color: var(--slate-600);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+/* AI Insights panel */
+.ai-insights {
+  background: linear-gradient(135deg, var(--slate-50) 0%, var(--slate-100) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.ai-head { display: flex; align-items: center; gap: 12px; }
+.ai-chev { width: 18px; height: 18px; color: var(--slate-400); flex-shrink: 0; }
+.ai-orb {
+  width: 30px; height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #56B3EB, #4A6B95, #3D506D, #4A6B95, #56B3EB);
+  -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%);
+          mask: radial-gradient(closest-side, transparent 56%, #000 60%);
+  box-shadow: 0 0 10px rgba(86,179,235,.4);
+}
+.ai-orb canvas { display: block; width: 100% !important; height: 100% !important; border-radius: 50%; }
+.ai-titles { display: flex; flex-direction: column; }
+.ai-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--brand-primary); }
+.ai-sub { font-size: 12px; font-weight: 500; color: var(--slate-500); }
+.ai-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.ai-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-paper);
+  border: 1px solid var(--slate-100);
+  border-radius: var(--radius-lg);
+}
+.ai-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); margin-top: 7px; flex-shrink: 0; }
+.ai-item p { margin: 0; font-size: 13px; font-weight: 500; line-height: 1.5; color: var(--slate-500); }
+.ai-item p strong { color: var(--brand-primary); font-weight: 600; }
+
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .metric {
+  position: relative;
+  overflow: hidden;
   background: var(--bg-paper);
   border: 1px solid var(--border);
   border-radius: var(--radius-2xl);
-  padding: 14px 16px;
+  padding: 14px 16px 0;
   display: flex; flex-direction: column; gap: 6px;
 }
 .metric .eyebrow {
@@ -1022,27 +1176,42 @@ const s = getStrings(lang);
 }
 .metric .val {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--brand-primary);
   line-height: 1;
+  display: flex; align-items: baseline;
 }
+.metric .val .suf { font-size: 16px; font-weight: 700; }
 .metric .val .cur {
   font-size: 12px;
   color: var(--slate-500);
   font-weight: 500;
-  margin-left: 4px;
+  margin-left: 5px;
 }
 .metric .trend {
   font-size: 11px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+  margin-bottom: 8px;
 }
 .metric .trend.up { color: var(--brand-primary); }
 .metric .trend.down { color: var(--error); }
+.metric .trend .ti { width: 13px; height: 13px; }
 .metric .trend .lbl { color: var(--slate-400); font-weight: 500; font-size: 10px; margin-left: 4px; }
+.metric .spark { width: calc(100% + 32px); height: 40px; display: block; margin: 0 -16px -1px; }
+.spark-area { fill: url(#sparkFill); opacity: 0; transition: opacity .5s ease .35s; }
+.spark-line {
+  fill: none; stroke: var(--brand-primary); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+}
+.demo-panel[data-panel="dashboard"].is-active .spark-line { animation: drawPath .9s cubic-bezier(.4,0,.2,1) forwards .25s; }
+.demo-panel[data-panel="dashboard"].is-active .spark-area { opacity: 1; }
+@keyframes drawPath { to { stroke-dashoffset: 0; } }
+
 .chart-card {
   background: var(--bg-paper);
   border: 1px solid var(--border);
@@ -1051,75 +1220,68 @@ const s = getStrings(lang);
 }
 .chart-card-head {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .chart-card-head h3 {
   font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--brand-primary);
   margin: 0;
 }
 .chart-legend {
-  display: flex; gap: 14px;
-  font-size: 11px;
-  color: var(--slate-500);
+  display: flex; gap: 4px;
+  padding: 4px;
+  background: var(--bg-app);
+  border-radius: var(--radius-lg);
 }
-.chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
-.chart-legend i {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-}
-
-/* Floating chat bubble overlay on hero chrome */
-.hero-chat-float {
-  position: absolute;
-  right: 32px;
-  bottom: 28px;
-  width: 320px;
+.leg-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px;
   background: var(--bg-paper);
-  border: 1px solid var(--border);
-  border-left: 3px solid #5B7A9B;
-  border-radius: 0 16px 16px 16px;
-  padding: 14px 16px;
-  box-shadow: var(--shadow-pop);
-  display: flex; gap: 12px; align-items: flex-start;
-}
-.orb {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 30%, #A7D8F4 0%, #56B3EB 28%, #3D506D 70%, #0F172A 100%);
-  box-shadow: inset 0 -4px 8px rgba(15,23,42,.4), 0 2px 6px rgba(61,80,109,.25);
-  flex-shrink: 0;
-}
-.orb.lg {
-  width: 56px; height: 56px;
-  box-shadow: inset 0 -6px 12px rgba(15,23,42,.4), 0 4px 12px rgba(61,80,109,.3);
-}
-.orb.xl {
-  width: 80px; height: 80px;
-  box-shadow: inset 0 -8px 16px rgba(15,23,42,.4), 0 6px 16px rgba(61,80,109,.3);
-}
-.hero-chat-float .msg {
-  font-size: 13px;
-  color: var(--slate-600);
-  line-height: 1.55;
-}
-.hero-chat-float .msg strong {
+  border-radius: 8px;
+  font-size: 12px; font-weight: 600;
   color: var(--brand-primary);
-  font-weight: 600;
+  box-shadow: var(--shadow-sm);
 }
-.hero-chat-float .typing-dot {
-  display: inline-block;
-  width: 4px; height: 4px;
-  background: var(--brand-primary);
+.leg-pill i { width: 8px; height: 8px; border-radius: 50%; }
+.leg-pill .dot-rev { background: var(--brand-primary); }
+.leg-pill .dot-exp { background: var(--error); }
+
+/* Income vs Expenses chart */
+.dash-chart { width: 100%; height: auto; display: block; }
+.ch-grid { stroke: var(--slate-100); stroke-width: 1; }
+.ch-ytick { fill: var(--slate-400); font-size: 11px; font-family: var(--font-body); text-anchor: end; }
+.ch-xtick { fill: var(--slate-400); font-size: 11px; font-family: var(--font-body); text-anchor: middle; }
+.ch-area { opacity: 0; transition: opacity .6s ease .4s; }
+.ch-area-rev { fill: url(#chRev); }
+.ch-area-exp { fill: url(#chExp); }
+.ch-line {
+  fill: none; stroke-width: 2.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+}
+.ch-line-rev { stroke: var(--brand-primary); }
+.ch-line-exp { stroke: var(--error); stroke-width: 2; }
+.ch-pt { fill: var(--bg-paper); stroke-width: 2; opacity: 0; transform: scale(.4); transform-origin: center; transform-box: fill-box; }
+.ch-pt-rev { stroke: var(--brand-primary); }
+.ch-pt-exp { stroke: var(--error); }
+.demo-panel[data-panel="dashboard"].is-active .ch-area { opacity: 1; }
+.demo-panel[data-panel="dashboard"].is-active .ch-line { animation: drawPath 1.1s cubic-bezier(.4,0,.2,1) forwards .2s; }
+.demo-panel[data-panel="dashboard"].is-active .ch-pt { animation: ptIn .35s ease forwards; animation-delay: var(--d); }
+@keyframes ptIn { to { opacity: 1; transform: scale(1); } }
+
+/* Small avatar orbs — a lightweight CSS ring echoing the hero orb (cyan→slate
+   gradient ring + glow, transparent centre). Used for every chat answer, so it
+   stays CSS (no per-message WebGL contexts). */
+.orb-gl {
+  width: 28px; height: 28px;
+  flex-shrink: 0;
   border-radius: 50%;
-  margin-left: 2px;
-  animation: blink 1.4s infinite both;
-}
-@keyframes blink {
-  0%, 80%, 100% { opacity: .2; }
-  40% { opacity: 1; }
+  background: conic-gradient(from 210deg, #56B3EB, #4A6B95, #3D506D, #4A6B95, #56B3EB);
+  -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%);
+          mask: radial-gradient(closest-side, transparent 56%, #000 60%);
+  box-shadow: 0 0 10px rgba(86,179,235,.4);
 }
 
 /* ============================================================
@@ -1240,8 +1402,33 @@ const s = getStrings(lang);
 }
 .demo-tab-ind.ready { opacity: 1; }
 
+/* Floating CTA pill — sits over the window's bottom edge (GitBook-style),
+   appears with the tabs once the window is in view. */
+.demo-cta {
+  position: absolute;
+  left: 50%;
+  bottom: -19px;
+  z-index: 13;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px;
+  background: var(--brand-gradient-2);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 999px;
+  box-shadow: 0 12px 28px -10px rgba(15,23,42,.5);
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  transition: opacity .5s ease, transform .5s ease, box-shadow .25s ease;
+}
+.hero-chrome-wrap.tabs-visible .demo-cta { opacity: 1; transform: translate(-50%, 0); }
+.demo-cta svg { width: 16px; height: 16px; transition: transform .25s ease; }
+.demo-cta:hover { box-shadow: 0 16px 34px -10px rgba(15,23,42,.6); }
+.demo-cta:hover svg { transform: translateX(3px); }
+
 /* Panel stack with cross-fade */
-.product-main { position: relative; min-height: 560px; padding: 0; }
+.product-main { position: relative; min-height: 620px; padding: 0; }
 .demo-panel {
   position: absolute;
   inset: 22px 24px;
@@ -1259,32 +1446,250 @@ const s = getStrings(lang);
   transform: translateY(0);
   transition: opacity .4s ease, transform .5s cubic-bezier(.4,0,.2,1);
 }
+/* Dashboard & Files are tall, scrolling views (like the real app) — let the panel
+   scroll internally with a slim, unobtrusive scrollbar. */
+.demo-panel[data-panel="dashboard"],
+.demo-panel[data-panel="docs"] {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--slate-300) transparent;
+}
+.demo-panel[data-panel="dashboard"]::-webkit-scrollbar,
+.demo-panel[data-panel="docs"]::-webkit-scrollbar { width: 6px; }
+.demo-panel[data-panel="dashboard"]::-webkit-scrollbar-thumb,
+.demo-panel[data-panel="docs"]::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 999px; }
 
-/* ----- Chat panel ----- */
-.chat-feed {
+/* Per-tab explainer callouts — a coach mark naming what each panel does. Shown
+   for the active panel only (toggled by the tab orchestrator), above the CTA. */
+.coach {
+  position: absolute;
+  left: 50%; top: 9px;
+  z-index: 12;
+  width: max-content; max-width: min(82%, 440px);
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 15px;
+  background: var(--brand-primary);
+  color: #fff;
+  border-radius: 13px;
+  box-shadow: var(--shadow-pop);
+  font-size: 12.5px; font-weight: 500; line-height: 1.4;
+  opacity: 0; pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.coach p { margin: 0; color: #fff; }
+.coach-ic { width: 15px; height: 15px; flex-shrink: 0; color: #A7D8F4; }
+/* downward pointer into the panel content below */
+.coach::after {
+  content: "";
+  position: absolute; left: 50%; bottom: -5px;
+  width: 11px; height: 11px;
+  background: var(--brand-primary);
+  border-radius: 0 0 3px 0;
+  transform: translateX(-50%) rotate(45deg);
+}
+.hero-chrome-wrap.tabs-visible .coach.is-shown {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition: opacity .45s ease .5s, transform .5s cubic-bezier(.4,0,.2,1) .5s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .coach { transition: opacity .2s ease; }
+  .hero-chrome-wrap.tabs-visible .coach.is-shown { opacity: 1; transform: translate(-50%, 0); transition: opacity .2s ease; }
+}
+
+/* ============================================================
+   CHAT panel — welcome-home (resting) → auto-typed conversation.
+   Mirrors the real app's chat home; no fake source badges / inline
+   charts (the real chat streams plain markdown text).
+   ============================================================ */
+.chat-scene { position: relative; height: 100%; }
+.chat-welcome,
+.chat-convo {
+  position: absolute;
+  inset: 0;
+  transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
+}
+/* Welcome / resting state — vertically centred */
+.chat-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+[data-chat].is-sent .chat-welcome {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+}
+/* Welcome orb — the real WebGL hero orb (secondary instance mounted by script) */
+.welcome-orb {
+  width: 96px; height: 96px;
+  margin-bottom: 22px;
+}
+.welcome-orb canvas { display: block; width: 100% !important; height: 100% !important; }
+.welcome-greeting {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  color: var(--brand-primary);
+}
+.welcome-subtitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--slate-400);
+  margin: 0 0 28px;
+}
+.welcome-subtitle .g { font-weight: 600; color: var(--slate-600); }
+/* Input — large rounded card (company chip · text · send) */
+.chat-input {
+  display: flex; flex-direction: column;
+  width: 100%; max-width: 600px;
+  min-height: 150px;
+  padding: 16px 18px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 2px 14px rgba(61,80,109,.05);
+  margin-bottom: 24px;
+  text-align: left;
+}
+.chat-co {
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 12px;
+  color: var(--brand-primary);
+  background: var(--bg-active);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.chat-input-body {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--slate-600);
+}
+.chat-input-foot { display: flex; justify-content: flex-end; margin-top: 12px; }
+.chat-placeholder { color: var(--slate-400); }
+[data-chat].is-typing .chat-placeholder,
+[data-chat].is-sent .chat-placeholder { display: none; }
+.chat-typed { white-space: pre-wrap; }
+.chat-caret {
+  display: none;
+  width: 1.5px; height: 17px;
+  margin-left: 1px;
+  vertical-align: -3px;
+  background: var(--brand-primary);
+  animation: caretBlink 1s step-end infinite;
+}
+[data-chat].is-typing .chat-caret { display: inline-block; }
+@keyframes caretBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.chat-send {
+  flex-shrink: 0;
+  width: 38px; height: 38px;
+  border: 0; border-radius: 50%;
+  background: var(--bg-app);
+  color: var(--slate-400);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .25s ease, color .25s ease, transform .25s ease;
+}
+.chat-send svg { width: 17px; height: 17px; }
+[data-chat].is-typing .chat-send { background: var(--brand-primary); color: #fff; transform: scale(1.04); }
+/* Suggestion chips */
+.chat-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%; max-width: 560px;
+}
+.chat-chip {
+  text-align: left;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+  cursor: default;
+  transition: border-color .25s ease, background .25s ease, transform .25s ease;
+}
+.chat-chip:hover {
+  border-color: var(--blue-20, #E0E7FF);
+  background: rgba(228,236,245,.5);
+  transform: translateY(-2px);
+}
+.chip-head { display: flex; align-items: center; gap: 8px; }
+.chip-ic { width: 18px; height: 18px; flex-shrink: 0; color: var(--brand-primary); }
+.chip-ic svg { width: 18px; height: 18px; }
+.chip-t {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 13px;
+  color: var(--brand-primary);
+}
+.chip-d { font-size: 12px; line-height: 1.4; color: var(--slate-500); }
+
+/* Conversation — message thread + a persistent bottom input bar */
+.chat-convo {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0;
+  visibility: hidden;
+}
+[data-chat].is-sent .chat-convo {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .45s ease .12s;
+}
+.chat-thread {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-width: 640px;
-  margin: 18px auto 0;
+  padding: 6px 2px 14px;
 }
-.chat-feed .uin {
+.chat-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px 8px 8px 16px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(61,80,109,.05);
+}
+.chat-bar-body { flex: 1; min-height: 22px; padding: 4px 0; font-size: 14px; line-height: 1.5; color: var(--slate-600); }
+.chat-bar-ph { color: var(--slate-400); }
+[data-chat].is-typing2 .chat-bar-ph { display: none; }
+[data-chat].is-typing2 .chat-bar .chat-caret { display: inline-block; }
+.chat-bar .chat-send { width: 34px; height: 34px; }
+[data-chat].is-typing2 .chat-bar .chat-send { background: var(--brand-primary); color: #fff; }
+.chat-convo .uin {
   align-self: flex-end;
-  max-width: 75%;
+  max-width: 78%;
   background: var(--brand-primary);
-  color: white;
+  color: #fff;
   font-size: 14px;
-  padding: 10px 16px;
+  padding: 11px 16px;
   border-radius: 18px 18px 4px 18px;
   line-height: 1.45;
+  animation: msgIn .4s cubic-bezier(.2,.7,.2,1) both;
 }
-.chat-feed .ain {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
+.chat-convo .ain {
+  display: flex; gap: 12px; align-items: flex-start;
   max-width: 92%;
+  animation: msgIn .4s cubic-bezier(.2,.7,.2,1) both .1s;
 }
-.chat-feed .ain .bubble {
+.chat-convo .ain .bubble {
   background: var(--bg-paper);
   border: 1px solid var(--border);
   border-left: 3px solid #5B7A9B;
@@ -1295,224 +1700,234 @@ const s = getStrings(lang);
   line-height: 1.55;
   box-shadow: var(--shadow-sm);
 }
-.chat-feed .ain .bubble strong { color: var(--brand-primary); font-weight: 600; }
-.chat-feed .ain .bubble .src {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-  padding: 4px 10px;
-  background: var(--bg-app);
-  border-radius: 999px;
-  font-size: 11px;
-  color: var(--slate-500);
-  font-weight: 500;
+.chat-convo .ain .bubble strong { color: var(--brand-primary); font-weight: 600; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* User bubble — question text + timestamp */
+.chat-convo .uin .utext { display: block; }
+.chat-convo .uin .utime { display: block; margin-top: 4px; font-size: 11px; opacity: .65; }
+/* Rich answer formatting (lead + bulleted breakdown, like the real chat) */
+.chat-convo .ain .bubble ul { margin: 9px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.chat-convo .ain .bubble li { line-height: 1.5; }
+.chat-convo .ain .bubble li::marker { color: var(--slate-300); }
+/* Thinking dots (shown before the answer streams) */
+.chat-dots { display: none; gap: 4px; align-items: center; height: 16px; }
+.chat-dots.show { display: inline-flex; }
+.chat-dots i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #5B7A9B;
+  animation: chatDot 1.4s infinite both;
 }
-.chat-feed .ain .bubble .src::before {
-  content: "";
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--brand-primary);
+.chat-dots i:nth-child(2) { animation-delay: .2s; }
+.chat-dots i:nth-child(3) { animation-delay: .4s; }
+@keyframes chatDot {
+  0%, 80%, 100% { opacity: .25; transform: translateY(0); }
+  40%           { opacity: 1; transform: translateY(-3px); }
 }
-.chat-feed .ain .bubble .mini-chart {
-  margin-top: 12px;
-  background: var(--bg-app);
-  border-radius: 10px;
-  padding: 10px;
-}
-.chat-feed .ain .bubble .mini-chart svg { width: 100%; height: 60px; display: block; }
 
-/* ----- Documents panel ----- */
-.docs-head {
-  display: flex; align-items: center; justify-content: space-between;
+/* ----- Files panel ----- */
+.files-head { margin-bottom: 14px; }
+.files-title {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 24px;
+  letter-spacing: -0.02em;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  margin: 0 0 4px;
+}
+.files-sub { font-size: 13px; color: var(--slate-500); margin: 0; }
+.files-tabs {
+  display: flex; gap: 6px;
+  border-bottom: 1px solid var(--slate-200);
   margin-bottom: 16px;
 }
-.docs-search {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 7px 14px;
-  background: var(--bg-app);
-  border-radius: 999px;
-  font-size: 13px;
+.files-tab {
+  position: relative;
+  background: none; border: 0;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 600;
   color: var(--slate-500);
+  cursor: default;
+  transition: color .2s ease;
 }
-.docs-search::before {
+.files-tab::after {
   content: "";
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  border: 1.5px solid var(--slate-400);
-  border-right-color: transparent;
+  position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 3px; border-radius: 3px 3px 0 0;
+  background: var(--brand-primary);
+  opacity: 0; transition: opacity .2s ease;
 }
-.docs-table {
+.files-tab.is-active { color: var(--brand-primary); }
+.files-tab.is-active::after { opacity: 1; }
+.files-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.files-stats { display: flex; align-items: baseline; gap: 8px; }
+.fs-label { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--brand-primary); }
+.fs-count { font-size: 14px; color: var(--slate-500); }
+.fs-size { font-size: 13px; color: var(--slate-400); }
+.files-top-actions { display: flex; align-items: center; gap: 8px; }
+.files-btn-ghost,
+.files-btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 36px; padding: 0 14px;
+  border-radius: var(--radius-lg);
+  font-size: 13px; font-weight: 600;
+}
+.files-btn-ghost svg,
+.files-btn-primary svg { width: 15px; height: 15px; }
+.files-btn-ghost {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  color: var(--brand-primary);
+}
+.files-btn-ghost svg { color: var(--success-strong); }
+.files-btn-primary {
+  background: var(--brand-primary);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.files-table {
+  background: var(--bg-paper);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+.files-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 100px 64px;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--slate-100);
+  font-size: 14px;
+}
+.files-row:last-child { border-bottom: 0; }
+.files-head-row {
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--slate-500);
+  padding: 12px 18px;
+}
+.fcb { display: flex; align-items: center; }
+.fcheck {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--slate-300);
+  border-radius: 5px;
+  display: block;
+}
+.fname {
+  display: flex; align-items: center; gap: 14px;
+  min-width: 0;
+  font-weight: 500; color: var(--slate-600);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.fileic {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: var(--radius-lg);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--slate-50), var(--bg-app));
+  color: var(--slate-500);
+  transition: background .2s ease, color .2s ease;
+}
+.fileic svg { width: 18px; height: 18px; }
+.files-row:hover .fileic { background: var(--bg-active); color: var(--brand-primary); }
+.fsize-h, .fsize { color: var(--slate-500); }
+.fsize { font-weight: 500; }
+.facts-h { text-align: right; }
+.facts { display: flex; justify-content: flex-end; }
+.fdl {
+  width: 18px; height: 18px;
+  color: var(--slate-400);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.files-row:hover .fdl { opacity: 1; }
+
+/* ----- Companies panel — firm clients table ----- */
+.co-head { margin-bottom: 16px; }
+.co-title {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--brand-primary);
+  margin: 0 0 4px;
+}
+.co-sub { font-size: 13px; color: var(--slate-500); margin: 0; max-width: 480px; }
+.co-table {
   background: var(--bg-paper);
   border: 1px solid var(--border);
   border-radius: var(--radius-2xl);
   overflow: hidden;
 }
-.docs-table .row {
+.co-row {
   display: grid;
-  grid-template-columns: 36px 1.4fr 1fr 0.9fr 1.1fr;
+  grid-template-columns: 1.6fr 1.6fr auto auto 16px;
   align-items: center;
-  padding: 14px 18px;
+  gap: 14px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
-  gap: 14px;
 }
-.docs-table .row:last-child { border-bottom: 0; }
-.docs-table .row.head {
+.co-row:last-child { border-bottom: 0; }
+.co-thead {
   background: var(--bg-app);
   font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--slate-500);
   padding: 10px 18px;
 }
-.docs-table .icon {
-  width: 28px; height: 28px;
-  border-radius: 7px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-family: var(--font-display);
-  font-size: 9px;
-  font-weight: 700;
-}
-.docs-table .icon.pdf { background: #EF4444; }
-.docs-table .icon.xml { background: #3B82F6; }
-.docs-table .icon.xls { background: #22C55E; }
-.docs-table .name { color: var(--brand-primary); font-weight: 600; }
-.docs-table .meta { color: var(--slate-500); font-size: 12px; margin-top: 2px; }
-.docs-table .amount { color: var(--brand-primary); font-weight: 600; font-family: var(--font-display); }
-.docs-table .tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  background: var(--bg-active);
-  color: var(--brand-primary);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-}
-.docs-table .tag::before {
-  content: "";
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--success);
-}
-.docs-table .tag.pending { background: #FEF3C7; color: #92400E; }
-.docs-table .tag.pending::before { background: #F59E0B; }
-.docs-table .ai-note {
-  font-size: 11px;
-  color: var(--slate-500);
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-.docs-table .ai-note::before {
-  content: "";
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 30%, #A7D8F4 0%, #56B3EB 50%, #3D506D 100%);
-  flex-shrink: 0;
-}
-
-/* ----- Companies panel ----- */
-.co-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-top: 4px;
-}
-.co-card {
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-2xl);
-  padding: 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  transition: border-color .2s, transform .2s, box-shadow .2s;
-}
-.co-card:hover {
-  border-color: var(--slate-300);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lift);
-}
-.co-card.is-current { border-color: var(--brand-primary); background: var(--accent-light); }
-.co-card .top {
-  display: flex; align-items: center; gap: 12px;
-}
-.co-card .av {
-  width: 38px; height: 38px;
-  border-radius: 10px;
+.cell-co, .cell-owner { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.co-mark {
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 8px;
   background: var(--bg-active);
   border: 1px solid rgba(61,80,109,.1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 10px;
   color: var(--brand-primary);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 13px;
 }
-.co-card .name {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 600;
+.co-av {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3D506D 0%, #4A5F7F 55%, #56B3EB 130%);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 9px;
+  color: #fff;
+}
+.co-meta { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.co-name, .co-oname {
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
   color: var(--brand-primary);
-  line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.co-card .org {
-  font-size: 11px;
-  color: var(--slate-400);
-  margin-top: 2px;
+.co-oname { color: var(--slate-600); }
+.co-reg, .co-omail {
+  font-size: 11px; color: var(--slate-400);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.co-card .bdg {
-  margin-left: auto;
-  font-size: 10px;
-  padding: 3px 8px;
-  background: var(--bg-app);
-  color: var(--slate-500);
-  border-radius: 999px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.co-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 999px;
+  white-space: nowrap;
 }
-.co-card.is-current .bdg { background: var(--brand-primary); color: white; }
-.co-card .kpis {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-}
-.co-card .kpi {
-  display: flex; flex-direction: column; gap: 3px;
-}
-.co-card .kpi .lbl {
-  font-family: var(--font-display);
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--slate-400);
-}
-.co-card .kpi .val {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--brand-primary);
-  line-height: 1;
-}
-.co-card .kpi .delta {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--success-dark);
-}
-.co-card .kpi .delta.down { color: var(--error); }
+.co-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+.co-status.connected { background: var(--bg-active); color: var(--brand-primary); }
+.co-status.connected::before { background: var(--success); }
+.co-status.pending { background: #FEF3C7; color: #92400E; }
+.co-status.pending::before { background: #F59E0B; }
+.co-act { font-size: 12px; color: var(--slate-500); white-space: nowrap; }
+.co-arrow { color: var(--slate-300); display: inline-flex; }
+.co-arrow svg { width: 16px; height: 16px; }
 
 @media (prefers-reduced-motion: reduce) {
   .demo-tabs, .demo-panel, .demo-tab-ind { transition: none; }
@@ -1564,6 +1979,8 @@ const s = getStrings(lang);
 @media (prefers-reduced-motion: reduce) {
   .pulse, .typing-dot { animation: none; }
   .hero .reveal { opacity: 1; animation: none; }
+  .chat-caret, .chat-dots i,
+  .chat-convo .uin, .chat-convo .ain { animation: none; }
 }
 
 /* ============================================================
@@ -1571,19 +1988,18 @@ const s = getStrings(lang);
    ============================================================ */
 @media (max-width: 1100px) {
   .product-shell-inner { grid-template-columns: 200px 1fr; }
-  .hero-chat-float { width: 280px; right: 24px; bottom: 24px; }
 }
 @media (max-width: 960px) {
   .hero { padding-top: 120px; }
   .product-shell-inner { grid-template-columns: 1fr; }
   .product-sidebar { display: none; }
-  .hero-chat-float { display: none; }
 }
 @media (max-width: 640px) {
   .hero { padding-top: 110px; }
   .hero-sub { font-size: 16px; }
   .hero-pill { font-size: 12px; padding-left: 5px; }
   .metric-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-head-right { width: 100%; justify-content: space-between; }
 }
 </style>
 
@@ -1730,8 +2146,9 @@ const s = getStrings(lang);
     var wrapEl = wrap;
     var tabBar   = wrapEl.querySelector('.demo-tabs');
     var tabs     = wrapEl.querySelectorAll('.demo-tab') as NodeListOf<HTMLElement>;
-    var panels   = wrapEl.querySelectorAll('.demo-panel');
+    var panels   = wrapEl.querySelectorAll('.demo-panel') as NodeListOf<HTMLElement>;
     var sideItems= wrapEl.querySelectorAll('.sidebar-item[data-panel]') as NodeListOf<HTMLElement>;
+    var coaches  = wrapEl.querySelectorAll('.coach[data-coach]') as NodeListOf<HTMLElement>;
     var ind      = wrapEl.querySelector('.demo-tab-ind') as (HTMLElement & { _settle?: ReturnType<typeof setTimeout> }) | null;
     if (!tabBar || !tabs.length || !panels.length) return;
     var tabBarEl = tabBar;
@@ -1768,16 +2185,22 @@ const s = getStrings(lang);
     }
     function activate(i: number, animate?: boolean) {
       idx = i;
-      tabs.forEach(function(t, j)   { t.classList.toggle('is-active', j === i); });
-      panels.forEach(function(p, j) { p.classList.toggle('is-active', j === i); });
       var key = tabs[i].dataset.panel;
+      // Match panels/sidebar by data-panel (not index) so the DOM order of
+      // panels is independent of the tab order.
+      tabs.forEach(function(t, j) { t.classList.toggle('is-active', j === i); });
+      panels.forEach(function(p) { p.classList.toggle('is-active', p.dataset.panel === key); });
       sideItems.forEach(function(s) { s.classList.toggle('active', s.dataset.panel === key); });
+      coaches.forEach(function(c) { c.classList.toggle('is-shown', c.dataset.coach === key); });
       moveIndicator(animate !== false);
     }
     function tick() {
       if (!auto || !visible) return;
       if (timer) clearTimeout(timer);
       timer = setTimeout(function() {
+        // Hold on the current tab while the chat demo is still playing out, so
+        // the multi-turn conversation is never cut off mid-stream.
+        if ((window as any).lucraChatBusy) { tick(); return; }
         activate((idx + 1) % tabs.length);
         tick();
       }, ROT_MS);
@@ -1819,4 +2242,254 @@ const s = getStrings(lang);
     moveIndicator(false);
     onScroll();
   })();
+
+  (function() {
+    // Chat scene — a self-playing multi-turn conversation. When the Chat panel
+    // is active: type the first question in the welcome input → open the thread →
+    // for each exchange show a thinking beat then stream the answer word by word
+    // (CSS-driven fade). Follow-up questions are typed in the bottom bar. Resets
+    // when the panel leaves so it replays on return.
+    var scene = document.querySelector('.chat-scene[data-chat]') as HTMLElement | null;
+    if (!scene) return;
+    var sceneEl = scene;
+    var panel = sceneEl.closest('.demo-panel') as HTMLElement | null;
+    var welcomeTyped = sceneEl.querySelector('[data-chat-typed]') as HTMLElement | null;
+    var barTyped = sceneEl.querySelector('[data-chat-typed2]') as HTMLElement | null;
+    var thread = sceneEl.querySelector('[data-chat-thread]') as HTMLElement | null;
+    if (!panel || !welcomeTyped || !barTyped || !thread) return;
+    var panelEl = panel, welcomeTypedEl = welcomeTyped, barTypedEl = barTyped, threadEl = thread;
+    var uinTpl = sceneEl.querySelector('[data-tpl="uin"]') as HTMLElement | null;
+    var ainTpl = sceneEl.querySelector('[data-tpl="ain"]') as HTMLElement | null;
+    if (!uinTpl || !ainTpl) return;
+    var uinTplEl = uinTpl, ainTplEl = ainTpl;
+    var TIMES = ['09:24', '09:25', '09:27'];
+
+    var EXCHANGES: { q: string; a: string }[] = [];
+    for (var k = 1; k <= 3; k++) {
+      var q = sceneEl.dataset['q' + k], a = sceneEl.dataset['a' + k];
+      if (q && a) EXCHANGES.push({ q: q, a: a });
+    }
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var gen = 0;
+    var timers: ReturnType<typeof setTimeout>[] = [];
+    function clearTimers() { timers.forEach(function(t) { clearTimeout(t); }); timers = []; }
+    function wait(ms: number) { return new Promise<void>(function(res) { timers.push(setTimeout(res, ms)); }); }
+    function scrollDown() { threadEl.scrollTop = threadEl.scrollHeight; }
+
+    // Reveal each word of the (already-rendered) answer one by one via an
+    // inline opacity transition. Inline styles avoid Astro's scoped-class
+    // hashing, which would not apply to these JS-created word spans.
+    function revealWords(node: Node, counter: { i: number }) {
+      Array.prototype.slice.call(node.childNodes).forEach(function(child: Node) {
+        if (child.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          (child.textContent || '').split(/(\s+)/).forEach(function(part: string) {
+            if (part === '' || /^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var span = document.createElement('span');
+            span.textContent = part;
+            span.style.opacity = '0';
+            span.style.transition = 'opacity .26s ease';
+            frag.appendChild(span);
+            (function(target: HTMLElement, delay: number) {
+              timers.push(setTimeout(function() { target.style.opacity = '1'; }, delay));
+            })(span, counter.i * 55);
+            counter.i++;
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1) {
+          // Hide list items until their first word is due, so empty bullets
+          // never appear ahead of the streamed text.
+          var elem = child as HTMLElement;
+          if (elem.tagName === 'LI') {
+            elem.style.opacity = '0';
+            elem.style.transition = 'opacity .26s ease';
+            (function(target: HTMLElement, delay: number) {
+              timers.push(setTimeout(function() { target.style.opacity = '1'; }, delay));
+            })(elem, counter.i * 55);
+          }
+          revealWords(child, counter);
+        }
+      });
+    }
+    // Clone the hashed templates so Astro's scoped styles apply to the messages.
+    function addUser(text: string, time: string) {
+      var el = uinTplEl.cloneNode(true) as HTMLElement;
+      el.removeAttribute('data-tpl');
+      (el.querySelector('.utext') as HTMLElement).textContent = text;
+      (el.querySelector('.utime') as HTMLElement).textContent = time;
+      threadEl.appendChild(el);
+    }
+    function addAI() {
+      var el = ainTplEl.cloneNode(true) as HTMLElement;
+      el.removeAttribute('data-tpl');
+      var ans = el.querySelector('.chat-answer') as HTMLElement;
+      var dots = el.querySelector('.chat-dots') as HTMLElement;
+      dots.classList.add('show');
+      threadEl.appendChild(el);
+      return { ans: ans, dots: dots };
+    }
+    function reset() {
+      clearTimers();
+      (window as any).lucraChatBusy = false;
+      sceneEl.classList.remove('is-typing', 'is-typing2', 'is-sent');
+      welcomeTypedEl.textContent = '';
+      barTypedEl.textContent = '';
+      threadEl.innerHTML = '';
+    }
+    function showFinal() {
+      sceneEl.classList.add('is-sent');
+      threadEl.innerHTML = '';
+      EXCHANGES.forEach(function(ex, i) {
+        addUser(ex.q, TIMES[i] || '');
+        var ai = addAI();
+        ai.dots.remove();
+        ai.ans.innerHTML = ex.a;
+      });
+    }
+    // Type `text` into `el` char by char; returns false if cancelled mid-way.
+    async function typeInto(el: HTMLElement, text: string, myGen: number) {
+      for (var n = 0; n < text.length; n++) {
+        await wait(36); if (myGen !== gen) return false;
+        el.textContent = text.slice(0, n + 1);
+      }
+      return true;
+    }
+    async function play() {
+      var myGen = ++gen;
+      reset();
+      if (reduce) { showFinal(); return; }
+      (window as any).lucraChatBusy = true;
+      await wait(700); if (myGen !== gen) return;
+      for (var i = 0; i < EXCHANGES.length; i++) {
+        var ex = EXCHANGES[i];
+        if (i === 0) {
+          sceneEl.classList.add('is-typing');
+          if (!(await typeInto(welcomeTypedEl, ex.q, myGen))) return;
+          await wait(460); if (myGen !== gen) return;
+          sceneEl.classList.remove('is-typing');
+          sceneEl.classList.add('is-sent');
+        } else {
+          sceneEl.classList.add('is-typing2');
+          if (!(await typeInto(barTypedEl, ex.q, myGen))) return;
+          await wait(420); if (myGen !== gen) return;
+          sceneEl.classList.remove('is-typing2');
+          barTypedEl.textContent = '';
+        }
+        addUser(ex.q, TIMES[i] || '');
+        var ai = addAI();
+        scrollDown();
+        await wait(950); if (myGen !== gen) return;
+        ai.dots.remove();
+        ai.ans.innerHTML = ex.a;
+        var counter = { i: 0 };
+        revealWords(ai.ans, counter);
+        scrollDown();
+        await wait(counter.i * 55 + 1700); if (myGen !== gen) return;
+        scrollDown();
+      }
+      (window as any).lucraChatBusy = false;
+    }
+
+    var wasActive = panelEl.classList.contains('is-active');
+    var obs = new MutationObserver(function() {
+      var active = panelEl.classList.contains('is-active');
+      if (active === wasActive) return;
+      wasActive = active;
+      if (active) { play(); } else { gen++; reset(); }
+    });
+    obs.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
+    if (wasActive) play();
+  })();
+
+  (function() {
+    // Dashboard — count the metric values up from zero and reset the scroll to the
+    // top each time the panel becomes active (sparkline / chart draw is CSS-driven).
+    var panel = document.querySelector('.demo-panel[data-panel="dashboard"]') as HTMLElement | null;
+    if (!panel) return;
+    var panelEl = panel;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var numbers = panelEl.querySelectorAll('.metric .num[data-count]') as NodeListOf<HTMLElement>;
+    function countUp() {
+      numbers.forEach(function(element) {
+        var target = parseInt(element.dataset.count || '0', 10);
+        if (reduce) { element.textContent = String(target); return; }
+        var startTime = performance.now();
+        var duration = 1100;
+        function step(now: number) {
+          var progress = Math.min(1, (now - startTime) / duration);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          element.textContent = String(Math.round(target * eased));
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }
+    function onActivate() { panelEl.scrollTop = 0; countUp(); }
+    var wasActive = panelEl.classList.contains('is-active');
+    var observer = new MutationObserver(function() {
+      var active = panelEl.classList.contains('is-active');
+      if (active === wasActive) return;
+      wasActive = active;
+      if (active) onActivate();
+    });
+    observer.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
+    if (wasActive) onActivate();
+  })();
+
+  (function() {
+    // Files — switch between the Uploaded / Generated lists (updating the file
+    // count + total size), and reset to the Uploaded tab when the panel re-enters.
+    var panel = document.querySelector('.demo-panel[data-panel="docs"]') as HTMLElement | null;
+    if (!panel) return;
+    var panelEl = panel;
+    var tabs = panelEl.querySelectorAll('.files-tab') as NodeListOf<HTMLElement>;
+    var lists = panelEl.querySelectorAll('[data-flist]') as NodeListOf<HTMLElement>;
+    var countEl = panelEl.querySelector('[data-files-count]') as HTMLElement | null;
+    var sizeEl = panelEl.querySelector('[data-files-size]') as HTMLElement | null;
+    var totals: { [key: string]: { count: string; size: string } } = {
+      uploaded: { count: '(10)', size: '4.58 MB' },
+      generated: { count: '(7)', size: '1.89 MB' },
+    };
+    function select(key: string) {
+      tabs.forEach(function(tab) { tab.classList.toggle('is-active', tab.dataset.ftab === key); });
+      lists.forEach(function(list) { list.hidden = list.dataset.flist !== key; });
+      if (countEl && totals[key]) countEl.textContent = totals[key].count;
+      if (sizeEl && totals[key]) sizeEl.textContent = totals[key].size;
+    }
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() { if (tab.dataset.ftab) select(tab.dataset.ftab); });
+    });
+    var wasActive = panelEl.classList.contains('is-active');
+    var observer = new MutationObserver(function() {
+      var active = panelEl.classList.contains('is-active');
+      if (active === wasActive) return;
+      wasActive = active;
+      if (active) { panelEl.scrollTop = 0; select('uploaded'); }
+    });
+    observer.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
+
+<script>
+  import { mountOrb } from '../scripts/orb';
+  // The demo orbs (chat welcome + the AI Insights orb on the dashboard) are the
+  // same WebGL orb as the hero, mounted as secondary instances (no load-intro,
+  // no global pulse). Lazy + reduced-motion guarded, mirroring the CTA orb mount.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ric: (cb: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (cb) => (window as any).requestIdleCallback(cb)
+        : (cb) => { setTimeout(cb, 1); };
+    ['chat-welcome-orb', 'dash-insights-orb'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const io = new IntersectionObserver((entries, obs) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          obs.disconnect();
+          ric(() => mountOrb(id, { intro: false, registerGlobalPulse: false }));
+        }
+      }, { rootMargin: '200px' });
+      io.observe(el);
+    });
+  }
 </script>

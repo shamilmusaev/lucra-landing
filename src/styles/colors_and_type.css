@@ -11,6 +11,12 @@
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/GeneralSans-600.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/GeneralSans-700.woff2') format('woff2'); }
 
+/* Inter + Plus Jakarta Sans (variable, self-hosted) — used ONLY inside the hero
+   product-demo window, so it renders 1:1 with the real Lucra app (which uses
+   Inter for body, Plus Jakarta Sans for headings). Not applied anywhere else. */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/fonts/Inter-vf.woff2') format('woff2-variations'); }
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 500 800; font-display: swap; src: url('/fonts/PlusJakartaSans-vf.woff2') format('woff2-variations'); }
+
 :root {
   /* -------- Brand -------- */
   --brand-primary: #3D506D;      /* Deep slate-blue, the Lucra signature */
@@ -133,6 +139,9 @@
   --font-display: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-body:    'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Product-demo window only — mirrors the real app's typefaces (see @font-face above). */
+  --demo-font-head: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --demo-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   /* -------- Type tokens -------- */
   --text-xs:   12px;
