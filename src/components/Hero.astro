@@ -6,6 +6,7 @@ import HeroParticles from './HeroParticles.astro';
 import HeroBeams from './HeroBeams.astro';
 import DashboardPanel from './demo/panels/DashboardPanel.astro';
 import ChatPanel from './demo/panels/ChatPanel.astro';
+import FilesPanel from './demo/panels/FilesPanel.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -176,57 +177,7 @@ const s = getStrings(lang);
 
           <ChatPanel lang={lang} />
 
-          <!-- Panel: Files -->
-          <div class="demo-panel files-panel" data-panel="docs">
-            <div class="files-head">
-              <h2 class="files-title">{s.heroDemoFilesTitle}</h2>
-              <p class="files-sub">{s.heroDemoFilesSubtitle}</p>
-            </div>
-            <div class="files-tabs" role="tablist">
-              <button class="files-tab is-active" data-ftab="uploaded" type="button" tabindex="-1">{s.heroDemoFilesTabUploaded}</button>
-              <button class="files-tab" data-ftab="generated" type="button" tabindex="-1">{s.heroDemoFilesTabGenerated}</button>
-            </div>
-            <div class="files-toolbar">
-              <div class="files-stats">
-                <span class="fs-label">{s.heroDemoFilesStatsLabel}</span>
-                <span class="fs-count" data-files-count>(10)</span>
-                <span class="fs-size" data-files-size>4.58 MB</span>
-              </div>
-              <div class="files-top-actions">
-                <span class="files-btn-ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>{s.heroDemoFilesFortnox}</span>
-                <span class="files-btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M12 12v9M8 17l4-4 4 4"/></svg>{s.heroDemoFilesAdd}</span>
-              </div>
-            </div>
-            <div class="files-table">
-              <div class="files-row files-head-row">
-                <span class="fcb"><span class="fcheck"></span></span>
-                <span>{s.heroDemoFilesColName}</span>
-                <span class="fsize-h">{s.heroDemoFilesColSize}</span>
-                <span class="facts-h">{s.heroDemoFilesColActions}</span>
-              </div>
-              <div class="files-list" data-flist="uploaded">
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Annual_Report_2025.pdf</span><span class="fsize">2.46 MB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Bank_Statement_SEB_2026-Q1.pdf</span><span class="fsize">541.7 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Rent_Agreement_Stockholm_Office.pdf</span><span class="fsize">488.45 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Employment_Contract_Anna_Lindqvist.pdf</span><span class="fsize">312.32 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>VAT_Declaration_2026-Q1.pdf</span><span class="fsize">210.94 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Invoice_2026-04_Spotify_AB.pdf</span><span class="fsize">184.32 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Supplier_Invoice_AWS_2026-03.pdf</span><span class="fsize">145.41 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Receipt_Office_Supplies_March.pdf</span><span class="fsize">96.26 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Payroll_April_2026.xlsx</span><span class="fsize">72.7 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Receipt_Business_Lunch_Sturehof.pdf</span><span class="fsize">67.58 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-              </div>
-              <div class="files-list" data-flist="generated" hidden>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Cash_Flow_Forecast_2026.pdf</span><span class="fsize">414.72 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Revenue_Analysis_2025_vs_2026.pdf</span><span class="fsize">354.3 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Financial_Summary_2026-Q1.pdf</span><span class="fsize">319.49 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Profit_Loss_Statement_2025.pdf</span><span class="fsize">287.74 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Expense_Breakdown_April_2026.pdf</span><span class="fsize">197.63 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>VAT_Report_2026-Q1.pdf</span><span class="fsize">176.13 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-                <div class="files-row"><span class="fcb"><span class="fcheck"></span></span><span class="fname"><span class="fileic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Tax_Estimate_2026.pdf</span><span class="fsize">141.31 KB</span><span class="facts"><svg class="fdl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></span></div>
-              </div>
-            </div>
-          </div>
+          <FilesPanel lang={lang} />
 
           <!-- Panel: Companies (firm clients table) -->
           <div class="demo-panel" data-panel="companies">
@@ -1157,134 +1108,6 @@ const s = getStrings(lang);
   .coach { transition: opacity .2s ease; transform: translate(-50%, 0); }
   .coach.is-shown { opacity: 1; transform: translate(-50%, 0); transition: opacity .2s ease; }
 }
-
-/* ----- Files panel ----- */
-.files-head { margin-bottom: 14px; }
-.files-title {
-  font-family: var(--font-display);
-  font-weight: 700; font-size: 24px;
-  letter-spacing: -0.02em;
-  background: var(--brand-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  margin: 0 0 4px;
-}
-.files-sub { font-size: 13px; color: var(--slate-500); margin: 0; }
-.files-tabs {
-  display: flex; gap: 6px;
-  border-bottom: 1px solid var(--slate-200);
-  margin-bottom: 16px;
-}
-.files-tab {
-  position: relative;
-  background: none; border: 0;
-  padding: 10px 14px;
-  font-family: var(--font-body);
-  font-size: 13px; font-weight: 600;
-  color: var(--slate-500);
-  cursor: default;
-  transition: color .2s ease;
-}
-.files-tab::after {
-  content: "";
-  position: absolute; left: 0; right: 0; bottom: -1px;
-  height: 3px; border-radius: 3px 3px 0 0;
-  background: var(--brand-primary);
-  opacity: 0; transition: opacity .2s ease;
-}
-.files-tab.is-active { color: var(--brand-primary); }
-.files-tab.is-active::after { opacity: 1; }
-.files-toolbar {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-.files-stats { display: flex; align-items: baseline; gap: 8px; }
-.fs-label { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--brand-primary); }
-.fs-count { font-size: 14px; color: var(--slate-500); }
-.fs-size { font-size: 13px; color: var(--slate-400); }
-.files-top-actions { display: flex; align-items: center; gap: 8px; }
-.files-btn-ghost,
-.files-btn-primary {
-  display: inline-flex; align-items: center; gap: 7px;
-  height: 36px; padding: 0 14px;
-  border-radius: var(--radius-lg);
-  font-size: 13px; font-weight: 600;
-}
-.files-btn-ghost svg,
-.files-btn-primary svg { width: 15px; height: 15px; }
-.files-btn-ghost {
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
-  color: var(--brand-primary);
-}
-.files-btn-ghost svg { color: var(--success-strong); }
-.files-btn-primary {
-  background: var(--brand-primary);
-  color: #fff;
-  box-shadow: var(--shadow-sm);
-}
-.files-table {
-  background: var(--bg-paper);
-  border: 1px solid var(--slate-200);
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
-}
-.files-row {
-  display: grid;
-  grid-template-columns: 40px 1fr 100px 64px;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--slate-100);
-  font-size: 14px;
-}
-.files-row:last-child { border-bottom: 0; }
-.files-head-row {
-  font-family: var(--font-display);
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--slate-500);
-  padding: 12px 18px;
-}
-.fcb { display: flex; align-items: center; }
-.fcheck {
-  width: 16px; height: 16px;
-  border: 1.5px solid var(--slate-300);
-  border-radius: 5px;
-  display: block;
-}
-.fname {
-  display: flex; align-items: center; gap: 16px;
-  min-width: 0;
-  font-weight: 500; color: var(--slate-600);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.fileic {
-  width: 36px; height: 36px;
-  flex-shrink: 0;
-  border-radius: var(--radius-md);
-  display: inline-flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--slate-50), var(--bg-app));
-  color: var(--slate-500);
-  transition: background .2s ease, color .2s ease;
-}
-.fileic svg { width: 18px; height: 18px; }
-.files-list .files-row:hover { background: var(--slate-50); }
-.files-row:hover .fileic { background: var(--bg-active); color: var(--brand-primary); }
-.fsize-h, .fsize { color: var(--slate-500); }
-.fsize { font-weight: 500; }
-.facts-h { text-align: right; }
-.facts { display: flex; justify-content: flex-end; }
-.fdl {
-  width: 18px; height: 18px;
-  color: var(--slate-400);
-  opacity: 0;
-  transition: opacity .2s ease;
-}
-.files-row:hover .fdl { opacity: 1; }
 
 /* ----- Companies panel — firm clients table ----- */
 .co-head { margin-bottom: 16px; }
