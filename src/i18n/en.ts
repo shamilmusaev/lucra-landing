@@ -168,46 +168,34 @@ export const en: { [K in keyof typeof sv]: string } = {
   cmpRow7Lucra: 'Can escalate questions to a consultant when needed',  cmpRow7GenAi: 'No connection to your accounting firm',
   cmpRow7Status: 'Email and phone back and forth',
 
-  // ---- Feature showcase (GitBook-style cards: visual on top, copy below) ----
+  // ---- Feature showcase (cards: Remotion loop video on top, copy below) ----
   showcaseTitle: 'The tools that put you in control of your business',
-  showcaseSub: "A smarter flow and an AI that's proactive and relevant – so you make better decisions, faster.",
-  // Card 1 – AI chat (real WebGL orb + self-playing conversation; «...» marks the highlighted stat)
+  showcaseSub: 'A smarter flow and an AI that understands your finances – so you make better decisions, faster.',
+  // Card 1 – AI chat
   showcaseCard1Title: 'Ask anything – get answers instantly',
   showcaseCard1Body: 'Ask in plain language about results, cash flow and reports. Lucra reads your books and answers in seconds – no formulas, no waiting.',
   showcaseCard1Pill: 'AI chat',
-  showcaseChatPlaceholder: 'Ask about your numbers…',
-  showcaseChatUser: 'How did Q3 compare to last year?',
-  showcaseChatAi: 'Revenue in Q3 rose «+12.4 %» versus last year – mainly thanks to stronger sales in September.',
-  // Card 2 – Dashboard (Remotion-rendered loop video)
+  showcaseCard1Alt: 'Lucra AI chat answering a question about the quarter, straight from your bookkeeping.',
+  // Card 2 – Dashboard
   showcaseCard2Title: 'See the whole picture in real time',
-  showcaseCard2Body: 'Revenue, costs, result and liquidity – updated automatically. Lucra highlights what changed and why, so you grasp the situation in seconds.',
+  showcaseCard2Body: 'Revenue, costs, result and liquidity – updated automatically from your bookkeeping, so you grasp the situation in seconds.',
   showcaseCard2Pill: 'Dashboard',
-  showcaseCard2VideoAlt: 'Lucra dashboard with AI insights and key metrics updating automatically.',
-  // Card 3 – Documents (DOM: file table + scan-line + AI badge)
-  showcaseCard3Title: 'Add your documents – Lucra understands them',
-  showcaseCard3Body: 'Upload invoices, receipts and reports. Lucra reads them, suggests the right account and links them to the company and period – automatically.',
+  showcaseCard2Alt: 'Lucra dashboard with key metrics and a revenue-vs-costs chart updating automatically.',
+  // Card 3 – Documents
+  showcaseCard3Title: 'Add your documents – Lucra reads them',
+  showcaseCard3Body: 'Upload invoices, receipts and reports. Lucra reads them and answers your questions based on their content – right in the chat.',
   showcaseCard3Pill: 'Documents',
-  showcaseDocPanelTitle: 'Files & assets',
-  showcaseDocFile1: 'Invoice 4821.pdf',
-  showcaseDocFile2: 'Receipt 2261.jpg',
-  showcaseDocFile3: 'Annual report 2025.pdf',
-  showcaseDocReading: 'Reading…',
-  showcaseDocSuggest: 'AI suggests 7690',
-  showcaseDocPosted: 'Posted',
-  // Card 4 – Fortnox sync (DOM: pulse along connector)
+  showcaseCard3Alt: 'Lucra reads uploaded documents and answers questions about them in the chat.',
+  // Card 4 – Fortnox sync
   showcaseCard4Title: 'Built on your real bookkeeping',
   showcaseCard4Body: 'Lucra connects to Fortnox and reads your real numbers in real time – entries, VAT and results. No guesses, always up to date.',
   showcaseCard4Pill: 'Integrations',
-  showcaseSyncLine: 'Last synced: 3 min ago',
-  showcaseSyncItem1: 'Entries',
-  showcaseSyncItem2: 'VAT',
-  showcaseSyncItem3: 'Result',
-  // Card 5 – Multi-company (DOM: company switcher)
+  showcaseCard4Alt: 'Lucra syncs entries, VAT and results from Fortnox in real time.',
+  // Card 5 – Multi-company
   showcaseCard5Title: 'All clients, one view',
   showcaseCard5Body: 'Manage all companies and clients without switching systems. Switch in the sidebar – every company synced and ready. Built for accounting firms.',
   showcaseCard5Pill: 'Multiple companies',
-  showcaseCoSearch: 'Search companies…',
-  showcaseCoManage: 'Manage companies',
+  showcaseCard5Alt: 'Lucra company switcher gliding between several client companies in the sidebar.',
   // Carousel navigation
   showcaseNavPrev: 'Previous',
   showcaseNavNext: 'Next',

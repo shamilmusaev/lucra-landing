@@ -4,17 +4,19 @@ import Icon from '../Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
-// Server-rendered fallback for the AI answer (no-JS / reduced motion shows the
-// full sentence). «...» marks the stat that gets the streamed count-up.
-const aiHtml = s.showcaseChatAi.replace(
-  /«([^»]+)»/g,
-  '<span class="cs-stat is-vis">$1</span>',
-);
+// Each card is a Remotion-rendered 4:5 loop video (built in remotion/, rendered
+// per language into public/assets/). The poster is a settled frame shown before
+// play and under reduced motion. Videos fill the visual box edge-to-edge.
+const video = (id: string): string => `/assets/feature-${id}-${lang}.mp4`;
+const poster = (id: string): string => `/assets/feature-${id}-${lang}.jpg`;
 
-// Dashboard card visual — a Remotion-rendered loop video (built in remotion/,
-// rendered per language). Poster is a settled frame for reduced motion / pre-play.
-const dashVideo = lang === 'en' ? '/assets/dashboard-en.mp4' : '/assets/dashboard-sv.mp4';
-const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboard-sv.jpg';
+const cards = [
+  { id: 'chat', title: s.showcaseCard1Title, body: s.showcaseCard1Body, pill: s.showcaseCard1Pill, alt: s.showcaseCard1Alt, href: '#funktioner' },
+  { id: 'dashboard', title: s.showcaseCard2Title, body: s.showcaseCard2Body, pill: s.showcaseCard2Pill, alt: s.showcaseCard2Alt, href: '#funktioner' },
+  { id: 'documents', title: s.showcaseCard3Title, body: s.showcaseCard3Body, pill: s.showcaseCard3Pill, alt: s.showcaseCard3Alt, href: '#funktioner' },
+  { id: 'integrations', title: s.showcaseCard4Title, body: s.showcaseCard4Body, pill: s.showcaseCard4Pill, alt: s.showcaseCard4Alt, href: '#integrationer' },
+  { id: 'companies', title: s.showcaseCard5Title, body: s.showcaseCard5Body, pill: s.showcaseCard5Pill, alt: s.showcaseCard5Alt, href: '#for-vem' },
+];
 ---
 
 <section id="funktioner">
@@ -36,209 +38,32 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
 
     <div class="showcase-viewport" data-viewport>
       <div class="showcase-track" data-track>
-      <!-- Card 1 — AI chat. Visual on top (faithful chat surface with the real
-           WebGL orb, self-playing on loop), copy below (GitBook layout). -->
-      <article class="showcase-card reveal">
-        <div
-          class="showcase-visual"
-          data-chat
-          data-q={s.showcaseChatUser}
-          data-a={s.showcaseChatAi}
-          aria-hidden="true"
-        >
-          <span class="cs-glow cs-glow-a"></span>
-          <span class="cs-glow cs-glow-b"></span>
-
-          <div class="cs-stage">
-            <div class="cs-feed" data-feed>
-              <div class="cs-user" data-user>
-                <span class="cs-utext">{s.showcaseChatUser}</span>
-                <span class="cs-time cs-time-user">09:24</span>
-              </div>
-              <div class="cs-ai" data-ai>
-                <span class="cs-orb" id="feature-chat-orb"></span>
-                <div class="cs-bubble">
-                  <span class="cs-think" data-think><i></i><i></i><i></i></span><span class="cs-text" data-text set:html={aiHtml}></span>
-                  <span class="cs-foot" data-foot>
-                    <span class="cs-time">09:24</span>
-                    <Icon name="copy" class="cs-copy" />
-                  </span>
-                </div>
-              </div>
+        {cards.map((card) => (
+          <article class="showcase-card reveal">
+            <div class="showcase-visual">
+              <video
+                class="cs-video-full"
+                data-video
+                preload="none"
+                muted
+                loop
+                playsinline
+                poster={poster(card.id)}
+                aria-label={card.alt}
+              >
+                <source src={video(card.id)} type="video/mp4" />
+              </video>
             </div>
-
-            <div class="cs-input">
-              <span class="cs-clip">
-                <Icon name="paperclip" />
-              </span>
-              <span class="cs-input-text" data-input data-ph={s.showcaseChatPlaceholder}></span><span class="cs-caret" data-caret></span>
-              <span class="cs-send" data-send>
-                <Icon name="arrow-up" />
-              </span>
+            <div class="showcase-body">
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+              <a class="showcase-pill" href={card.href}>
+                {card.pill}
+                <Icon name="arrow-right" />
+              </a>
             </div>
-          </div>
-        </div>
-
-        <div class="showcase-body">
-          <h3>{s.showcaseCard1Title}</h3>
-          <p>{s.showcaseCard1Body}</p>
-          <a class="showcase-pill" href="#funktioner">
-            {s.showcaseCard1Pill}
-            <Icon name="arrow-right" />
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 2 — Dashboard. Visual is a Remotion-rendered loop video, lazily
-           played only while in view; poster covers reduced motion / pre-play. -->
-      <article class="showcase-card reveal delay-1">
-        <div class="showcase-visual showcase-visual-video">
-          <video
-            class="cs-video"
-            data-video
-            preload="none"
-            muted
-            loop
-            playsinline
-            poster={dashPoster}
-            aria-label={s.showcaseCard2VideoAlt}
-          >
-            <source src={dashVideo} type="video/mp4" />
-          </video>
-        </div>
-        <div class="showcase-body">
-          <h3>{s.showcaseCard2Title}</h3>
-          <p>{s.showcaseCard2Body}</p>
-          <a class="showcase-pill" href="#funktioner">
-            {s.showcaseCard2Pill}
-            <Icon name="arrow-right" />
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 3 — Documents. Scan-line sweeps the top row, the status cycles
-           Läser → AI föreslår → Bokfört on a CSS loop. -->
-      <article class="showcase-card reveal delay-2">
-        <div class="showcase-visual showcase-visual-doc">
-          <span class="cs-glow cs-glow-a"></span>
-          <div class="sc-panel doc-panel">
-            <div class="doc-head">
-              <span class="doc-title">{s.showcaseDocPanelTitle}</span>
-              <span class="doc-aichip">AI</span>
-            </div>
-            <div class="doc-row doc-row-active">
-              <span class="doc-ic doc-ic-pdf">PDF</span>
-              <span class="doc-name">{s.showcaseDocFile1}</span>
-              <span class="doc-states">
-                <span class="doc-state doc-state-read">{s.showcaseDocReading}</span>
-                <span class="doc-state doc-state-suggest">{s.showcaseDocSuggest}</span>
-                <span class="doc-state doc-state-posted">
-                  <Icon name="check" />
-                  {s.showcaseDocPosted}
-                </span>
-              </span>
-              <span class="doc-scan"></span>
-            </div>
-            <div class="doc-row">
-              <span class="doc-ic doc-ic-jpg">JPG</span>
-              <span class="doc-name">{s.showcaseDocFile2}</span>
-              <span class="doc-badge">{s.showcaseDocPosted}</span>
-            </div>
-            <div class="doc-row">
-              <span class="doc-ic doc-ic-doc">DOC</span>
-              <span class="doc-name">{s.showcaseDocFile3}</span>
-              <span class="doc-badge">{s.showcaseDocPosted}</span>
-            </div>
-          </div>
-        </div>
-        <div class="showcase-body">
-          <h3>{s.showcaseCard3Title}</h3>
-          <p>{s.showcaseCard3Body}</p>
-          <a class="showcase-pill" href="#funktioner">
-            {s.showcaseCard3Pill}
-            <Icon name="arrow-right" />
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 4 — Fortnox sync. A pulse travels Fortnox → Lucra on a CSS loop. -->
-      <article class="showcase-card reveal delay-3">
-        <div class="showcase-visual showcase-visual-sync">
-          <span class="cs-glow cs-glow-a"></span>
-          <div class="sc-panel sync-panel">
-            <div class="sync-rail">
-              <span class="sync-node sync-node-fortnox">Fortnox</span>
-              <span class="sync-line"><span class="sync-pulse"></span></span>
-              <span class="sync-node sync-node-lucra"><span class="sync-orb"></span></span>
-            </div>
-            <div class="sync-status">
-              <Icon name="check" />
-              {s.showcaseSyncLine}
-            </div>
-            <div class="sync-items">
-              <span class="sync-item">{s.showcaseSyncItem1}</span>
-              <span class="sync-item">{s.showcaseSyncItem2}</span>
-              <span class="sync-item">{s.showcaseSyncItem3}</span>
-            </div>
-          </div>
-        </div>
-        <div class="showcase-body">
-          <h3>{s.showcaseCard4Title}</h3>
-          <p>{s.showcaseCard4Body}</p>
-          <a class="showcase-pill" href="#integrationer">
-            {s.showcaseCard4Pill}
-            <Icon name="arrow-right" />
-          </a>
-        </div>
-      </article>
-
-      <!-- Card 5 — Multi-company. The active highlight glides between companies. -->
-      <article class="showcase-card reveal delay-3">
-        <div class="showcase-visual showcase-visual-co">
-          <span class="cs-glow cs-glow-a"></span>
-          <div class="sc-panel co-panel">
-            <div class="co-search">
-              <Icon name="search" />
-              <span>{s.showcaseCoSearch}</span>
-            </div>
-            <div class="co-list" data-co-list>
-              <div class="co-row is-active">
-                <span class="co-bar"></span>
-                <span class="co-av">NB</span>
-                <span class="co-name">Nordiska Bygg AB</span>
-              </div>
-              <div class="co-row">
-                <span class="co-bar"></span>
-                <span class="co-av">AT</span>
-                <span class="co-name">Aurora Tech AB</span>
-              </div>
-              <div class="co-row">
-                <span class="co-bar"></span>
-                <span class="co-av">VK</span>
-                <span class="co-name">Vasa Konsult AB</span>
-              </div>
-              <div class="co-row">
-                <span class="co-bar"></span>
-                <span class="co-av">SV</span>
-                <span class="co-name">Stockholm Ventures AB</span>
-              </div>
-            </div>
-            <div class="co-divider"></div>
-            <div class="co-manage">
-              <Icon name="settings" />
-              <span>{s.showcaseCoManage}</span>
-            </div>
-          </div>
-        </div>
-        <div class="showcase-body">
-          <h3>{s.showcaseCard5Title}</h3>
-          <p>{s.showcaseCard5Body}</p>
-          <a class="showcase-pill" href="#for-vem">
-            {s.showcaseCard5Pill}
-            <Icon name="arrow-right" />
-          </a>
-        </div>
-      </article>
+          </article>
+        ))}
       </div>
     </div>
   </div>
@@ -324,7 +149,7 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     .showcase-card { flex-basis: 86%; }
   }
 
-  /* ---- Visual zone: faithful chat surface ---- */
+  /* ---- Visual zone: full-bleed 4:5 loop video ---- */
   .showcase-visual {
     position: relative;
     aspect-ratio: 4 / 5;
@@ -341,6 +166,13 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     transform: translateY(-6px);
     border-color: var(--slate-300);
     box-shadow: var(--shadow-soft-hover);
+  }
+  /* The video matches the 4:5 box exactly, so cover fills it without cropping. */
+  .cs-video-full {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   /* ---- Section entrance signature — when the section scrolls into view the
@@ -360,267 +192,11 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     transform: none;
     filter: blur(0);
   }
-  /* Even 5-step cascade (the markup only carries delay-1..3). */
-  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(2) { transition-delay: 0.08s; }
-  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(3) { transition-delay: 0.16s; }
-  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(4) { transition-delay: 0.24s; }
-  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(5) { transition-delay: 0.32s; }
-  /* Soft blue glow blobs — faithful to the product welcome screen. */
-  .cs-glow {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(46px);
-    pointer-events: none;
-  }
-  .cs-glow-a {
-    top: -14%;
-    left: 40%;
-    width: 56%;
-    height: 56%;
-    background: rgba(86, 179, 235, 0.22);
-  }
-  .cs-glow-b {
-    bottom: -10%;
-    left: 6%;
-    width: 42%;
-    height: 42%;
-    background: rgba(59, 130, 246, 0.14);
-  }
-
-  /* Dashboard card — Remotion loop video floats as a centred window on the
-     gradient backdrop (the visual is portrait, so full-bleed would crop it). */
-  .cs-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    height: auto;
-    display: block;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    box-shadow: 0 12px 34px rgba(15, 23, 42, 0.1);
-  }
-
-  /* Floating app-window fragment that holds the conversation. */
-  .cs-stage {
-    position: absolute;
-    inset: 22px 22px 0;
-    background: var(--bg-paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-    padding: 16px 16px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    overflow: hidden;
-  }
-  .cs-feed {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 14px;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  /* User bubble — faithful to ChatMessageBubble (brand fill, right aligned). */
-  .cs-user {
-    align-self: flex-end;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-    max-width: 78%;
-    background: var(--brand-primary);
-    color: #fff;
-    font-size: 13px;
-    line-height: 1.5;
-    padding: 9px 13px;
-    border-radius: 16px 16px 4px 16px;
-  }
-  .cs-time {
-    font-size: 11px;
-    color: var(--slate-400);
-    line-height: 1.4;
-  }
-  .cs-time-user { color: rgba(255, 255, 255, 0.7); }
-
-  /* AI row — real orb avatar + white bubble with cyan left rule. */
-  .cs-ai {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    max-width: 92%;
-  }
-  .cs-orb {
-    position: relative;
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    border-radius: 50%;
-    /* Fallback ring orb (reduced motion / no WebGL) — a hollow glowing ring,
-       matching the real WebGL orb's shape. The mounted canvas covers this when
-       the real orb initialises. */
-    background: transparent;
-    box-shadow:
-      inset 0 0 0 3px rgba(86, 179, 235, 0.55),
-      inset 2px -2px 4px rgba(61, 80, 109, 0.35),
-      0 0 10px rgba(86, 179, 235, 0.4);
-  }
-  .cs-orb :global(canvas) {
-    position: absolute;
-    inset: 0;
-    width: 100% !important;
-    height: 100% !important;
-  }
-  .cs-bubble {
-    position: relative;
-    background: var(--bg-paper);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--brand-primary-light);
-    border-radius: 0 12px 12px 12px;
-    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05);
-    padding: 9px 12px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--slate-600);
-    min-height: 18px;
-  }
-  /* Bubble footer — timestamp + copy affordance (faithful to the product). */
-  .cs-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-top: 6px;
-  }
-  .cs-copy {
-    width: 13px;
-    height: 13px;
-    color: var(--slate-400);
-  }
-
-  /* Thinking dots — hidden by default (the static fallback shows the answer). */
-  .cs-think {
-    display: none;
-    align-items: center;
-    gap: 3px;
-    height: 14px;
-  }
-  .cs-think i {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--slate-400);
-    animation: csThink 1s ease-in-out infinite;
-  }
-  .cs-think i:nth-child(2) { animation-delay: 0.15s; }
-  .cs-think i:nth-child(3) { animation-delay: 0.3s; }
-  @keyframes csThink {
-    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
-    30% { opacity: 1; transform: translateY(-2px); }
-  }
-
-  /* Highlighted stat — brand chip. */
-  .cs-stat {
-    color: var(--brand-primary);
-    font-family: var(--font-display);
-    font-weight: 700;
-    background: var(--bg-active);
-    border-radius: 6px;
-    padding: 0 5px;
-    white-space: nowrap;
-  }
-
-  /* Input pill — faithful to WelcomeInputCard. */
-  .cs-input {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 -2px;
-    padding: 8px 8px 8px 10px;
-    background: var(--bg-paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.03);
-  }
-  .cs-clip {
-    flex-shrink: 0;
-    width: 28px;
-    height: 28px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-md);
-    background: var(--bg-app);
-    color: var(--slate-400);
-  }
-  .cs-clip svg { width: 15px; height: 15px; }
-  .cs-input-text {
-    flex: 1;
-    min-width: 0;
-    font-size: 13px;
-    line-height: 1.4;
-    color: var(--slate-600);
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  .cs-input-text:empty::before {
-    content: attr(data-ph);
-    color: var(--slate-300);
-  }
-  .cs-caret {
-    display: none;
-    width: 1.5px;
-    height: 15px;
-    margin-left: -6px;
-    background: var(--brand-primary);
-  }
-  .cs-send {
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: var(--bg-app);
-    color: var(--slate-400);
-    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  }
-  .cs-send svg { width: 15px; height: 15px; }
-  .cs-send.is-active {
-    background: var(--brand-primary);
-    color: #fff;
-    transform: scale(1.04);
-  }
-
-  /* ---- Live (animated) states — only when JS takes over and motion is OK ---- */
-  .showcase-visual.is-live .cs-caret { display: inline-block; animation: csBlink 1.1s steps(1) infinite; }
-  @keyframes csBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
-
-  .showcase-visual.is-live .cs-user,
-  .showcase-visual.is-live .cs-ai {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  .showcase-visual.is-live .cs-user { transform: translateY(8px) scale(0.98); }
-  .showcase-visual.is-live .cs-user.vis,
-  .showcase-visual.is-live .cs-ai.vis {
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.26s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.34s cubic-bezier(0.34, 1.3, 0.5, 1);
-  }
-  /* Word-by-word reveal for the streamed answer. */
-  .cs-w { opacity: 0; transform: translateY(4px); display: inline; }
-  .cs-w.vis { opacity: 1; transform: none; transition: opacity 0.2s ease-out, transform 0.2s ease-out; }
-  .cs-stat.cs-w { transform: translateY(4px) scale(0.9); }
-  .cs-stat.cs-w.vis { transition: opacity 0.22s ease-out, transform 0.36s cubic-bezier(0.34, 1.3, 0.5, 1); }
+  /* Even cascade across the six cards. */
+  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(2) { transition-delay: 0.07s; }
+  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(3) { transition-delay: 0.14s; }
+  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(4) { transition-delay: 0.21s; }
+  :global(html.reveal-ready) #funktioner .showcase-card:nth-child(5) { transition-delay: 0.28s; }
 
   /* ---- Card copy — sits below the visual card on the page background ---- */
   .showcase-body {
@@ -665,291 +241,9 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
     margin: 0;
     flex: 1;
   }
-  /* ---- Shared floating panel (documents / sync / companies cards) ---- */
-  .sc-panel {
-    position: absolute;
-    inset: 22px;
-    background: var(--bg-paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    overflow: hidden;
-  }
-  /* Decorative loops run only while the section is on screen. */
-  .doc-scan,
-  .doc-state-read,
-  .doc-state-suggest,
-  .doc-state-posted,
-  .sync-pulse {
-    animation-play-state: paused;
-  }
-  #funktioner.is-onscreen .doc-scan,
-  #funktioner.is-onscreen .doc-state-read,
-  #funktioner.is-onscreen .doc-state-suggest,
-  #funktioner.is-onscreen .doc-state-posted,
-  #funktioner.is-onscreen .sync-pulse {
-    animation-play-state: running;
-  }
-
-  /* Card 3 — documents */
-  .doc-head { display: flex; align-items: center; justify-content: space-between; }
-  .doc-title {
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--brand-primary);
-  }
-  .doc-aichip {
-    font-family: var(--font-display);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--brand-primary);
-    background: var(--bg-active);
-    border-radius: 999px;
-    padding: 3px 9px;
-  }
-  .doc-row {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 9px 11px;
-    overflow: hidden;
-  }
-  .doc-ic {
-    flex-shrink: 0;
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-family: var(--font-display);
-    font-size: 8px;
-    font-weight: 700;
-  }
-  .doc-ic-pdf { background: var(--error); }
-  .doc-ic-jpg { background: var(--success); }
-  .doc-ic-doc { background: var(--voice-orb-start); }
-  .doc-name {
-    flex: 1;
-    min-width: 0;
-    font-size: var(--text-sm);
-    color: var(--slate-600);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .doc-badge {
-    flex-shrink: 0;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--success-strong);
-    background: color-mix(in srgb, var(--success) 12%, transparent);
-    border-radius: 999px;
-    padding: 3px 9px;
-  }
-  .doc-states { position: relative; flex-shrink: 0; width: 112px; height: 20px; }
-  .doc-state {
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
-    font-size: 11px;
-    font-weight: 600;
-    border-radius: 999px;
-    padding: 3px 9px;
-    opacity: 0;
-  }
-  .doc-state svg { width: 11px; height: 11px; }
-  .doc-state-read { color: var(--slate-500); background: var(--bg-active); animation: docRead 6s linear infinite; }
-  .doc-state-suggest { color: var(--brand-primary); background: var(--accent-light); animation: docSuggest 6s linear infinite; }
-  .doc-state-posted { color: var(--success-strong); background: color-mix(in srgb, var(--success) 12%, transparent); animation: docPosted 6s linear infinite; }
-  @keyframes docRead    { 0%, 2% { opacity: 0; } 6%, 20% { opacity: 1; } 26%, 100% { opacity: 0; } }
-  @keyframes docSuggest { 0%, 28% { opacity: 0; } 32%, 52% { opacity: 1; } 58%, 100% { opacity: 0; } }
-  @keyframes docPosted  { 0%, 60% { opacity: 0; } 64%, 100% { opacity: 1; } }
-  .doc-scan {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 40%;
-    background: linear-gradient(90deg, transparent, rgba(86, 179, 235, 0.28), transparent);
-    transform: translateX(-120%);
-    animation: docScan 6s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes docScan { 0% { transform: translateX(-120%); } 22%, 100% { transform: translateX(280%); } }
-
-  /* Card 4 — Fortnox sync */
-  .sync-panel { justify-content: center; gap: 18px; }
-  .sync-rail { display: flex; align-items: center; gap: 10px; }
-  .sync-node {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 13px;
-  }
-  .sync-node-fortnox {
-    color: var(--brand-primary);
-    background: var(--bg-subtle);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 10px 14px;
-  }
-  .sync-node-lucra { width: 44px; height: 44px; }
-  .sync-orb {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    box-shadow:
-      inset 0 0 0 4px rgba(86, 179, 235, 0.55),
-      inset 2px -2px 5px rgba(61, 80, 109, 0.35),
-      0 0 12px rgba(86, 179, 235, 0.4);
-  }
-  .sync-line {
-    position: relative;
-    flex: 1;
-    height: 2px;
-    background-image: linear-gradient(90deg, var(--slate-300) 0 6px, transparent 6px 12px);
-    background-size: 12px 2px;
-    background-repeat: repeat-x;
-  }
-  .sync-pulse {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    margin-top: -5px;
-    border-radius: 50%;
-    background: var(--brand-accent);
-    box-shadow: 0 0 8px rgba(86, 179, 235, 0.8);
-    animation: syncPulse 2.4s ease-in-out infinite;
-  }
-  @keyframes syncPulse { 0% { left: 0; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
-  .sync-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--slate-500);
-  }
-  .sync-status svg { width: 15px; height: 15px; color: var(--success-strong); flex-shrink: 0; }
-  .sync-items { display: flex; gap: 8px; flex-wrap: wrap; }
-  .sync-item {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--brand-primary);
-    background: var(--bg-subtle);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 5px 11px;
-  }
-
-  /* Card 5 — multi-company dropdown (mirrors the product company switcher) */
-  .co-panel { gap: 10px; }
-  .co-search {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 9px 12px;
-    color: var(--slate-400);
-    font-size: 13px;
-  }
-  .co-search svg { width: 15px; height: 15px; flex-shrink: 0; }
-  .co-list { display: flex; flex-direction: column; gap: 2px; }
-  .co-row {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    height: 38px;
-    padding: 0 10px 0 5px;
-    border-radius: var(--radius-md);
-  }
-  .co-bar {
-    flex-shrink: 0;
-    width: 3px;
-    height: 16px;
-    border-radius: 999px;
-    background: var(--brand-primary);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .co-av {
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1.5px solid var(--slate-300);
-    background: transparent;
-    color: var(--slate-500);
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-  }
-  .co-name {
-    flex: 1;
-    min-width: 0;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--slate-500);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: color 0.3s ease;
-  }
-  .co-row.is-active .co-bar { opacity: 1; }
-  .co-row.is-active .co-av {
-    background: var(--brand-primary);
-    border-color: var(--brand-primary);
-    color: #fff;
-  }
-  .co-row.is-active .co-name { color: var(--brand-primary); font-weight: 700; }
-  .co-divider { height: 1px; background: var(--border); margin: 2px 0; }
-  .co-manage {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 2px 6px;
-    color: var(--brand-primary);
-    font-family: var(--font-display);
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .co-manage svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--slate-500); }
 
   @media (prefers-reduced-motion: reduce) {
-    .cs-think i { animation: none; }
-    .showcase-card, .cs-send { transition: none; }
-    .doc-scan, .sync-pulse { display: none; }
-    .doc-state-read, .doc-state-suggest { display: none; }
-    .doc-state-posted { opacity: 1; animation: none; }
+    .showcase-card { transition: none; }
     /* Entrance signature off — shared reveal already shows everything. */
     :global(html.reveal-ready) #funktioner .showcase-card.reveal {
       transform: none;
@@ -960,232 +254,29 @@ const dashPoster = lang === 'en' ? '/assets/dashboard-en.jpg' : '/assets/dashboa
 </style>
 
 <script>
-  import { mountOrb } from '../../scripts/orb';
-
-  // Self-playing AI chat for the showcase card. The question types into the
-  // input, lifts into a user bubble, the orb "thinks", then the answer streams
-  // word-by-word and lands on the highlighted stat — looping while in view.
-  // The real WebGL orb is mounted once (motion allowed + in view). Reduced
-  // motion leaves the static server-rendered exchange and never mounts the orb.
+  // Play each loop video only while it is on screen (saves CPU when scrolled
+  // away). Reduced motion leaves the poster frame and never autoplays.
   (function () {
-    const root = document.querySelector('[data-chat]') as HTMLElement | null;
-    if (!root) return;
-    const feed = root.querySelector('[data-feed]') as HTMLElement | null;
-    const userEl = root.querySelector('[data-user]') as HTMLElement | null;
-    const aiEl = root.querySelector('[data-ai]') as HTMLElement | null;
-    const thinkEl = root.querySelector('[data-think]') as HTMLElement | null;
-    const textEl = root.querySelector('[data-text]') as HTMLElement | null;
-    const footEl = root.querySelector('[data-foot]') as HTMLElement | null;
-    const inputEl = root.querySelector('[data-input]') as HTMLElement | null;
-    const sendEl = root.querySelector('[data-send]') as HTMLElement | null;
-    if (!feed || !userEl || !aiEl || !thinkEl || !textEl || !footEl || !inputEl || !sendEl) return;
-
-    const question = root.dataset.q ?? '';
-    const answer = root.dataset.a ?? '';
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce || !question || !answer) return; // keep the static fallback
-
-    const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
-    let seq = 0; // epoch — bumped to cancel in-flight playback (pause / restart)
-    let running = false;
-    let mounted = false;
-
-    // Split the answer into reveal units; «...» becomes one highlighted stat.
-    function units(text: string): { text: string; stat: boolean }[] {
-      const out: { text: string; stat: boolean }[] = [];
-      const re = /«([^»]+)»/g;
-      let last = 0;
-      let match: RegExpExecArray | null;
-      const pushWords = (str: string): void => {
-        str.split(/\s+/).filter(Boolean).forEach((word) => out.push({ text: word, stat: false }));
-      };
-      while ((match = re.exec(text))) {
-        if (match.index > last) pushWords(text.slice(last, match.index));
-        out.push({ text: match[1], stat: true });
-        last = match.index + match[0].length;
-      }
-      if (last < text.length) pushWords(text.slice(last));
-      return out;
-    }
-
-    function countUp(el: HTMLElement, text: string): void {
-      const parts = text.match(/^(\D*)(\d+)(.*)$/);
-      if (!parts) { el.textContent = text; return; }
-      const prefix = parts[1];
-      const target = parseInt(parts[2], 10);
-      const suffix = parts[3];
-      const duration = 520;
-      const t0 = performance.now();
-      const tick = (now: number): void => {
-        const progress = Math.min(1, (now - t0) / duration);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = prefix + Math.round(target * eased) + suffix;
-        if (progress < 1) requestAnimationFrame(tick);
-        else el.textContent = text;
-      };
-      requestAnimationFrame(tick);
-    }
-
-    async function typeQuestion(my: number): Promise<void> {
-      for (let index = 1; index <= question.length; index++) {
-        if (my !== seq) return;
-        inputEl!.textContent = question.slice(0, index);
-        await sleep(34);
-      }
-    }
-
-    async function stream(my: number): Promise<void> {
-      textEl!.innerHTML = '';
-      for (const unit of units(answer)) {
-        if (my !== seq) return;
-        const span = document.createElement('span');
-        span.className = unit.stat ? 'cs-w cs-stat' : 'cs-w';
-        span.textContent = unit.stat ? unit.text : unit.text + ' ';
-        textEl!.appendChild(span);
-        requestAnimationFrame(() => requestAnimationFrame(() => span.classList.add('vis')));
-        if (unit.stat) countUp(span, unit.text);
-        await sleep(36);
-      }
-    }
-
-    async function cycle(my: number): Promise<void> {
-      // Reset to an empty surface.
-      userEl!.classList.remove('vis');
-      aiEl!.classList.remove('vis');
-      sendEl!.classList.remove('is-active');
-      thinkEl!.style.display = 'none';
-      footEl!.style.display = 'none';
-      textEl!.innerHTML = '';
-      inputEl!.textContent = '';
-      await sleep(440);
-      if (my !== seq) return;
-
-      // Type the question, then "send".
-      await typeQuestion(my);
-      if (my !== seq) return;
-      sendEl!.classList.add('is-active');
-      await sleep(420);
-      if (my !== seq) return;
-
-      inputEl!.textContent = '';
-      sendEl!.classList.remove('is-active');
-      userEl!.classList.add('vis');
-      await sleep(560);
-      if (my !== seq) return;
-
-      // AI thinks, then streams the answer.
-      aiEl!.classList.add('vis');
-      thinkEl!.style.display = 'inline-flex';
-      await sleep(820);
-      if (my !== seq) return;
-      thinkEl!.style.display = 'none';
-      await stream(my);
-      if (my !== seq) return;
-      footEl!.style.display = 'flex';
-    }
-
-    async function run(my: number): Promise<void> {
-      while (my === seq) {
-        await cycle(my);
-        if (my !== seq) return;
-        await sleep(2600); // hold the completed exchange
-      }
-    }
-
-    function resume(): void {
-      if (running) return;
-      running = true;
-      const my = ++seq;
-      run(my).finally(() => { if (my === seq) running = false; });
-    }
-    function pause(): void {
-      seq++;
-      running = false;
-    }
-
-    function ensureOrb(): void {
-      if (mounted) return;
-      mounted = true;
-      const ric: (cb: () => void) => void = (window as any).requestIdleCallback
-        ? (cb) => (window as any).requestIdleCallback(cb)
-        : (cb) => { setTimeout(cb, 1); };
-      ric(() => mountOrb('feature-chat-orb', {}));
-    }
-
-    const io = new IntersectionObserver((entries) => {
-      const visible = entries.some((entry) => entry.isIntersecting);
-      if (visible) {
-        root.classList.add('is-live');
-        ensureOrb();
-        resume();
-      } else {
-        pause();
-      }
-    }, { threshold: 0.35 });
-    io.observe(root);
-  })();
-</script>
-
-<script>
-  // Dashboard card — play the loop video only while it is on screen (saves CPU
-  // when scrolled away). Reduced motion leaves the poster frame, never autoplays.
-  (function () {
-    const video = document.querySelector('[data-video]') as HTMLVideoElement | null;
-    if (!video) return;
+    const videos = Array.from(
+      document.querySelectorAll('#funktioner [data-video]'),
+    ) as HTMLVideoElement[];
+    if (videos.length === 0) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          void video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
-    }, { threshold: 0.3 });
-    io.observe(video);
-  })();
-</script>
 
-<script>
-  // Run the CSS loop animations (documents / sync / companies) only while the
-  // section is on screen, so they don't burn frames when scrolled away.
-  (function () {
-    const section = document.getElementById('funktioner');
-    if (!section) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        section.classList.toggle('is-onscreen', entry.isIntersecting);
-      });
-    }, { rootMargin: '0px 0px -10% 0px' });
-    io.observe(section);
-  })();
-</script>
-
-<script>
-  // Multi-company card — glide the active selection through the list while in
-  // view, mimicking switching companies. Reduced motion keeps the first active.
-  (function () {
-    const list = document.querySelector('[data-co-list]') as HTMLElement | null;
-    if (!list) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const rows = Array.from(list.querySelectorAll('.co-row'));
-    if (rows.length < 2) return;
-    let index = 0;
-    let timer: ReturnType<typeof setInterval> | null = null;
-    function step(): void {
-      index = (index + 1) % rows.length;
-      rows.forEach((row, i) => row.classList.toggle('is-active', i === index));
-    }
-    const io = new IntersectionObserver((entries) => {
-      const visible = entries.some((entry) => entry.isIntersecting);
-      if (visible && timer === null) {
-        timer = setInterval(step, 1800);
-      } else if (!visible && timer !== null) {
-        clearInterval(timer);
-        timer = null;
-      }
-    }, { threshold: 0.3 });
-    io.observe(list);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            void video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
+    videos.forEach((video) => io.observe(video));
   })();
 </script>
 
