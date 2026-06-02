@@ -1,18 +1,15 @@
-import { createCoach } from './coach';
-
 export function initController(): void {
     // Product demo — tabs reveal as the frame scrolls in, hide on scroll back up,
     // autorotate + click. Active state is a single "bubble" that flows tab-to-tab.
+    // Each panel's own intro (chat/dashboard/files) plays via the shared pointer.
     var wrap = document.querySelector('.hero-chrome-wrap') as HTMLElement | null;
     if (!wrap) return;
-    if (window.matchMedia('(max-width: 1199px)').matches) return; // static dashboard — no tabs/rotation/coach
+    if (window.matchMedia('(max-width: 1199px)').matches) return; // static dashboard — no tabs/rotation
     var wrapEl = wrap;
     var tabBar   = wrapEl.querySelector('.demo-tabs');
     var tabs     = wrapEl.querySelectorAll('.demo-tab') as NodeListOf<HTMLElement>;
     var panels   = wrapEl.querySelectorAll('.demo-panel') as NodeListOf<HTMLElement>;
     var sideItems= wrapEl.querySelectorAll('.sidebar-item[data-panel]') as NodeListOf<HTMLElement>;
-    var chromeEl = wrapEl.querySelector('.browser-chrome') as HTMLElement | null;
-    var coach = createCoach(wrapEl, chromeEl);
     var ind      = wrapEl.querySelector('.demo-tab-ind') as (HTMLElement & { _settle?: ReturnType<typeof setTimeout> }) | null;
     if (!tabBar || !tabs.length || !panels.length) return;
     var tabBarEl = tabBar;
@@ -56,15 +53,14 @@ export function initController(): void {
       tabs.forEach(function(t, j) { t.classList.toggle('is-active', j === i); });
       panels.forEach(function(p) { p.classList.toggle('is-active', p.dataset.panel === key); });
       sideItems.forEach(function(s) { s.classList.toggle('active', s.dataset.panel === key); });
-      coach.play(key, function() { return visible; });
       moveIndicator(animate !== false);
     }
     function tick() {
       if (!auto || !visible) return;
       if (timer) clearTimeout(timer);
       timer = setTimeout(function() {
-        // Hold on the current tab while the chat demo is still playing out or the
-        // coach callouts are still narrating, so nothing is cut off mid-stream.
+        // Hold on the current tab while its guided-tour pointer is still playing
+        // out, so nothing is cut off mid-stream.
         if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy) { tick(); return; }
         activate((idx + 1) % tabs.length);
         tick();
@@ -87,12 +83,10 @@ export function initController(): void {
       wrapEl.classList.toggle('tabs-visible', v);
       if (v) {
         moveIndicator(false);
-        coach.play(tabs[idx].dataset.panel, function() { return visible; });
         tick();
       } else {
         if (timer) clearTimeout(timer);
         timer = null;
-        coach.clear();
       }
     }
     function onScroll() {

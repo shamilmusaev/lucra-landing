@@ -1,3 +1,5 @@
+import { createDemoCursor } from './cursor';
+
 export function initChat(): void {
     // Chat scene — a self-playing multi-turn conversation. When the Chat panel
     // is active: type the first question in the welcome input → open the thread →
@@ -24,6 +26,16 @@ export function initChat(): void {
     var orbSeq = 0;
     // The sidebar "live" history row that demonstrates AI title generation.
     var histLive = document.querySelector('[data-hist-live]') as HTMLElement | null;
+    // Guided-tour pieces — the shared pointer picks a company in the sidebar
+    // before the first question types. All live outside the chat scene.
+    var cur      = createDemoCursor();
+    var coWrap   = document.querySelector('.sb-company-wrap') as HTMLElement | null;
+    var coTrigger= document.querySelector('[data-co-trigger]') as HTMLElement | null;
+    var coPick   = document.querySelector('[data-co-pick]') as HTMLElement | null;
+    var coDrop   = document.querySelector('[data-co-dropdown]') as HTMLElement | null;
+    var chatInput= sceneEl.querySelector('.chat-input') as HTMLElement | null;
+    var tip1     = document.querySelector('[data-tour-tip="chat-1"]') as HTMLElement | null;
+    var tip2     = document.querySelector('[data-tour-tip="chat-2"]') as HTMLElement | null;
 
     var EXCHANGES: { q: string; a: string }[] = [];
     for (var k = 1; k <= 3; k++) {
@@ -108,6 +120,42 @@ export function initChat(): void {
       barTypedEl.textContent = '';
       threadEl.innerHTML = '';
       if (histLive) { histLive.textContent = ''; histLive.classList.remove('is-new', 'is-generating'); }
+      cur.reset();
+      if (coWrap) coWrap.classList.remove('is-open');
+    }
+    // Pointer-driven intro: glide to the company switcher, explain it, open it,
+    // pick Alma AB, then move to the input and hand off to typing. Returns false
+    // if the scene was reset mid-way.
+    async function runTour(myGen: number) {
+      if (reduce || !cur.ok || !coWrap || !coTrigger || !coPick) return true;
+      cur.moveTo(chatInput, false);
+      await wait(120); if (myGen !== gen) return false;
+      cur.show();
+      await wait(440); if (myGen !== gen) return false;
+      cur.moveTo(coTrigger, true);
+      await wait(820); if (myGen !== gen) return false;
+      cur.showTip(tip1, coTrigger, 'below', 4, 10);
+      await wait(1700); if (myGen !== gen) return false;
+      cur.press();
+      await wait(180); if (myGen !== gen) return false;
+      cur.hideTips();
+      coWrap.classList.add('is-open');
+      await wait(560); if (myGen !== gen) return false;
+      cur.showTip(tip2, coDrop, 'right', 12, 14);
+      cur.moveTo(coPick, true);
+      await wait(1300); if (myGen !== gen) return false;
+      cur.press();
+      await wait(220); if (myGen !== gen) return false;
+      cur.hideTips();
+      coWrap.classList.remove('is-open');
+      await wait(480); if (myGen !== gen) return false;
+      cur.moveTo(chatInput, true);
+      await wait(720); if (myGen !== gen) return false;
+      cur.press();
+      await wait(320); if (myGen !== gen) return false;
+      cur.hide();
+      await wait(280); if (myGen !== gen) return false;
+      return true;
     }
     function showFinal() {
       sceneEl.classList.add('is-sent');
@@ -135,6 +183,7 @@ export function initChat(): void {
       if (reduce) { showFinal(); return; }
       (window as any).lucraChatBusy = true;
       await wait(700); if (myGen !== gen) return;
+      if (!(await runTour(myGen))) return;
       for (var i = 0; i < EXCHANGES.length; i++) {
         var ex = EXCHANGES[i];
         if (i === 0) {
@@ -143,9 +192,7 @@ export function initChat(): void {
           await wait(460); if (myGen !== gen) return;
           sceneEl.classList.remove('is-typing');
           sceneEl.classList.add('is-sent');
-          // The conversation opened — clear the chat coach so it never points at
-          // the now-hidden welcome input, and seed the new history row.
-          if ((window as any).lucraClearCoaches) (window as any).lucraClearCoaches();
+          // The conversation opened — seed the new history row.
           if (histLive) { histLive.textContent = histLive.dataset.default || ''; histLive.classList.add('is-new'); }
         } else {
           sceneEl.classList.add('is-typing2');

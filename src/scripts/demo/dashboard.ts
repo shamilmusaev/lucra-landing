@@ -1,24 +1,43 @@
+import { createDemoCursor } from './cursor';
+
 export function initDashboard(): void {
-  // Dashboard — count the metric values up from zero and reset the scroll to the
-  // top each time the panel becomes active (sparkline / chart draw is CSS-driven).
+  // Dashboard — count the metric values up from zero, then run a pointer-driven
+  // walkthrough: AI Insights opens collapsed, the pointer expands and explains
+  // it, then scrolls down narrating the metrics and the income/cost chart.
   var panel = document.querySelector('.demo-panel[data-panel="dashboard"]') as HTMLElement | null;
   if (!panel) return;
   var panelEl = panel;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var numbers = panelEl.querySelectorAll('.metric .num[data-count]') as NodeListOf<HTMLElement>;
   // Compact (<1200px): the dashboard is shown statically, so render the final
-  // figures up front and skip the activation-driven count-up entirely.
+  // figures up front and skip the activation-driven count-up + tour entirely.
   if (window.matchMedia('(max-width: 1199px)').matches) {
     numbers.forEach(function(element) { element.textContent = element.dataset.count || element.textContent; });
     return;
   }
+
+  var cur = createDemoCursor();
+  var aiInsights = panelEl.querySelector('.ai-insights') as HTMLElement | null;
+  var aiHead     = panelEl.querySelector('.ai-head') as HTMLElement | null;
+  var aiTitles   = panelEl.querySelector('.ai-titles') as HTMLElement | null;
+  var firstMetric= panelEl.querySelector('.metric') as HTMLElement | null;
+  var chartHead  = panelEl.querySelector('.chart-card-head') as HTMLElement | null;
+  var tip1 = document.querySelector('[data-tour-tip="dash-1"]') as HTMLElement | null;
+  var tip2 = document.querySelector('[data-tour-tip="dash-2"]') as HTMLElement | null;
+  var tip3 = document.querySelector('[data-tour-tip="dash-3"]') as HTMLElement | null;
+
+  var gen = 0;
+  var timers: ReturnType<typeof setTimeout>[] = [];
+  function clearTimers() { timers.forEach(function(t) { clearTimeout(t); }); timers = []; }
+  function wait(ms: number) { return new Promise<void>(function(res) { timers.push(setTimeout(res, ms)); }); }
+
   function countUp() {
     numbers.forEach(function(element, index) {
       var target = parseInt(element.dataset.count || '0', 10);
       if (reduce) { element.textContent = String(target); return; }
       // Stagger each card's count-up by index so the dashboard powers on
       // left-to-right / top-to-bottom rather than flashing all at once.
-      setTimeout(function() {
+      timers.push(setTimeout(function() {
         var startTime = performance.now();
         var duration = 950;
         function step(now: number) {
@@ -28,17 +47,65 @@ export function initDashboard(): void {
           if (progress < 1) requestAnimationFrame(step);
         }
         requestAnimationFrame(step);
-      }, index * 70);
+      }, index * 70));
     });
   }
-  function onActivate() { panelEl.scrollTop = 0; countUp(); }
+
+  async function play() {
+    var myGen = ++gen;
+    panelEl.scrollTop = 0;
+    if (reduce || !cur.ok || !aiInsights || !aiHead) { countUp(); return; }
+    aiInsights.classList.add('is-collapsed');
+    countUp();
+    (window as any).lucraCoachBusy = true; // hold auto-rotation during the tour
+    await wait(820); if (myGen !== gen) return;
+    cur.moveTo(aiHead, false);
+    cur.show();
+    await wait(420); if (myGen !== gen) return;
+    // Anchor to the right of the title so the tip never overlaps the list that
+    // unfolds below the header once Insights expands.
+    cur.showTip(tip1, aiTitles || aiHead, 'right', 16, -2);
+    await wait(1600); if (myGen !== gen) return;
+    cur.press();
+    await wait(220); if (myGen !== gen) return;
+    // Hide the tip as the list unfolds, so it never overlaps the rows below.
+    cur.hideTips();
+    aiInsights.classList.remove('is-collapsed');
+    await wait(1400); if (myGen !== gen) return;
+    cur.scrollPanelTo(panelEl, firstMetric, 80);
+    await wait(700); if (myGen !== gen) return;
+    cur.moveTo(firstMetric, true);
+    await wait(360); if (myGen !== gen) return;
+    cur.showTip(tip2, firstMetric, 'below', 6, 10);
+    await wait(2100); if (myGen !== gen) return;
+    cur.hideTips();
+    cur.scrollPanelTo(panelEl, chartHead, 80);
+    await wait(700); if (myGen !== gen) return;
+    cur.moveTo(chartHead, true);
+    await wait(360); if (myGen !== gen) return;
+    cur.showTip(tip3, chartHead, 'below', 6, 10);
+    await wait(2300); if (myGen !== gen) return;
+    cur.hideTips();
+    cur.hide();
+    (window as any).lucraCoachBusy = false;
+  }
+
+  function stop() {
+    gen++;
+    clearTimers();
+    cur.reset();
+    if (aiInsights) aiInsights.classList.remove('is-collapsed');
+    (window as any).lucraCoachBusy = false;
+    panelEl.scrollTop = 0;
+  }
+
   var wasActive = panelEl.classList.contains('is-active');
   var observer = new MutationObserver(function() {
     var active = panelEl.classList.contains('is-active');
     if (active === wasActive) return;
     wasActive = active;
-    if (active) onActivate();
+    if (active) play(); else stop();
   });
   observer.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
-  if (wasActive) onActivate();
+  if (wasActive) play();
 }

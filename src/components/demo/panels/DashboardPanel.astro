@@ -222,8 +222,9 @@ const s = getStrings(lang);
   padding: 22px;
   margin-bottom: 16px;
 }
-.ai-head { display: flex; align-items: center; gap: 12px; }
-.ai-chev { width: 18px; height: 18px; color: var(--slate-400); flex-shrink: 0; }
+.ai-head { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.ai-chev { width: 18px; height: 18px; color: var(--slate-400); flex-shrink: 0; transition: transform .3s ease; }
+.ai-insights.is-collapsed .ai-chev { transform: rotate(-90deg); }
 .ai-orb {
   position: relative;
   width: 32px; height: 32px;
@@ -245,7 +246,14 @@ const s = getStrings(lang);
 .ai-titles { display: flex; flex-direction: column; }
 .ai-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--brand-primary); }
 .ai-sub { font-size: 12px; font-weight: 500; color: var(--slate-500); }
-.ai-list { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+.ai-list {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-top: 20px;
+  max-height: 420px;
+  overflow: hidden;
+  transition: max-height .5s var(--ease-out-expo), opacity .35s ease, margin-top .5s var(--ease-out-expo);
+}
+.ai-insights.is-collapsed .ai-list { max-height: 0; margin-top: 0; opacity: 0; }
 .ai-item {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 14px 16px;
@@ -413,6 +421,7 @@ const s = getStrings(lang);
     transform: none;
     overflow: visible;
   }
+  .demo-panel[data-panel="dashboard"] .ai-list { max-height: none; transition: none; }
   .demo-panel[data-panel="dashboard"] .spark { clip-path: none; }
   .demo-panel[data-panel="dashboard"] .ch-area { opacity: 1; }
   .demo-panel[data-panel="dashboard"] .ch-line { stroke-dashoffset: 0; }

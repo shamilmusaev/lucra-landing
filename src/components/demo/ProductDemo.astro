@@ -4,14 +4,13 @@ import Icon from '../Icon.astro';
 import DashboardPanel from './panels/DashboardPanel.astro';
 import ChatPanel from './panels/ChatPanel.astro';
 import FilesPanel from './panels/FilesPanel.astro';
-import CompaniesPanel from './panels/CompaniesPanel.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
 
 <p class="sr-only">{s.heroDemoSrSummary}</p>
 <!-- Product chrome preview -->
-<div class="container hero-chrome-wrap reveal delay-3" aria-hidden="true" inert>
+<div class="container hero-chrome-wrap reveal delay-3">
   <div class="demo-tabs" role="tablist" aria-label={s.heroDemoTablistLabel}>
     <span class="demo-tab-ind" aria-hidden="true"></span>
     <button class="demo-tab is-active" data-panel="chat" role="tab" type="button">
@@ -26,10 +25,6 @@ const s = getStrings(lang);
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V7.5L14.5 2Z"/><path d="M14 2V8H20"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
       {s.heroTabDocs}
     </button>
-    <button class="demo-tab" data-panel="companies" role="tab" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/></svg>
-      {s.heroTabCompanies}
-    </button>
   </div>
   <a class="demo-cta" href="/signup">
     {s.heroDemoCtaPill}
@@ -42,8 +37,10 @@ const s = getStrings(lang);
     <span class="drift-card d4"></span>
     <span class="drift-card d5"></span>
   </div>
-  <div class="browser-chrome">
-    <div class="browser-bar" aria-hidden="true">
+  <!-- The simulated app screen is decorative; the sr-only summary above covers it.
+       Tabs and the CTA live outside this node, so they stay real, focusable controls. -->
+  <div class="browser-chrome" aria-hidden="true">
+    <div class="browser-bar">
       <span class="dot red"></span>
       <span class="dot yellow"></span>
       <span class="dot green"></span>
@@ -51,21 +48,6 @@ const s = getStrings(lang);
 
     <!-- Per-tab explainer callouts: arrowed, anchored to real elements, revealed
          one after another for the active panel (positioned + sequenced in JS). -->
-    <div class="coach-layer" data-coach-group="chat" aria-hidden="true">
-      <div class="coach" data-target=".chat-input" data-side="bottom"><p>{s.heroCoachChat1}</p></div>
-    </div>
-    <div class="coach-layer" data-coach-group="dashboard" aria-hidden="true">
-      <div class="coach" data-target=".ai-insights .ai-title" data-side="bottom"><p>{s.heroCoachDashboard1}</p></div>
-      <div class="coach" data-target=".metric-grid .metric" data-side="top"><p>{s.heroCoachDashboard2}</p></div>
-    </div>
-    <div class="coach-layer" data-coach-group="docs" aria-hidden="true">
-      <div class="coach" data-target=".files-tabs" data-side="bottom"><p>{s.heroCoachDocs1}</p></div>
-      <div class="coach" data-target=".files-list:not([hidden]) .files-row .fname" data-side="top"><p>{s.heroCoachDocs2}</p></div>
-    </div>
-    <div class="coach-layer" data-coach-group="companies" aria-hidden="true">
-      <div class="coach" data-target=".co-row:not(.co-thead) .co-name" data-side="bottom"><p>{s.heroCoachCompanies1}</p></div>
-    </div>
-
     <div class="product-shell">
     <div class="product-shell-inner">
       <aside class="product-sidebar">
@@ -74,10 +56,49 @@ const s = getStrings(lang);
           <span class="brand-word">Lucra</span>
         </div>
 
-        <div class="sb-company">
-          <span class="av">AA</span>
-          <span class="nm">Alma AB</span>
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        <!-- Company switcher — the demo cursor opens this and picks a company
+             before any chat. Mirrors the real app's client-company selector. -->
+        <div class="sb-company-wrap">
+          <button class="sb-company" type="button" tabindex="-1" data-co-trigger>
+            <span class="av">AA</span>
+            <span class="sb-co-text">
+              <span class="sb-co-top">
+                <span class="nm" data-co-current>Alma AB</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+              <span class="sb-co-firm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                Nordö Redovisning
+              </span>
+            </span>
+          </button>
+          <div class="sb-co-dropdown" data-co-dropdown>
+            <div class="sb-co-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              {s.heroChatCoSearch}
+            </div>
+            <div class="sb-co-head">{s.heroChatCoHeader}</div>
+            <button class="sb-co-item is-picked" type="button" tabindex="-1" data-co-pick>
+              <span class="sb-co-mark">AA</span>
+              <span class="sb-co-meta"><span class="sb-co-name">Alma AB</span><span class="sb-co-sub">559123-4567 · {s.heroChatCoOwner}</span></span>
+              <span class="sb-co-pill linked">{s.heroChatCoLinked}</span>
+            </button>
+            <button class="sb-co-item" type="button" tabindex="-1">
+              <span class="sb-co-mark">NS</span>
+              <span class="sb-co-meta"><span class="sb-co-name">Nordstream AB</span><span class="sb-co-sub">556789-1234 · {s.heroChatCoOwner}</span></span>
+              <span class="sb-co-pill linked">{s.heroChatCoLinked}</span>
+            </button>
+            <button class="sb-co-item" type="button" tabindex="-1">
+              <span class="sb-co-mark">PB</span>
+              <span class="sb-co-meta"><span class="sb-co-name">Pixelbit Studio</span><span class="sb-co-sub">559456-7890 · {s.heroChatCoOwner}</span></span>
+              <span class="sb-co-pill">{s.heroChatCoUnlinked}</span>
+            </button>
+            <div class="sb-co-divider"></div>
+            <button class="sb-co-manage" type="button" tabindex="-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              {s.heroChatCoManage}
+            </button>
+          </div>
         </div>
 
         <div class="sb-search">
@@ -128,9 +149,19 @@ const s = getStrings(lang);
 
         <FilesPanel lang={lang} />
 
-        <CompaniesPanel lang={lang} />
-
       </main>
+
+      <!-- Guided-tour layer — a soft pointer dot the chat intro drives to the
+           company switcher and then the chat input, with two explainer tips.
+           Positioned in shell-local coordinates by JS; decorative. -->
+      <div class="tour-tip" data-tour-tip="chat-1" aria-hidden="true"><p>{s.heroChatTourTip1}</p></div>
+      <div class="tour-tip" data-tour-tip="chat-2" aria-hidden="true"><p>{s.heroChatTourTip2}</p></div>
+      <div class="tour-tip" data-tour-tip="dash-1" aria-hidden="true"><p>{s.heroDashTip1}</p></div>
+      <div class="tour-tip" data-tour-tip="dash-2" aria-hidden="true"><p>{s.heroDashTip2}</p></div>
+      <div class="tour-tip" data-tour-tip="dash-3" aria-hidden="true"><p>{s.heroDashTip3}</p></div>
+      <div class="tour-tip" data-tour-tip="files-1" aria-hidden="true"><p>{s.heroFilesTip1}</p></div>
+      <div class="tour-tip" data-tour-tip="files-2" aria-hidden="true"><p>{s.heroFilesTip2}</p></div>
+      <span class="demo-cursor" data-demo-cursor aria-hidden="true"><span class="demo-cursor-dot"></span></span>
     </div>
     </div>
   </div>
@@ -159,6 +190,7 @@ const s = getStrings(lang);
   border: 1px solid rgba(226,232,240,.8);
 }
 .product-shell-inner {
+  position: relative;
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: 16px;
@@ -190,13 +222,23 @@ const s = getStrings(lang);
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
-/* Company selector — circular gradient avatar + name + chevron */
+/* Company switcher — gradient avatar + name/chevron + firm sub-row, with a
+   dropdown the guided tour opens. Mirrors the real app's client selector. */
+.sb-company-wrap { position: relative; margin-bottom: 10px; }
 .sb-company {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
   padding: 8px 10px;
+  border: 1px solid transparent;
   border-radius: var(--radius-lg);
   background: var(--bg-app);
-  margin-bottom: 10px;
+  text-align: left;
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.sb-company-wrap.is-open .sb-company {
+  background: var(--bg-active);
+  border-color: rgba(61,80,109,.32);
+  box-shadow: 0 6px 18px -8px rgba(15,23,42,.18);
 }
 .sb-company .av {
   width: 36px; height: 36px; flex-shrink: 0;
@@ -206,8 +248,141 @@ const s = getStrings(lang);
   font-family: var(--font-display); font-weight: 700; font-size: 12px;
   color: #fff;
 }
-.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--brand-primary); line-height: 1.2; }
-.sb-company .chev { width: 16px; height: 16px; color: var(--slate-400); flex-shrink: 0; }
+.sb-co-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.sb-co-top { display: flex; align-items: center; gap: 6px; }
+.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--slate-900); letter-spacing: -.012em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-company .chev { width: 14px; height: 14px; color: var(--slate-400); flex-shrink: 0; transition: transform .2s ease, color .15s ease; }
+.sb-company-wrap.is-open .sb-company .chev { color: var(--brand-primary); transform: rotate(-90deg); }
+.sb-co-firm {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 600; color: var(--slate-500);
+  min-width: 0;
+}
+.sb-co-firm svg { width: 11px; height: 11px; color: var(--slate-400); flex-shrink: 0; }
+/* Dropdown */
+.sb-co-dropdown {
+  position: absolute; top: calc(100% + 6px); left: 0;
+  width: 250px;
+  padding: 10px 8px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-pop);
+  display: flex; flex-direction: column; gap: 4px;
+  z-index: 20;
+  opacity: 0; visibility: hidden;
+  transform: translateY(-4px) scale(.98);
+  transform-origin: top left;
+  transition: opacity .18s ease, transform .28s var(--ease-out-expo), visibility 0s linear .28s;
+}
+.sb-company-wrap.is-open .sb-co-dropdown {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity .18s ease, transform .28s var(--ease-out-expo);
+}
+.sb-co-search {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; margin-bottom: 4px;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 13px; color: var(--slate-400);
+}
+.sb-co-search svg { width: 15px; height: 15px; flex-shrink: 0; }
+.sb-co-head {
+  padding: 4px 10px 6px;
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--slate-400);
+}
+.sb-co-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 8px 10px;
+  border: 0; border-radius: var(--radius-sm);
+  background: transparent; text-align: left;
+  font-size: 13px; color: var(--slate-600);
+  transition: background .15s ease;
+}
+.sb-co-item.is-picked { background: var(--bg-active); }
+.sb-co-mark {
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg-paper);
+  border: 1.5px solid var(--border);
+  color: var(--brand-primary);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-size: 9px; font-weight: 700;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.sb-co-item.is-picked .sb-co-mark { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+.sb-co-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.sb-co-name { font-family: var(--font-display); font-size: 13px; font-weight: 500; color: var(--slate-600); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-co-item.is-picked .sb-co-name { color: var(--brand-primary); font-weight: 600; }
+.sb-co-sub { font-size: 11px; color: var(--slate-400); line-height: 1.3; }
+.sb-co-pill {
+  flex-shrink: 0;
+  font-size: 10px; font-weight: 600;
+  color: var(--slate-500); background: var(--bg-app);
+  padding: 2px 7px; border-radius: 999px;
+}
+.sb-co-pill.linked { background: var(--bg-active); color: var(--brand-primary); }
+.sb-co-divider { height: 1px; background: var(--border); margin: 6px 4px; }
+.sb-co-manage {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 8px 10px;
+  border: 0; border-radius: var(--radius-sm);
+  background: transparent; text-align: left;
+  font-size: 13px; font-weight: 500; color: var(--slate-500);
+}
+.sb-co-manage svg { width: 14px; height: 14px; flex-shrink: 0; }
+/* Guided-tour pointer — a soft dot the chat intro glides between targets. */
+.demo-cursor {
+  position: absolute; left: 0; top: 0;
+  z-index: 30; pointer-events: none;
+  opacity: 0;
+  transition: transform .7s cubic-bezier(.5,.05,.2,1), opacity .3s ease;
+}
+.demo-cursor.is-on { opacity: 1; }
+.demo-cursor-dot {
+  position: absolute; left: -9px; top: -9px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(61,80,109,.92);
+  border: 2px solid rgba(255,255,255,.95);
+  box-shadow: 0 3px 10px -1px rgba(15,23,42,.35);
+  transition: transform .16s ease;
+}
+.demo-cursor.is-pressing .demo-cursor-dot { transform: scale(.66); }
+.demo-cursor.is-pressing::after {
+  content: ""; position: absolute; left: -9px; top: -9px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(61,80,109,.5);
+  animation: cursorRipple .5s ease-out forwards;
+}
+@keyframes cursorRipple {
+  from { opacity: .7; transform: scale(.5); }
+  to   { opacity: 0; transform: scale(2.6); }
+}
+/* Explainer tips that ride alongside the pointer (positioned by JS). */
+.tour-tip {
+  position: absolute; left: 0; top: 0;
+  z-index: 29; pointer-events: none;
+  width: max-content; max-width: 230px;
+  padding: 10px 13px;
+  background: linear-gradient(150deg, var(--brand-primary-light), var(--brand-primary));
+  border-radius: 12px;
+  box-shadow: 0 10px 26px -10px rgba(61,80,109,.55), 0 2px 6px -2px rgba(61,80,109,.3);
+  font-size: 12px; font-weight: 500; line-height: 1.4;
+  opacity: 0;
+  transform: translateY(6px) scale(.96);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.tour-tip p { margin: 0; color: rgba(255,255,255,.9); }
+.tour-tip.is-shown { opacity: 1; transform: none; transition: opacity .4s ease, transform .5s var(--ease-out-expo); }
+@media (prefers-reduced-motion: reduce) {
+  .demo-cursor, .tour-tip { transition: none; }
+}
 /* Search */
 .sb-search {
   display: flex; align-items: center; gap: 8px;
@@ -552,48 +727,6 @@ const s = getStrings(lang);
 :global(.demo-panel[data-panel="dashboard"])::-webkit-scrollbar-thumb,
 :global(.demo-panel[data-panel="docs"])::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 999px; }
 
-/* Per-tab explainer callouts — arrowed coach marks that point at real elements
-   and reveal one after another for the active panel. The layer fills the (scaled)
-   window so JS can position each pill in chrome-local coordinates. */
-.coach-layer { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
-.coach {
-  position: absolute;
-  left: 0; top: 0;
-  width: max-content; max-width: 232px;
-  padding: 10px 14px;
-  background: linear-gradient(150deg, var(--brand-primary-light), var(--brand-primary));
-  border: 1px solid var(--brand-primary-light);
-  border-radius: 12px;
-  box-shadow: 0 10px 26px -10px rgba(61,80,109,.55), 0 2px 6px -2px rgba(61,80,109,.3);
-  font-size: 12px; font-weight: 500; line-height: 1.4;
-  color: var(--fg-on-brand);
-  opacity: 0;
-  transform: translate(-50%, 6px) scale(.96);
-  transform-origin: center top;
-  transition: opacity .3s ease, transform .3s ease;
-}
-.coach p { margin: 0; color: rgba(255,255,255,.86); }
-.coach p strong { color: var(--white); font-weight: 600; }
-/* Pointer toward the target: a rotated square that borrows the pill's border seam. */
-.coach::after {
-  content: "";
-  position: absolute; left: 50%;
-  width: 10px; height: 10px;
-  background: var(--brand-primary);
-  transform: translateX(-50%) rotate(45deg);
-}
-.coach[data-side="bottom"]::after { top: -5px; background: var(--brand-primary-light); border-left: 1px solid var(--brand-primary-light); border-top: 1px solid var(--brand-primary-light); }
-.coach[data-side="top"]::after { bottom: -5px; border-right: 1px solid var(--brand-primary-light); border-bottom: 1px solid var(--brand-primary-light); }
-.coach.is-shown {
-  opacity: 1;
-  transform: translate(-50%, 0) scale(1);
-  transition: opacity .4s ease, transform .5s var(--ease-out-expo);
-}
-@media (prefers-reduced-motion: reduce) {
-  .coach { transition: opacity .2s ease; transform: translate(-50%, 0); }
-  .coach.is-shown { opacity: 1; transform: translate(-50%, 0); transition: opacity .2s ease; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .demo-tabs, .demo-tab-ind { transition: none; }
   :global(.demo-panel) { transition: none; }
@@ -630,12 +763,12 @@ const s = getStrings(lang);
   .product-shell-inner { grid-template-columns: 1fr; }
   .product-sidebar { display: none; }
 }
-/* Below 1200px the interactive multi-tab demo (tabs, sidebar, chat/docs/companies,
-   coach tour, drift cards, scroll-zoom) is dropped in favour of a single static
-   Dashboard — fully rendered at rest, no choreography. The rotation/chat/coach
+/* Below 1200px the interactive multi-tab demo (tabs, sidebar, chat/docs,
+   guided-tour pointer, drift cards, scroll-zoom) is dropped in favour of a single
+   static Dashboard — fully rendered at rest, no choreography. The per-panel
    controllers bail out at this width; this block forces the resting state. */
 @media (max-width: 1199px) {
-  .demo-tabs, .demo-cta, .demo-drift, .coach-layer, .product-sidebar { display: none; }
+  .demo-tabs, .demo-cta, .demo-drift, .product-sidebar { display: none; }
   .product-shell-inner { grid-template-columns: 1fr; }
   .product-main { min-height: 0; }
   :global(.demo-panel) { display: none; }
