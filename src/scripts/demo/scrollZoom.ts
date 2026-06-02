@@ -47,14 +47,20 @@ export function initScrollZoom(): void {
       if (navInner) navInner.style.pointerEvents = focus > 0.5 ? 'none' : 'auto';
     }
   }
+  var active = false;
   function onScroll() {
+    if (!active) return;            // no rAF work while the demo is far offscreen
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }
+  var io = new IntersectionObserver(function (entries) {
+    active = entries.some(function (e) { return e.isIntersecting; });
+    chromeEl.style.willChange = active ? 'transform' : '';
+    if (inner) inner.style.willChange = active ? 'filter, opacity' : '';
+    if (active) onScroll();
+  }, { rootMargin: '300px 0px' });
 
   chromeEl.style.transformOrigin = 'center center';
-  chromeEl.style.willChange = 'transform';
-  if (inner) inner.style.willChange = 'filter, opacity';
+  io.observe(chromeEl);
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
-  update();
 }
