@@ -21,6 +21,7 @@ export function initController(): void {
     var timer: ReturnType<typeof setTimeout> | null = null;
     var visible = false;
     var auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduceMotion = !auto;
 
     function moveIndicator(animate: boolean) {
       if (!ind) return;
@@ -102,6 +103,12 @@ export function initController(): void {
       setVisible(window.scrollY > 60 && rect.top < vh * 0.92 && rect.bottom > vh * 0.06);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
+    // Reduced-motion users get no rotation/autoplay, so default to the most
+    // informative panel (Dashboard, fully static) instead of the chat welcome.
+    if (reduceMotion) {
+      var dashIdx = Array.prototype.findIndex.call(tabs, function (t: HTMLElement) { return t.dataset.panel === 'dashboard'; });
+      if (dashIdx >= 0) { idx = dashIdx; activate(idx, false); }
+    }
     // Seed the bubble under the default tab up front (tabs are laid out even while hidden).
     moveIndicator(false);
     onScroll();
