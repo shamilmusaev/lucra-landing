@@ -1556,7 +1556,7 @@ const s = getStrings(lang);
 
 /* Panel stack with cross-fade */
 .product-main { position: relative; min-height: 620px; padding: 0; }
-.demo-panel {
+:global(.demo-panel) {
   position: absolute;
   inset: 22px 24px;
   opacity: 0;
@@ -1567,7 +1567,7 @@ const s = getStrings(lang);
     transform .45s var(--ease-out-expo),
     visibility 0s linear .45s;
 }
-.demo-panel.is-active {
+:global(.demo-panel.is-active) {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -1576,23 +1576,23 @@ const s = getStrings(lang);
 /* Active panel children rise in a short stagger after the surface fades, so a
    tab switch feels composed. Targets only direct block children — the chat
    panel's absolute scenes live one level deeper and stay untouched. */
-.demo-panel.is-active > * { animation: panelChildIn .5s var(--ease-out-expo) both; }
-.demo-panel.is-active > *:nth-child(2) { animation-delay: .05s; }
-.demo-panel.is-active > *:nth-child(3) { animation-delay: .09s; }
-.demo-panel.is-active > *:nth-child(n+4) { animation-delay: .14s; }
+:global(.demo-panel.is-active) > * { animation: panelChildIn .5s var(--ease-out-expo) both; }
+:global(.demo-panel.is-active) > *:nth-child(2) { animation-delay: .05s; }
+:global(.demo-panel.is-active) > *:nth-child(3) { animation-delay: .09s; }
+:global(.demo-panel.is-active) > *:nth-child(n+4) { animation-delay: .14s; }
 /* Dashboard & Files are tall, scrolling views (like the real app) — let the panel
    scroll internally with a slim, unobtrusive scrollbar. */
-.demo-panel[data-panel="dashboard"],
-.demo-panel[data-panel="docs"] {
+:global(.demo-panel[data-panel="dashboard"]),
+:global(.demo-panel[data-panel="docs"]) {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: var(--slate-300) transparent;
 }
-.demo-panel[data-panel="dashboard"]::-webkit-scrollbar,
-.demo-panel[data-panel="docs"]::-webkit-scrollbar { width: 6px; }
-.demo-panel[data-panel="dashboard"]::-webkit-scrollbar-thumb,
-.demo-panel[data-panel="docs"]::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 999px; }
+:global(.demo-panel[data-panel="dashboard"])::-webkit-scrollbar,
+:global(.demo-panel[data-panel="docs"])::-webkit-scrollbar { width: 6px; }
+:global(.demo-panel[data-panel="dashboard"])::-webkit-scrollbar-thumb,
+:global(.demo-panel[data-panel="docs"])::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 999px; }
 
 /* Per-tab explainer callouts — arrowed coach marks that point at real elements
    and reveal one after another for the active panel. The layer fills the (scaled)
@@ -2069,9 +2069,10 @@ const s = getStrings(lang);
 .co-arrow svg { width: 16px; height: 16px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .demo-tabs, .demo-panel, .demo-tab-ind { transition: none; }
+  .demo-tabs, .demo-tab-ind { transition: none; }
+  :global(.demo-panel) { transition: none; }
   .metric .spark, .demo-panel[data-panel="dashboard"].is-active .spark { clip-path: none; transition: none; }
-  .demo-panel.is-active > * { animation: none; }
+  :global(.demo-panel.is-active) > * { animation: none; }
 }
 
 /* ============================================================
@@ -2150,7 +2151,7 @@ const s = getStrings(lang);
   .demo-tabs, .demo-cta, .demo-drift, .coach-layer, .product-sidebar { display: none; }
   .product-shell-inner { grid-template-columns: 1fr; }
   .product-main { min-height: 0; }
-  .demo-panel { display: none; }
+  :global(.demo-panel) { display: none; }
   .demo-panel[data-panel="dashboard"] {
     display: block;
     position: static;
