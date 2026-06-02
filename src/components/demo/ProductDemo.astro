@@ -9,8 +9,9 @@ const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
 
+<p class="sr-only">{s.heroDemoSrSummary}</p>
 <!-- Product chrome preview -->
-<div class="container hero-chrome-wrap reveal delay-3">
+<div class="container hero-chrome-wrap reveal delay-3" aria-hidden="true" inert>
   <div class="demo-tabs" role="tablist" aria-label={s.heroDemoTablistLabel}>
     <span class="demo-tab-ind" aria-hidden="true"></span>
     <button class="demo-tab is-active" data-panel="chat" role="tab" type="button">

@@ -117,6 +117,7 @@ export const sv = {
   heroDemoFilesColName: 'Filnamn',
   heroDemoFilesColSize: 'Storlek',
   heroDemoFilesColActions: 'Åtgärder',
+  heroDemoSrSummary: 'Interaktiv demonstration av Lucra: chatt, dashboard, filer och klienter.',
 
   // Product demo window – companies panel
   heroCoTitle: 'Företag',

@@ -119,6 +119,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoFilesColName: 'File Name',
   heroDemoFilesColSize: 'Size',
   heroDemoFilesColActions: 'Actions',
+  heroDemoSrSummary: 'Interactive demonstration of Lucra: chat, dashboard, files and clients.',
 
   // Product demo window – companies panel
   heroCoTitle: 'Companies',
