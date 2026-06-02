@@ -250,3 +250,10 @@ html.reveal-ready .cta-section .cta-panel.reveal.in-view { transform: none; }
 
 /* Panel-stack child entrance — used by the demo panel-stack contract in ProductDemo. */
 @keyframes panelChildIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* Hero load-intro safety net — reveals hero copy and the demo chrome wrap even if
+   the JS timeline never fires. Global so both Hero and ProductDemo scoped rules
+   can reference it from their own animation: declarations. */
+@keyframes heroIntroSafety {
+  to { opacity: 1; transform: none; filter: blur(0); }
+}

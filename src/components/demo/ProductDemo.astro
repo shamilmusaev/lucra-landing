@@ -1,0 +1,663 @@
+---
+import { getStrings, type Lang } from '../../i18n/utils';
+import Icon from '../Icon.astro';
+import DashboardPanel from './panels/DashboardPanel.astro';
+import ChatPanel from './panels/ChatPanel.astro';
+import FilesPanel from './panels/FilesPanel.astro';
+import CompaniesPanel from './panels/CompaniesPanel.astro';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<!-- Product chrome preview -->
+<div class="container hero-chrome-wrap reveal delay-3">
+  <div class="demo-tabs" role="tablist" aria-label={s.heroDemoTablistLabel}>
+    <span class="demo-tab-ind" aria-hidden="true"></span>
+    <button class="demo-tab is-active" data-panel="chat" role="tab" type="button">
+      <svg viewBox="0 0 19 19" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.9125 15.6319C7.58251 16.4886 9.50357 16.7206 11.3295 16.2862C13.1555 15.8518 14.7662 14.7795 15.8715 13.2625C16.9768 11.7456 17.504 9.88375 17.358 8.01252C17.212 6.14129 16.4025 4.38373 15.0753 3.05655C13.7482 1.72937 11.9906 0.919847 10.1194 0.773866C8.24813 0.627885 6.38629 1.15504 4.86934 2.26034C3.3524 3.36564 2.28011 4.9764 1.84569 6.80235C1.41128 8.6283 1.64332 10.5494 2.5 12.2194L0.75 17.3819L5.9125 15.6319Z"/></svg>
+      {s.heroTabChat}
+    </button>
+    <button class="demo-tab" data-panel="dashboard" role="tab" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      {s.heroTabDashboard}
+    </button>
+    <button class="demo-tab" data-panel="docs" role="tab" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V7.5L14.5 2Z"/><path d="M14 2V8H20"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+      {s.heroTabDocs}
+    </button>
+    <button class="demo-tab" data-panel="companies" role="tab" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/></svg>
+      {s.heroTabCompanies}
+    </button>
+  </div>
+  <a class="demo-cta" href="/signup">
+    {s.heroDemoCtaPill}
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+  <div class="demo-drift" aria-hidden="true">
+    <span class="drift-card d1"></span>
+    <span class="drift-card d2"></span>
+    <span class="drift-card d3"></span>
+    <span class="drift-card d4"></span>
+    <span class="drift-card d5"></span>
+  </div>
+  <div class="browser-chrome">
+    <div class="browser-bar" aria-hidden="true">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+
+    <!-- Per-tab explainer callouts: arrowed, anchored to real elements, revealed
+         one after another for the active panel (positioned + sequenced in JS). -->
+    <div class="coach-layer" data-coach-group="chat" aria-hidden="true">
+      <div class="coach" data-target=".chat-input" data-side="bottom"><p>{s.heroCoachChat1}</p></div>
+    </div>
+    <div class="coach-layer" data-coach-group="dashboard" aria-hidden="true">
+      <div class="coach" data-target=".ai-insights .ai-title" data-side="bottom"><p>{s.heroCoachDashboard1}</p></div>
+      <div class="coach" data-target=".metric-grid .metric" data-side="top"><p>{s.heroCoachDashboard2}</p></div>
+    </div>
+    <div class="coach-layer" data-coach-group="docs" aria-hidden="true">
+      <div class="coach" data-target=".files-tabs" data-side="bottom"><p>{s.heroCoachDocs1}</p></div>
+      <div class="coach" data-target=".files-list:not([hidden]) .files-row .fname" data-side="top"><p>{s.heroCoachDocs2}</p></div>
+    </div>
+    <div class="coach-layer" data-coach-group="companies" aria-hidden="true">
+      <div class="coach" data-target=".co-row:not(.co-thead) .co-name" data-side="bottom"><p>{s.heroCoachCompanies1}</p></div>
+    </div>
+
+    <div class="product-shell">
+    <div class="product-shell-inner">
+      <aside class="product-sidebar">
+        <div class="brand-row">
+          <img src="/assets/logo.svg" alt="" width="22" height="20" />
+          <span class="brand-word">Lucra</span>
+        </div>
+
+        <div class="sb-company">
+          <span class="av">AA</span>
+          <span class="nm">Alma AB</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+
+        <div class="sb-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          {s.heroDemoSearch}
+        </div>
+
+        <div class="sidebar-item active" data-panel="chat">
+          <Icon name="square-pen" size={16} /> {s.heroDemoNewChat}
+        </div>
+        <div class="sidebar-item disabled">
+          <Icon name="file-plus-2" size={16} /> {s.heroDemoMonthlyReport}
+        </div>
+        <div class="sidebar-item" data-panel="dashboard">
+          <Icon name="layout-grid" size={16} /> {s.heroDemoNavDashboard}
+        </div>
+        <div class="sidebar-item" data-panel="docs">
+          <Icon name="folder" size={16} /> {s.heroDemoNavFiles}
+        </div>
+
+        <div class="sb-history-head">
+          <span>{s.heroDemoHistory}</span>
+          <svg class="hist-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="sb-history-date">{s.heroDemoHistoryToday}</div>
+        <div class="sidebar-chat-row" data-hist-live data-default={s.heroDemoChatDefault} data-title={s.heroChatTitleGenerated} aria-hidden="true"></div>
+        <div class="sidebar-chat-row">{s.heroDemoChatRecent1}</div>
+        <div class="sb-history-date">{s.heroDemoHistoryYesterday}</div>
+        <div class="sidebar-chat-row">{s.heroDemoChatRecent2}</div>
+        <div class="sidebar-chat-row">{s.heroDemoChatRecent3}</div>
+
+        <div class="sb-spacer"></div>
+
+        <div class="sb-user">
+          <span class="av">EK</span>
+          <span class="meta">
+            <span class="nm">Erik Karlsson</span>
+            <span class="em">erik@almaab.se</span>
+          </span>
+          <svg class="logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+        </div>
+      </aside>
+
+      <main class="product-main">
+        <DashboardPanel lang={lang} />
+
+        <ChatPanel lang={lang} />
+
+        <FilesPanel lang={lang} />
+
+        <CompaniesPanel lang={lang} />
+
+      </main>
+    </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ---------- Hero product chrome ---------- */
+.hero-chrome-wrap {
+  margin: 72px auto 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  /* Inside the demo window only, swap the brand typeface for the real app's
+     fonts (Inter body / Plus Jakarta Sans headings) so it reads 1:1 with the
+     product. Redefining the vars here re-points every var(--font-*) below. */
+  --font-display: var(--demo-font-head);
+  --font-body: var(--demo-font-body);
+  font-family: var(--demo-font-body);
+}
+/* Crisp mac window — no top fade (GitBook-style). */
+.product-shell {
+  background: var(--bg-app);
+  border-radius: var(--radius-shell);
+  padding: 16px;
+  box-shadow: var(--shadow-window);
+  border: 1px solid rgba(226,232,240,.8);
+}
+.product-shell-inner {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 16px;
+  min-height: 560px;
+}
+.product-sidebar {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.product-sidebar .brand-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 8px 12px;
+}
+.product-sidebar .brand-word { font-size: 18px; }
+/* Wordmark inside the demo sidebar — brand gradient (mirrors the nav brand). */
+.brand-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+/* Company selector — circular gradient avatar + name + chevron */
+.sb-company {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-app);
+  margin-bottom: 10px;
+}
+.sb-company .av {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3D506D 0%, #4A5F7F 55%, #56B3EB 130%);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  color: #fff;
+}
+.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--brand-primary); line-height: 1.2; }
+.sb-company .chev { width: 16px; height: 16px; color: var(--slate-400); flex-shrink: 0; }
+/* Search */
+.sb-search {
+  display: flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 10px;
+  background: var(--bg-app);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--slate-400);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.sb-search svg { width: 15px; height: 15px; flex-shrink: 0; }
+/* Nav rows: New chat / Generate report / Dashboard / Files */
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--nav-icon-default);
+  font-weight: 500;
+  cursor: default;
+}
+.sidebar-item.active {
+  background: var(--bg-active);
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+.sidebar-item.disabled { color: var(--slate-300); }
+.sidebar-item.disabled svg { opacity: .5; }
+.sidebar-item svg { width: 16px; height: 16px; opacity: .8; }
+.sidebar-item.active svg { opacity: 1; }
+/* History */
+.sb-history-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 10px 4px;
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--slate-400);
+}
+.sb-history-head .hist-chev { width: 14px; height: 14px; color: var(--slate-400); }
+.sb-history-date {
+  padding: 6px 10px 4px;
+  font-family: var(--font-display);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--slate-300);
+}
+.sidebar-chat-row {
+  font-size: 13px;
+  padding: 7px 10px;
+  color: var(--slate-600);
+  border-radius: var(--radius-md);
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+/* Live "AI is naming this chat" row: collapsed until the chat opens it, then it
+   slides in (as the default label), shimmers, and the generated title types in. */
+.sidebar-chat-row[data-hist-live] { display: none; }
+.sidebar-chat-row[data-hist-live].is-new {
+  display: block;
+  background: var(--bg-active);
+  color: var(--brand-primary);
+  font-weight: 600;
+  animation: histRowIn .42s var(--ease-out-expo) both;
+}
+@keyframes histRowIn {
+  from { opacity: 0; transform: translateY(-6px); max-height: 0; padding-top: 0; padding-bottom: 0; }
+  to   { opacity: 1; transform: none; max-height: 40px; }
+}
+.sidebar-chat-row[data-hist-live].is-generating {
+  background-image: linear-gradient(100deg, var(--bg-active) 0%, var(--bg-active) 35%, rgba(86,179,235,.22) 50%, var(--bg-active) 65%, var(--bg-active) 100%);
+  background-size: 220% 100%;
+  animation: histShimmer 1s linear infinite;
+}
+@keyframes histShimmer {
+  from { background-position: 180% 0; }
+  to   { background-position: -40% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-chat-row[data-hist-live].is-new { animation: none; }
+  .sidebar-chat-row[data-hist-live].is-generating { animation: none; background-image: none; }
+}
+/* Push the user footer to the bottom */
+.sb-spacer { flex: 1 1 auto; min-height: 10px; }
+.sb-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 6px 2px;
+  margin-top: 6px;
+  border-top: 1px solid var(--border);
+}
+.sb-user .av {
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--nav-icon-badge);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 11px;
+}
+.sb-user .meta { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.sb-user .nm { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--brand-primary); }
+.sb-user .em { font-size: 11px; color: var(--slate-500); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sb-user .logout { width: 16px; height: 16px; color: var(--slate-400); flex-shrink: 0; }
+.product-main {
+  background: var(--bg-paper);
+  border-radius: var(--radius-card);
+  padding: 22px 24px;
+  overflow: hidden;
+  position: relative;
+}
+/* ============================================================
+   DEMO TABS (scroll-reveal, auto-rotate) + macOS browser chrome
+   ============================================================ */
+.hero-chrome-wrap { position: relative; }
+
+/* Background drift — abstract, faded slate "app window" silhouettes that float
+   slowly in the hero margins behind the demo window, giving the section depth and
+   life (GitBook-style) without competing with the real product. Decorative only. */
+.demo-drift {
+  position: absolute;
+  left: -34%; right: -34%; top: -7%; bottom: -7%;
+  z-index: 0;
+  pointer-events: none;
+  /* Fade the centre (where the window sits) and the far edges so cards only
+     whisper in the side margins. */
+  -webkit-mask: radial-gradient(115% 92% at 50% 48%, transparent 30%, #000 64%, transparent 96%);
+          mask: radial-gradient(115% 92% at 50% 48%, transparent 30%, #000 64%, transparent 96%);
+}
+.drift-card {
+  position: absolute;
+  width: 168px; height: 122px;
+  border-radius: 14px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px -28px rgba(61,80,109,.30);
+  opacity: .5;
+  will-change: transform;
+}
+/* Abstract window header + content lines (slate placeholders, not real screens). */
+.drift-card::before {
+  content: ""; position: absolute; left: 12px; top: 12px; width: 34px; height: 7px;
+  border-radius: 4px; background: var(--slate-200);
+  box-shadow: 44px 0 0 -1px var(--slate-100), 78px 0 0 -1px var(--slate-100);
+}
+.drift-card::after {
+  content: ""; position: absolute; left: 12px; right: 12px; top: 34px; height: 60px;
+  border-radius: 8px;
+  background:
+    linear-gradient(var(--slate-100) 0 0) left 0 top 0 / 100% 8px no-repeat,
+    linear-gradient(var(--slate-100) 0 0) left 0 top 18px / 72% 8px no-repeat,
+    linear-gradient(var(--slate-100) 0 0) left 0 top 36px / 88% 8px no-repeat,
+    linear-gradient(var(--slate-100) 0 0) left 0 top 54px / 60% 8px no-repeat;
+}
+.drift-card.d1 { left: 1%;  top: 16%; width: 156px; animation: driftA 26s ease-in-out infinite; }
+.drift-card.d2 { left: 11%; top: 62%; width: 122px; opacity: .42; animation: driftC 31s ease-in-out infinite -5s; }
+.drift-card.d3 { right: 2%; top: 12%; width: 172px; animation: driftB 24s ease-in-out infinite -2s; }
+.drift-card.d4 { right: 9%; top: 60%; width: 128px; opacity: .42; animation: driftA 29s ease-in-out infinite -7s; }
+.drift-card.d5 { left: 47%; top: -7%; width: 104px; opacity: .36; animation: driftB 34s ease-in-out infinite -11s; }
+@keyframes driftA { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-22px) rotate(-1.5deg); } }
+@keyframes driftB { 0%, 100% { transform: translateY(0) rotate(3deg); } 50% { transform: translateY(-16px) rotate(4.5deg); } }
+@keyframes driftC { 0%, 100% { transform: translate(0, 0) rotate(-2deg); } 50% { transform: translate(8px, -26px) rotate(-3.5deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .demo-drift .drift-card { animation: none; }
+}
+@media (max-width: 960px) {
+  .demo-drift { display: none; }
+}
+
+/* macOS window — clean slate canvas, traffic-light dots, soft deep shadow */
+.browser-chrome {
+  background: var(--bg-app);
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: var(--radius-shell);
+  overflow: hidden;
+  box-shadow: var(--shadow-window);
+}
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 17px 20px 13px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+  border-bottom: 1px solid rgba(61,80,109,0.07);
+}
+.browser-bar .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.06), inset 0 1px 1px rgba(255,255,255,0.45);
+}
+.browser-bar .dot.red    { background: #FF5F57; }
+.browser-bar .dot.yellow { background: #FEBC2E; }
+.browser-bar .dot.green  { background: #28C840; }
+/* Product shell sits inside browser chrome — drop its standalone shadow */
+.browser-chrome .product-shell {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+.browser-chrome .product-shell-inner {
+  margin: 16px;
+}
+.demo-tabs {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px -12px rgba(61,80,109,0.20), 0 2px 4px rgba(15,23,42,0.04);
+  z-index: 12;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -18px);
+  transition: opacity .45s ease, transform .55s var(--ease-out-expo);
+}
+.hero-chrome-wrap.tabs-visible .demo-tabs {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+.demo-tab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--slate-500);
+  cursor: pointer;
+  transition: color .42s cubic-bezier(.4,0,.2,1);
+  white-space: nowrap;
+}
+.demo-tab svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  display: none;
+}
+.demo-tab.is-active svg { display: inline-block; }
+.demo-tab:hover:not(.is-active) {
+  color: var(--brand-primary);
+  background: var(--bg-app);
+}
+.demo-tab.is-active {
+  color: var(--white);
+}
+/* Active "bubble" — a single pill that flows from one tab into the next */
+.demo-tab-ind {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  width: 0;
+  background: var(--brand-primary);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px -2px rgba(61,80,109,.35);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    left .5s cubic-bezier(.34,1.2,.32,1),
+    width .5s cubic-bezier(.34,1.2,.32,1),
+    opacity .3s ease;
+}
+.demo-tab-ind.ready { opacity: 1; }
+
+/* Floating CTA pill — sits over the window's bottom edge (GitBook-style),
+   appears with the tabs once the window is in view. */
+.demo-cta {
+  position: absolute;
+  left: 50%;
+  bottom: -19px;
+  z-index: 13;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px;
+  background: var(--brand-gradient-2);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 999px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 10px 24px -10px rgba(61,80,109,0.45), 0 4px 10px -6px rgba(15,23,42,0.25);
+  opacity: 0;
+  transform: translate(-50%, 10px);
+  transition: opacity .5s ease, transform .5s ease, box-shadow .25s ease;
+}
+.hero-chrome-wrap.tabs-visible .demo-cta { opacity: 1; transform: translate(-50%, 0); }
+.demo-cta svg { width: 16px; height: 16px; transition: transform .25s ease; }
+.demo-cta:hover { box-shadow: 0 1px 0 rgba(255,255,255,0.14) inset, 0 16px 32px -10px rgba(61,80,109,0.50); }
+.demo-cta:hover svg { transform: translateX(3px); }
+
+/* Panel stack with cross-fade */
+.product-main { position: relative; min-height: 620px; padding: 0; }
+:global(.demo-panel) {
+  position: absolute;
+  inset: 22px 24px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition:
+    opacity .35s ease,
+    transform .45s var(--ease-out-expo),
+    visibility 0s linear .45s;
+}
+:global(.demo-panel.is-active) {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity .32s ease, transform .5s var(--ease-out-expo);
+}
+/* Active panel children rise in a short stagger after the surface fades, so a
+   tab switch feels composed. Targets only direct block children — the chat
+   panel's absolute scenes live one level deeper and stay untouched. */
+:global(.demo-panel.is-active) > * { animation: panelChildIn .5s var(--ease-out-expo) both; }
+:global(.demo-panel.is-active) > *:nth-child(2) { animation-delay: .05s; }
+:global(.demo-panel.is-active) > *:nth-child(3) { animation-delay: .09s; }
+:global(.demo-panel.is-active) > *:nth-child(n+4) { animation-delay: .14s; }
+/* Dashboard & Files are tall, scrolling views (like the real app) — let the panel
+   scroll internally with a slim, unobtrusive scrollbar. */
+:global(.demo-panel[data-panel="dashboard"]),
+:global(.demo-panel[data-panel="docs"]) {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--slate-300) transparent;
+}
+:global(.demo-panel[data-panel="dashboard"])::-webkit-scrollbar,
+:global(.demo-panel[data-panel="docs"])::-webkit-scrollbar { width: 6px; }
+:global(.demo-panel[data-panel="dashboard"])::-webkit-scrollbar-thumb,
+:global(.demo-panel[data-panel="docs"])::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 999px; }
+
+/* Per-tab explainer callouts — arrowed coach marks that point at real elements
+   and reveal one after another for the active panel. The layer fills the (scaled)
+   window so JS can position each pill in chrome-local coordinates. */
+.coach-layer { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
+.coach {
+  position: absolute;
+  left: 0; top: 0;
+  width: max-content; max-width: 232px;
+  padding: 10px 14px;
+  background: linear-gradient(150deg, var(--brand-primary-light), var(--brand-primary));
+  border: 1px solid var(--brand-primary-light);
+  border-radius: 12px;
+  box-shadow: 0 10px 26px -10px rgba(61,80,109,.55), 0 2px 6px -2px rgba(61,80,109,.3);
+  font-size: 12px; font-weight: 500; line-height: 1.4;
+  color: var(--fg-on-brand);
+  opacity: 0;
+  transform: translate(-50%, 6px) scale(.96);
+  transform-origin: center top;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.coach p { margin: 0; color: rgba(255,255,255,.86); }
+.coach p strong { color: var(--white); font-weight: 600; }
+/* Pointer toward the target: a rotated square that borrows the pill's border seam. */
+.coach::after {
+  content: "";
+  position: absolute; left: 50%;
+  width: 10px; height: 10px;
+  background: var(--brand-primary);
+  transform: translateX(-50%) rotate(45deg);
+}
+.coach[data-side="bottom"]::after { top: -5px; background: var(--brand-primary-light); border-left: 1px solid var(--brand-primary-light); border-top: 1px solid var(--brand-primary-light); }
+.coach[data-side="top"]::after { bottom: -5px; border-right: 1px solid var(--brand-primary-light); border-bottom: 1px solid var(--brand-primary-light); }
+.coach.is-shown {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  transition: opacity .4s ease, transform .5s var(--ease-out-expo);
+}
+@media (prefers-reduced-motion: reduce) {
+  .coach { transition: opacity .2s ease; transform: translate(-50%, 0); }
+  .coach.is-shown { opacity: 1; transform: translate(-50%, 0); transition: opacity .2s ease; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-tabs, .demo-tab-ind { transition: none; }
+  :global(.demo-panel) { transition: none; }
+  :global(.demo-panel.is-active) > * { animation: none; }
+}
+
+/* Armed hidden state — only when JS has set html.hero-intro. */
+:global(html.hero-intro) .hero-chrome-wrap {
+  opacity: 0;
+  transform: translateY(20px) scale(.985);
+  filter: blur(8px);
+  transition:
+    opacity .62s var(--ease-out-expo),
+    transform .62s var(--ease-out-expo),
+    filter .62s var(--ease-out-expo);
+  will-change: opacity, transform, filter;
+  /* Safety net: reveal even if the JS timeline never fires. */
+  animation: heroIntroSafety 1ms linear 3.2s forwards;
+}
+/* Powered-on — JS adds .lucra-lit as the shockwave reaches each block. */
+:global(html.hero-intro) .hero-chrome-wrap.lucra-lit {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* ============================================================
+   RESPONSIVE (demo subset)
+   ============================================================ */
+@media (max-width: 1100px) {
+  .product-shell-inner { grid-template-columns: 200px 1fr; }
+}
+@media (max-width: 960px) {
+  .product-shell-inner { grid-template-columns: 1fr; }
+  .product-sidebar { display: none; }
+}
+/* Below 1200px the interactive multi-tab demo (tabs, sidebar, chat/docs/companies,
+   coach tour, drift cards, scroll-zoom) is dropped in favour of a single static
+   Dashboard — fully rendered at rest, no choreography. The rotation/chat/coach
+   controllers bail out at this width; this block forces the resting state. */
+@media (max-width: 1199px) {
+  .demo-tabs, .demo-cta, .demo-drift, .coach-layer, .product-sidebar { display: none; }
+  .product-shell-inner { grid-template-columns: 1fr; }
+  .product-main { min-height: 0; }
+  :global(.demo-panel) { display: none; }
+}
+</style>
+
+<script>
+  import { initChat } from '../../scripts/demo/chat';
+  import { initDashboard } from '../../scripts/demo/dashboard';
+  import { initFiles } from '../../scripts/demo/files';
+  import { initController } from '../../scripts/demo/controller';
+  import { initScrollZoom } from '../../scripts/demo/scrollZoom';
+  import { initDemoOrbs } from '../../scripts/demo/orbs';
+
+  initScrollZoom();
+
+  initController();
+
+  initChat();
+
+  initDashboard();
+
+  initFiles();
+
+  initDemoOrbs();
+</script>
