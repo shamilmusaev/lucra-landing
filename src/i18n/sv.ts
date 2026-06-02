@@ -327,7 +327,6 @@ export const sv = {
   // Legal column links
   footerLinkPrivacy: 'Integritetspolicy',
   footerLinkTerms: 'Användarvillkor',
-  footerLinkDpa: 'Personuppgiftsbiträdesavtal',
   footerLinkSecurityPage: 'Säkerhet',
   // Account column links
   footerLinkLogin: 'Logga in',
@@ -353,4 +352,12 @@ export const sv = {
   faqQ8: 'Kan mänsklig konsult granska AI-svaren?',
   faqA8: 'Ja, redovisningsbyrån har full kontroll och insyn. Byrån kan se alla frågor och svar, eskalera frågor till mänsklig konsult när det behövs, och granska AI-svar innan de når kunden. Lucra är byggt för att komplettera byrån, inte ersätta den.',
   ogImageAlt: 'Lucra – AI-ekonom kopplad till din bokföring',
+  privacyMetaTitle: 'Integritetspolicy · Lucra',
+  privacyMetaDescription: 'Så samlar LucrAI Tech AB in, använder och skyddar dina personuppgifter – i enlighet med GDPR och svensk dataskyddslag.',
+  termsMetaTitle: 'Användarvillkor · Lucra',
+  termsMetaDescription: 'Villkoren för åtkomst till och användning av Lucra AI-plattformen, som drivs av LucrAI Tech AB.',
+  notFoundMetaTitle: '404 · Sidan hittades inte · Lucra',
+  notFoundHeadline: 'Sidan hittades inte',
+  notFoundBody: 'Sidan du letar efter finns inte eller har flyttats. Kontrollera adressen eller gå tillbaka till startsidan.',
+  notFoundCta: 'Till startsidan',
 } as const;

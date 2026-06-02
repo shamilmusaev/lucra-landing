@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { getStrings } from '../i18n/utils';
+
+// Static hosts serve a single /404.html, so the page is built in Swedish (the
+// primary language); a small inline script below swaps the core copy + home
+// link to English when the visitor hit a path under /en/.
+const lang = 'sv' as const;
+const s = getStrings(lang);
+const en = getStrings('en');
+---
+<BaseLayout lang={lang} title={s.notFoundMetaTitle} description={s.notFoundBody} path="/404">
+  <Nav lang={lang} />
+  <section class="nf">
+    <div class="container">
+      <p class="nf-code" aria-hidden="true">404</p>
+      <h1 class="nf-title" data-nf-title>{s.notFoundHeadline}</h1>
+      <p class="nf-body" data-nf-body>{s.notFoundBody}</p>
+      <a class="btn btn-primary" href="/" data-nf-cta>{s.notFoundCta}</a>
+    </div>
+  </section>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<script is:inline define:vars={{ enHeadline: en.notFoundHeadline, enBody: en.notFoundBody, enCta: en.notFoundCta, enTitle: en.notFoundMetaTitle }}>
+  if (location.pathname.indexOf('/en') === 0) {
+    document.documentElement.lang = 'en';
+    document.title = enTitle;
+    var el;
+    if ((el = document.querySelector('[data-nf-title]'))) el.textContent = enHeadline;
+    if ((el = document.querySelector('[data-nf-body]'))) el.textContent = enBody;
+    if ((el = document.querySelector('[data-nf-cta]'))) { el.textContent = enCta; el.setAttribute('href', '/en/'); }
+  }
+</script>
+
+<style>
+  .nf {
+    padding: clamp(120px, 18vh, 220px) 0 120px;
+    text-align: center;
+  }
+  .nf-code {
+    font-family: var(--font-display);
+    font-size: clamp(80px, 15vw, 150px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -3px;
+    color: var(--brand-primary);
+    opacity: 0.12;
+    margin: 0;
+  }
+  .nf-title {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--brand-primary);
+    margin: 4px 0 14px;
+  }
+  .nf-body {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--slate-500);
+    max-width: 440px;
+    margin: 0 auto 30px;
+  }
+</style>
