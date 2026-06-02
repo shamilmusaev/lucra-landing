@@ -1,0 +1,334 @@
+---
+import { getStrings, type Lang } from '../../../i18n/utils';
+const { lang } = Astro.props as { lang: Lang };
+const s = getStrings(lang);
+---
+
+<!-- Panel: Chat (welcome-home → auto-typed conversation) -->
+<div class="demo-panel is-active" data-panel="chat">
+  <div class="chat-scene" data-chat
+       data-q1={s.heroChatAutoQ} data-a1={s.heroChatAutoA}
+       data-q2={s.heroChatQ2} data-a2={s.heroChatA2}
+       data-q3={s.heroChatQ3} data-a3={s.heroChatA3}>
+    <!-- Welcome / resting state -->
+    <div class="chat-welcome">
+      <span class="welcome-orb" id="chat-welcome-orb" aria-hidden="true"></span>
+      <h2 class="welcome-greeting">{s.heroChatGreeting}</h2>
+      <p class="welcome-subtitle" set:html={s.heroChatSubtitle}></p>
+      <div class="chat-input">
+        <span class="chat-co">Alma AB</span>
+        <div class="chat-input-body">
+          <span class="chat-typed" data-chat-typed></span><span class="chat-caret" data-chat-caret aria-hidden="true"></span>
+          <span class="chat-placeholder" data-chat-placeholder>{s.heroChatPlaceholder}</span>
+        </div>
+        <div class="chat-input-foot">
+          <button class="chat-send" type="button" tabindex="-1" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="chat-chips">
+        <button class="chat-chip" type="button" tabindex="-1">
+          <span class="chip-head">
+            <span class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+            <span class="chip-t">{s.heroChatChip1Title}</span>
+          </span>
+          <span class="chip-d">{s.heroChatChip1Desc}</span>
+        </button>
+        <button class="chat-chip" type="button" tabindex="-1">
+          <span class="chip-head">
+            <span class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 6-6"/></svg></span>
+            <span class="chip-t">{s.heroChatChip2Title}</span>
+          </span>
+          <span class="chip-d">{s.heroChatChip2Desc}</span>
+        </button>
+        <button class="chat-chip" type="button" tabindex="-1">
+          <span class="chip-head">
+            <span class="chip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+            <span class="chip-t">{s.heroChatChip3Title}</span>
+          </span>
+          <span class="chip-d">{s.heroChatChip3Desc}</span>
+        </button>
+      </div>
+    </div>
+    <!-- Conversation — built up message by message by the demo script -->
+    <div class="chat-convo" data-chat-convo aria-hidden="true">
+      <div class="chat-thread" data-chat-thread></div>
+      <!-- Hidden message templates — cloned by the script. Kept in the
+           markup so Astro's scoped styles apply to the clones. -->
+      <div class="chat-tpl" hidden>
+        <div class="uin" data-tpl="uin"><span class="utext"></span><span class="utime"></span></div>
+        <div class="ain" data-tpl="ain">
+          <span class="ain-orb"></span>
+          <div class="bubble">
+            <span class="chat-answer"></span>
+            <span class="chat-dots"><i></i><i></i><i></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="chat-bar">
+        <span class="chat-bar-body">
+          <span class="chat-typed2" data-chat-typed2></span><span class="chat-caret" data-chat-caret2 aria-hidden="true"></span>
+          <span class="chat-bar-ph" data-chat-ph2>{s.heroChatPlaceholder}</span>
+        </span>
+        <button class="chat-send" type="button" tabindex="-1" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Small answer avatar orb — hosts the real WebGL orb (same as the welcome orb,
+   just 28px). The conic ring is only a fallback shown until the orb mounts and
+   under reduced motion; `.orb-live` (added on successful mount) fades it out. */
+.ain-orb {
+  position: relative;
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+}
+.ain-orb::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #56B3EB, #4A6B95, #3D506D, #4A6B95, #56B3EB);
+  -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%);
+          mask: radial-gradient(closest-side, transparent 56%, #000 60%);
+  box-shadow: 0 0 10px rgba(86,179,235,.4);
+  transition: opacity .3s ease;
+}
+.ain-orb.orb-live::before { opacity: 0; }
+.ain-orb canvas { display: block; width: 100% !important; height: 100% !important; }
+
+/* ============================================================
+   CHAT panel — welcome-home (resting) → auto-typed conversation.
+   Mirrors the real app's chat home; no fake source badges / inline
+   charts (the real chat streams plain markdown text).
+   ============================================================ */
+.chat-scene { position: relative; height: 100%; }
+.chat-welcome,
+.chat-convo {
+  position: absolute;
+  inset: 0;
+  transition: opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
+}
+/* Welcome / resting state — vertically centred */
+.chat-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+[data-chat].is-sent .chat-welcome {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+}
+/* Welcome orb — the real WebGL hero orb (secondary instance mounted by script) */
+.welcome-orb {
+  width: 96px; height: 96px;
+  margin-bottom: 22px;
+}
+.welcome-orb canvas { display: block; width: 100% !important; height: 100% !important; }
+.welcome-greeting {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  color: var(--brand-primary);
+}
+.welcome-subtitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--slate-500);
+  margin: 0 0 28px;
+}
+.welcome-subtitle .g { font-weight: 600; color: var(--slate-600); }
+/* Input — large rounded card (company chip · text · send) */
+.chat-input {
+  display: flex; flex-direction: column;
+  width: 100%; max-width: 600px;
+  min-height: 150px;
+  padding: 16px 18px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 2px 14px rgba(61,80,109,.05);
+  margin-bottom: 24px;
+  text-align: left;
+}
+.chat-co {
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 12px;
+  color: var(--brand-primary);
+  background: var(--bg-active);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.chat-input-body {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--slate-600);
+}
+.chat-input-foot { display: flex; justify-content: flex-end; margin-top: 12px; }
+.chat-placeholder { color: var(--slate-400); }
+[data-chat].is-typing .chat-placeholder,
+[data-chat].is-sent .chat-placeholder { display: none; }
+.chat-typed { white-space: pre-wrap; }
+.chat-caret {
+  display: none;
+  width: 1.5px; height: 17px;
+  margin-left: 1px;
+  vertical-align: -3px;
+  background: var(--brand-primary);
+  animation: caretBlink 1s step-end infinite;
+}
+[data-chat].is-typing .chat-caret { display: inline-block; }
+@keyframes caretBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.chat-send {
+  flex-shrink: 0;
+  width: 38px; height: 38px;
+  border: 0; border-radius: 50%;
+  background: var(--bg-app);
+  color: var(--slate-400);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .25s ease, color .25s ease, transform .25s ease;
+}
+.chat-send svg { width: 17px; height: 17px; }
+[data-chat].is-typing .chat-send { background: var(--brand-primary); color: #fff; transform: scale(1.04); }
+/* Suggestion chips */
+.chat-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%; max-width: 560px;
+}
+.chat-chip {
+  text-align: left;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+  cursor: default;
+  transition: border-color .25s ease, background .25s ease, transform .25s ease;
+}
+.chat-chip:hover {
+  border-color: var(--blue-20, #E0E7FF);
+  background: rgba(228,236,245,.5);
+  transform: translateY(-2px);
+}
+.chip-head { display: flex; align-items: center; gap: 8px; }
+.chip-ic { width: 18px; height: 18px; flex-shrink: 0; color: var(--brand-primary); }
+.chip-ic svg { width: 18px; height: 18px; }
+.chip-t {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 13px;
+  color: var(--brand-primary);
+}
+.chip-d { font-size: 12px; line-height: 1.4; color: var(--slate-500); }
+
+/* Conversation — message thread + a persistent bottom input bar */
+.chat-convo {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0;
+  visibility: hidden;
+}
+[data-chat].is-sent .chat-convo {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .45s ease .12s;
+}
+.chat-thread {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 6px 2px 14px;
+}
+.chat-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 16px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(61,80,109,.05);
+}
+.chat-bar-body { flex: 1; min-height: 22px; padding: 4px 0; font-size: 14px; line-height: 1.5; color: var(--slate-600); }
+.chat-bar-ph { color: var(--slate-400); }
+[data-chat].is-typing2 .chat-bar-ph { display: none; }
+[data-chat].is-typing2 .chat-bar .chat-caret { display: inline-block; }
+.chat-bar .chat-send { width: 34px; height: 34px; }
+[data-chat].is-typing2 .chat-bar .chat-send { background: var(--brand-primary); color: #fff; }
+.chat-convo .uin {
+  align-self: flex-end;
+  max-width: 78%;
+  background: var(--brand-primary);
+  color: #fff;
+  font-size: 14px;
+  padding: 11px 16px;
+  border-radius: 18px 18px 4px 18px;
+  line-height: 1.45;
+  animation: msgIn .4s cubic-bezier(.2,.7,.2,1) both;
+}
+.chat-convo .ain {
+  display: flex; gap: 12px; align-items: flex-start;
+  max-width: 92%;
+  animation: msgIn .4s cubic-bezier(.2,.7,.2,1) both .1s;
+}
+.chat-convo .ain .bubble {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-left: 3px solid #5B7A9B;
+  padding: 12px 16px;
+  border-radius: 0 16px 16px 16px;
+  font-size: 14px;
+  color: var(--slate-600);
+  line-height: 1.55;
+  box-shadow: var(--shadow-sm);
+}
+.chat-convo .ain .bubble strong { color: var(--brand-primary); font-weight: 600; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* User bubble — question text + timestamp */
+.chat-convo .uin .utext { display: block; }
+.chat-convo .uin .utime { display: block; margin-top: 4px; font-size: 11px; opacity: .65; }
+/* Rich answer formatting (lead + bulleted breakdown, like the real chat) */
+.chat-convo .ain .bubble ul { margin: 9px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.chat-convo .ain .bubble li { line-height: 1.5; }
+.chat-convo .ain .bubble li::marker { color: var(--slate-300); }
+/* Thinking dots (shown before the answer streams) */
+.chat-dots { display: none; gap: 4px; align-items: center; height: 16px; }
+.chat-dots.show { display: inline-flex; }
+.chat-dots i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #5B7A9B;
+  animation: chatDot 1.6s infinite both;
+  animation-timing-function: cubic-bezier(.4,0,.2,1);
+}
+.chat-dots i:nth-child(2) { animation-delay: .2s; }
+.chat-dots i:nth-child(3) { animation-delay: .4s; }
+@keyframes chatDot {
+  0%, 80%, 100% { opacity: .25; transform: translateY(0); }
+  40%           { opacity: 1; transform: translateY(-2.5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-caret, .chat-dots i,
+  .chat-convo .uin, .chat-convo .ain { animation: none; }
+}
+</style>
