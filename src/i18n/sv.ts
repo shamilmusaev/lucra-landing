@@ -166,46 +166,29 @@ export const sv = {
   cmpRow7Lucra: 'Kan eskalera frågor till konsult vid behov',  cmpRow7GenAi: 'Ingen koppling till din byrå',
   cmpRow7Status: 'Mejl och telefon fram och tillbaka',
 
-  // ---- Feature showcase (GitBook-style cards: visual on top, copy below) ----
+  // ---- Feature showcase (cards: Remotion loop video on top, copy below) ----
   showcaseTitle: 'Verktygen som ger dig kontroll över bolaget',
-  showcaseSub: 'Ett smartare flöde och en AI som är proaktiv och relevant – så du fattar bättre beslut, snabbare.',
-  // Card 1 – AI chat (real WebGL orb + self-playing conversation; «...» marks the highlighted stat)
+  showcaseSub: 'Ett smartare flöde och en AI som förstår din ekonomi – så du fattar bättre beslut, snabbare.',
+  // Card 1 – AI chat
   showcaseCard1Title: 'Fråga vad du vill – få svar direkt',
   showcaseCard1Body: 'Ställ frågor på vanlig svenska om resultat, kassaflöde och rapporter. Lucra läser din bokföring och svarar på sekunder – utan formler, utan väntan.',
   showcaseCard1Pill: 'AI-chatt',
-  showcaseChatPlaceholder: 'Fråga om dina siffror…',
-  showcaseChatUser: 'Hur gick Q3 jämfört med förra året?',
-  showcaseChatAi: 'Omsättningen i Q3 ökade med «+12,4 %» mot förra året – främst tack vare högre försäljning i september.',
-  // Card 2 – Dashboard (Remotion-rendered loop video)
+  showcaseCard1Alt: 'Lucras AI-chatt svarar på en fråga om kvartalet, direkt från din bokföring.',
+  // Card 2 – Dashboard
   showcaseCard2Title: 'Se hela läget i realtid',
-  showcaseCard2Body: 'Intäkter, kostnader, resultat och likviditet – uppdaterat automatiskt. Lucra lyfter fram vad som förändrats och varför, så du ser läget på sekunder.',
+  showcaseCard2Body: 'Intäkter, kostnader, resultat och likviditet – uppdaterat automatiskt från din bokföring, så du ser läget på sekunder.',
   showcaseCard2Pill: 'Dashboard',
-  showcaseCard2VideoAlt: 'Lucras dashboard med AI-insikter och nyckeltal som uppdateras automatiskt.',
-  // Card 3 – Documents (DOM: file table + scan-line + AI badge)
-  showcaseCard3Title: 'Lägg in dina underlag – Lucra förstår dem',
-  showcaseCard3Body: 'Ladda upp fakturor, kvitton och rapporter. Lucra läser dem, föreslår rätt konto och kopplar till bolag och period – automatiskt.',
+  showcaseCard2Alt: 'Lucras dashboard med nyckeltal och en intäkts- och kostnadsgraf som uppdateras automatiskt.',
+  // Card 3 – Documents
+  showcaseCard3Title: 'Lägg in dina underlag – Lucra läser dem',
+  showcaseCard3Body: 'Ladda upp fakturor, kvitton och rapporter. Lucra läser dem och svarar på dina frågor utifrån innehållet – direkt i chatten.',
   showcaseCard3Pill: 'Dokument',
-  showcaseDocPanelTitle: 'Filer & underlag',
-  showcaseDocFile1: 'Faktura 4821.pdf',
-  showcaseDocFile2: 'Kvitto 2261.jpg',
-  showcaseDocFile3: 'Årsredovisning 2025.pdf',
-  showcaseDocReading: 'Läser…',
-  showcaseDocSuggest: 'AI föreslår 7690',
-  showcaseDocPosted: 'Bokfört',
-  // Card 4 – Fortnox sync (DOM: pulse along connector)
+  showcaseCard3Alt: 'Lucra läser uppladdade underlag och svarar på frågor om dem i chatten.',
+  // Card 4 – Fortnox sync
   showcaseCard4Title: 'Byggd på din faktiska bokföring',
   showcaseCard4Body: 'Lucra kopplas till Fortnox och läser dina riktiga siffror i realtid – verifikat, moms och resultat. Inga gissningar, alltid aktuellt.',
   showcaseCard4Pill: 'Integrationer',
-  showcaseSyncLine: 'Senast synkad: 3 min sedan',
-  showcaseSyncItem1: 'Verifikat',
-  showcaseSyncItem2: 'Moms',
-  showcaseSyncItem3: 'Resultat',
-  // Card 5 – Multi-company (DOM: company switcher)
-  showcaseCard5Title: 'Alla klienter, en vy',
-  showcaseCard5Body: 'Hantera alla bolag och kunder utan att byta system. Växla i sidopanelen – varje bolag synkat och redo. Byggt för redovisningsbyråer.',
-  showcaseCard5Pill: 'Flera bolag',
-  showcaseCoSearch: 'Sök företag…',
-  showcaseCoManage: 'Hantera företag',
+  showcaseCard4Alt: 'Lucra synkar verifikat, moms och resultat från Fortnox i realtid.',
   // Carousel navigation
   showcaseNavPrev: 'Föregående',
   showcaseNavNext: 'Nästa',
