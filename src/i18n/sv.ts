@@ -189,11 +189,6 @@ export const sv = {
   showcaseCard4Body: 'Lucra kopplas till Fortnox och läser dina riktiga siffror i realtid – verifikat, moms och resultat. Inga gissningar, alltid aktuellt.',
   showcaseCard4Pill: 'Integrationer',
   showcaseCard4Alt: 'Lucra synkar verifikat, moms och resultat från Fortnox i realtid.',
-  // Card 5 – Multi-company
-  showcaseCard5Title: 'Alla klienter, en vy',
-  showcaseCard5Body: 'Hantera alla bolag och kunder utan att byta system. Växla i sidopanelen – varje bolag synkat och redo. Byggt för redovisningsbyråer.',
-  showcaseCard5Pill: 'Flera bolag',
-  showcaseCard5Alt: 'Lucras företagsväljare glider mellan flera klientbolag i sidopanelen.',
   // Carousel navigation
   showcaseNavPrev: 'Föregående',
   showcaseNavNext: 'Nästa',

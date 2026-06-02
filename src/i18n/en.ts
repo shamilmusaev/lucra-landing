@@ -191,11 +191,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   showcaseCard4Body: 'Lucra connects to Fortnox and reads your real numbers in real time – entries, VAT and results. No guesses, always up to date.',
   showcaseCard4Pill: 'Integrations',
   showcaseCard4Alt: 'Lucra syncs entries, VAT and results from Fortnox in real time.',
-  // Card 5 – Multi-company
-  showcaseCard5Title: 'All clients, one view',
-  showcaseCard5Body: 'Manage all companies and clients without switching systems. Switch in the sidebar – every company synced and ready. Built for accounting firms.',
-  showcaseCard5Pill: 'Multiple companies',
-  showcaseCard5Alt: 'Lucra company switcher gliding between several client companies in the sidebar.',
   // Carousel navigation
   showcaseNavPrev: 'Previous',
   showcaseNavNext: 'Next',
