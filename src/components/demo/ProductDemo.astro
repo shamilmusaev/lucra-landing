@@ -650,15 +650,22 @@ const s = getStrings(lang);
   import { initScrollZoom } from '../../scripts/demo/scrollZoom';
   import { initDemoOrbs } from '../../scripts/demo/orbs';
 
-  initScrollZoom();
-
-  initController();
-
-  initChat();
-
-  initDashboard();
-
-  initFiles();
-
-  initDemoOrbs();
+  const wrap = document.querySelector('.hero-chrome-wrap');
+  if (wrap) {
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      initDashboard();
+      initFiles();
+      initChat();
+      initController();
+      initScrollZoom();
+      initDemoOrbs();
+    };
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some((e) => e.isIntersecting)) { obs.disconnect(); start(); }
+    }, { rootMargin: '400px 0px' });
+    io.observe(wrap);
+  }
 </script>
