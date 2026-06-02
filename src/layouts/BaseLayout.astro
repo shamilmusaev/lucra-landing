@@ -2,6 +2,7 @@
 import '../styles/colors_and_type.css';
 import '../styles/global.css';
 import SmoothScroll from '../components/SmoothScroll.astro';
+import { getStrings } from '../i18n/utils';
 
 export interface Props {
   lang: 'sv' | 'en';
@@ -16,6 +17,15 @@ const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
 const svUrl = `${site}${path}`;
 const enUrl = `${site}/en${path === '/' ? '/' : path}`;
 const canonical = lang === 'sv' ? svUrl : enUrl;
+const s = getStrings(lang);
+// Per-language social card; everything else (title/description) reuses the props.
+const ogImage = `${site}/${lang === 'en' ? 'og-image-en.png' : 'og-image.png'}`;
+const ogLocale = lang === 'en' ? 'en_US' : 'sv_SE';
+const ogLocaleAlt = lang === 'en' ? 'sv_SE' : 'en_US';
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Lucra', url: site, logo: `${site}/assets/logo.svg` },
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Lucra', url: site, inLanguage: lang === 'en' ? 'en-US' : 'sv-SE' },
+];
 ---
 <!doctype html>
 <html lang={lang}>
@@ -24,6 +34,10 @@ const canonical = lang === 'sv' ? svUrl : enUrl;
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#3D506D" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="sv" href={svUrl} />
     <link rel="alternate" hreflang="en" href={enUrl} />
@@ -32,11 +46,23 @@ const canonical = lang === 'sv' ? svUrl : enUrl;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Lucra" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={s.ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image:alt" content={s.ogImageAlt} />
     <link rel="preload" href="/fonts/GeneralSans-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/GeneralSans-500.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Inter-vf.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/PlusJakartaSans-vf.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <SmoothScroll />
