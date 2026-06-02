@@ -247,3 +247,6 @@ html.reveal-ready .cta-section .cta-panel.reveal.in-view { transform: none; }
     transition: none;
   }
 }
+
+/* Panel-stack child entrance — used by the demo panel-stack contract in ProductDemo. */
+@keyframes panelChildIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
