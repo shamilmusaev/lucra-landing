@@ -62,6 +62,7 @@ export function createDemoCursor(): DemoCursor {
       if (!tip || !anchor || !root) return;
       var r = rect(anchor);
       var ox = dx || 0, oy = dy || 0;
+      tip.dataset.side = side === 'right' ? 'right' : 'below';  // aim the pointer arrow
       var left = side === 'right' ? r.right + ox : r.left + ox;
       var top = side === 'right' ? r.top + oy : r.bottom + oy;
       // Keep the pill inside the shell so it never spills past the window edge.

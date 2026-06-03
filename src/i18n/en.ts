@@ -40,7 +40,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoTablistLabel: 'Product demo',
   heroDemoCtaPill: 'Try Lucra',
   heroDemoBadge: 'Preview',
-  heroDemoTabsHint: 'Switch tabs to explore',
   heroTabChat: 'Chat',
   heroTabDashboard: 'Dashboard',
   heroTabDocs: 'Files',

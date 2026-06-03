@@ -38,7 +38,6 @@ export const sv = {
   heroDemoTablistLabel: 'Produktdemo',
   heroDemoCtaPill: 'Testa Lucra',
   heroDemoBadge: 'Förhandsvisning',
-  heroDemoTabsHint: 'Byt flik för att utforska',
   heroTabChat: 'Chatt',
   heroTabDashboard: 'Dashboard',
   heroTabDocs: 'Filer',

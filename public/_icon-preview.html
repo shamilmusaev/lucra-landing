@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Switch-tabs icon — варианты</title>
+<style>
+  :root { --brand:#3D506D; --slate:#64748B; --bg:#F1F5F9; --paper:#FFFFFF; --border:#E2E8F0; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--brand);
+    font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; padding:48px 24px; }
+  h1 { text-align:center; font-size:18px; font-weight:700; margin:0 0 6px; }
+  .sub { text-align:center; color:var(--slate); font-size:13px; margin:0 0 36px; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:880px; margin:0 auto; }
+  .card { background:var(--paper); border:1px solid var(--border); border-radius:18px; padding:30px 22px 24px; text-align:center; }
+  .big { color:var(--brand); height:60px; display:flex; align-items:center; justify-content:center; }
+  .big svg { width:56px; height:56px; }
+  /* mock tab bar, real icon size, real context */
+  .ctx { margin-top:22px; display:inline-flex; align-items:center; gap:2px;
+    background:var(--bg); border:1px solid var(--border); border-radius:999px; padding:5px; }
+  .ctx .t { font-size:12px; font-weight:500; color:var(--slate); padding:7px 13px; border-radius:999px; white-space:nowrap; }
+  .ctx .t.on { background:var(--paper); color:var(--brand); font-weight:600; box-shadow:0 1px 2px rgba(61,80,109,.16); }
+  .ctx .mini { color:var(--brand); display:inline-flex; padding:0 6px; }
+  .ctx .mini svg { width:19px; height:19px; }
+  .lbl { margin-top:18px; font-weight:700; font-size:14px; }
+  .desc { color:var(--slate); font-size:12px; margin-top:4px; }
+  svg { fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ── A · Поток-стрелки: две стрелки непрерывно текут навстречу ── */
+  .a .top { animation:aTop 1.5s ease-in-out infinite; }
+  .a .bot { animation:aBot 1.5s ease-in-out infinite; }
+  @keyframes aTop { 0%{transform:translateX(-5px);opacity:0} 22%{opacity:1} 78%{opacity:1} 100%{transform:translateX(5px);opacity:0} }
+  @keyframes aBot { 0%{transform:translateX(5px);opacity:0} 22%{opacity:1} 78%{opacity:1} 100%{transform:translateX(-5px);opacity:0} }
+
+  /* ── B · Импульс по стрелкам: бегущий пунктир к остриям ── */
+  .b .shaft { stroke-dasharray:5 7; }
+  .b .top { animation:bRight 1s linear infinite; }
+  .b .bot { animation:bLeft 1s linear infinite; }
+  @keyframes bRight { to { stroke-dashoffset:-12; } }
+  @keyframes bLeft  { to { stroke-dashoffset:12; } }
+
+  /* ── C · Мини-переключатель: активная таблетка скользит между вкладками ── */
+  .c .pill { animation:cMove 2.8s cubic-bezier(.5,.05,.2,1) infinite; }
+  @keyframes cMove {
+    0%,14%   { transform:translateX(0); }
+    30%,44%  { transform:translateX(6px); }
+    60%,74%  { transform:translateX(12px); }
+    88%      { transform:translateX(6px); }
+    100%     { transform:translateX(0); }
+  }
+</style></head>
+<body>
+  <h1>Анимированная иконка «переключить вкладки» — 3 варианта</h1>
+  <p class="sub">Смотри живьём (есть motion). Под каждой — как выглядит в реальном размере у вкладок.</p>
+  <div class="grid">
+
+    <div class="card">
+      <div class="big">
+        <svg class="a" viewBox="0 0 24 24">
+          <g class="top"><path d="M4 8h11"/><path d="M12 5l3 3-3 3"/></g>
+          <g class="bot"><path d="M20 16H9"/><path d="M12 13l-3 3 3 3"/></g>
+        </svg>
+      </div>
+      <div class="ctx"><span class="t on">Chatt</span><span class="t">Dashboard</span><span class="t">Filer</span>
+        <span class="mini"><svg class="a" viewBox="0 0 24 24"><g class="top"><path d="M4 8h11"/><path d="M12 5l3 3-3 3"/></g><g class="bot"><path d="M20 16H9"/><path d="M12 13l-3 3 3 3"/></g></svg></span>
+      </div>
+      <div class="lbl">A · Поток-стрелки</div>
+      <div class="desc">две стрелки непрерывно текут навстречу</div>
+    </div>
+
+    <div class="card">
+      <div class="big">
+        <svg class="b" viewBox="0 0 24 24">
+          <path class="shaft top" d="M4 8h11"/><path d="M12 5l3 3-3 3"/>
+          <path class="shaft bot" d="M20 16H9"/><path d="M12 13l-3 3 3 3"/>
+        </svg>
+      </div>
+      <div class="ctx"><span class="t on">Chatt</span><span class="t">Dashboard</span><span class="t">Filer</span>
+        <span class="mini"><svg class="b" viewBox="0 0 24 24"><path class="shaft top" d="M4 8h11"/><path d="M12 5l3 3-3 3"/><path class="shaft bot" d="M20 16H9"/><path d="M12 13l-3 3 3 3"/></svg></span>
+      </div>
+      <div class="lbl">B · Импульс по стрелкам</div>
+      <div class="desc">бегущий пунктир к остриям, как поток данных</div>
+    </div>
+
+    <div class="card">
+      <div class="big">
+        <svg class="c" viewBox="0 0 24 24">
+          <g fill="currentColor" stroke="none" opacity=".4"><circle cx="6" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18" cy="12" r="1.7"/></g>
+          <rect class="pill" x="2.4" y="10.3" width="7.2" height="3.4" rx="1.7" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div class="ctx"><span class="t on">Chatt</span><span class="t">Dashboard</span><span class="t">Filer</span>
+        <span class="mini"><svg class="c" viewBox="0 0 24 24"><g fill="currentColor" stroke="none" opacity=".4"><circle cx="6" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18" cy="12" r="1.7"/></g><rect class="pill" x="2.4" y="10.3" width="7.2" height="3.4" rx="1.7" fill="currentColor" stroke="none"/></svg></span>
+      </div>
+      <div class="lbl">C · Мини-переключатель</div>
+      <div class="desc">активная таблетка скользит между вкладками</div>
+    </div>
+
+  </div>
+</body></html>
