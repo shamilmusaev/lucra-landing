@@ -276,6 +276,26 @@ export const sv = {
   ctaBookDemo: 'Boka demo',
   ctaTryLucra: 'Testa Lucra',
 
+  // Contact form (lives inside the final CTA section)
+  formName: 'Namn',
+  formEmail: 'E-post',
+  formCompany: 'Företag',
+  formCompanyOptional: 'valfritt',
+  formRole: 'Jag är',
+  formRoleBusiness: 'Företagare',
+  formRoleAgency: 'Redovisningsbyrå',
+  formMessage: 'Meddelande',
+  formMessagePlaceholder: 'Berätta kort vad du vill veta …',
+  formSubmit: 'Skicka meddelande',
+  kontaktDemoTitle: 'Hellre prata direkt?',
+  kontaktDemoBody: 'Boka en kort demo så visar vi hur Lucra fungerar med er ekonomi.',
+
+  // Thank-you page (/tack) — Netlify form redirect target
+  tackMetaTitle: 'Tack · Lucra',
+  tackTitle: 'Tack för ditt meddelande!',
+  tackBody: 'Vi har tagit emot din förfrågan och hör av oss så snart vi kan.',
+  tackBackHome: 'Tillbaka till startsidan',
+
   // ---- Upplägg (Pilot & Partner plans for accounting firms) ----
   priTitle: 'Upplägg för redovisningsbyråer',
   priSub: 'Börja med en begränsad pilot och skala sedan Lucra till fler kundbolag när värdet är bevisat.',

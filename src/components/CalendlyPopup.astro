@@ -1,0 +1,47 @@
+---
+// CalendlyPopup — no visible DOM; only the lazy popup loader.
+// Any element with [data-calendly] opens the Calendly scheduling popup on click.
+// Calendly's widget assets load on the FIRST click (not on page load), so the
+// page stays light. Without JS, the element's href still opens Calendly directly.
+---
+<script>
+  const ASSET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
+  const ASSET_JS = 'https://assets.calendly.com/assets/external/widget.js';
+  let loadingPromise: Promise<void> | null = null;
+
+  function loadCalendly(): Promise<void> {
+    if (loadingPromise) return loadingPromise;
+    loadingPromise = new Promise<void>((resolve, reject) => {
+      if (!document.querySelector(`link[href="${ASSET_CSS}"]`)) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = ASSET_CSS;
+        document.head.appendChild(link);
+      }
+      const script = document.createElement('script');
+      script.src = ASSET_JS;
+      script.async = true;
+      script.addEventListener('load', () => resolve());
+      script.addEventListener('error', () => reject(new Error('Calendly failed to load')));
+      document.head.appendChild(script);
+    });
+    return loadingPromise;
+  }
+
+  document.addEventListener('click', (event) => {
+    const trigger = (event.target as Element | null)?.closest('[data-calendly]');
+    if (!trigger) return;
+    const url = trigger.getAttribute('href') || trigger.getAttribute('data-calendly');
+    if (!url) return;
+    event.preventDefault();
+    loadCalendly()
+      .then(() => {
+        const calendly = (window as unknown as { Calendly?: { initPopupWidget: (opts: { url: string }) => void } }).Calendly;
+        if (calendly) calendly.initPopupWidget({ url });
+      })
+      .catch(() => {
+        // Network/asset failure — fall back to opening the scheduling page.
+        window.open(url, '_blank', 'noopener');
+      });
+  });
+</script>

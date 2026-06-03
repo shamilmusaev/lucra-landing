@@ -278,6 +278,26 @@ export const en: { [K in keyof typeof sv]: string } = {
   ctaBookDemo: 'Book a demo',
   ctaTryLucra: 'Try Lucra',
 
+  // Contact form (lives inside the final CTA section)
+  formName: 'Name',
+  formEmail: 'Email',
+  formCompany: 'Company',
+  formCompanyOptional: 'optional',
+  formRole: 'I am',
+  formRoleBusiness: 'Business owner',
+  formRoleAgency: 'Accounting firm',
+  formMessage: 'Message',
+  formMessagePlaceholder: 'Tell us briefly what you want to know …',
+  formSubmit: 'Send message',
+  kontaktDemoTitle: 'Prefer to talk directly?',
+  kontaktDemoBody: 'Book a short demo and we will show how Lucra works with your finances.',
+
+  // Thank-you page (/en/tack) — Netlify form redirect target
+  tackMetaTitle: 'Thank you · Lucra',
+  tackTitle: 'Thank you for your message!',
+  tackBody: 'We have received your request and will get back to you as soon as we can.',
+  tackBackHome: 'Back to the homepage',
+
   // ---- Upplägg (Pilot & Partner plans for accounting firms) ----
   priTitle: 'Plans for accounting firms',
   priSub: 'Start with a limited pilot, then scale Lucra to more client companies once the value is proven.',
