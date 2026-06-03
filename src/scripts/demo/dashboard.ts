@@ -1,4 +1,5 @@
 import { createDemoCursor } from './cursor';
+import { onPanelLive } from './panelGate';
 
 export function initDashboard(): void {
   // Dashboard — count the metric values up from zero, then run a pointer-driven
@@ -99,13 +100,5 @@ export function initDashboard(): void {
     panelEl.scrollTop = 0;
   }
 
-  var wasActive = panelEl.classList.contains('is-active');
-  var observer = new MutationObserver(function() {
-    var active = panelEl.classList.contains('is-active');
-    if (active === wasActive) return;
-    wasActive = active;
-    if (active) play(); else stop();
-  });
-  observer.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
-  if (wasActive) play();
+  onPanelLive(panelEl, play, stop);
 }

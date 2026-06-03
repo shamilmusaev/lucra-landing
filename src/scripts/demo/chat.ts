@@ -1,4 +1,5 @@
 import { createDemoCursor } from './cursor';
+import { onPanelLive } from './panelGate';
 
 export function initChat(): void {
     // Chat scene — a self-playing multi-turn conversation. When the Chat panel
@@ -21,9 +22,6 @@ export function initChat(): void {
     if (!uinTpl || !ainTpl) return;
     var uinTplEl = uinTpl, ainTplEl = ainTpl;
     var TIMES = ['09:24', '09:25', '09:27'];
-    // Real WebGL orbs for answers (disposed on replay so contexts never leak).
-    var liveOrbs: { dispose(): void }[] = [];
-    var orbSeq = 0;
     // The sidebar "live" history row that demonstrates AI title generation.
     var histLive = document.querySelector('[data-hist-live]') as HTMLElement | null;
     // Guided-tour pieces — the shared pointer picks a company in the sidebar
@@ -100,20 +98,12 @@ export function initChat(): void {
       var dots = el.querySelector('.chat-dots') as HTMLElement;
       dots.classList.add('show');
       threadEl.appendChild(el);
-      if (!reduce) {
-        var orbHost = el.querySelector('.ain-orb') as HTMLElement | null;
-        if (orbHost && (window as any).lucraMountAnswerOrb) {
-          orbHost.id = 'ain-orb-' + (++orbSeq);
-          var handle = (window as any).lucraMountAnswerOrb(orbHost.id);
-          if (handle) { liveOrbs.push(handle); orbHost.classList.add('orb-live'); }
-        }
-      }
+      // The answer avatar stays a static CSS ring (.ain-orb::before) — no live
+      // WebGL orb per answer, to keep the chat off the GPU.
       return { ans: ans, dots: dots };
     }
     function reset() {
       clearTimers();
-      liveOrbs.forEach(function(h) { try { h.dispose(); } catch (e) { /* ignore */ } });
-      liveOrbs = [];
       (window as any).lucraChatBusy = false;
       sceneEl.classList.remove('is-typing', 'is-typing2', 'is-sent');
       welcomeTypedEl.textContent = '';
@@ -225,13 +215,5 @@ export function initChat(): void {
       (window as any).lucraChatBusy = false;
     }
 
-    var wasActive = panelEl.classList.contains('is-active');
-    var obs = new MutationObserver(function() {
-      var active = panelEl.classList.contains('is-active');
-      if (active === wasActive) return;
-      wasActive = active;
-      if (active) { play(); } else { gen++; reset(); }
-    });
-    obs.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
-    if (wasActive) play();
+    onPanelLive(panelEl, play, function() { gen++; reset(); });
 }

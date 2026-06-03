@@ -12,7 +12,7 @@ const s = getStrings(lang);
        data-q3={s.heroChatQ3} data-a3={s.heroChatA3}>
     <!-- Welcome / resting state -->
     <div class="chat-welcome">
-      <span class="welcome-orb" id="chat-welcome-orb" aria-hidden="true"></span>
+      <span class="welcome-orb" aria-hidden="true"></span>
       <h2 class="welcome-greeting">{s.heroChatGreeting}</h2>
       <p class="welcome-subtitle" set:html={s.heroChatSubtitle}></p>
       <div class="chat-input">
@@ -80,9 +80,8 @@ const s = getStrings(lang);
 </div>
 
 <style>
-/* Small answer avatar orb — hosts the real WebGL orb (same as the welcome orb,
-   just 28px). The conic ring is only a fallback shown until the orb mounts and
-   under reduced motion; `.orb-live` (added on successful mount) fades it out. */
+/* Small static answer avatar — a PNG snapshot of the real WebGL orb (same
+   shader), so it matches the live welcome orb but costs no GPU. */
 .ain-orb {
   position: relative;
   width: 28px; height: 28px;
@@ -91,15 +90,8 @@ const s = getStrings(lang);
 .ain-orb::before {
   content: "";
   position: absolute; inset: 0;
-  border-radius: 50%;
-  background: conic-gradient(from 210deg, #56B3EB, #4A6B95, #3D506D, #4A6B95, #56B3EB);
-  -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%);
-          mask: radial-gradient(closest-side, transparent 56%, #000 60%);
-  box-shadow: 0 0 10px rgba(86,179,235,.4);
-  transition: opacity .3s ease;
+  background: url(/assets/orb-avatar.png) center / contain no-repeat;
 }
-.ain-orb.orb-live::before { opacity: 0; }
-.ain-orb canvas { display: block; width: 100% !important; height: 100% !important; }
 
 /* ============================================================
    CHAT panel — welcome-home (resting) → auto-typed conversation.
@@ -126,12 +118,17 @@ const s = getStrings(lang);
   visibility: hidden;
   transform: translateY(-10px);
 }
-/* Welcome orb — the real WebGL hero orb (secondary instance mounted by script) */
+/* Welcome orb — static PNG of the real orb; hidden until the demo scrolls into
+   focus (the controller marks the wrap `.tabs-visible`), so it never shows while
+   the demo is only peeking in at the bottom of the page. */
 .welcome-orb {
   width: 96px; height: 96px;
   margin-bottom: 22px;
+  background: url(/assets/orb-avatar.png) center / contain no-repeat;
+  opacity: 0;
+  transition: opacity .5s ease;
 }
-.welcome-orb canvas { display: block; width: 100% !important; height: 100% !important; }
+:global(.hero-chrome-wrap.tabs-visible) .welcome-orb { opacity: 1; }
 .welcome-greeting {
   font-family: var(--font-display);
   font-weight: 700;

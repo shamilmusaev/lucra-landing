@@ -28,7 +28,7 @@ const s = getStrings(lang);
   <div class="ai-insights">
     <div class="ai-head">
       <svg class="ai-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      <span class="ai-orb" id="dash-insights-orb"></span>
+      <span class="ai-orb" aria-hidden="true"></span>
       <span class="ai-titles">
         <span class="ai-title">{s.heroDemoAiTitle}</span>
         <span class="ai-sub">{s.heroDemoAiSubtitle}</span>
@@ -225,24 +225,13 @@ const s = getStrings(lang);
 .ai-head { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 .ai-chev { width: 18px; height: 18px; color: var(--slate-400); flex-shrink: 0; transition: transform .3s ease; }
 .ai-insights.is-collapsed .ai-chev { transform: rotate(-90deg); }
+/* AI Insights orb — static PNG of the real orb (no WebGL); only shown while the
+   dashboard panel is active, which already requires the demo to be in focus. */
 .ai-orb {
-  position: relative;
   width: 32px; height: 32px;
   flex-shrink: 0;
+  background: url(/assets/orb-avatar.png) center / contain no-repeat;
 }
-/* Conic ring shown only until the real WebGL orb mounts (then .orb-live hides it). */
-.ai-orb::before {
-  content: "";
-  position: absolute; inset: 0;
-  border-radius: 50%;
-  background: conic-gradient(from 210deg, #56B3EB, #4A6B95, #3D506D, #4A6B95, #56B3EB);
-  -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%);
-          mask: radial-gradient(closest-side, transparent 56%, #000 60%);
-  box-shadow: 0 0 10px rgba(86,179,235,.4);
-  transition: opacity .3s ease;
-}
-.ai-orb.orb-live::before { opacity: 0; }
-.ai-orb canvas { display: block; width: 100% !important; height: 100% !important; }
 .ai-titles { display: flex; flex-direction: column; }
 .ai-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--brand-primary); }
 .ai-sub { font-size: 12px; font-weight: 500; color: var(--slate-500); }

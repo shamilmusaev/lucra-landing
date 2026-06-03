@@ -11,8 +11,6 @@ import { Renderer, Program, Mesh, Triangle, Vec3 } from 'ogl';
 export interface MountOpts {
   intro?: boolean;
   registerGlobalPulse?: boolean;
-  /** Cap the device-pixel-ratio for tiny orbs (e.g. 1.5 for 28px chat avatars). Default 2. */
-  maxDpr?: number;
 }
 
 export interface OrbHandle {
@@ -24,7 +22,7 @@ export function mountOrb(containerId: string, opts: MountOpts = {}): OrbHandle |
   const container = document.getElementById(containerId);
   if (!container) return null;
 
-  const dprCap = opts.maxDpr ?? 2;
+  const dprCap = 2;
 
   const COLOR_LIGHT = '#56B3EB'; // voiceOrbLight
   const COLOR_START = '#3B82F6'; // voiceOrbStart

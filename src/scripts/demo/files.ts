@@ -1,4 +1,5 @@
 import { createDemoCursor } from './cursor';
+import { onPanelLive } from './panelGate';
 
 export function initFiles(): void {
   // Files — Company / Conversation tabs (file count + total size), plus a
@@ -144,13 +145,5 @@ export function initFiles(): void {
     select('company');
   }
 
-  var wasActive = panelEl.classList.contains('is-active');
-  var observer = new MutationObserver(function() {
-    var active = panelEl.classList.contains('is-active');
-    if (active === wasActive) return;
-    wasActive = active;
-    if (active) play(); else stop();
-  });
-  observer.observe(panelEl, { attributes: true, attributeFilter: ['class'] });
-  if (wasActive) play();
+  onPanelLive(panelEl, play, stop);
 }

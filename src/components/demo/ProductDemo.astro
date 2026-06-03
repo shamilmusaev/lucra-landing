@@ -878,7 +878,6 @@ const s = getStrings(lang);
   import { initFiles } from '../../scripts/demo/files';
   import { initController } from '../../scripts/demo/controller';
   import { initScrollZoom } from '../../scripts/demo/scrollZoom';
-  import { initDemoOrbs } from '../../scripts/demo/orbs';
 
   const wrap = document.querySelector('.hero-chrome-wrap');
   if (wrap) {
@@ -891,7 +890,6 @@ const s = getStrings(lang);
       initChat();
       initController();
       initScrollZoom();
-      initDemoOrbs();
     };
     const io = new IntersectionObserver((entries, obs) => {
       if (entries.some((e) => e.isIntersecting)) { obs.disconnect(); start(); }
