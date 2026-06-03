@@ -4,12 +4,20 @@ import Icon from '../Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
-const cards = [
+const foretagareCards = [
   { icon: 'trending-up', tab: s.forVemCard1Tab, today: s.forVemCard1Today, lucra: s.forVemCard1Lucra },
   { icon: 'message-circle', tab: s.forVemCard2Tab, today: s.forVemCard2Today, lucra: s.forVemCard2Lucra },
   { icon: 'target', tab: s.forVemCard3Tab, today: s.forVemCard3Today, lucra: s.forVemCard3Lucra },
   { icon: 'calendar-clock', tab: s.forVemCard4Tab, today: s.forVemCard4Today, lucra: s.forVemCard4Lucra },
+];
+const byraCards = [
   { icon: 'building-2', tab: s.forVemCard5Tab, today: s.forVemCard5Today, lucra: s.forVemCard5Lucra },
+  { icon: 'clock', tab: s.forVemCard6Tab, today: s.forVemCard6Today, lucra: s.forVemCard6Lucra },
+  { icon: 'shield-check', tab: s.forVemCard7Tab, today: s.forVemCard7Today, lucra: s.forVemCard7Lucra },
+];
+const groups = [
+  { label: s.forVemGroupForetagare, cards: foretagareCards },
+  { label: s.forVemGroupByra, cards: byraCards },
 ];
 ---
 
@@ -21,24 +29,31 @@ const cards = [
       <a class="btn btn-primary btn-lg fv-cta" href="[CALENDLY_URL]">{s.forVemCta}</a>
     </aside>
 
-    <div class="fv-stack">
-      {cards.map((card, index) => (
-        <article class="fv-card" style={`--i:${index}`}>
-          <span class="fv-tab">
-            <Icon name={card.icon} size={15} stroke={2} />
-            {card.tab}
-          </span>
-          <div class="fv-body">
-            <div class="fv-block fv-block-today">
-              <span class="fv-blocklabel fv-today-label">{s.forVemTodayLabel}</span>
-              <p class="fv-text fv-today">{card.today}</p>
-            </div>
-            <div class="fv-block fv-block-lucra">
-              <span class="fv-blocklabel fv-lucra-label">{s.forVemLucraLabel}</span>
-              <p class="fv-text fv-lucra">{card.lucra}</p>
-            </div>
+    <div class="fv-groups">
+      {groups.map((group) => (
+        <div class="fv-group">
+          <span class="section-eyebrow fv-grouplabel reveal">{group.label}</span>
+          <div class="fv-stack">
+            {group.cards.map((card, index) => (
+              <article class="fv-card" style={`--i:${index}`}>
+                <span class="fv-tab">
+                  <Icon name={card.icon} size={15} stroke={2} />
+                  {card.tab}
+                </span>
+                <div class="fv-body">
+                  <div class="fv-block fv-block-today">
+                    <span class="fv-blocklabel fv-today-label">{s.forVemTodayLabel}</span>
+                    <p class="fv-text fv-today">{card.today}</p>
+                  </div>
+                  <div class="fv-block fv-block-lucra">
+                    <span class="fv-blocklabel fv-lucra-label">{s.forVemLucraLabel}</span>
+                    <p class="fv-text fv-lucra">{card.lucra}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
-        </article>
+        </div>
       ))}
     </div>
   </div>
@@ -55,7 +70,25 @@ const cards = [
   align-items: start;
 }
 
-.fv-stack { order: 1; }
+/* Left column: two audience groups stacked vertically */
+.fv-groups {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  /* Generous gap so the first group's last card unpins before the next label */
+  gap: clamp(56px, 8vw, 120px);
+}
+
+.fv-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Audience label sits in normal flow above its stack (scrolls, not pinned) */
+.fv-grouplabel {
+  align-self: flex-start;
+  margin-bottom: 24px;
+}
 
 /* Right column pins while the card stack scrolls past */
 .fv-aside {
@@ -189,9 +222,9 @@ const cards = [
 
 @media (max-width: 860px) {
   .fv-layout { grid-template-columns: 1fr; }
-  /* Restore source order: heading first, cards below */
+  /* Restore source order: heading first, grouped cards below */
   .fv-aside { order: 0; position: static; }
-  .fv-stack { order: 0; }
+  .fv-groups { order: 1; gap: clamp(40px, 9vw, 64px); }
   .fv-card { position: static; }
   .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
 }
@@ -207,12 +240,17 @@ const cards = [
   // As each card pins, the next one rising over it makes it shrink + dim —
   // the covered card recedes into depth while the new one lays on top.
   const section = document.getElementById('for-vem');
-  const cards = section
-    ? Array.from(section.querySelectorAll<HTMLElement>('.fv-card'))
+  // Each group is its own stack; the recede effect must stay within a stack so
+  // the last företagare card doesn't react to the first byrå card across the gap.
+  const stacks = section
+    ? Array.from(section.querySelectorAll<HTMLElement>('.fv-stack')).map((stack) =>
+        Array.from(stack.querySelectorAll<HTMLElement>('.fv-card')),
+      )
     : [];
+  const allCards = stacks.flat();
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (cards.length > 1 && !reduce) {
+  if (allCards.length > 1 && !reduce) {
     const PIN = 120; // must match .fv-card top
     const COVER = 440; // distance over which the previous card recedes
     let active = false;
@@ -221,22 +259,24 @@ const cards = [
     const frame = (): void => {
       ticking = false;
       // Only run the stack effect while cards are actually sticky (desktop)
-      if (window.getComputedStyle(cards[0]).position !== 'sticky') {
-        cards.forEach((card) => {
+      if (window.getComputedStyle(allCards[0]).position !== 'sticky') {
+        allCards.forEach((card) => {
           card.style.transform = '';
         });
         return;
       }
-      for (let index = 0; index < cards.length; index++) {
-        const next = cards[index + 1];
-        let progress = 0;
-        if (next) {
-          const nextTop = next.getBoundingClientRect().top;
-          progress = Math.min(1, Math.max(0, 1 - (nextTop - PIN) / COVER));
+      for (const cards of stacks) {
+        for (let index = 0; index < cards.length; index++) {
+          const next = cards[index + 1];
+          let progress = 0;
+          if (next) {
+            const nextTop = next.getBoundingClientRect().top;
+            progress = Math.min(1, Math.max(0, 1 - (nextTop - PIN) / COVER));
+          }
+          const scale = 1 - progress * 0.05;
+          const lift = -progress * 14;
+          cards[index].style.transform = `translateY(${lift}px) scale(${scale})`;
         }
-        const scale = 1 - progress * 0.05;
-        const lift = -progress * 14;
-        cards[index].style.transform = `translateY(${lift}px) scale(${scale})`;
       }
     };
 

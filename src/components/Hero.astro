@@ -46,7 +46,7 @@ const s = getStrings(lang);
     </p>
     <div class="hero-ctas reveal delay-2">
       <span class="cta-frame">
-        <a class="btn btn-primary btn-lg" href="/signup">
+        <a class="btn btn-primary btn-lg" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
           {s.heroCtaPrimary}
           <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
@@ -552,11 +552,11 @@ const s = getStrings(lang);
 
     // Ordered hero-copy targets (relative to .hero-inner) — lit radially by the
     // shockwave. The dashboard is intentionally excluded (stays put / on scroll).
-    var SELECTORS = ['.hero-pill', 'h1', '.hero-sub', '.hero-ctas', '.hero-chrome-wrap'];
+    var SELECTORS = ['.hero-pill', 'h1', '.hero-sub', '.hero-ctas'];
     var w = window as any;
 
     function revealAll() {
-      var els = heroEl.querySelectorAll('.hero-inner > .reveal, .hero-chrome-wrap');
+      var els = heroEl.querySelectorAll('.hero-inner > .reveal');
       for (var i = 0; i < els.length; i++) els[i].classList.add('lucra-lit');
     }
 

@@ -8,10 +8,10 @@ export const sv = {
   navProductFeaturesLabel: 'Funktioner',
   navProductFeaturesTitle: 'Funktioner',
   navProductFeaturesDesc: 'AI-assistenten som förstår din ekonomi',
-  navProductHowTitle: 'Så funkar det',
-  navProductHowDesc: 'Från fråga till svar med din faktiska data',
-  navProductIntegrationsTitle: 'Integrationer',
-  navProductIntegrationsDesc: 'Koppla Fortnox, banker och fler system',
+  navProductCompareTitle: 'Jämförelse',
+  navProductCompareDesc: 'Lucra mot ChatGPT, sida vid sida',
+  navProductPricingTitle: 'Upplägg',
+  navProductPricingDesc: 'Hitta upplägget som passar din byrå',
   navProductSecurityTitle: 'Säkerhet',
   navProductSecurityDesc: 'Svensk datahantering, GDPR-säkert',
   navPromoEyebrow: 'Lucra för byråer',
@@ -19,18 +19,7 @@ export const sv = {
   navPromoDesc: 'Alla klienter, ett gränssnitt.',
   navPromoLink: 'Läs mer',
 
-  navResources: 'Resurser',
-  navResourcesBlogTitle: 'Blogg',
-  navResourcesBlogDesc: 'Insikter om ekonomi och AI',
-  navResourcesGuidesTitle: 'Guider',
-  navResourcesGuidesDesc: 'Kom igång och få ut mer',
-  navResourcesHelpTitle: 'Hjälpcenter',
-  navResourcesHelpDesc: 'Svar på vanliga frågor',
-  navResourcesStoriesTitle: 'Kundberättelser',
-  navResourcesStoriesDesc: 'Hur andra använder Lucra',
-
-  navNews: 'Nyheter',
-  navAbout: 'Om oss',
+  navBlog: 'Blogg',
   navContact: 'Kontakt',
 
   navLogin: 'Logga in',
@@ -48,6 +37,8 @@ export const sv = {
   // Product demo window – tabs
   heroDemoTablistLabel: 'Produktdemo',
   heroDemoCtaPill: 'Testa Lucra',
+  heroDemoBadge: 'Förhandsvisning',
+  heroDemoTabsHint: 'Byt flik för att utforska',
   heroTabChat: 'Chatt',
   heroTabDashboard: 'Dashboard',
   heroTabDocs: 'Filer',
@@ -62,7 +53,7 @@ export const sv = {
   heroDemoHistoryToday: 'Idag',
   heroDemoHistoryYesterday: 'Igår',
   heroDemoChatDefault: 'Ny konversation',
-  heroChatTitleGenerated: 'Alma AB – översikt april',
+  heroChatTitleGenerated: 'Demobolaget AB – översikt april',
   heroDemoChatRecent1: 'Kassaflöde i april',
   heroDemoChatRecent2: 'Förfallna fakturor',
   heroDemoChatRecent3: 'Moms Q2',
@@ -89,7 +80,7 @@ export const sv = {
   heroDemoChartTitle: 'Intäkter mot kostnader',
 
   // Product demo window – chat panel (welcome-home + auto-typed conversation)
-  heroChatGreeting: 'God morgon, Erik',
+  heroChatGreeting: 'God morgon, Demo',
   heroChatSubtitle: 'Hur kan jag hjälpa dig med din <span class="g">ekonomi</span> idag?',
   heroChatPlaceholder: 'Fråga om resultat, kassaflöde eller rapporter…',
   heroChatCoSearch: 'Sök företag…',
@@ -99,19 +90,19 @@ export const sv = {
   heroChatCoUnlinked: 'Ej ansluten',
   heroChatCoManage: 'Hantera företag',
   heroChatTourTip1: 'Välj först vilket bolag du vill prata om – Lucra läser bokföringen åt dig.',
-  heroChatTourTip2: 'Alla dina bolag samlade på ett ställe. Vi väljer Alma AB.',
+  heroChatTourTip2: 'Alla dina bolag samlade på ett ställe. Vi väljer Demobolaget AB.',
   heroChatChip1Title: 'Registrering',
   heroChatChip1Desc: 'Hur man registrerar ett nytt företag i Sverige.',
   heroChatChip2Title: 'Finansiell analys',
   heroChatChip2Desc: 'Förstå din kassaflödesanalys.',
   heroChatChip3Title: 'Skattedeadlines',
   heroChatChip3Desc: 'Kommande inlämningsdatum för småföretag.',
-  heroChatAutoQ: 'Hur ser ekonomin ut för Alma AB den här månaden?',
-  heroChatAutoA: 'Här är en snabb översikt för <strong>Alma AB</strong> i april:<ul><li><strong>Intäkter:</strong> upp 12,5 %, drivet av tre nya företagsavtal på 85 000 SEK.</li><li><strong>Kostnader:</strong> ned 5,2 % tack vare lägre SaaS-utgifter.</li><li><strong>Att bevaka:</strong> 3 förfallna fakturor på totalt 42 000 SEK.</li></ul>',
+  heroChatAutoQ: 'Hur ser ekonomin ut för Demobolaget AB den här månaden?',
+  heroChatAutoA: 'Här är en snabb översikt för <strong>Demobolaget AB</strong> i april:<ul><li><strong>Intäkter:</strong> upp 12,5 %, drivet av tre nya företagsavtal på 85 000 SEK.</li><li><strong>Kostnader:</strong> ned 5,2 % tack vare lägre SaaS-utgifter.</li><li><strong>Att bevaka:</strong> 3 förfallna fakturor på totalt 42 000 SEK.</li></ul>',
   heroChatQ2: 'Hur ser kassaflödet ut just nu?',
   heroChatA2: 'Kassaflödet är <strong>positivt</strong> med <strong>+84 200 SEK</strong> i april. Tre fakturor på totalt <strong>142 000 SEK</strong> är obetalda och förfaller inom 12 dagar.',
   heroChatQ3: 'Vilka kunder ligger efter med betalningen?',
-  heroChatA3: 'Tre kunder har förfallna fakturor: <strong>Nordstream AB</strong> (48 500 SEK), <strong>Pixelbit Studio</strong> (62 000 SEK) och <strong>Klangstudio</strong> (31 500 SEK). Vill du att jag skickar påminnelser?',
+  heroChatA3: 'Tre kunder har förfallna fakturor: <strong>Saga Bygg AB</strong> (48 500 SEK), <strong>Lindberg Studio</strong> (62 000 SEK) och <strong>Klangverkstan</strong> (31 500 SEK). Vill du att jag skickar påminnelser?',
 
   // Product demo window – files panel
   heroDemoFilesTitle: 'Filer & dokument',
@@ -165,6 +156,7 @@ export const sv = {
   cmpRow7Label: 'Byråkontroll',
   cmpRow7Lucra: 'Kan eskalera frågor till konsult vid behov',  cmpRow7GenAi: 'Ingen koppling till din byrå',
   cmpRow7Status: 'Mejl och telefon fram och tillbaka',
+  cmpNote: 'Lucra ska inte bara hålla med. Lucra ska hjälpa användaren att förstå när något verkar fel, oklart eller behöver granskas av en människa.',
 
   // ---- Feature showcase (cards: Remotion loop video on top, copy below) ----
   showcaseTitle: 'Verktygen som ger dig kontroll över bolaget',
@@ -172,33 +164,32 @@ export const sv = {
   // Card 1 – AI chat
   showcaseCard1Title: 'Fråga vad du vill – få svar direkt',
   showcaseCard1Body: 'Ställ frågor på vanlig svenska om resultat, kassaflöde och rapporter. Lucra läser din bokföring och svarar på sekunder – utan formler, utan väntan.',
-  showcaseCard1Pill: 'AI-chatt',
   showcaseCard1Alt: 'Lucras AI-chatt svarar på en fråga om kvartalet, direkt från din bokföring.',
   // Card 2 – Dashboard
   showcaseCard2Title: 'Se hela läget i realtid',
   showcaseCard2Body: 'Intäkter, kostnader, resultat och likviditet – uppdaterat automatiskt från din bokföring, så du ser läget på sekunder.',
-  showcaseCard2Pill: 'Dashboard',
   showcaseCard2Alt: 'Lucras dashboard med nyckeltal och en intäkts- och kostnadsgraf som uppdateras automatiskt.',
   // Card 3 – Documents
   showcaseCard3Title: 'Lägg in dina underlag – Lucra läser dem',
   showcaseCard3Body: 'Ladda upp fakturor, kvitton och rapporter. Lucra läser dem och svarar på dina frågor utifrån innehållet – direkt i chatten.',
-  showcaseCard3Pill: 'Dokument',
   showcaseCard3Alt: 'Lucra läser uppladdade underlag och svarar på frågor om dem i chatten.',
   // Card 4 – Fortnox sync
   showcaseCard4Title: 'Byggd på din faktiska bokföring',
   showcaseCard4Body: 'Lucra kopplas till Fortnox och läser dina riktiga siffror i realtid – verifikat, moms och resultat. Inga gissningar, alltid aktuellt.',
-  showcaseCard4Pill: 'Integrationer',
   showcaseCard4Alt: 'Lucra synkar verifikat, moms och resultat från Fortnox i realtid.',
   // Carousel navigation
   showcaseNavPrev: 'Föregående',
   showcaseNavNext: 'Nästa',
 
   // ---- ForVem (Task 11) – stacking situation cards ----
-  forVemTitle: 'Dina siffror, begripliga varje dag.',
-  forVemSub: 'Lucra tar vardagens frågor om siffror, moms och kassaflöde – för företagaren och för byrån. En gemensam kärna, två perspektiv på samma bolag.',
+  forVemTitle: 'Företagare ska inte behöva känna sig osäkra på sin ekonomi',
+  forVemSub: 'Många företagare har enkla men viktiga frågor om bokföring, moms, lön och resultat. Frågorna är ofta för små för ett formellt möte med byrån, men för viktiga för att ignorera. Resultatet blir oro för företagaren och repetitiv support för redovisningsbyrån.',
   forVemCta: 'Boka demo',
   forVemTodayLabel: 'Idag',
   forVemLucraLabel: 'Med Lucra',
+  // Group labels – split the stack by audience
+  forVemGroupForetagare: 'För företagare',
+  forVemGroupByra: 'För redovisningsbyråer',
   // Card 1 – Understand the numbers
   forVemCard1Tab: 'Siffror',
   forVemCard1Today: 'Rapporten kommer varje månad, men vad betyder den egentligen? Du gissar dig fram – eller låter den ligga oläst.',
@@ -219,6 +210,14 @@ export const sv = {
   forVemCard5Tab: 'Byrån',
   forVemCard5Today: 'Konsulterna lägger timmar på samma enkla frågor varje månad – tid som är svår att fakturera.',
   forVemCard5Lucra: 'Lucra tar de återkommande frågorna, så att byrån kan lägga tiden på kvalificerad rådgivning.',
+  // Card 6 – Availability for the firm's clients
+  forVemCard6Tab: 'Tillgänglighet',
+  forVemCard6Today: 'Kunderna hör av sig med småfrågor när som helst – det avbryter arbetet och svaren dröjer tills någon hinner.',
+  forVemCard6Lucra: 'Kunden får svar direkt, dygnet runt, på sin egen data. Byrån slipper bli avbruten för frågor som Lucra redan kan svara på.',
+  // Card 7 – Answers grounded in the client's real books
+  forVemCard7Tab: 'Underlag',
+  forVemCard7Today: 'Generiska AI-verktyg gissar utan att känna kundens bokföring – svaren går inte att lita på i rådgivningen.',
+  forVemCard7Lucra: 'Varje svar bygger på kundens egna siffror från Fortnox (läsåtkomst) – byrån kan lita på att underlaget stämmer.',
 
 
   // ---- Integrationer (Task 13) ----
@@ -236,7 +235,7 @@ export const sv = {
   integrationerTile6: 'Skatteverket',
 
   // ---- Säkerhet (Task 14) ----
-  sakerhetTitle: 'Dina data är trygga.',
+  sakerhetTitle: 'Din data är trygg.',
   sakerhetSub: 'Bygger man fintech bygger man också säkerhet från första raden kod. Lucra följer svenska och europeiska regelverk och håller dina underlag inom EU.',
   sakerhetCard1Title: 'GDPR-efterlevnad',
   sakerhetCard1Body: 'Personuppgifter behandlas enligt GDPR. Tydliga roller, samtycke och utlämnande av data på begäran.',
@@ -316,13 +315,11 @@ export const sv = {
   footerColAccount: 'Konto',
   // Product column links
   footerLinkFeatures: 'Funktioner',
-  footerLinkHowItWorks: 'Så funkar det',
-  footerLinkIntegrations: 'Integrationer',
+  footerLinkCompare: 'Jämförelse',
+  footerLinkPricing: 'Upplägg',
   footerLinkSecurity: 'Säkerhet',
   // Company column links
-  footerLinkAbout: 'Om oss',
   footerLinkContact: 'Kontakt',
-  footerLinkCareers: 'Karriär',
   footerLinkBookDemo: 'Boka demo',
   // Legal column links
   footerLinkPrivacy: 'Integritetspolicy',

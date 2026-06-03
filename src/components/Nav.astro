@@ -31,18 +31,18 @@ const s = getStrings(lang);
                   <span class="mega-row-d">{s.navProductFeaturesDesc}</span>
                 </span>
               </a>
-              <a class="mega-row" href="#sa-funkar-det">
-                <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span>
+              <a class="mega-row" href="#jamforelse">
+                <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 3v18"/></svg></span>
                 <span class="mega-row-tx">
-                  <span class="mega-row-t">{s.navProductHowTitle}</span>
-                  <span class="mega-row-d">{s.navProductHowDesc}</span>
+                  <span class="mega-row-t">{s.navProductCompareTitle}</span>
+                  <span class="mega-row-d">{s.navProductCompareDesc}</span>
                 </span>
               </a>
-              <a class="mega-row" href="#integrationer">
-                <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></span>
+              <a class="mega-row" href="#upplagg">
+                <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
                 <span class="mega-row-tx">
-                  <span class="mega-row-t">{s.navProductIntegrationsTitle}</span>
-                  <span class="mega-row-d">{s.navProductIntegrationsDesc}</span>
+                  <span class="mega-row-t">{s.navProductPricingTitle}</span>
+                  <span class="mega-row-d">{s.navProductPricingDesc}</span>
                 </span>
               </a>
               <a class="mega-row" href="#sakerhet">
@@ -66,43 +66,14 @@ const s = getStrings(lang);
         </div>
       </div>
 
-      <!-- RESURSER — simple dropdown (placeholder hrefs) -->
-      <div class="nav-item has-menu" data-menu="resurser">
-        <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-resurser">
-          {s.navResources}
-          <svg class="nav-caret" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
-        </button>
-        <div class="nav-dropdown" id="menu-resurser" role="region" aria-label={s.navResources}>
-          <div class="menu-inner">
-            <a class="menu-row" href="#">
-              <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M21 3v17a1 1 0 0 1-1 1H4a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1h3"/><rect width="8" height="4" x="10" y="3" rx="1"/></svg></span>
-              <span class="mega-row-tx"><span class="menu-row-t">{s.navResourcesBlogTitle}</span><span class="menu-row-d">{s.navResourcesBlogDesc}</span></span>
-            </a>
-            <a class="menu-row" href="#">
-              <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>
-              <span class="mega-row-tx"><span class="menu-row-t">{s.navResourcesGuidesTitle}</span><span class="menu-row-d">{s.navResourcesGuidesDesc}</span></span>
-            </a>
-            <a class="menu-row" href="#">
-              <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg></span>
-              <span class="mega-row-tx"><span class="menu-row-t">{s.navResourcesHelpTitle}</span><span class="menu-row-d">{s.navResourcesHelpDesc}</span></span>
-            </a>
-            <a class="menu-row" href="#">
-              <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-              <span class="mega-row-tx"><span class="menu-row-t">{s.navResourcesStoriesTitle}</span><span class="menu-row-d">{s.navResourcesStoriesDesc}</span></span>
-            </a>
-          </div>
-        </div>
-      </div>
-
       <!-- Simple top-level links -->
-      <a class="nav-link" href="#">{s.navNews}</a>
-      <a class="nav-link" href="#">{s.navAbout}</a>
+      <a class="nav-link" href="/blogg">{s.navBlog}</a>
       <a class="nav-link" href="#">{s.navContact}</a>
     </div>
     </div>
     <div class="nav-right">
-      <a class="btn btn-ghost" href="/login">{s.navLogin}</a>
-      <a class="btn btn-primary" href="/signup">
+      <a class="btn btn-ghost" href="https://app.staging.lucra-app.ai/login">{s.navLogin}</a>
+      <a class="btn btn-primary" href="https://app.staging.lucra-app.ai/signup">
         {s.navGetStarted}
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
@@ -263,7 +234,7 @@ const s = getStrings(lang);
 /* Invisible hover bridge across the 14px gap so the pointer never hits dead air. */
 .nav-dropdown::before { content: ""; position: absolute; left: 0; right: 0; top: -16px; height: 16px; }
 
-.menu-inner, .mega-inner {
+.mega-inner {
   background: rgba(255,255,255,0.94);
   -webkit-backdrop-filter: blur(18px) saturate(180%);
           backdrop-filter: blur(18px) saturate(180%);
@@ -279,16 +250,15 @@ const s = getStrings(lang);
   width: 552px;
   max-width: calc(100vw - 32px);
 }
-.menu-inner { width: 276px; display: flex; flex-direction: column; gap: 1px; }
 .mega-col { display: flex; flex-direction: column; gap: 1px; }
 
-.mega-row, .menu-row {
+.mega-row {
   display: flex; align-items: center; gap: 11px;
   padding: 9px 10px;
   border-radius: var(--radius-lg);
   transition: background .15s ease;
 }
-.mega-row:hover, .menu-row:hover { background: var(--accent-light); }
+.mega-row:hover { background: var(--accent-light); }
 .mega-row-ic {
   width: 34px; height: 34px; flex: none;
   border-radius: 10px;
@@ -300,14 +270,14 @@ const s = getStrings(lang);
   transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
 }
 .mega-row-ic svg { width: 18px; height: 18px; }
-.mega-row:hover .mega-row-ic, .menu-row:hover .mega-row-ic {
+.mega-row:hover .mega-row-ic {
   background: linear-gradient(150deg, #ffffff, var(--accent-light));
   border-color: rgba(61,80,109,.16);
   transform: translateY(-1px);
 }
 .mega-row-tx { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.mega-row-t, .menu-row-t { font-family: var(--font-display); font-size: 13.5px; font-weight: 500; color: var(--brand-primary); }
-.mega-row-d, .menu-row-d { font-size: 12px; color: var(--slate-500); line-height: 1.4; }
+.mega-row-t { font-family: var(--font-display); font-size: 13.5px; font-weight: 500; color: var(--brand-primary); }
+.mega-row-d { font-size: 12px; color: var(--slate-500); line-height: 1.4; }
 .mega-label {
   font-family: var(--font-display);
   font-size: 10.5px; font-weight: 700;

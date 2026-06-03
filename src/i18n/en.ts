@@ -10,10 +10,10 @@ export const en: { [K in keyof typeof sv]: string } = {
   navProductFeaturesLabel: 'Features',
   navProductFeaturesTitle: 'Features',
   navProductFeaturesDesc: 'The AI assistant that understands your finances',
-  navProductHowTitle: 'How it works',
-  navProductHowDesc: 'From question to answer with your real data',
-  navProductIntegrationsTitle: 'Integrations',
-  navProductIntegrationsDesc: 'Connect Fortnox, Skatteverket and more systems',
+  navProductCompareTitle: 'Comparison',
+  navProductCompareDesc: 'Lucra vs ChatGPT, side by side',
+  navProductPricingTitle: 'Plans',
+  navProductPricingDesc: 'Find the plan that fits your firm',
   navProductSecurityTitle: 'Security',
   navProductSecurityDesc: 'Swedish data handling, GDPR-safe',
   navPromoEyebrow: 'Lucra for firms',
@@ -21,18 +21,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   navPromoDesc: 'All clients, one interface.',
   navPromoLink: 'Learn more',
 
-  navResources: 'Resources',
-  navResourcesBlogTitle: 'Blog',
-  navResourcesBlogDesc: 'Insights on finance and AI',
-  navResourcesGuidesTitle: 'Guides',
-  navResourcesGuidesDesc: 'Get started and get more out of it',
-  navResourcesHelpTitle: 'Help center',
-  navResourcesHelpDesc: 'Answers to common questions',
-  navResourcesStoriesTitle: 'Customer stories',
-  navResourcesStoriesDesc: 'How others use Lucra',
-
-  navNews: 'News',
-  navAbout: 'About us',
+  navBlog: 'Blog',
   navContact: 'Contact',
 
   navLogin: 'Log in',
@@ -50,6 +39,8 @@ export const en: { [K in keyof typeof sv]: string } = {
   // Product demo window – tabs
   heroDemoTablistLabel: 'Product demo',
   heroDemoCtaPill: 'Try Lucra',
+  heroDemoBadge: 'Preview',
+  heroDemoTabsHint: 'Switch tabs to explore',
   heroTabChat: 'Chat',
   heroTabDashboard: 'Dashboard',
   heroTabDocs: 'Files',
@@ -64,7 +55,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoHistoryToday: 'Today',
   heroDemoHistoryYesterday: 'Yesterday',
   heroDemoChatDefault: 'New conversation',
-  heroChatTitleGenerated: 'Alma AB – April overview',
+  heroChatTitleGenerated: 'Demobolaget AB – April overview',
   heroDemoChatRecent1: 'Cash flow in April',
   heroDemoChatRecent2: 'Overdue invoices',
   heroDemoChatRecent3: 'VAT Q2',
@@ -91,7 +82,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoChartTitle: 'Income vs Expenses',
 
   // Product demo window – chat panel (welcome-home + auto-typed conversation)
-  heroChatGreeting: 'Good morning, Erik',
+  heroChatGreeting: 'Good morning, Demo',
   heroChatSubtitle: 'How can I help with your <span class="g">finances</span> today?',
   heroChatPlaceholder: 'Ask about results, cash flow or reports…',
   heroChatCoSearch: 'Search companies…',
@@ -101,19 +92,19 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroChatCoUnlinked: 'Not connected',
   heroChatCoManage: 'Manage companies',
   heroChatTourTip1: 'First pick which company you want to talk about – Lucra reads the books for you.',
-  heroChatTourTip2: 'All your companies in one place. We’ll pick Alma AB.',
+  heroChatTourTip2: 'All your companies in one place. We’ll pick Demobolaget AB.',
   heroChatChip1Title: 'Registration',
   heroChatChip1Desc: 'How to register a new company in Sweden.',
   heroChatChip2Title: 'Financial analysis',
   heroChatChip2Desc: 'Understanding your cash flow statement.',
   heroChatChip3Title: 'Tax deadlines',
   heroChatChip3Desc: 'Upcoming tax submission dates for small businesses.',
-  heroChatAutoQ: 'How are the finances for Alma AB this month?',
-  heroChatAutoA: 'A quick overview for <strong>Alma AB</strong> in April:<ul><li><strong>Revenue:</strong> up 12.5%, driven by three new business deals worth 85,000 SEK.</li><li><strong>Costs:</strong> down 5.2% thanks to lower SaaS spend.</li><li><strong>Watch:</strong> 3 overdue invoices totaling 42,000 SEK.</li></ul>',
+  heroChatAutoQ: 'How are the finances for Demobolaget AB this month?',
+  heroChatAutoA: 'A quick overview for <strong>Demobolaget AB</strong> in April:<ul><li><strong>Revenue:</strong> up 12.5%, driven by three new business deals worth 85,000 SEK.</li><li><strong>Costs:</strong> down 5.2% thanks to lower SaaS spend.</li><li><strong>Watch:</strong> 3 overdue invoices totaling 42,000 SEK.</li></ul>',
   heroChatQ2: 'How does cash flow look right now?',
   heroChatA2: 'Cash flow is <strong>positive</strong> at <strong>+84,200 SEK</strong> in April. Three invoices totaling <strong>142,000 SEK</strong> are unpaid and due within 12 days.',
   heroChatQ3: 'Which customers are behind on payments?',
-  heroChatA3: 'Three customers have overdue invoices: <strong>Nordstream AB</strong> (48,500 SEK), <strong>Pixelbit Studio</strong> (62,000 SEK) and <strong>Klangstudio</strong> (31,500 SEK). Want me to send reminders?',
+  heroChatA3: 'Three customers have overdue invoices: <strong>Saga Bygg AB</strong> (48,500 SEK), <strong>Lindberg Studio</strong> (62,000 SEK) and <strong>Klangverkstan</strong> (31,500 SEK). Want me to send reminders?',
 
   // Product demo window – files panel
   heroDemoFilesTitle: 'Files & Assets',
@@ -167,6 +158,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   cmpRow7Label: 'Accounting-firm control',
   cmpRow7Lucra: 'Can escalate questions to a consultant when needed',  cmpRow7GenAi: 'No connection to your accounting firm',
   cmpRow7Status: 'Email and phone back and forth',
+  cmpNote: 'Lucra should not just agree. Lucra should help the user understand when something seems wrong, unclear or needs to be reviewed by a human.',
 
   // ---- Feature showcase (cards: Remotion loop video on top, copy below) ----
   showcaseTitle: 'The tools that put you in control of your business',
@@ -174,33 +166,32 @@ export const en: { [K in keyof typeof sv]: string } = {
   // Card 1 – AI chat
   showcaseCard1Title: 'Ask anything – get answers instantly',
   showcaseCard1Body: 'Ask in plain language about results, cash flow and reports. Lucra reads your books and answers in seconds – no formulas, no waiting.',
-  showcaseCard1Pill: 'AI chat',
   showcaseCard1Alt: 'Lucra AI chat answering a question about the quarter, straight from your bookkeeping.',
   // Card 2 – Dashboard
   showcaseCard2Title: 'See the whole picture in real time',
   showcaseCard2Body: 'Revenue, costs, result and liquidity – updated automatically from your bookkeeping, so you grasp the situation in seconds.',
-  showcaseCard2Pill: 'Dashboard',
   showcaseCard2Alt: 'Lucra dashboard with key metrics and a revenue-vs-costs chart updating automatically.',
   // Card 3 – Documents
   showcaseCard3Title: 'Add your documents – Lucra reads them',
   showcaseCard3Body: 'Upload invoices, receipts and reports. Lucra reads them and answers your questions based on their content – right in the chat.',
-  showcaseCard3Pill: 'Documents',
   showcaseCard3Alt: 'Lucra reads uploaded documents and answers questions about them in the chat.',
   // Card 4 – Fortnox sync
   showcaseCard4Title: 'Built on your real bookkeeping',
   showcaseCard4Body: 'Lucra connects to Fortnox and reads your real numbers in real time – entries, VAT and results. No guesses, always up to date.',
-  showcaseCard4Pill: 'Integrations',
   showcaseCard4Alt: 'Lucra syncs entries, VAT and results from Fortnox in real time.',
   // Carousel navigation
   showcaseNavPrev: 'Previous',
   showcaseNavNext: 'Next',
 
   // ---- ForVem (Task 11) – stacking situation cards ----
-  forVemTitle: 'Your numbers, clear every day.',
-  forVemSub: 'Lucra handles everyday questions about numbers, VAT and cash flow – for the business owner and for the firm. One shared core, two views of the same business.',
+  forVemTitle: "Business owners shouldn't have to feel unsure about their finances",
+  forVemSub: 'Many business owners have simple but important questions about bookkeeping, VAT, payroll and results. The questions are often too small for a formal meeting with the firm, but too important to ignore. The result is worry for the owner and repetitive support for the accounting firm.',
   forVemCta: 'Book a demo',
   forVemTodayLabel: 'Today',
   forVemLucraLabel: 'With Lucra',
+  // Group labels – split the stack by audience
+  forVemGroupForetagare: 'For business owners',
+  forVemGroupByra: 'For accounting firms',
   // Card 1 – Understand the numbers
   forVemCard1Tab: 'Numbers',
   forVemCard1Today: 'The report arrives every month, but what does it actually mean? You guess – or leave it unread.',
@@ -221,6 +212,14 @@ export const en: { [K in keyof typeof sv]: string } = {
   forVemCard5Tab: 'The firm',
   forVemCard5Today: "Consultants spend hours on the same simple questions every month – time that's hard to bill.",
   forVemCard5Lucra: 'Lucra takes the recurring questions, so the firm can spend its time on qualified advisory.',
+  // Card 6 – Availability for the firm's clients
+  forVemCard6Tab: 'Availability',
+  forVemCard6Today: 'Clients reach out with small questions at any hour – it interrupts the work and answers wait until someone has time.',
+  forVemCard6Lucra: "Clients get answers right away, around the clock, on their own data. The firm avoids being interrupted for questions Lucra can already handle.",
+  // Card 7 – Answers grounded in the client's real books
+  forVemCard7Tab: 'Source data',
+  forVemCard7Today: "Generic AI tools guess without knowing the client's books – the answers can't be trusted in advisory.",
+  forVemCard7Lucra: "Every answer is built on the client's own figures from Fortnox (read access) – the firm can trust that the basis is correct.",
 
 
   // ---- Integrationer (Task 13) ----
@@ -318,13 +317,11 @@ export const en: { [K in keyof typeof sv]: string } = {
   footerColAccount: 'Account',
   // Product column links
   footerLinkFeatures: 'Features',
-  footerLinkHowItWorks: 'How it works',
-  footerLinkIntegrations: 'Integrations',
+  footerLinkCompare: 'Comparison',
+  footerLinkPricing: 'Plans',
   footerLinkSecurity: 'Security',
   // Company column links
-  footerLinkAbout: 'About us',
   footerLinkContact: 'Contact',
-  footerLinkCareers: 'Careers',
   footerLinkBookDemo: 'Book a demo',
   // Legal column links
   footerLinkPrivacy: 'Privacy policy',

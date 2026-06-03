@@ -124,7 +124,7 @@ export function initChat(): void {
       if (coWrap) coWrap.classList.remove('is-open');
     }
     // Pointer-driven intro: glide to the company switcher, explain it, open it,
-    // pick Alma AB, then move to the input and hand off to typing. Returns false
+    // pick Demobolaget AB, then move to the input and hand off to typing. Returns false
     // if the scene was reset mid-way.
     async function runTour(myGen: number) {
       if (reduce || !cur.ok || !coWrap || !coTrigger || !coPick) return true;

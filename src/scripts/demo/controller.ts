@@ -13,9 +13,14 @@ export function initController(): void {
     var ind      = wrapEl.querySelector('.demo-tab-ind') as (HTMLElement & { _settle?: ReturnType<typeof setTimeout> }) | null;
     if (!tabBar || !tabs.length || !panels.length) return;
     var tabBarEl = tabBar;
+    // Visibility is keyed off the window's position so tabs + CTA reveal only
+    // once the frame is scrolled into focus, and hide again at the hero top or
+    // after the frame leaves upward (scroll-gated, both directions).
+    var chromeEl = (wrapEl.querySelector('.browser-chrome') as HTMLElement | null) || tabBarEl;
     var ROT_MS = 5500;
     var idx = 0;
     var timer: ReturnType<typeof setTimeout> | null = null;
+    var hintTimer: ReturnType<typeof setTimeout> | null = null;
     var visible = false;
     var auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var reduceMotion = !auto;
@@ -84,17 +89,27 @@ export function initController(): void {
       if (v) {
         moveIndicator(false);
         tick();
+        // Show the "switch tab" hint long enough to read, then retire it for good.
+        if (!hintTimer && !wrapEl.classList.contains('hint-dismissed')) {
+          hintTimer = setTimeout(function() { wrapEl.classList.add('hint-dismissed'); }, 5000);
+        }
       } else {
         if (timer) clearTimeout(timer);
         timer = null;
+        // Reset the hint when the demo leaves the viewport, so it shows again
+        // (and re-arms its auto-hide) the next time the user scrolls back to it.
+        if (hintTimer) clearTimeout(hintTimer);
+        hintTimer = null;
+        wrapEl.classList.remove('hint-dismissed');
       }
     }
     function onScroll() {
-      // Start auto-rotation the moment the TAB BAR itself enters the viewport, and
-      // pause it once the bar leaves — rotation is tied to the tabs being on screen.
-      var rect = tabBarEl.getBoundingClientRect();
+      // Tabs + CTA reveal once the window is scrolled into focus, and hide again
+      // at the hero top or after the window leaves upward. Not visible on load
+      // (scrollY ≈ 0), so the frame reads as a calm mockup until the user scrolls.
+      var rect = chromeEl.getBoundingClientRect();
       var vh = window.innerHeight || document.documentElement.clientHeight;
-      setVisible(window.scrollY > 60 && rect.top < vh * 0.92 && rect.bottom > vh * 0.06);
+      setVisible(window.scrollY > 60 && rect.top < vh * 0.6 && rect.bottom > vh * 0.25);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     // Reduced-motion users get no rotation/autoplay, so default to the most

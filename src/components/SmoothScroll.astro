@@ -27,4 +27,38 @@
 
     (window as any).lenis = lenis;
   }
+
+  // In-page anchor links scroll smoothly to their section instead of jumping.
+  // Registered regardless of reduced-motion: Lenis drives it when present,
+  // otherwise we set the scroll position directly. The fixed nav is offset so
+  // the target never lands underneath it.
+  document.addEventListener('click', (event) => {
+    const link = (event.target as Element).closest('a[href]') as HTMLAnchorElement | null;
+    if (!link) return;
+    const href = link.getAttribute('href') ?? '';
+    const hashIndex = href.indexOf('#');
+    if (hashIndex === -1) return;
+
+    const id = href.slice(hashIndex + 1);
+    if (!id) return;                                  // bare "#" → leave default
+
+    // Same-document only: empty path, or a path matching the current route.
+    const path = href.slice(0, hashIndex).replace(/\/$/, '');
+    if (path && path !== location.pathname.replace(/\/$/, '')) return;
+
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    event.preventDefault();
+    const nav = document.getElementById('nav');
+    const offset = (nav ? nav.getBoundingClientRect().height : 0) + 16;
+    const lenis = (window as any).lenis;
+    if (lenis) {
+      lenis.scrollTo(target, { offset: -offset });
+    } else {
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'auto' });
+    }
+    history.pushState(null, '', '#' + id);
+  });
 </script>

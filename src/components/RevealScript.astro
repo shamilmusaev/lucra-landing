@@ -5,7 +5,9 @@
 <script>
   // Scroll-reveal — fade + rise + blur as each .reveal enters the viewport.
   // One-shot: reveal once, then stop observing so nothing re-animates on scroll-up.
-  const targets = document.querySelectorAll<Element>('section:not(.hero) .reveal');
+  // Content-section .reveal elements, plus the hero's demo window — it opts out
+  // of the hero load-intro and reveals on scroll with the same effect instead.
+  const targets = document.querySelectorAll<Element>('section:not(.hero) .reveal, .hero .hero-chrome-wrap');
   if (targets.length > 0) {
     const reduce =
       typeof window.matchMedia === 'function' &&

@@ -11,10 +11,10 @@ const video = (id: string): string => `/assets/feature-${id}-${lang}.mp4`;
 const poster = (id: string): string => `/assets/feature-${id}-${lang}.jpg`;
 
 const cards = [
-  { id: 'chat', title: s.showcaseCard1Title, body: s.showcaseCard1Body, pill: s.showcaseCard1Pill, alt: s.showcaseCard1Alt, href: '#funktioner' },
-  { id: 'dashboard', title: s.showcaseCard2Title, body: s.showcaseCard2Body, pill: s.showcaseCard2Pill, alt: s.showcaseCard2Alt, href: '#funktioner' },
-  { id: 'documents', title: s.showcaseCard3Title, body: s.showcaseCard3Body, pill: s.showcaseCard3Pill, alt: s.showcaseCard3Alt, href: '#funktioner' },
-  { id: 'integrations', title: s.showcaseCard4Title, body: s.showcaseCard4Body, pill: s.showcaseCard4Pill, alt: s.showcaseCard4Alt, href: '#integrationer' },
+  { id: 'chat', title: s.showcaseCard1Title, body: s.showcaseCard1Body, alt: s.showcaseCard1Alt },
+  { id: 'dashboard', title: s.showcaseCard2Title, body: s.showcaseCard2Body, alt: s.showcaseCard2Alt },
+  { id: 'documents', title: s.showcaseCard3Title, body: s.showcaseCard3Body, alt: s.showcaseCard3Alt },
+  { id: 'integrations', title: s.showcaseCard4Title, body: s.showcaseCard4Body, alt: s.showcaseCard4Alt },
 ];
 ---
 
@@ -56,10 +56,6 @@ const cards = [
             <div class="showcase-body">
               <h3>{card.title}</h3>
               <p>{card.body}</p>
-              <a class="showcase-pill" href={card.href}>
-                {card.pill}
-                <Icon name="arrow-right" />
-              </a>
             </div>
           </article>
         ))}
@@ -204,25 +200,6 @@ const cards = [
     gap: 10px;
     flex: 1;
   }
-  .showcase-pill {
-    align-self: flex-start;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: var(--bg-paper);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--brand-primary);
-    margin-top: 4px;
-    transition: background 0.2s ease, border-color 0.2s ease;
-  }
-  .showcase-pill:hover { background: var(--bg-active); border-color: var(--slate-300); }
-  .showcase-pill svg { width: 13px; height: 13px; transition: transform 0.2s ease; }
-  .showcase-pill:hover svg { transform: translateX(3px); }
   .showcase-card h3 {
     font-family: var(--font-display);
     font-size: var(--text-2xl);

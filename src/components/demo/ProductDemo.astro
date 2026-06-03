@@ -26,7 +26,8 @@ const s = getStrings(lang);
       {s.heroTabDocs}
     </button>
   </div>
-  <a class="demo-cta" href="/signup">
+  <span class="demo-tabs-hint" aria-hidden="true">{s.heroDemoTabsHint}</span>
+  <a class="demo-cta" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
     {s.heroDemoCtaPill}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
   </a>
@@ -35,7 +36,6 @@ const s = getStrings(lang);
     <span class="drift-card d2"></span>
     <span class="drift-card d3"></span>
     <span class="drift-card d4"></span>
-    <span class="drift-card d5"></span>
   </div>
   <!-- The simulated app screen is decorative; the sr-only summary above covers it.
        Tabs and the CTA live outside this node, so they stay real, focusable controls. -->
@@ -44,6 +44,7 @@ const s = getStrings(lang);
       <span class="dot red"></span>
       <span class="dot yellow"></span>
       <span class="dot green"></span>
+      <span class="demo-badge"><span class="demo-badge-dot"></span>{s.heroDemoBadge}</span>
     </div>
 
     <!-- Per-tab explainer callouts: arrowed, anchored to real elements, revealed
@@ -60,15 +61,15 @@ const s = getStrings(lang);
              before any chat. Mirrors the real app's client-company selector. -->
         <div class="sb-company-wrap">
           <button class="sb-company" type="button" tabindex="-1" data-co-trigger>
-            <span class="av">AA</span>
+            <span class="av">DB</span>
             <span class="sb-co-text">
               <span class="sb-co-top">
-                <span class="nm" data-co-current>Alma AB</span>
+                <span class="nm" data-co-current>Demobolaget AB</span>
                 <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
               <span class="sb-co-firm">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                Nordö Redovisning
+                Exempel Redovisning
               </span>
             </span>
           </button>
@@ -79,18 +80,18 @@ const s = getStrings(lang);
             </div>
             <div class="sb-co-head">{s.heroChatCoHeader}</div>
             <button class="sb-co-item is-picked" type="button" tabindex="-1" data-co-pick>
-              <span class="sb-co-mark">AA</span>
-              <span class="sb-co-meta"><span class="sb-co-name">Alma AB</span><span class="sb-co-sub">559123-4567 · {s.heroChatCoOwner}</span></span>
+              <span class="sb-co-mark">DB</span>
+              <span class="sb-co-meta"><span class="sb-co-name">Demobolaget AB</span><span class="sb-co-sub">559123-4567 · {s.heroChatCoOwner}</span></span>
               <span class="sb-co-pill linked">{s.heroChatCoLinked}</span>
             </button>
             <button class="sb-co-item" type="button" tabindex="-1">
-              <span class="sb-co-mark">NS</span>
-              <span class="sb-co-meta"><span class="sb-co-name">Nordstream AB</span><span class="sb-co-sub">556789-1234 · {s.heroChatCoOwner}</span></span>
+              <span class="sb-co-mark">E2</span>
+              <span class="sb-co-meta"><span class="sb-co-name">Exempel Två AB</span><span class="sb-co-sub">556789-1234 · {s.heroChatCoOwner}</span></span>
               <span class="sb-co-pill linked">{s.heroChatCoLinked}</span>
             </button>
             <button class="sb-co-item" type="button" tabindex="-1">
-              <span class="sb-co-mark">PB</span>
-              <span class="sb-co-meta"><span class="sb-co-name">Pixelbit Studio</span><span class="sb-co-sub">559456-7890 · {s.heroChatCoOwner}</span></span>
+              <span class="sb-co-mark">E3</span>
+              <span class="sb-co-meta"><span class="sb-co-name">Exempel Tre</span><span class="sb-co-sub">559456-7890 · {s.heroChatCoOwner}</span></span>
               <span class="sb-co-pill">{s.heroChatCoUnlinked}</span>
             </button>
             <div class="sb-co-divider"></div>
@@ -133,10 +134,10 @@ const s = getStrings(lang);
         <div class="sb-spacer"></div>
 
         <div class="sb-user">
-          <span class="av">EK</span>
+          <span class="av">DA</span>
           <span class="meta">
-            <span class="nm">Erik Karlsson</span>
-            <span class="em">erik@almaab.se</span>
+            <span class="nm">Demo Användare</span>
+            <span class="em">demo@exempel.se</span>
           </span>
           <svg class="logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
         </div>
@@ -250,7 +251,7 @@ const s = getStrings(lang);
 }
 .sb-co-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .sb-co-top { display: flex; align-items: center; gap: 6px; }
-.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--slate-900); letter-spacing: -.012em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--brand-primary); letter-spacing: -.012em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sb-company .chev { width: 14px; height: 14px; color: var(--slate-400); flex-shrink: 0; transition: transform .2s ease, color .15s ease; }
 .sb-company-wrap.is-open .sb-company .chev { color: var(--brand-primary); transform: rotate(-90deg); }
 .sb-co-firm {
@@ -477,7 +478,7 @@ const s = getStrings(lang);
 .sb-user .av {
   width: 30px; height: 30px; flex-shrink: 0;
   border-radius: 50%;
-  background: var(--nav-icon-badge);
+  background: var(--brand-primary);
   color: #fff;
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--font-display); font-weight: 700; font-size: 11px;
@@ -540,7 +541,6 @@ const s = getStrings(lang);
 .drift-card.d2 { left: 11%; top: 62%; width: 122px; opacity: .42; animation: driftC 31s ease-in-out infinite -5s; }
 .drift-card.d3 { right: 2%; top: 12%; width: 172px; animation: driftB 24s ease-in-out infinite -2s; }
 .drift-card.d4 { right: 9%; top: 60%; width: 128px; opacity: .42; animation: driftA 29s ease-in-out infinite -7s; }
-.drift-card.d5 { left: 47%; top: -7%; width: 104px; opacity: .36; animation: driftB 34s ease-in-out infinite -11s; }
 @keyframes driftA { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-22px) rotate(-1.5deg); } }
 @keyframes driftB { 0%, 100% { transform: translateY(0) rotate(3deg); } 50% { transform: translateY(-16px) rotate(4.5deg); } }
 @keyframes driftC { 0%, 100% { transform: translate(0, 0) rotate(-2deg); } 50% { transform: translate(8px, -26px) rotate(-3.5deg); } }
@@ -558,6 +558,9 @@ const s = getStrings(lang);
   border-radius: var(--radius-shell);
   overflow: hidden;
   box-shadow: var(--shadow-window);
+  /* Decorative app preview: only the tabs and CTA (siblings outside this node)
+     are interactive — block all hover/click inside the simulated window. */
+  pointer-events: none;
 }
 .browser-bar {
   display: flex;
@@ -662,6 +665,91 @@ const s = getStrings(lang);
 }
 .demo-tab-ind.ready { opacity: 1; }
 
+/* Coachmark just below the tabs — its arrow points up at them and gently bobs
+   toward them, nudging the one available action (switch tabs). Sits below the
+   tabs because the hero CTAs occupy the space above. Pairs with the
+   "Förhandsvisning" badge in the title bar. */
+.demo-tabs-hint {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 14;
+  padding: 8px 15px;
+  border-radius: 12px;
+  background: var(--brand-primary);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .005em;
+  white-space: nowrap;
+  box-shadow: 0 14px 30px -12px rgba(61,80,109,0.55), 0 3px 8px -5px rgba(15,23,42,0.30);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+/* Upward pointer — a rotated square sharing the coachmark's fill, no seam. */
+.demo-tabs-hint::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  background: var(--brand-primary);
+  border-radius: 2px 0 0 0;
+  transform: rotate(45deg);
+}
+.hero-chrome-wrap.tabs-visible .demo-tabs-hint {
+  opacity: 1;
+  animation: hintBob 2s ease-in-out infinite;
+}
+/* Retired after a few seconds (JS adds .hint-dismissed) — fades out for good. */
+.hero-chrome-wrap.hint-dismissed .demo-tabs-hint {
+  opacity: 0;
+  animation: none;
+}
+@keyframes hintBob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, -3px); }
+}
+
+/* "Interactive demo" badge — reads as the window's title in the chrome bar,
+   so the simulated app is unmistakably a demo. */
+.demo-badge {
+  margin-left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px 4px 9px;
+  border-radius: 999px;
+  background: rgba(61,80,109,0.06);
+  border: 1px solid rgba(61,80,109,0.10);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--brand-primary);
+}
+.demo-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  animation: demoBadgePulse 2.4s ease-out infinite;
+}
+@keyframes demoBadgePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(61,80,109,0.40); }
+  70%  { box-shadow: 0 0 0 7px rgba(61,80,109,0); }
+  100% { box-shadow: 0 0 0 0 rgba(61,80,109,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-badge-dot { animation: none; }
+  .hero-chrome-wrap.tabs-visible .demo-tabs-hint { animation: none; }
+}
+
 /* Floating CTA pill — sits over the window's bottom edge (GitBook-style),
    appears with the tabs once the window is in view. */
 .demo-cta {
@@ -733,24 +821,33 @@ const s = getStrings(lang);
   :global(.demo-panel.is-active) > * { animation: none; }
 }
 
-/* Armed hidden state — only when JS has set html.hero-intro. */
-:global(html.hero-intro) .hero-chrome-wrap {
+/* Scroll-reveal — the demo window is NOT part of the hero load-intro. It stays
+   hidden on load and fades + rises + unblurs only as it scrolls into view, using
+   the same vocabulary as the generic section reveal (global.css). Armed once
+   <html> is reveal-ready (set pre-paint), so nothing flashes; RevealScript's
+   observer adds .in-view when the window enters the viewport. */
+:global(html.reveal-ready) .hero-chrome-wrap {
   opacity: 0;
-  transform: translateY(20px) scale(.985);
+  transform: translateY(24px);
   filter: blur(8px);
   transition:
-    opacity .62s var(--ease-out-expo),
-    transform .62s var(--ease-out-expo),
-    filter .62s var(--ease-out-expo);
+    opacity .85s cubic-bezier(.2,.7,.2,1),
+    transform .85s cubic-bezier(.2,.7,.2,1),
+    filter .85s cubic-bezier(.2,.7,.2,1);
   will-change: opacity, transform, filter;
-  /* Safety net: reveal even if the JS timeline never fires. */
-  animation: heroIntroSafety 1ms linear 3.2s forwards;
 }
-/* Powered-on — JS adds .lucra-lit as the shockwave reaches each block. */
-:global(html.hero-intro) .hero-chrome-wrap.lucra-lit {
+:global(html.reveal-ready) .hero-chrome-wrap.in-view {
   opacity: 1;
   transform: none;
   filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  :global(html.reveal-ready) .hero-chrome-wrap {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
 }
 
 /* ============================================================
