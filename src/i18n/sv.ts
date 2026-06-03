@@ -352,4 +352,5 @@ export const sv = {
   faqA7: 'Lucra baserar alla svar på aktuell bokföringsdata från Fortnox och är specialiserat för svensk ekonomi och redovisning. Mänsklig kontroll finns alltid tillgänglig – frågor som kräver djupare analys eller expertis eskaleras till redovisningskonsult. Byrån har full insyn i alla frågor och svar.',
   faqQ8: 'Kan mänsklig konsult granska AI-svaren?',
   faqA8: 'Ja, redovisningsbyrån har full kontroll och insyn. Byrån kan se alla frågor och svar, eskalera frågor till mänsklig konsult när det behövs, och granska AI-svar innan de når kunden. Lucra är byggt för att komplettera byrån, inte ersätta den.',
+  ogImageAlt: 'Lucra – AI-ekonom kopplad till din bokföring',
 } as const;
