@@ -227,6 +227,9 @@ const s = getStrings(lang);
     flex-direction: column;
     gap: 26px;
   }
+  /* A class `display` would otherwise defeat the [hidden] attribute the script
+     toggles on submit, so restore it explicitly for both form and success. */
+  .kontakt-form[hidden] { display: none; }
   .hp { position: absolute; left: -9999px; }
 
   /* Role chips (segmented pill selector) */
@@ -355,6 +358,7 @@ const s = getStrings(lang);
     gap: 14px;
     padding: 8px 0;
   }
+  .form-success[hidden] { display: none; }
   .form-success-ic {
     width: 56px;
     height: 56px;
