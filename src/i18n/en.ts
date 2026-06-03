@@ -276,7 +276,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   ctaTitle: 'Want to see how Lucra works?',
   ctaBody: "Book a short demo and see how Lucra gives business owners a clear view of their numbers and frees up the firm's time for qualified advisory.",
   ctaBookDemo: 'Book a demo',
-  ctaTryLucra: 'Try Lucra',
 
   // Contact form (lives inside the final CTA section)
   formName: 'Name',

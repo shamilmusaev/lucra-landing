@@ -274,7 +274,6 @@ export const sv = {
   ctaTitle: 'Vill du se hur Lucra fungerar?',
   ctaBody: 'Boka en kort demo och se hur Lucra ger företagare koll på sina siffror och frigör tid åt byråns kvalificerade rådgivning.',
   ctaBookDemo: 'Boka demo',
-  ctaTryLucra: 'Testa Lucra',
 
   // Contact form (lives inside the final CTA section)
   formName: 'Namn',

@@ -22,6 +22,7 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
       <div class="cta-grid">
         <!-- Lead: title + contact + book-a-demo (opens Calendly popup) -->
         <div class="cta-lead reveal">
+          <span class="cta-orb" id="cta-orb" aria-hidden="true"></span>
           <h2 class="section-title">{s.ctaTitle}</h2>
           <p class="section-sub">{s.ctaBody}</p>
 
@@ -38,10 +39,6 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
                 <span class="btn-pip"><Icon name="arrow-right" size={15} /></span>
               </a>
             </div>
-            <a class="lead-secondary" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
-              {s.ctaTryLucra}
-              <Icon name="arrow-right" class="arrow" size={14} />
-            </a>
           </div>
         </div>
 
@@ -148,6 +145,21 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
   }
 
   /* ---- Left lead ---- */
+  /* WebGL orb — brand accent above the lead (same shader as the hero orb). */
+  .cta-orb {
+    display: block;
+    width: 84px;
+    height: 84px;
+    margin: 0 0 24px;
+    position: relative;
+    pointer-events: auto;   /* clickable: tap to ripple */
+    cursor: pointer;
+  }
+  .cta-orb canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
   .cta-panel .section-title {
     margin: 0 0 18px;
     max-width: 460px;
@@ -211,21 +223,6 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
     background: rgba(255, 255, 255, .1);
     transform: translateY(-1px);
   }
-  .lead-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    align-self: flex-start;
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, .6);
-    transition: color .25s cubic-bezier(.32, .72, 0, 1);
-  }
-  .lead-secondary:hover { color: var(--white); }
-  .lead-secondary .arrow { transition: transform .25s cubic-bezier(.32, .72, 0, 1); }
-  .lead-secondary:hover .arrow { transform: translateX(3px); }
-
   /* ---- Button-in-button trailing icon (nested circular pip) ---- */
   .btn-pip {
     display: inline-flex;
@@ -365,6 +362,7 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
   @media (max-width: 560px) {
     .cta-panel { padding: 48px 24px; }
     .field-row { grid-template-columns: 1fr; gap: 26px; }
+    .cta-orb { width: 72px; height: 72px; }
   }
 </style>
 
@@ -411,5 +409,29 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
       io.observe(panel);
       apply(); // set initial scale in case the section starts in view
     }
+  }
+</script>
+
+<script>
+  // ── CTA WebGL orb (shared module; mounted with no global coupling) ──────────
+  // { intro: false, registerGlobalPulse: false }: ripples on direct click only,
+  // no load-intro and no global hooks. Lazy: IntersectionObserver (200px) +
+  // requestIdleCallback defer the mount until the user scrolls near.
+  import { mountOrb } from '../../scripts/orb';
+
+  const orbEl = document.getElementById('cta-orb');
+  if (orbEl && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ric: (cb: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (cb) => (window as any).requestIdleCallback(cb)
+        : (cb) => { setTimeout(cb, 1); };
+    const start = (): void => ric(() => mountOrb('cta-orb', { intro: false, registerGlobalPulse: false }));
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        obs.disconnect();
+        start();
+      }
+    }, { rootMargin: '200px' });
+    io.observe(orbEl);
   }
 </script>
