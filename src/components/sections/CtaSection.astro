@@ -1,8 +1,7 @@
 ---
 // CtaSection — the final call-to-action (ported from index.html 3961–3983).
-// Two effects layer here:
-//   • the shared cursor-reactive dot-field (<ParticleField>) in bloom mode —
-//     dots near the cursor grow + glow cyan (same effect as the hero), and
+// Layers here:
+//   • the shared dot-field (<ParticleField>) as a calm background fog, and
 //   • a small WebGL orb (`#cta-orb`) reusing the shared `mountOrb` module.
 // Both are lazy (IntersectionObserver + reduced-motion guarded) — the section
 // sits far down the page, so they defer until the user scrolls near.
@@ -19,9 +18,6 @@ const s = getStrings(lang);
       <ParticleField
         dotColor="255, 255, 255"
         dotAlpha={0.3}
-        interactiveBloom
-        bloomExclude=".cta-orb, .cta-panel .section-title, .cta-panel .section-sub, .cta-btns"
-        clearOnClick="#cta-orb"
       />
       <div class="cta-inner">
         <span class="cta-orb" id="cta-orb" aria-hidden="true"></span>

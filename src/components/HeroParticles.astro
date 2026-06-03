@@ -22,8 +22,6 @@
       surface: hero,
       canvasClass: 'hero-falling__canvas',
       startCleared: true,
-      interactiveBloom: true,
-      bloomExcludeSelector: '.hero-orb, .hero-pill, .hero h1, .hero-sub, .hero-ctas, .hero-chrome-wrap',
     });
     if (!controller) return;
 
@@ -37,15 +35,13 @@
       };
     }
 
-    // Orb click — sweep the hero clean from the orb outward, rippling the orb's
-    // WebGL shader in sync, then hold ~8s before the fog drifts back in.
+    // Orb click — ripple the orb's WebGL shader (no field sweep).
     if (orb) {
       orb.style.pointerEvents = 'auto';
       orb.style.cursor = 'pointer';
       orb.addEventListener('click', function () {
         const orbPulse = (window as any).lucraOrbPulse;
         if (orbPulse) orbPulse();
-        controller.clear(orbCenter, 8000);
       });
     }
 
