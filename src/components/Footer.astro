@@ -8,6 +8,9 @@
 import { getStrings, type Lang } from '../i18n/utils';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
+// Legal / homepage-section links must resolve from any route (incl. /privacy,
+// /terms, 404), so prefix targets with the active language.
+const enPrefix = lang === 'en' ? '/en' : '';
 ---
 
 <footer>
@@ -41,10 +44,9 @@ const s = getStrings(lang);
       <div class="footer-col">
         <h5>{s.footerColLegal}</h5>
         <ul>
-          <li><a href="/privacy">{s.footerLinkPrivacy}</a></li>
-          <li><a href="/terms">{s.footerLinkTerms}</a></li>
-          <li><a href="/dpa">{s.footerLinkDpa}</a></li>
-          <li><a href="/security">{s.footerLinkSecurityPage}</a></li>
+          <li><a href={`${enPrefix}/privacy`}>{s.footerLinkPrivacy}</a></li>
+          <li><a href={`${enPrefix}/terms`}>{s.footerLinkTerms}</a></li>
+          <li><a href={`${enPrefix}/#sakerhet`}>{s.footerLinkSecurityPage}</a></li>
         </ul>
       </div>
       <div class="footer-col">

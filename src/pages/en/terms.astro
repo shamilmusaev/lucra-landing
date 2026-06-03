@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import LegalArticle from '../../components/LegalArticle.astro';
+import Footer from '../../components/Footer.astro';
+import { Content } from '../../legal/terms.en.md';
+import { getStrings } from '../../i18n/utils';
+
+const lang = 'en' as const;
+const s = getStrings(lang);
+---
+<BaseLayout lang={lang} title={s.termsMetaTitle} description={s.termsMetaDescription} path="/terms">
+  <Nav lang={lang} />
+  <LegalArticle>
+    <Content />
+  </LegalArticle>
+  <Footer lang={lang} />
+</BaseLayout>

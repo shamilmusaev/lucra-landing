@@ -1,0 +1,90 @@
+---
+// Wrapper + typographic styles for long-form legal pages (Privacy, Terms).
+// The body comes from an imported markdown `<Content />`, so its elements are
+// styled via `:global()` (scoped class hashes are not applied to that subtree).
+---
+<section class="legal">
+  <div class="container">
+    <article class="legal-prose">
+      <slot />
+    </article>
+  </div>
+</section>
+
+<style>
+  .legal {
+    padding: clamp(104px, 13vh, 160px) 0 96px;
+  }
+  .legal-prose {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .legal-prose :global(h1) {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 5vw, 46px);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    color: var(--brand-primary);
+    margin: 0 0 14px;
+  }
+  .legal-prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--brand-primary);
+    margin: 48px 0 16px;
+  }
+  .legal-prose :global(h3) {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--fg-primary);
+    margin: 28px 0 10px;
+  }
+  .legal-prose :global(p) {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--slate-600);
+    margin: 0 0 18px;
+  }
+  .legal-prose :global(ul) {
+    margin: 0 0 18px;
+    padding-left: 22px;
+  }
+  .legal-prose :global(li) {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--slate-600);
+    margin-bottom: 8px;
+  }
+  .legal-prose :global(a) {
+    color: var(--brand-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .legal-prose :global(a:hover) {
+    color: var(--brand-accent);
+  }
+  .legal-prose :global(strong) {
+    color: var(--fg-primary);
+    font-weight: 600;
+  }
+  /* The lead "_Last updated…_" line renders as an emphasised paragraph. */
+  .legal-prose :global(h1 + p em) {
+    font-style: normal;
+    font-size: 14px;
+    color: var(--slate-400);
+  }
+  .legal-prose :global(blockquote) {
+    margin: 0 0 28px;
+    padding: 12px 18px;
+    border-left: 3px solid var(--brand-accent);
+    background: var(--bg-subtle);
+    border-radius: var(--radius-md);
+  }
+  .legal-prose :global(blockquote p) {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--slate-500);
+  }
+</style>
