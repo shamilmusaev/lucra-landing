@@ -120,24 +120,12 @@ const s = getStrings(lang);
   box-shadow: 0 6px 24px -10px rgba(15,23,42,0.18);
   padding: 10px 20px;
 }
-/* Dark-aware theme — when the floating nav overlaps a section marked
-   [data-nav-dark] it inverts to a dark glass with light text (JS toggles
-   .on-dark by testing nav/section overlap). */
+/* Over a dark section the 0.72 light glass reads muddy; lift its opacity so the
+   pill stays crisp and legible (JS toggles .on-dark via [data-nav-dark] overlap). */
 .nav.on-dark.scrolled .nav-inner {
-  background: rgba(15,23,42,0.55);
-  border-color: rgba(255,255,255,0.14);
-  box-shadow: 0 8px 28px -12px rgba(0,0,0,0.55);
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(255,255,255,0.5);
 }
-.nav.on-dark .nav-link { color: rgba(255,255,255,0.8); }
-.nav.on-dark .nav-link:hover,
-.nav.on-dark .nav-item.is-open .nav-link { color: var(--white); }
-.nav.on-dark .brand-word {
-  background: none;
-  -webkit-text-fill-color: var(--white);
-  color: var(--white);
-}
-.nav.on-dark .nav-pill { background: rgba(255,255,255,0.12); }
-.nav.on-dark .nav-right .btn-ghost { color: rgba(255,255,255,0.85); }
 .brand {
   display: flex;
   align-items: center;
