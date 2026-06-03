@@ -271,8 +271,8 @@ export const sv = {
   howstackLayer1Title: 'Bolagets ekonomi',
   howstackLayer1Body: 'Transaktioner, moms, resultat och lön – synkat i realtid.',
   // Final CTA
-  ctaTitle: 'Vill du se hur Lucra fungerar?',
-  ctaBody: 'Boka en kort demo och se hur Lucra ger företagare koll på sina siffror och frigör tid åt byråns kvalificerade rådgivning.',
+  ctaTitle: 'Vill du veta mer?',
+  ctaBody: 'Skriv några rader om vad du undrar, så återkommer vi snart med svar.',
   ctaBookDemo: 'Boka demo',
 
   // Contact form (lives inside the final CTA section)

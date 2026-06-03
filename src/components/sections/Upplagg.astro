@@ -37,7 +37,7 @@ const partnerFeats = [
     <div class="plans">
       <!-- Pilot — recommended, highlighted card -->
       <article class="plan plan-featured reveal">
-        <div class="plan-tag"><span class="plan-badge">{s.priPilotBadge}</span></div>
+        <div class="plan-tag"><span class="plan-badge"><span class="badge-dot" aria-hidden="true"></span>{s.priPilotBadge}</span></div>
         <h3 class="plan-name">{s.priPilotName}</h3>
         <p class="plan-desc">{s.priPilotDesc}</p>
         <span class="plan-incl">{s.priInclLabel}</span>
@@ -142,25 +142,55 @@ const partnerFeats = [
 
 /* Tag row — reserved on both cards so the plan names line up. */
 .plan-tag { min-height: 30px; margin-bottom: 18px; }
+/* Featured badge styled as a folder tab on the card's top edge, echoing the
+   tabs in #for-vem but in brand blue: it sits above the top border and its
+   flared base merges into the card. Absolute, so .plan-tag still reserves the
+   in-flow row that keeps both cards' names aligned. */
 .plan-badge {
+  position: absolute;
+  top: 0;
+  /* Clears the card's rounded top-left corner (radius + 12px flare width) so the
+     flared base sits on the flat edge, not over the corner cut-out. */
+  left: calc(var(--radius-card) + 12px);
+  transform: translateY(calc(-100% + 1px));
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-family: var(--font-display);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--brand-primary);
-  background: var(--bg-active);
-  border: 1px solid color-mix(in srgb, var(--brand-primary) 16%, transparent);
-  border-radius: var(--radius-pill);
-  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  color: var(--white);
+  background: var(--brand-primary);
+  border-radius: 12px 12px 0 0;
+  padding: 8px 16px;
+  filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--brand-primary) 18%, transparent));
 }
-.plan-badge::before {
-  content: "";
+.badge-dot {
+  flex-shrink: 0;
   width: 6px; height: 6px;
   border-radius: 50%;
+  background: var(--white);
+}
+/* Flared base corners (browser-tab technique) so the tab merges into the card. */
+.plan-badge::before,
+.plan-badge::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
   background: var(--brand-primary);
+}
+.plan-badge::before {
+  left: -12px;
+  -webkit-mask: radial-gradient(circle at top left, transparent 12px, #000 12.5px);
+          mask: radial-gradient(circle at top left, transparent 12px, #000 12.5px);
+}
+.plan-badge::after {
+  right: -12px;
+  -webkit-mask: radial-gradient(circle at top right, transparent 12px, #000 12.5px);
+          mask: radial-gradient(circle at top right, transparent 12px, #000 12.5px);
 }
 
 .plan-name {

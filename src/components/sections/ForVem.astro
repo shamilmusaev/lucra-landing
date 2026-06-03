@@ -136,8 +136,11 @@ const groups = [
   align-items: center;
   gap: 7px;
   width: fit-content;
-  /* Each tab steps right by index so the back tabs stay visible, not buried */
-  margin-left: calc(14px + var(--i) * clamp(76px, 18%, 100px));
+  /* Each tab steps right by index so the back tabs stay visible, not buried.
+     Base inset clears the body's rounded top-left corner (radius + 12px flare
+     width) so the first tab's flared base sits on the flat edge, not over the
+     corner cut-out where it would tear. */
+  margin-left: calc(var(--radius-card) + 12px + var(--i) * clamp(76px, 18%, 100px));
   padding: 8px 16px;
   background: var(--bg-paper);
   border-radius: 12px 12px 0 0;
@@ -226,7 +229,8 @@ const groups = [
   .fv-aside { order: 0; position: static; }
   .fv-groups { order: 1; gap: clamp(40px, 9vw, 64px); }
   .fv-card { position: static; }
-  .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
+  /* Single column, no fan: fixed inset that still clears the rounded corner. */
+  .fv-tab { margin-left: calc(var(--radius-card) + 12px); }
 }
 
 /* No scroll-driven overlap when motion is reduced — plain stacked list */

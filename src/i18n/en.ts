@@ -273,8 +273,8 @@ export const en: { [K in keyof typeof sv]: string } = {
   howstackLayer1Title: "The company's finances",
   howstackLayer1Body: 'Transactions, VAT, results and payroll – synced in real time.',
   // Final CTA
-  ctaTitle: 'Want to see how Lucra works?',
-  ctaBody: "Book a short demo and see how Lucra gives business owners a clear view of their numbers and frees up the firm's time for qualified advisory.",
+  ctaTitle: 'Want to know more?',
+  ctaBody: "Drop us a few lines about what you're wondering, and we'll get back to you soon.",
   ctaBookDemo: 'Book a demo',
 
   // Contact form (lives inside the final CTA section)
