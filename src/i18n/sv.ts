@@ -286,14 +286,12 @@ export const sv = {
   formMessage: 'Meddelande',
   formMessagePlaceholder: 'Berätta kort vad du vill veta …',
   formSubmit: 'Skicka meddelande',
+  formSending: 'Skickar …',
+  formError: 'Något gick fel. Försök igen eller mejla oss direkt.',
+  formSuccessTitle: 'Tack för ditt meddelande!',
+  formSuccessBody: 'Vi har tagit emot din förfrågan och hör av oss så snart vi kan.',
   kontaktDemoTitle: 'Hellre prata direkt?',
   kontaktDemoBody: 'Boka en kort demo så visar vi hur Lucra fungerar med er ekonomi.',
-
-  // Thank-you page (/tack) — Netlify form redirect target
-  tackMetaTitle: 'Tack · Lucra',
-  tackTitle: 'Tack för ditt meddelande!',
-  tackBody: 'Vi har tagit emot din förfrågan och hör av oss så snart vi kan.',
-  tackBackHome: 'Tillbaka till startsidan',
 
   // ---- Upplägg (Pilot & Partner plans for accounting firms) ----
   priTitle: 'Upplägg för redovisningsbyråer',

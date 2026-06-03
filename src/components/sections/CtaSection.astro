@@ -1,19 +1,16 @@
 ---
 // CtaSection — the final call-to-action, doubling as the contact section.
 // Editorial split: left = "book a demo" lead (title, contact, Calendly CTA),
-// right = the Netlify contact form. The dark panel scales up slightly as it
-// scrolls into view (continuous scroll-zoom, mirroring the product demo feel).
-// The form posts to the language-specific /tack confirmation page; Netlify
-// detects it at deploy from the static HTML (no server runtime needed).
+// right = the contact form. The dark panel scales up slightly as it scrolls
+// into view (continuous scroll-zoom, mirroring the product demo feel).
+// The form submits via fetch() to FORM_ENDPOINT (an AWS Lambda that relays the
+// message through SES) and shows an inline success state — no page reload.
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
 import CalendlyPopup from '../CalendlyPopup.astro';
 import { CALENDLY_URL, CONTACT_EMAIL } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
-
-// Netlify redirects here after a successful submit; keep it language-aware.
-const tackPath = lang === 'en' ? '/en/tack' : '/tack';
 ---
 
 <section class="cta-section">
@@ -42,18 +39,11 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
           </div>
         </div>
 
-        <!-- Contact form -->
-        <form
-          class="kontakt-form reveal delay-1"
-          name="kontakt"
-          method="POST"
-          action={tackPath}
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-        >
-          <input type="hidden" name="form-name" value="kontakt" />
-          <p class="hp" hidden>
-            <label>Lämna detta fält tomt: <input name="bot-field" /></label>
+        <!-- Contact form — submitted via fetch() to the SES relay endpoint -->
+        <div class="form-col reveal delay-1">
+        <form class="kontakt-form" data-sending={s.formSending} data-error={s.formError}>
+          <p class="hp" hidden aria-hidden="true">
+            <label>Lämna detta fält tomt: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
           </p>
 
           <fieldset class="chip-group">
@@ -92,10 +82,18 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
           </div>
 
           <button type="submit" class="btn btn-lg form-submit">
-            {s.formSubmit}
+            <span class="form-submit-label">{s.formSubmit}</span>
             <Icon name="arrow-right" class="arrow" size={15} />
           </button>
+          <p class="form-status" data-form-status role="status" aria-live="polite"></p>
         </form>
+
+        <div class="form-success" data-form-success hidden>
+          <span class="form-success-ic" aria-hidden="true"><Icon name="check" size={28} /></span>
+          <h3>{s.formSuccessTitle}</h3>
+          <p>{s.formSuccessBody}</p>
+        </div>
+        </div>
       </div>
     </div>
 
@@ -337,6 +335,52 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
     background: var(--accent-light);
     transform: translateY(-1px);
   }
+  .form-submit[data-loading] { opacity: .7; cursor: progress; }
+  .form-submit:disabled { pointer-events: none; }
+
+  .form-status {
+    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--error);
+  }
+  .form-status:empty { display: none; }
+
+  /* Inline success state — shown in place of the form after a successful send. */
+  .form-col { display: flex; flex-direction: column; }
+  .form-success {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+  }
+  .form-success-ic {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    background: linear-gradient(150deg, var(--brand-primary-light), var(--brand-accent));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2);
+  }
+  .form-success h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin: 0;
+  }
+  .form-success p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, .7);
+    margin: 0;
+    max-width: 380px;
+  }
 
   @media (max-width: 900px) {
     .cta-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -418,5 +462,52 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
       }
     }, { rootMargin: '200px' });
     io.observe(orbEl);
+  }
+</script>
+
+<script>
+  // ── Contact form — submit via fetch() to the AWS SES relay endpoint ─────────
+  // Sends the fields as JSON, swaps the button to a sending state, then reveals
+  // the inline success block (or shows an error). A honeypot field silently
+  // drops bots. Strings come from data-* attributes (set server-side from i18n).
+  import { FORM_ENDPOINT } from '../../config';
+
+  const form = document.querySelector('.cta-section .kontakt-form') as HTMLFormElement | null;
+  if (form) {
+    const submit = form.querySelector('.form-submit') as HTMLButtonElement | null;
+    const label = form.querySelector('.form-submit-label') as HTMLElement | null;
+    const status = form.querySelector('[data-form-status]') as HTMLElement | null;
+    const success = form.parentElement?.querySelector('[data-form-success]') as HTMLElement | null;
+    const honeypot = form.querySelector('[name="bot-field"]') as HTMLInputElement | null;
+    const sendingText = form.dataset.sending ?? 'Skickar …';
+    const errorText = form.dataset.error ?? 'Något gick fel.';
+    const idleText = label?.textContent ?? '';
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (honeypot && honeypot.value) return; // bot — drop silently
+      if (status) status.textContent = '';
+
+      const payload = Object.fromEntries(new FormData(form).entries());
+      delete payload['bot-field'];
+
+      if (submit) { submit.disabled = true; submit.dataset.loading = 'true'; }
+      if (label) label.textContent = sendingText;
+
+      try {
+        const response = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        form.hidden = true;
+        if (success) success.hidden = false;
+      } catch {
+        if (status) status.textContent = errorText;
+        if (submit) { submit.disabled = false; delete submit.dataset.loading; }
+        if (label) label.textContent = idleText;
+      }
+    });
   }
 </script>
