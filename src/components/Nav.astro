@@ -120,6 +120,24 @@ const s = getStrings(lang);
   box-shadow: 0 6px 24px -10px rgba(15,23,42,0.18);
   padding: 10px 20px;
 }
+/* Dark-aware theme — when the floating nav overlaps a section marked
+   [data-nav-dark] it inverts to a dark glass with light text (JS toggles
+   .on-dark by testing nav/section overlap). */
+.nav.on-dark.scrolled .nav-inner {
+  background: rgba(15,23,42,0.55);
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 8px 28px -12px rgba(0,0,0,0.55);
+}
+.nav.on-dark .nav-link { color: rgba(255,255,255,0.8); }
+.nav.on-dark .nav-link:hover,
+.nav.on-dark .nav-item.is-open .nav-link { color: var(--white); }
+.nav.on-dark .brand-word {
+  background: none;
+  -webkit-text-fill-color: var(--white);
+  color: var(--white);
+}
+.nav.on-dark .nav-pill { background: rgba(255,255,255,0.12); }
+.nav.on-dark .nav-right .btn-ghost { color: rgba(255,255,255,0.85); }
 .brand {
   display: flex;
   align-items: center;
@@ -347,9 +365,22 @@ const s = getStrings(lang);
     var nav = document.getElementById('nav');
     if (!nav) return;
     var navEl = nav;
+    var navInner = navEl.querySelector('.nav-inner');
+    var darkEls = document.querySelectorAll('[data-nav-dark]');
     var onScroll = function() {
       if (window.scrollY > 50) navEl.classList.add('scrolled');
       else navEl.classList.remove('scrolled');
+      // Invert the nav to its dark theme while it floats over a dark section.
+      if (navInner && darkEls.length) {
+        var nr = navInner.getBoundingClientRect();
+        var mid = nr.top + nr.height / 2;
+        var over = false;
+        darkEls.forEach(function(el) {
+          var r = el.getBoundingClientRect();
+          if (r.top <= mid && r.bottom >= mid) over = true;
+        });
+        navEl.classList.toggle('on-dark', over);
+      }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();

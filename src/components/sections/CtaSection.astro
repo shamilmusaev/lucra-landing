@@ -18,7 +18,7 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
 
 <section class="cta-section">
   <div class="container">
-    <div class="cta-panel tone-deep">
+    <div class="cta-panel tone-deep" data-nav-dark>
       <div class="cta-grid">
         <!-- Lead: title + contact + book-a-demo (opens Calendly popup) -->
         <div class="cta-lead reveal">
@@ -36,7 +36,7 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
               <p class="lead-demo-body">{s.kontaktDemoBody}</p>
               <a class="btn btn-lg demo-cta" href={CALENDLY_URL} data-calendly>
                 {s.ctaBookDemo}
-                <span class="btn-pip"><Icon name="arrow-right" size={15} /></span>
+                <Icon name="arrow-right" class="arrow" size={15} />
               </a>
             </div>
           </div>
@@ -58,14 +58,14 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
 
           <fieldset class="chip-group">
             <legend>{s.formRole}</legend>
-            <div class="chips">
+            <div class="role-seg">
               <label class="chip">
                 <input type="radio" name="roll" value={s.formRoleBusiness} checked />
-                <span>{s.formRoleBusiness}</span>
+                <span><Icon name="user" size={14} stroke={1.8} />{s.formRoleBusiness}</span>
               </label>
               <label class="chip">
                 <input type="radio" name="roll" value={s.formRoleAgency} />
-                <span>{s.formRoleAgency}</span>
+                <span><Icon name="building-2" size={14} stroke={1.8} />{s.formRoleAgency}</span>
               </label>
             </div>
           </fieldset>
@@ -91,9 +91,9 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
             <textarea id="meddelande" name="meddelande" rows="3" required placeholder={s.formMessagePlaceholder}></textarea>
           </div>
 
-          <button type="submit" class="btn form-submit">
+          <button type="submit" class="btn btn-lg form-submit">
             {s.formSubmit}
-            <span class="btn-pip"><Icon name="arrow-right" size={16} /></span>
+            <Icon name="arrow-right" class="arrow" size={15} />
           </button>
         </form>
       </div>
@@ -223,21 +223,6 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
     background: rgba(255, 255, 255, .1);
     transform: translateY(-1px);
   }
-  /* ---- Button-in-button trailing icon (nested circular pip) ---- */
-  .btn-pip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    margin-left: 2px;
-    border-radius: var(--radius-pill);
-    background: rgba(255, 255, 255, .12);
-    transition: transform .35s cubic-bezier(.32, .72, 0, 1);
-  }
-  .demo-cta .btn-pip { margin-right: -8px; }
-  .btn:hover .btn-pip { transform: translateX(3px); }
-
   /* ---- Right form ---- */
   .kontakt-form {
     display: flex;
@@ -256,7 +241,18 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
     padding: 0;
     margin-bottom: 12px;
   }
-  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  /* Segmented control — same pattern as the product-demo tabs (.demo-tab),
+     adapted for the dark panel: a track with a white "bubble" on the active
+     segment; the icon only shows when active. CSS-only via :has(). */
+  .role-seg {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 5px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: var(--radius-pill);
+  }
   .chip { cursor: pointer; }
   .chip input {
     position: absolute;
@@ -266,26 +262,29 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
   .chip span {
     display: inline-flex;
     align-items: center;
+    gap: 7px;
     padding: 9px 18px;
     border-radius: var(--radius-pill);
-    border: 1px solid rgba(255, 255, 255, .16);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 500;
-    color: rgba(255, 255, 255, .72);
-    transition: border-color .25s cubic-bezier(.32, .72, 0, 1),
-                background .25s cubic-bezier(.32, .72, 0, 1),
-                color .25s cubic-bezier(.32, .72, 0, 1);
+    color: rgba(255, 255, 255, .7);
+    white-space: nowrap;
+    transition: color .42s cubic-bezier(.4, 0, .2, 1),
+                background .42s cubic-bezier(.4, 0, .2, 1);
   }
-  .chip:hover span { border-color: rgba(255, 255, 255, .32); color: var(--white); }
+  .chip span :global(svg) { width: 14px; height: 14px; flex-shrink: 0; display: none; }
+  .chip:hover:not(:has(input:checked)) span { color: var(--white); }
   .chip:has(input:checked) span {
     background: var(--white);
-    border-color: var(--white);
     color: var(--brand-primary-dark);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .16), 0 4px 10px -4px rgba(15, 23, 42, .3);
   }
+  .chip:has(input:checked) span :global(svg) { display: inline-block; }
   .chip input:focus-visible + span {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(86, 179, 235, .3);
+    box-shadow: 0 0 0 3px rgba(86, 179, 235, .35);
   }
 
   .field-row {
@@ -326,32 +325,19 @@ const tackPath = lang === 'en' ? '/en/tack' : '/tack';
     border-bottom-color: var(--brand-accent);
   }
 
-  /* Full-width white submit pill with nested arrow pip. */
+  /* White primary button — the site's convention for a primary CTA on a dark
+     panel (matches the original CTA buttons). Standard btn shape/size. */
   .form-submit {
-    width: 100%;
-    height: 56px;
+    align-self: flex-start;
     margin-top: 6px;
-    border-radius: var(--radius-pill);
     background: var(--white);
     color: var(--brand-primary-dark);
-    font-size: 15px;
-    font-weight: 600;
-    position: relative;
-    transition: transform .25s cubic-bezier(.32, .72, 0, 1),
-                box-shadow .25s cubic-bezier(.32, .72, 0, 1);
+    box-shadow: var(--shadow-sm);
   }
   .form-submit:hover {
+    background: var(--accent-light);
     transform: translateY(-1px);
-    box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .5);
   }
-  .form-submit .btn-pip {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: color-mix(in srgb, var(--brand-primary-dark) 12%, transparent);
-  }
-  .form-submit:hover .btn-pip { transform: translateY(-50%) translateX(3px); }
 
   @media (max-width: 900px) {
     .cta-grid { grid-template-columns: 1fr; gap: 48px; }
