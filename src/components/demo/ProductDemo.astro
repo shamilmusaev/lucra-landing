@@ -32,10 +32,6 @@ const s = getStrings(lang);
       <rect class="hint-pill" x="2.4" y="10.3" width="7.2" height="3.4" rx="1.7"/>
     </svg>
   </span>
-  <a class="demo-cta" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
-    {s.heroDemoCtaPill}
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-  </a>
   <div class="demo-drift" aria-hidden="true">
     <span class="drift-card d1"></span>
     <span class="drift-card d2"></span>
@@ -49,7 +45,6 @@ const s = getStrings(lang);
       <span class="dot red"></span>
       <span class="dot yellow"></span>
       <span class="dot green"></span>
-      <span class="demo-badge"><svg class="demo-badge-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>{s.heroDemoBadge}</span>
     </div>
 
     <!-- Per-tab explainer callouts: arrowed, anchored to real elements, revealed
@@ -173,6 +168,21 @@ const s = getStrings(lang);
     </div>
     </div>
   </div>
+
+  <!-- Mini CTA band below the demo — always rendered (independent of the tab
+       reveal) so it stays visible even while the demo holds focus. Deep tone
+       echoes the final CtaSection so it reads as an intentional section, not a
+       stray button, and differs from the hero's primary "Testa Lucra". -->
+  <aside class="demo-cta-band">
+    <span class="dcb-copy">
+      <strong class="dcb-title">{s.demoCtaTitle}</strong>
+      <span class="dcb-sub">{s.demoCtaSub}</span>
+    </span>
+    <a class="btn btn-primary btn-lg dcb-btn" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
+      {s.demoCtaBtn}
+      <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </aside>
 </div>
 
 <style>
@@ -698,8 +708,8 @@ const s = getStrings(lang);
     opacity .3s ease;
 }
 .demo-tab-ind.ready { opacity: 1; }
-/* Auto-advance countdown — a soft accent fill sweeps across the active bubble
-   over the dwell before the demo switches tabs; frozen while the demo is paused. */
+/* Auto-advance countdown — a soft tinted fill sweeps across the active bubble over
+   the tab's full display, counting down to the next switch (driven by controller HOLD). */
 .demo-tab-ind-fill {
   position: absolute;
   left: 0; top: 0; bottom: 0;
@@ -742,76 +752,72 @@ const s = getStrings(lang);
   100%     { transform: translateX(0); }
 }
 
-/* "Preview" badge — a glossy pill in the chrome bar that surfaces only when the
-   viewer hovers the demo, signalling the window is an interactive preview. A
-   light sheen sweeps across it so it reads as a polished, deliberate marker. */
-.demo-badge {
-  position: relative;
-  margin-left: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 13px 5px 10px;
-  border-radius: 999px;
-  background: var(--brand-gradient-2);
-  border: 1px solid rgba(255,255,255,0.20);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.22) inset, 0 6px 16px -6px rgba(61,80,109,0.55);
-  font-family: var(--font-body);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: .02em;
-  color: var(--white);
-  overflow: hidden;
-  /* Hidden until the viewer hovers the demo — a "this is a preview" reveal. */
-  opacity: 0;
-  transform: translateY(-3px) scale(.96);
-  transition: opacity .3s ease, transform .35s var(--ease-out-expo);
-}
-.hero-chrome-wrap:hover .demo-badge { opacity: 1; transform: none; }
-.demo-badge-eye { width: 13px; height: 13px; flex-shrink: 0; }
-/* Glossy sheen that sweeps across the pill while it is revealed. */
-.demo-badge::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(105deg, transparent 32%, rgba(255,255,255,0.55) 48%, transparent 64%);
-  transform: translateX(-130%);
-  pointer-events: none;
-}
-.hero-chrome-wrap:hover .demo-badge::after { animation: badgeShine 2.4s ease-in-out infinite; }
-@keyframes badgeShine {
-  0%        { transform: translateX(-130%); }
-  55%, 100% { transform: translateX(130%); }
-}
 @media (prefers-reduced-motion: reduce) {
-  .demo-badge { transition: none; }
-  .hero-chrome-wrap:hover .demo-badge::after { animation: none; }
   .hero-chrome-wrap.tabs-visible .demo-tabs-hint .hint-pill { animation: none; }
+  .demo-cta-band { transition: opacity .3s ease; transform: none; }
 }
 
-/* Floating CTA pill — sits over the window's bottom edge (GitBook-style),
-   appears with the tabs once the window is in view. */
-.demo-cta {
-  position: absolute;
-  left: 50%;
-  bottom: -19px;
-  z-index: 13;
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 20px;
-  background: var(--brand-gradient-2);
-  color: var(--white);
+/* Mini CTA band — a compact light section under the demo, reusing the feature
+   cards' surface (cyan-tinted top glow over a soft vertical wash) so it sits in
+   the same visual family. Dark btn-primary mirrors the hero's "Testa Lucra".
+   Scroll- + dwell-gated: hidden until the demo has been scrolled into focus AND
+   held there for a few seconds, then slides up (controller.ts adds .cta-band-in
+   on a timer; the timer resets when the demo leaves focus). */
+.demo-cta-band {
+  margin-top: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 26px 34px;
+  border-radius: var(--radius-shell);
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--brand-accent) 8%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg-app), var(--slate-50));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
   font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 999px;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 10px 24px -10px rgba(61,80,109,0.45), 0 4px 10px -6px rgba(15,23,42,0.25);
   opacity: 0;
-  transform: translate(-50%, 10px);
-  transition: opacity .5s ease, transform .5s ease, box-shadow .25s ease;
+  transform: translateY(14px);
+  transition: opacity .5s ease, transform .5s ease;
 }
-.hero-chrome-wrap.tabs-visible .demo-cta { opacity: 1; transform: translate(-50%, 0); }
-.demo-cta svg { width: 16px; height: 16px; transition: transform .25s ease; }
-.demo-cta:hover { box-shadow: 0 1px 0 rgba(255,255,255,0.14) inset, 0 16px 32px -10px rgba(61,80,109,0.50); }
-.demo-cta:hover svg { transform: translateX(3px); }
+.hero-chrome-wrap.cta-band-in .demo-cta-band {
+  opacity: 1;
+  transform: none;
+}
+/* Below the demo's interactive breakpoint the controller never runs (no
+   tabs-visible), so the scroll gate can't fire — keep the band visible there. */
+@media (max-width: 1199px) {
+  .demo-cta-band { opacity: 1; transform: none; }
+}
+.dcb-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.dcb-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--brand-primary);
+}
+.dcb-sub {
+  font-size: 14px;
+  color: var(--fg-secondary);
+}
+.dcb-btn { flex: none; }
+
+@media (max-width: 720px) {
+  .demo-cta-band {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 24px 26px;
+  }
+  .dcb-btn { align-self: stretch; }
+}
 
 /* Panel stack — swap is instant under the curtain wipe (controller.ts runWipe). */
 .product-main { position: relative; min-height: 620px; padding: 0; }
@@ -912,7 +918,7 @@ const s = getStrings(lang);
    static Dashboard — fully rendered at rest, no choreography. The per-panel
    controllers bail out at this width; this block forces the resting state. */
 @media (max-width: 1199px) {
-  .demo-tabs, .demo-cta, .demo-drift, .product-sidebar { display: none; }
+  .demo-tabs, .demo-drift, .product-sidebar { display: none; }
   .product-shell-inner { grid-template-columns: 1fr; }
   .product-main { min-height: 0; }
   :global(.demo-panel) { display: none; }

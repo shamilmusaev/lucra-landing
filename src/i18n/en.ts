@@ -38,8 +38,9 @@ export const en: { [K in keyof typeof sv]: string } = {
 
   // Product demo window – tabs
   heroDemoTablistLabel: 'Product demo',
-  heroDemoCtaPill: 'Try Lucra',
-  heroDemoBadge: 'Preview',
+  demoCtaTitle: 'Ready to try it with your own books?',
+  demoCtaSub: 'Connect your system and watch Lucra work with your numbers.',
+  demoCtaBtn: 'Get started',
   heroTabChat: 'Chat',
   heroTabDashboard: 'Get an overview',
   heroTabDocs: 'Manage files',

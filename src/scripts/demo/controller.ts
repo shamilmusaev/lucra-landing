@@ -20,6 +20,7 @@ export function initController(): void {
     var chromeEl = (wrapEl.querySelector('.browser-chrome') as HTMLElement | null) || tabBarEl;
     var idx = 0;
     var hintTimer: ReturnType<typeof setTimeout> | null = null;
+    var ctaTimer: ReturnType<typeof setTimeout> | null = null;
     var visible = false;
     var auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var reduceMotion = !auto;
@@ -153,6 +154,11 @@ export function initController(): void {
         if (!hintTimer && !wrapEl.classList.contains('hint-dismissed')) {
           hintTimer = setTimeout(function() { wrapEl.classList.add('hint-dismissed'); }, 7000);
         }
+        // Reveal the bottom CTA band only after the viewer has dwelt in the demo
+        // for a few seconds — not the instant the frame scrolls into focus.
+        if (!ctaTimer && !wrapEl.classList.contains('cta-band-in')) {
+          ctaTimer = setTimeout(function() { wrapEl.classList.add('cta-band-in'); }, 2000);
+        }
       } else {
         stopHold();
         // Reset the hint when the demo leaves the viewport, so it shows again
@@ -160,6 +166,10 @@ export function initController(): void {
         if (hintTimer) clearTimeout(hintTimer);
         hintTimer = null;
         wrapEl.classList.remove('hint-dismissed');
+        // Cancel the dwell timer only while still pending — once the band has
+        // appeared it stays for good (no re-arming, no hide on scroll away).
+        if (ctaTimer) clearTimeout(ctaTimer);
+        ctaTimer = null;
       }
     }
     function onScroll() {

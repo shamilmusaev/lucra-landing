@@ -36,8 +36,9 @@ export const sv = {
 
   // Product demo window – tabs
   heroDemoTablistLabel: 'Produktdemo',
-  heroDemoCtaPill: 'Testa Lucra',
-  heroDemoBadge: 'Förhandsvisning',
+  demoCtaTitle: 'Redo att testa med din egen bokföring?',
+  demoCtaSub: 'Koppla ditt system och se Lucra arbeta med dina siffror.',
+  demoCtaBtn: 'Kom igång',
   heroTabChat: 'Chatta',
   heroTabDashboard: 'Få överblick',
   heroTabDocs: 'Hantera filer',
