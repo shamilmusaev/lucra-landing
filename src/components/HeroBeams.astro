@@ -24,6 +24,7 @@
     pulse: number;
     pulseSpeed: number;
     sway: number;
+    gradient?: CanvasGradient; // cached per beam; rebuilt only on reset/resize
   }
 
   const BEAM_COUNT = 14;
@@ -57,6 +58,27 @@
     let frame = 0;
     let cssWidth = 0;
     let cssHeight = 0;
+    // Cap to 60fps: the drift is slow, so 60 reads identically to 120 here while
+    // halving the per-second paint work on 120Hz displays.
+    const FRAME_INTERVAL = 1000 / 60;
+    let lastRender = 0;
+
+    // The beam's radial gradient depends only on its length (geometry) and tint
+    // (colour), both stable between resets. Build it once per beam life and apply
+    // the per-frame pulse via globalAlpha — avoids 14 createRadialGradient/frame.
+    function buildBeamGradient(beam: Beam): void {
+      // Slate (#3D506D) drifting toward a faint slate-blue (#4A6B95) — never the
+      // bright logo cyan, so the wash stays on-brand and low-key on the light page.
+      const red = Math.round(61 + beam.tint * 13);
+      const green = Math.round(80 + beam.tint * 27);
+      const blue = Math.round(109 + beam.tint * 40);
+      const radius = beam.length / 2;
+      const gradient = context!.createRadialGradient(0, 0, 0, 0, 0, radius);
+      gradient.addColorStop(0, `rgba(${red},${green},${blue},1)`);
+      gradient.addColorStop(0.4, `rgba(${red},${green},${blue},0.55)`);
+      gradient.addColorStop(1, `rgba(${red},${green},${blue},0)`);
+      beam.gradient = gradient;
+    }
 
     function resize(): void {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -67,6 +89,7 @@
       canvas.height = Math.round(cssHeight * dpr);
       context!.setTransform(dpr, 0, 0, dpr, 0, 0);
       beams = Array.from({ length: BEAM_COUNT }, () => createBeam(cssWidth, cssHeight));
+      beams.forEach(buildBeamGradient);
     }
 
     function resetBeam(beam: Beam): void {
@@ -78,15 +101,12 @@
       beam.speed = 0.22 + Math.random() * 0.4;
       beam.opacity = 0.1 + Math.random() * 0.09;
       beam.tint = Math.random();
+      buildBeamGradient(beam);
     }
 
     function drawBeam(beam: Beam): void {
+      if (!beam.gradient) return;
       const pulsing = beam.opacity * (0.8 + Math.sin(beam.pulse) * 0.2);
-      // Slate (#3D506D) drifting toward a faint slate-blue (#4A6B95) — never the
-      // bright logo cyan, so the wash stays on-brand and low-key on the light page.
-      const red = Math.round(61 + beam.tint * 13);
-      const green = Math.round(80 + beam.tint * 27);
-      const blue = Math.round(109 + beam.tint * 40);
 
       context!.save();
       context!.translate(beam.x, beam.y);
@@ -96,19 +116,18 @@
       context!.scale(beam.width / beam.length, 1);
 
       const radius = beam.length / 2;
-      const gradient = context!.createRadialGradient(0, 0, 0, 0, 0, radius);
-      gradient.addColorStop(0, `rgba(${red},${green},${blue},${pulsing})`);
-      gradient.addColorStop(0.4, `rgba(${red},${green},${blue},${pulsing * 0.55})`);
-      gradient.addColorStop(1, `rgba(${red},${green},${blue},0)`);
-
-      context!.fillStyle = gradient;
+      context!.globalAlpha = pulsing;
+      context!.fillStyle = beam.gradient;
       context!.beginPath();
       context!.arc(0, 0, radius, 0, Math.PI * 2);
       context!.fill();
       context!.restore();
     }
 
-    function render(): void {
+    function render(time: number): void {
+      frame = requestAnimationFrame(render);
+      if (time - lastRender < FRAME_INTERVAL) return;
+      lastRender = time;
       context!.clearRect(0, 0, cssWidth, cssHeight);
       for (const beam of beams) {
         beam.y -= beam.speed;
@@ -117,7 +136,6 @@
         if (beam.y < -beam.length) resetBeam(beam);
         drawBeam(beam);
       }
-      frame = requestAnimationFrame(render);
     }
 
     let onScreen = true;
@@ -145,16 +163,26 @@
 
   const container = document.querySelector<HTMLElement>('.hero-beams');
   if (container && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const el = container; // narrowed non-null reference for the deferred callback
     const ric: (cb: () => void) => void =
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)
         : (cb) => { setTimeout(cb, 1); };
-    const io = new IntersectionObserver((entries, obs) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        obs.disconnect();
-        ric(() => initHeroBeams(container));
-      }
-    }, { rootMargin: '200px' });
-    io.observe(container);
+    // Defer the beams until the hero has settled: the orb intro (~2.5s, see
+    // orb.ts) or the first scroll, whichever comes first. The hero is always at
+    // the top of the page, so there's no lazy-viewport gate to wait on — instead
+    // this keeps first paint to two animation loops (orb + particles) instead of
+    // four, so the page doesn't spike the CPU the instant it opens. The static
+    // CSS haze covers the gap until the canvas takes over.
+    let started = false;
+    function beginBeams(): void {
+      if (started) return;
+      started = true;
+      clearTimeout(introTimer);
+      window.removeEventListener('scroll', beginBeams);
+      ric(() => initHeroBeams(el));
+    }
+    const introTimer = window.setTimeout(beginBeams, 2600);
+    window.addEventListener('scroll', beginBeams, { passive: true });
   }
 </script>

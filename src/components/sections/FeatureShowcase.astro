@@ -42,7 +42,6 @@ const cards = [
             <div class="showcase-visual">
               <video
                 class="cs-video-full"
-                data-video
                 preload="none"
                 muted
                 loop
@@ -229,29 +228,89 @@ const cards = [
 </style>
 
 <script>
-  // Play each loop video only while it is on screen (saves CPU when scrolled
-  // away). Reduced motion leaves the poster frame and never autoplays.
+  // Showcase videos: the poster is the final, settled frame, so an idle card
+  // shows the finished result. A video plays only when the user engages it, and
+  // nothing decodes otherwise. Desktop (fine pointer + hover): play the hovered
+  // card. Touch: play the card centred in the carousel, leave the rest still.
+  // Reduced motion keeps every card on its poster.
   (function () {
-    const videos = Array.from(
-      document.querySelectorAll('#funktioner [data-video]'),
-    ) as HTMLVideoElement[];
-    if (videos.length === 0) return;
+    const cards = Array.from(
+      document.querySelectorAll('#funktioner .showcase-card'),
+    ) as HTMLElement[];
+    if (cards.length === 0) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const video = entry.target as HTMLVideoElement;
-          if (entry.isIntersecting) {
-            void video.play().catch(() => {});
-          } else {
-            video.pause();
-          }
-        });
-      },
-      { threshold: 0.3 },
-    );
-    videos.forEach((video) => io.observe(video));
+    const section = document.querySelector('#funktioner');
+    const viewport = document.querySelector('[data-viewport]') as HTMLElement | null;
+    const videoOf = (card: HTMLElement): HTMLVideoElement | null =>
+      card.querySelector<HTMLVideoElement>('video');
+
+    let active: HTMLElement | null = null;
+    let onScreen = false;
+
+    function setActive(card: HTMLElement | null): void {
+      if (active === card) return;
+      if (active) {
+        const prev = videoOf(active);
+        // load() drops the decoded frames and restores the poster (final frame),
+        // so a card that isn't engaged neither plays nor holds video memory.
+        if (prev) { prev.pause(); prev.load(); }
+      }
+      active = card;
+      if (active) {
+        const next = videoOf(active);
+        if (next) void next.play().catch(() => {});
+      }
+    }
+
+    // Touch: keep the carousel's centred card playing as the user swipes.
+    function updateFocus(): void {
+      if (!onScreen || !viewport) { setActive(null); return; }
+      const vp = viewport.getBoundingClientRect();
+      const center = vp.left + vp.width / 2;
+      let best: HTMLElement | null = null;
+      let bestDist = Infinity;
+      cards.forEach((card) => {
+        const r = card.getBoundingClientRect();
+        if (r.right <= vp.left || r.left >= vp.right) return; // off the track view
+        const dist = Math.abs(r.left + r.width / 2 - center);
+        if (dist < bestDist) { bestDist = dist; best = card; }
+      });
+      setActive(best);
+    }
+
+    const hoverMode = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    if (hoverMode) {
+      cards.forEach((card) => {
+        card.addEventListener('pointerenter', () => setActive(card));
+        card.addEventListener('pointerleave', () => { if (active === card) setActive(null); });
+      });
+    } else {
+      let ticking = false;
+      viewport?.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => { ticking = false; updateFocus(); });
+      }, { passive: true });
+      window.addEventListener('resize', updateFocus);
+    }
+
+    // Gate playback on the section being on screen — pause everything when it
+    // scrolls away or the tab is backgrounded.
+    const sectionIO = new IntersectionObserver((entries) => {
+      onScreen = entries.some((entry) => entry.isIntersecting);
+      if (!onScreen) setActive(null);
+      else if (!hoverMode) updateFocus();
+    }, { threshold: 0.15 });
+    if (section) sectionIO.observe(section);
+
+    document.addEventListener('visibilitychange', () => {
+      const video = active ? videoOf(active) : null;
+      if (!video) return;
+      if (document.hidden) video.pause();
+      else void video.play().catch(() => {});
+    });
   })();
 </script>
 

@@ -29,7 +29,11 @@ export function initDashboard(): void {
 
   var gen = 0;
   var timers: ReturnType<typeof setTimeout>[] = [];
-  function clearTimers() { timers.forEach(function(t) { clearTimeout(t); }); timers = []; }
+  var rafIds: number[] = [];
+  function clearTimers() {
+    timers.forEach(function(t) { clearTimeout(t); }); timers = [];
+    rafIds.forEach(function(id) { cancelAnimationFrame(id); }); rafIds = [];
+  }
   function wait(ms: number) { return new Promise<void>(function(res) { timers.push(setTimeout(res, ms)); }); }
 
   function countUp() {
@@ -45,9 +49,9 @@ export function initDashboard(): void {
           var progress = Math.min(1, (now - startTime) / duration);
           var eased = 1 - Math.pow(1 - progress, 3);
           element.textContent = String(Math.round(target * eased));
-          if (progress < 1) requestAnimationFrame(step);
+          if (progress < 1) rafIds.push(requestAnimationFrame(step));
         }
-        requestAnimationFrame(step);
+        rafIds.push(requestAnimationFrame(step));
       }, index * 70));
     });
   }

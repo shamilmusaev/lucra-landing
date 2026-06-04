@@ -102,6 +102,11 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   let px = 0, py = 0, hasPrev = false;  // previous pointer position (device px)
   let dirtyUntil = 0;                   // keep animating until this timestamp
   let running = false;
+  // Cap to 60fps: this is the heaviest loop (full-canvas fog fill + composite +
+  // bloom grid). The drift/glow reads the same at 60 as at 120 on this slow
+  // background, while halving the per-second paint work on ProMotion displays.
+  const FRAME_INTERVAL = 1000 / 60;
+  let lastRender = 0;
   let gx = 0, gy = 0, glowA = 0;        // eased glow position + intensity (0..1)
   let curBrush = BRUSH_MIN;             // eased brush radius (px, CSS)
   let lastMoveT = 0;                    // timestamp of previous pointermove
@@ -145,6 +150,7 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     bloom.width = W; bloom.height = H;
     fctx!.globalCompositeOperation = 'source-over';
     buildPattern();
+    buildGlowGradients();
     hasPrev = false;
     refreshExclude();
     excludeFresh = false;
@@ -408,23 +414,37 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     }
   }
 
+  // Cursor-glow gradients are positioned at the origin and rebuilt only on resize
+  // (radius depends on the constant GLOW_R * dpr). drawCursorGlow translates them
+  // under the pointer and scales intensity via globalAlpha, so no gradient is
+  // allocated per frame during hover.
+  let glowGrad: CanvasGradient | null = null;
+  let washGrad: CanvasGradient | null = null;
+  function buildGlowGradients(): void {
+    const gr = GLOW_R * dpr;
+    glowGrad = ctx!.createRadialGradient(0, 0, 0, 0, 0, gr);
+    glowGrad.addColorStop(0, 'rgba(' + CYAN + ',' + GLOW_TINT.toFixed(3) + ')');
+    glowGrad.addColorStop(0.7, 'rgba(' + CYAN + ',' + (GLOW_TINT * 0.35).toFixed(3) + ')');
+    glowGrad.addColorStop(1, 'rgba(' + CYAN + ',0)');
+    washGrad = ctx!.createRadialGradient(0, 0, 0, 0, 0, gr * 0.82);
+    washGrad.addColorStop(0, 'rgba(' + CYAN + ',' + GLOW_WASH.toFixed(3) + ')');
+    washGrad.addColorStop(1, 'rgba(' + CYAN + ',0)');
+  }
+
   // Radial cyan glow under the cursor — wipe mode only. In bloom mode it would
   // wash a round halo over the dots and drown the triangle silhouette.
   function drawCursorGlow(): void {
-    const gr = GLOW_R * dpr;
+    if (!glowGrad || !washGrad) return;
+    ctx!.save();
+    ctx!.translate(gx, gy);
+    ctx!.globalAlpha = glowA;
     ctx!.globalCompositeOperation = 'source-atop';
-    const gt = ctx!.createRadialGradient(gx, gy, 0, gx, gy, gr);
-    gt.addColorStop(0, 'rgba(' + CYAN + ',' + (GLOW_TINT * glowA).toFixed(3) + ')');
-    gt.addColorStop(0.7, 'rgba(' + CYAN + ',' + (GLOW_TINT * glowA * 0.35).toFixed(3) + ')');
-    gt.addColorStop(1, 'rgba(' + CYAN + ',0)');
-    ctx!.fillStyle = gt;
-    ctx!.fillRect(0, 0, W, H);
+    ctx!.fillStyle = glowGrad;
+    ctx!.fillRect(-gx, -gy, W, H);
     ctx!.globalCompositeOperation = 'source-over';
-    const gw = ctx!.createRadialGradient(gx, gy, 0, gx, gy, gr * 0.82);
-    gw.addColorStop(0, 'rgba(' + CYAN + ',' + (GLOW_WASH * glowA).toFixed(3) + ')');
-    gw.addColorStop(1, 'rgba(' + CYAN + ',0)');
-    ctx!.fillStyle = gw;
-    ctx!.fillRect(0, 0, W, H);
+    ctx!.fillStyle = washGrad;
+    ctx!.fillRect(-gx, -gy, W, H);
+    ctx!.restore();
   }
 
   // Per-frame orchestrator: regrow + compose, then layer the active passes.
@@ -432,6 +452,9 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     // Don't paint while the field is offscreen or the tab is backgrounded —
     // the canvas keeps its last frame, so this is invisible when it returns.
     if (!visible()) { running = false; return; }
+    const now = performance.now();
+    if (now - lastRender < FRAME_INTERVAL) { requestAnimationFrame(frame); return; }
+    lastRender = now;
 
     regrowAndComposeDots();
 
