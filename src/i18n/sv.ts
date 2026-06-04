@@ -38,8 +38,6 @@ export const sv = {
   heroDemoTablistLabel: 'Produktdemo',
   heroDemoCtaPill: 'Testa Lucra',
   heroDemoBadge: 'Förhandsvisning',
-  heroDemoOutroTitle: 'Redo att testa Lucra på riktigt?',
-  heroDemoOutroReplay: 'Spela upp igen',
   heroTabChat: 'Chatta',
   heroTabDashboard: 'Få överblick',
   heroTabDocs: 'Hantera filer',

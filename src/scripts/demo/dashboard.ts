@@ -62,7 +62,6 @@ export function initDashboard(): void {
     if (reduce || !cur.ok || !aiInsights || !aiHead) { countUp(); return; }
     aiInsights.classList.add('is-collapsed');
     countUp();
-    (window as any).lucraCoachBusy = true; // hold auto-rotation during the tour
     await wait(520); if (myGen !== gen) return;
     cur.moveTo(aiHead, false);
     cur.show();
@@ -92,7 +91,6 @@ export function initDashboard(): void {
     await wait(1500); if (myGen !== gen) return;
     cur.hideTips();
     cur.hide();
-    (window as any).lucraCoachBusy = false;
   }
 
   function stop() {
@@ -100,7 +98,6 @@ export function initDashboard(): void {
     clearTimers();
     cur.reset();
     if (aiInsights) aiInsights.classList.remove('is-collapsed');
-    (window as any).lucraCoachBusy = false;
     panelEl.scrollTop = 0;
   }
 

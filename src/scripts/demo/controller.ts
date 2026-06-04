@@ -1,9 +1,8 @@
-import { createDemoCursor } from './cursor';
-
 export function initController(): void {
     // Product demo — tabs reveal as the frame scrolls in, hide on scroll back up,
-    // autorotate + click. Active state is a single "bubble" that flows tab-to-tab.
-    // Each panel's own intro (chat/dashboard/files) plays via the shared pointer.
+    // then auto-rotate continuously (chat → dashboard → files → chat …). Each tab
+    // shows for a fixed duration sized to outlast its guided tour; a fill in the
+    // active "bubble" counts that duration down so the viewer sees time-to-next.
     var wrap = document.querySelector('.hero-chrome-wrap') as HTMLElement | null;
     if (!wrap) return;
     if (window.matchMedia('(max-width: 1199px)').matches) return; // static dashboard — no tabs/rotation
@@ -15,64 +14,50 @@ export function initController(): void {
     var ind      = wrapEl.querySelector('.demo-tab-ind') as (HTMLElement & { _settle?: ReturnType<typeof setTimeout> }) | null;
     if (!tabBar || !tabs.length || !panels.length) return;
     var tabBarEl = tabBar;
-    // Visibility is keyed off the window's position so tabs + CTA reveal only
-    // once the frame is scrolled into focus, and hide again at the hero top or
-    // after the frame leaves upward (scroll-gated, both directions).
+    // Visibility is keyed off the window's position so tabs + CTA reveal only once
+    // the frame is scrolled into focus, and hide again at the hero top or after the
+    // frame leaves upward (scroll-gated, both directions).
     var chromeEl = (wrapEl.querySelector('.browser-chrome') as HTMLElement | null) || tabBarEl;
-    var ROT_MS = 700;  // base delay before the first busy-poll; tours hold via lucra*Busy
     var idx = 0;
-    var timer: ReturnType<typeof setTimeout> | null = null;
     var hintTimer: ReturnType<typeof setTimeout> | null = null;
     var visible = false;
-    var paused = false;
-    // Auto-rotation advances since the demo became visible. The outro fires after
-    // a full sequential lap (one auto-advance per remaining tab). Scrolling away
-    // and back RESUMES the lap (autoSteps/idx are preserved) so it never wraps
-    // back to chat mid-way; a fresh restart only happens once the lap completed.
-    var autoSteps = 0;
-    var completed = false;
     var auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var reduceMotion = !auto;
     // Curtain wipe between tabs — a sheet sweeps across while the panel swaps under it.
     var curtain = wrapEl.querySelector('.panel-curtain') as HTMLElement | null;
     var currentKey = tabs[idx].dataset.panel || '';
     var wiping = false;
-    var cur = createDemoCursor(); // reused at the end to fly the orb onto the outro
 
+    // Per-tab display duration (ms). Each is sized to comfortably outlast that
+    // panel's guided tour, so the tour always finishes before the switch. The
+    // active bubble's fill counts this down, showing the viewer time-to-next.
     var indFill = wrapEl.querySelector('.demo-tab-ind-fill') as HTMLElement | null;
-    var DWELL_MS = 2000;
-    var dwelling = false;
-    var dwellStart = 0;
-    var dwellElapsed = 0;
-    var dwellRaf: number | null = null;
-    function setFill(p: number) {
-      if (indFill) indFill.style.width = Math.max(0, Math.min(1, p)) * 100 + '%';
+    var HOLD: { [key: string]: number } = { chat: 17000, dashboard: 9500, docs: 10500 };
+    var DEFAULT_HOLD = 10000;
+    var holdStart = 0;
+    var holdRaf: number | null = null;
+    function setFill(progress: number) {
+      if (indFill) indFill.style.width = Math.max(0, Math.min(1, progress)) * 100 + '%';
     }
-    function resetDwell() {
-      dwelling = false; dwellElapsed = 0; dwellStart = 0;
-      if (dwellRaf) { cancelAnimationFrame(dwellRaf); dwellRaf = null; }
+    function stopHold() {
+      if (holdRaf) { cancelAnimationFrame(holdRaf); holdRaf = null; }
+      holdStart = 0;
       setFill(0);
     }
-    function dwellTick(now: number) {
-      if (!dwelling) return;
-      if (dwellStart === 0) dwellStart = now;
-      if (paused) { dwellStart = now - dwellElapsed; dwellRaf = requestAnimationFrame(dwellTick); return; }
-      dwellElapsed = now - dwellStart;
-      setFill(dwellElapsed / DWELL_MS);
-      if (dwellElapsed >= DWELL_MS) {
-        resetDwell();
-        autoSteps++;
-        activate((idx + 1) % tabs.length);
-        tick();
-        return;
-      }
-      dwellRaf = requestAnimationFrame(dwellTick);
+    function holdTick(now: number) {
+      if (!auto || !visible) { holdRaf = null; return; }
+      if (holdStart === 0) holdStart = now;
+      var total = HOLD[currentKey] || DEFAULT_HOLD;
+      var progress = (now - holdStart) / total;
+      setFill(progress);
+      if (progress >= 1) { activate((idx + 1) % tabs.length); return; } // loop; activate restarts the hold
+      holdRaf = requestAnimationFrame(holdTick);
     }
-    function startDwell() {
-      if (autoSteps >= tabs.length - 1) { endDemo(); return; }
-      resetDwell();
-      dwelling = true;
-      dwellRaf = requestAnimationFrame(dwellTick);
+    function startHold() {
+      if (!auto || !visible) return;
+      holdStart = 0;
+      if (holdRaf) cancelAnimationFrame(holdRaf);
+      holdRaf = requestAnimationFrame(holdTick);
     }
 
     function moveIndicator(animate: boolean) {
@@ -130,7 +115,6 @@ export function initController(): void {
       }, 260);
     }
     function activate(i: number, animate?: boolean) {
-      resetDwell();
       idx = i;
       var key = tabs[i].dataset.panel;
       tabs.forEach(function(t, j) { t.classList.toggle('is-active', j === i); });
@@ -141,108 +125,41 @@ export function initController(): void {
         swapPanels(key);
       }
       moveIndicator(animate !== false);
-    }
-    function endDemo() {
-      if (timer) { clearTimeout(timer); timer = null; }
-      completed = true;
-      (window as any).lucraCoachBusy = false;
-      (window as any).lucraChatBusy = false;
-      // Fly the tour orb onto the outro orb's spot and grow it, THEN blur + reveal
-      // the "Redo att testa" card — so the orb reads as one continuous element.
-      var outroOrb = wrapEl.querySelector('.demo-outro-orb') as HTMLElement | null;
-      if (outroOrb && cur.ok && !reduceMotion) {
-        cur.show();
-        cur.grow(outroOrb);
-        setTimeout(function() {
-          wrapEl.classList.add('demo-ended');
-          cur.hide();
-        }, 560);
-      } else {
-        wrapEl.classList.add('demo-ended');
-      }
-    }
-    function replay() {
-      wrapEl.classList.remove('demo-ended');
-      completed = false;
-      autoSteps = 0;
-      activate(0); // back to the first tab (chat)
-      tick();
-    }
-    function step() {
-      if (!auto || !visible) return;
-      // While a panel's guided tour is still playing, poll frequently so we advance
-      // the instant it finishes instead of idling out the rest of a ROT_MS interval.
-      if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy || paused) {
-        timer = setTimeout(step, 200);
-        return;
-      }
-      // Tour for this tab finished — run the countdown dwell (drives the bubble
-      // fill); it advances to the next tab when the fill completes.
-      startDwell();
-    }
-    function tick() {
-      if (!auto || !visible) return;
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(step, ROT_MS);
+      startHold(); // (re)start this tab's countdown; no-op while !auto or !visible
     }
 
     tabs.forEach(function(t, i) {
       t.addEventListener('click', function() {
-        // Clicking a tab jumps there and restarts the lap from it (so the outro
-        // only comes after a fresh full cycle), and dismisses the outro if up.
-        if (wrapEl.classList.contains('demo-ended')) wrapEl.classList.remove('demo-ended');
-        completed = false;
-        autoSteps = 0;
         var wasCurrent = tabs[i].dataset.panel === currentKey;
         activate(i);
-        // If the tab was already active, its is-active class didn't change, so the
-        // panel-live observer won't replay the tour — ask the panel to replay so it
-        // shows something (and holds the rotation) instead of instantly advancing.
+        // Clicking the already-active tab can't change is-active, so the panel-live
+        // observer won't replay its tour — ask the panel to replay it explicitly.
         if (wasCurrent) {
           var p = Array.prototype.find.call(panels, function(pp: HTMLElement) { return pp.dataset.panel === currentKey; }) as HTMLElement | undefined;
           if (p) p.dispatchEvent(new Event('lucra:replay'));
         }
-        tick();
       });
     });
     window.addEventListener('resize', function() { moveIndicator(false); });
-    // Pause auto-advance while the pointer is over the demo — the window itself is
-    // pointer-events:none, but the wrap receives enter/leave by geometry.
-    wrapEl.addEventListener('mouseenter', function() { paused = true; });
-    wrapEl.addEventListener('mouseleave', function() { paused = false; });
-
-    var replayBtn = wrapEl.querySelector('.demo-outro-replay') as HTMLElement | null;
-    if (replayBtn) replayBtn.addEventListener('click', replay);
 
     function setVisible(v: boolean) {
       if (v === visible) return;
       visible = v;
       wrapEl.classList.toggle('tabs-visible', v);
       if (v) {
-        // If the previous lap already finished, start a fresh one from the first
-        // tab; otherwise RESUME where we left off so re-entry never jumps to chat.
-        if (completed) {
-          completed = false;
-          autoSteps = 0;
-          if (auto && idx !== 0) { idx = 0; activate(0, false); }
-        }
         moveIndicator(false);
-        tick();
+        startHold();
         // Show the "switch tab" hint long enough to read, then retire it for good.
         if (!hintTimer && !wrapEl.classList.contains('hint-dismissed')) {
           hintTimer = setTimeout(function() { wrapEl.classList.add('hint-dismissed'); }, 7000);
         }
       } else {
-        if (timer) clearTimeout(timer);
-        timer = null;
-        resetDwell();
+        stopHold();
         // Reset the hint when the demo leaves the viewport, so it shows again
         // (and re-arms its auto-hide) the next time the user scrolls back to it.
         if (hintTimer) clearTimeout(hintTimer);
         hintTimer = null;
         wrapEl.classList.remove('hint-dismissed');
-        // Re-arm the outro for the next visit (the lap position is preserved).
-        wrapEl.classList.remove('demo-ended');
       }
     }
     function onScroll() {

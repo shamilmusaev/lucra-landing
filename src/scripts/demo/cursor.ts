@@ -4,7 +4,6 @@ export interface DemoCursor {
   show(): void;
   hide(): void;
   hatch(anchor: HTMLElement | null): void;
-  grow(anchor: HTMLElement | null): void;
   press(): void;
   showTip(tip: HTMLElement | null, anchor: HTMLElement | null, side?: 'below' | 'right', dx?: number, dy?: number): void;
   hideTips(): void;
@@ -73,14 +72,6 @@ export function createDemoCursor(): DemoCursor {
       hatchTimers.push(setTimeout(function () { if (cursor) cursor.classList.remove('is-hatching'); }, 650));
       hatchTimers.push(setTimeout(function () { anchor.classList.remove('is-emitting'); }, 700));
     },
-    grow: function (anchor) {
-      // Glide the pointer orb onto an anchor and scale it up — used at the end of
-      // the demo to fly the orb onto the outro orb's spot before the blur reveals.
-      if (!cursor || !root || !anchor) return;
-      var r = rect(anchor);
-      cursor.classList.add('is-on', 'is-grown');
-      cursor.style.transform = 'translate(' + r.cx + 'px,' + r.cy + 'px)';
-    },
     press: function () {
       if (!cursor) return;
       cursor.classList.remove('is-pressing'); void cursor.offsetWidth;
@@ -125,7 +116,7 @@ export function createDemoCursor(): DemoCursor {
     reset: function () {
       if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
       hatchTimers.forEach(function (t) { clearTimeout(t); }); hatchTimers = [];
-      if (cursor) { cursor.classList.remove('is-on', 'is-pressing', 'is-hatching', 'is-grown'); }
+      if (cursor) { cursor.classList.remove('is-on', 'is-pressing', 'is-hatching'); }
       tips.forEach(function (t) { t.classList.remove('is-shown'); });
     },
   };

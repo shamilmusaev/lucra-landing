@@ -86,7 +86,6 @@ export function initFiles(): void {
     removeAddedRow();
     resetUpload();
     if (reduce || !cur.ok || !addBtn || !upload) return;
-    (window as any).lucraCoachBusy = true; // hold auto-rotation during the tour
     await wait(520); if (myGen !== gen) return;
     cur.moveTo(addBtn, false);
     cur.show();
@@ -131,7 +130,6 @@ export function initFiles(): void {
     await wait(1500); if (myGen !== gen) return;
     cur.hideTips();
     cur.hide();
-    (window as any).lucraCoachBusy = false;
   }
 
   function stop() {
@@ -140,7 +138,6 @@ export function initFiles(): void {
     cur.reset();
     removeAddedRow();
     resetUpload();
-    (window as any).lucraCoachBusy = false;
     panelEl.scrollTop = 0;
     select('company');
   }

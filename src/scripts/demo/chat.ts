@@ -104,7 +104,6 @@ export function initChat(): void {
     }
     function reset() {
       clearTimers();
-      (window as any).lucraChatBusy = false;
       sceneEl.classList.remove('is-typing', 'is-typing2', 'is-sent');
       welcomeTypedEl.textContent = '';
       barTypedEl.textContent = '';
@@ -178,7 +177,6 @@ export function initChat(): void {
       var myGen = ++gen;
       reset();
       if (reduce) { showFinal(); return; }
-      (window as any).lucraChatBusy = true;
       await wait(450); if (myGen !== gen) return;
       if (!(await runTour(myGen))) return;
       for (var i = 0; i < EXCHANGES.length; i++) {
@@ -219,7 +217,6 @@ export function initChat(): void {
           if (!(await typeInto(histLive, histLive.dataset.title || '', myGen))) return;
         }
       }
-      (window as any).lucraChatBusy = false;
     }
 
     onPanelLive(panelEl, play, function() { gen++; reset(); });
