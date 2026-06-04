@@ -132,7 +132,7 @@ export function initChat(): void {
       cur.moveTo(coTrigger, true);
       await wait(520); if (myGen !== gen) return false;
       cur.showTip(tip1, coTrigger, 'below', 0, 10);
-      await wait(2200); if (myGen !== gen) return false;
+      await wait(1500); if (myGen !== gen) return false;
       cur.press();
       await wait(130); if (myGen !== gen) return false;
       cur.hideTips();
@@ -140,7 +140,7 @@ export function initChat(): void {
       await wait(400); if (myGen !== gen) return false;
       cur.showTip(tip2, coDrop, 'right', 12, 0);
       cur.moveTo(coPick, true);
-      await wait(2000); if (myGen !== gen) return false;
+      await wait(1500); if (myGen !== gen) return false;
       cur.press();
       await wait(150); if (myGen !== gen) return false;
       cur.hideTips();
