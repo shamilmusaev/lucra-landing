@@ -1,6 +1,6 @@
 export const sv = {
   // ---- Meta (Task 18) ----
-  metaTitle: 'Lucra · AI för svensk ekonomi',
+  metaTitle: 'Lucra · AI för svensk bokföring',
   metaDescription: 'Lucra är en AI-ekonomassistent som hjälper svenska företagare att förstå sin ekonomi och redovisningsbyråer att minska repetitiva kundfrågor – alltid synkad med Fortnox.',
 
   // ---- Nav (Task 5) ----
