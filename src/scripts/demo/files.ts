@@ -92,7 +92,7 @@ export function initFiles(): void {
     cur.show();
     await wait(420); if (myGen !== gen) return;
     cur.showTip(tip1, addBtn, 'below', -150, 12);
-    await wait(1700); if (myGen !== gen) return;
+    await wait(2900); if (myGen !== gen) return;
     // Press "Add files" → the dropzone unfolds, button turns into "Cancel".
     cur.press();
     await wait(260); if (myGen !== gen) return;
@@ -128,7 +128,7 @@ export function initFiles(): void {
       select('conversation');
     }
     cur.showTip(tip2, convTab || addBtn, 'below', 6, 12);
-    await wait(2400); if (myGen !== gen) return;
+    await wait(3400); if (myGen !== gen) return;
     cur.hideTips();
     cur.hide();
     (window as any).lucraCoachBusy = false;

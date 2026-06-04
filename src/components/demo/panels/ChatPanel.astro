@@ -122,6 +122,7 @@ const s = getStrings(lang);
    focus (the controller marks the wrap `.tabs-visible`), so it never shows while
    the demo is only peeking in at the bottom of the page. */
 .welcome-orb {
+  position: relative;
   width: 96px; height: 96px;
   margin-bottom: 22px;
   background: url(/assets/orb-avatar.png) center / contain no-repeat;
@@ -129,6 +130,30 @@ const s = getStrings(lang);
   transition: opacity .5s ease;
 }
 :global(.hero-chrome-wrap.tabs-visible) .welcome-orb { opacity: 1; }
+/* When the tour pointer hatches out of the orb, the orb recoils and releases a ring. */
+.welcome-orb.is-emitting { animation: welcomeOrbRecoil .7s var(--ease-out-expo) both; }
+.welcome-orb.is-emitting::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(86,179,235,.5);
+  animation: welcomeOrbEmit .7s ease-out forwards;
+}
+@keyframes welcomeOrbRecoil {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.08); }
+  55%  { transform: scale(.96); }
+  100% { transform: scale(1); }
+}
+@keyframes welcomeOrbEmit {
+  from { opacity: .8; transform: scale(.55); }
+  to   { opacity: 0; transform: scale(1.8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome-orb.is-emitting { animation: none; }
+  .welcome-orb.is-emitting::after { animation: none; }
+}
 .welcome-greeting {
   font-family: var(--font-display);
   font-weight: 700;

@@ -70,7 +70,7 @@ export function initDashboard(): void {
     // Anchor to the right of the title so the tip never overlaps the list that
     // unfolds below the header once Insights expands.
     cur.showTip(tip1, aiTitles || aiHead, 'right', 16, -2);
-    await wait(1600); if (myGen !== gen) return;
+    await wait(3000); if (myGen !== gen) return;
     cur.press();
     await wait(220); if (myGen !== gen) return;
     // Hide the tip as the list unfolds, so it never overlaps the rows below.
@@ -82,14 +82,14 @@ export function initDashboard(): void {
     cur.moveTo(firstMetric, true);
     await wait(360); if (myGen !== gen) return;
     cur.showTip(tip2, firstMetric, 'below', 6, 10);
-    await wait(2100); if (myGen !== gen) return;
+    await wait(3200); if (myGen !== gen) return;
     cur.hideTips();
     cur.scrollPanelTo(panelEl, chartHead, 80);
     await wait(700); if (myGen !== gen) return;
     cur.moveTo(chartHead, true);
     await wait(360); if (myGen !== gen) return;
     cur.showTip(tip3, chartHead, 'below', 6, 10);
-    await wait(2300); if (myGen !== gen) return;
+    await wait(3400); if (myGen !== gen) return;
     cur.hideTips();
     cur.hide();
     (window as any).lucraCoachBusy = false;

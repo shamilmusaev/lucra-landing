@@ -118,14 +118,21 @@ export function initChat(): void {
     // if the scene was reset mid-way.
     async function runTour(myGen: number) {
       if (reduce || !cur.ok || !coWrap || !coTrigger || !coPick) return true;
-      cur.moveTo(chatInput, false);
-      await wait(120); if (myGen !== gen) return false;
-      cur.show();
-      await wait(440); if (myGen !== gen) return false;
+      // The pointer orb hatches out of the big welcome orb, then flies to the
+      // company switcher. Falls back to a plain fade-in if the orb is absent.
+      var welcomeOrb = document.querySelector('.welcome-orb') as HTMLElement | null;
+      if (welcomeOrb) {
+        cur.hatch(welcomeOrb);
+      } else {
+        cur.moveTo(chatInput, false);
+        await wait(120); if (myGen !== gen) return false;
+        cur.show();
+      }
+      await wait(620); if (myGen !== gen) return false;
       cur.moveTo(coTrigger, true);
       await wait(820); if (myGen !== gen) return false;
       cur.showTip(tip1, coTrigger, 'below', 4, 10);
-      await wait(1700); if (myGen !== gen) return false;
+      await wait(2900); if (myGen !== gen) return false;
       cur.press();
       await wait(180); if (myGen !== gen) return false;
       cur.hideTips();
@@ -133,7 +140,7 @@ export function initChat(): void {
       await wait(560); if (myGen !== gen) return false;
       cur.showTip(tip2, coDrop, 'right', 12, 14);
       cur.moveTo(coPick, true);
-      await wait(1300); if (myGen !== gen) return false;
+      await wait(2400); if (myGen !== gen) return false;
       cur.press();
       await wait(220); if (myGen !== gen) return false;
       cur.hideTips();

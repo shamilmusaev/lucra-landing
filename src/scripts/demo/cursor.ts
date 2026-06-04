@@ -3,6 +3,8 @@ export interface DemoCursor {
   moveTo(el: HTMLElement | null, animate: boolean): void;
   show(): void;
   hide(): void;
+  hatch(anchor: HTMLElement | null): void;
+  carry(el: HTMLElement | null): void;
   press(): void;
   showTip(tip: HTMLElement | null, anchor: HTMLElement | null, side?: 'below' | 'right', dx?: number, dy?: number): void;
   hideTips(): void;
@@ -20,6 +22,8 @@ export function createDemoCursor(): DemoCursor {
   var chrome = document.querySelector('.browser-chrome') as HTMLElement | null;
   var tips   = document.querySelectorAll('.tour-tip') as NodeListOf<HTMLElement>;
   var pressTimer: ReturnType<typeof setTimeout> | null = null;
+  var hatchTimers: ReturnType<typeof setTimeout>[] = [];
+  var payload: HTMLElement | null = null; // an element that rides along with the cursor (drag)
 
   function liveScale(): number {
     if (!chrome) return 1;
@@ -47,10 +51,39 @@ export function createDemoCursor(): DemoCursor {
       var r = rect(el);
       if (!animate) cursor.style.transition = 'none';
       cursor.style.transform = 'translate(' + r.cx + 'px,' + r.cy + 'px)';
+      // A carried payload (a dragged document) rides along, offset below-right of the orb.
+      if (payload) {
+        if (!animate) payload.style.transition = 'none';
+        payload.style.transform = 'translate(' + (r.cx + 14) + 'px,' + (r.cy + 16) + 'px)';
+        if (!animate) { void payload.offsetWidth; payload.style.transition = ''; }
+      }
       if (!animate) { void cursor.offsetWidth; cursor.style.transition = ''; }
     },
     show: function () { if (cursor) cursor.classList.add('is-on'); },
     hide: function () { if (cursor) cursor.classList.remove('is-on'); },
+    hatch: function (anchor) {
+      // Spawn the pointer orb out of a larger parent orb (the chat welcome orb):
+      // snap into its centre hidden, then visibly pop out and drift down while the
+      // parent recoils + ripples, so it reads as a child being released.
+      if (!cursor || !root || !anchor) return;
+      hatchTimers.forEach(function (t) { clearTimeout(t); }); hatchTimers = [];
+      var r = rect(anchor);
+      cursor.style.transition = 'none';
+      cursor.style.transform = 'translate(' + r.cx + 'px,' + r.cy + 'px)';
+      void cursor.offsetWidth;
+      cursor.classList.add('is-on', 'is-hatching');
+      anchor.classList.add('is-emitting');
+      // Emerge: drift out of the orb with a slight overshoot.
+      cursor.style.transition = 'transform .5s cubic-bezier(.34,1.4,.5,1)';
+      cursor.style.transform = 'translate(' + r.cx + 'px,' + (r.cy + 34) + 'px)';
+      hatchTimers.push(setTimeout(function () { if (cursor) cursor.style.transition = ''; }, 520));
+      hatchTimers.push(setTimeout(function () { if (cursor) cursor.classList.remove('is-hatching'); }, 650));
+      hatchTimers.push(setTimeout(function () { anchor.classList.remove('is-emitting'); }, 700));
+    },
+    carry: function (el) {
+      // Attach (or release) an element that follows the cursor on subsequent moveTo.
+      payload = el;
+    },
     press: function () {
       if (!cursor) return;
       cursor.classList.remove('is-pressing'); void cursor.offsetWidth;
@@ -82,7 +115,9 @@ export function createDemoCursor(): DemoCursor {
     },
     reset: function () {
       if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
-      if (cursor) { cursor.classList.remove('is-on', 'is-pressing'); }
+      hatchTimers.forEach(function (t) { clearTimeout(t); }); hatchTimers = [];
+      payload = null;
+      if (cursor) { cursor.classList.remove('is-on', 'is-pressing', 'is-hatching'); }
       tips.forEach(function (t) { t.classList.remove('is-shown'); });
     },
   };

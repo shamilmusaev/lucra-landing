@@ -40,9 +40,12 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoTablistLabel: 'Product demo',
   heroDemoCtaPill: 'Try Lucra',
   heroDemoBadge: 'Preview',
+  heroDemoOutroTitle: 'Ready to try Lucra for real?',
+  heroDemoOutroReplay: 'Play again',
   heroTabChat: 'Chat',
-  heroTabDashboard: 'Dashboard',
-  heroTabDocs: 'Files',
+  heroTabDashboard: 'Get an overview',
+  heroTabAsk: 'Ask about a doc',
+  heroTabDocs: 'Manage files',
 
   // Product demo window – sidebar
   heroDemoSearch: 'Search',
@@ -81,7 +84,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoChartTitle: 'Income vs Expenses',
 
   // Product demo window – chat panel (welcome-home + auto-typed conversation)
-  heroChatGreeting: 'Good morning, Demo',
+  heroChatGreeting: 'Good morning',
   heroChatSubtitle: 'How can I help with your <span class="g">finances</span> today?',
   heroChatPlaceholder: 'Ask about results, cash flow or reports…',
   heroChatCoSearch: 'Search companies…',
@@ -131,6 +134,14 @@ export const en: { [K in keyof typeof sv]: string } = {
   // Product demo window – files guided-tour tips
   heroFilesTip1: 'Upload source documents – receipts, contracts, invoices. Lucra reads them for you.',
   heroFilesTip2: 'Files you share in chat collect here – Lucra remembers them in the conversation.',
+
+  // Product demo window – "Ask about a doc" focus scene
+  heroAskTitle: 'Ask about a document',
+  heroAskSubtitle: 'Drop a document into the chat and Lucra reads it for you.',
+  heroAskDocName: 'Avtal_Kund_Norrsken_2026.pdf',
+  heroAskQuestion: 'What are the most important things to know in this contract?',
+  heroAskAnswer: 'Three things to keep an eye on in the <strong>Norrsken contract</strong>:<ul><li><strong>Term:</strong> 24 months with automatic renewal unless cancelled 3 months in advance.</li><li><strong>Payment:</strong> net 30 days, 8% late interest on overdue payments.</li><li><strong>Watch out:</strong> price is index-adjusted every year-end.</li></ul>',
+  heroAskTip: 'Drag in a document and ask – Lucra reads it and answers right away.',
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra is built for finance, not for everything',

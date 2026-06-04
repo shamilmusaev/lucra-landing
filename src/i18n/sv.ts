@@ -38,9 +38,12 @@ export const sv = {
   heroDemoTablistLabel: 'Produktdemo',
   heroDemoCtaPill: 'Testa Lucra',
   heroDemoBadge: 'Förhandsvisning',
-  heroTabChat: 'Chatt',
-  heroTabDashboard: 'Dashboard',
-  heroTabDocs: 'Filer',
+  heroDemoOutroTitle: 'Redo att testa Lucra på riktigt?',
+  heroDemoOutroReplay: 'Spela upp igen',
+  heroTabChat: 'Chatta',
+  heroTabDashboard: 'Få överblick',
+  heroTabAsk: 'Fråga om dokument',
+  heroTabDocs: 'Hantera filer',
 
   // Product demo window – sidebar
   heroDemoSearch: 'Sök',
@@ -79,7 +82,7 @@ export const sv = {
   heroDemoChartTitle: 'Intäkter mot kostnader',
 
   // Product demo window – chat panel (welcome-home + auto-typed conversation)
-  heroChatGreeting: 'God morgon, Demo',
+  heroChatGreeting: 'God morgon',
   heroChatSubtitle: 'Hur kan jag hjälpa dig med din <span class="g">ekonomi</span> idag?',
   heroChatPlaceholder: 'Fråga om resultat, kassaflöde eller rapporter…',
   heroChatCoSearch: 'Sök företag…',
@@ -129,6 +132,14 @@ export const sv = {
   // Product demo window – files guided-tour tips
   heroFilesTip1: 'Ladda upp underlag – kvitton, avtal, fakturor. Lucra läser dem åt dig.',
   heroFilesTip2: 'Filer du delar i chatten samlas här – Lucra minns dem i konversationen.',
+
+  // Product demo window – "Fråga om dokument" focus scene
+  heroAskTitle: 'Fråga om ett dokument',
+  heroAskSubtitle: 'Släpp ett underlag i chatten så läser Lucra det åt dig.',
+  heroAskDocName: 'Avtal_Kund_Norrsken_2026.pdf',
+  heroAskQuestion: 'Vad är viktigast att känna till i det här avtalet?',
+  heroAskAnswer: 'Tre saker att hålla koll på i <strong>avtalet med Norrsken</strong>:<ul><li><strong>Löptid:</strong> 24 månader med automatisk förlängning om uppsägning inte sker 3 månader innan.</li><li><strong>Betalning:</strong> 30 dagar netto, 8 % dröjsmålsränta vid sen betalning.</li><li><strong>Att se upp med:</strong> prisjustering med index varje årsskifte.</li></ul>',
+  heroAskTip: 'Dra in ett dokument och fråga – Lucra läser det och svarar direkt.',
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra är byggt för ekonomi, inte för allt',
