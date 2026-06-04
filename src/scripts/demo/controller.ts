@@ -24,6 +24,7 @@ export function initController(): void {
     var timer: ReturnType<typeof setTimeout> | null = null;
     var hintTimer: ReturnType<typeof setTimeout> | null = null;
     var visible = false;
+    var paused = false;
     // Auto-rotation advances since the demo became visible. The outro fires after
     // a full sequential lap (one auto-advance per remaining tab). Scrolling away
     // and back RESUMES the lap (autoSteps/idx are preserved) so it never wraps
@@ -134,7 +135,7 @@ export function initController(): void {
       if (!auto || !visible) return;
       // While a panel's guided tour is still playing, poll frequently so we advance
       // the instant it finishes instead of idling out the rest of a ROT_MS interval.
-      if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy) {
+      if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy || paused) {
         timer = setTimeout(step, 200);
         return;
       }
@@ -171,6 +172,10 @@ export function initController(): void {
       });
     });
     window.addEventListener('resize', function() { moveIndicator(false); });
+    // Pause auto-advance while the pointer is over the demo — the window itself is
+    // pointer-events:none, but the wrap receives enter/leave by geometry.
+    wrapEl.addEventListener('mouseenter', function() { paused = true; });
+    wrapEl.addEventListener('mouseleave', function() { paused = false; });
 
     var replayBtn = wrapEl.querySelector('.demo-outro-replay') as HTMLElement | null;
     if (replayBtn) replayBtn.addEventListener('click', replay);
