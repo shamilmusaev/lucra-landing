@@ -44,7 +44,7 @@ export function initDashboard(): void {
       // left-to-right / top-to-bottom rather than flashing all at once.
       timers.push(setTimeout(function() {
         var startTime = performance.now();
-        var duration = 950;
+        var duration = 620;
         function step(now: number) {
           var progress = Math.min(1, (now - startTime) / duration);
           var eased = 1 - Math.pow(1 - progress, 3);
@@ -63,33 +63,33 @@ export function initDashboard(): void {
     aiInsights.classList.add('is-collapsed');
     countUp();
     (window as any).lucraCoachBusy = true; // hold auto-rotation during the tour
-    await wait(820); if (myGen !== gen) return;
+    await wait(520); if (myGen !== gen) return;
     cur.moveTo(aiHead, false);
     cur.show();
-    await wait(420); if (myGen !== gen) return;
+    await wait(300); if (myGen !== gen) return;
     // Anchor to the right of the title so the tip never overlaps the list that
     // unfolds below the header once Insights expands.
-    cur.showTip(tip1, aiTitles || aiHead, 'right', 16, -2);
-    await wait(3000); if (myGen !== gen) return;
+    cur.showTip(tip1, aiTitles || aiHead, 'right', 14, 0);
+    await wait(2200); if (myGen !== gen) return;
     cur.press();
-    await wait(220); if (myGen !== gen) return;
+    await wait(150); if (myGen !== gen) return;
     // Hide the tip as the list unfolds, so it never overlaps the rows below.
     cur.hideTips();
     aiInsights.classList.remove('is-collapsed');
-    await wait(1400); if (myGen !== gen) return;
+    await wait(900); if (myGen !== gen) return;
     cur.scrollPanelTo(panelEl, firstMetric, 80);
-    await wait(700); if (myGen !== gen) return;
+    await wait(480); if (myGen !== gen) return;
     cur.moveTo(firstMetric, true);
-    await wait(360); if (myGen !== gen) return;
-    cur.showTip(tip2, firstMetric, 'below', 6, 10);
-    await wait(3200); if (myGen !== gen) return;
+    await wait(260); if (myGen !== gen) return;
+    cur.showTip(tip2, firstMetric, 'below', 0, 10);
+    await wait(2200); if (myGen !== gen) return;
     cur.hideTips();
     cur.scrollPanelTo(panelEl, chartHead, 80);
-    await wait(700); if (myGen !== gen) return;
+    await wait(480); if (myGen !== gen) return;
     cur.moveTo(chartHead, true);
-    await wait(360); if (myGen !== gen) return;
-    cur.showTip(tip3, chartHead, 'below', 6, 10);
-    await wait(3400); if (myGen !== gen) return;
+    await wait(260); if (myGen !== gen) return;
+    cur.showTip(tip3, chartHead, 'below', 0, 10);
+    await wait(2200); if (myGen !== gen) return;
     cur.hideTips();
     cur.hide();
     (window as any).lucraCoachBusy = false;

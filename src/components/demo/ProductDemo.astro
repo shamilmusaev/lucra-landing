@@ -4,7 +4,6 @@ import Icon from '../Icon.astro';
 import DashboardPanel from './panels/DashboardPanel.astro';
 import ChatPanel from './panels/ChatPanel.astro';
 import FilesPanel from './panels/FilesPanel.astro';
-import AskDocPanel from './panels/AskDocPanel.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -21,10 +20,6 @@ const s = getStrings(lang);
     <button class="demo-tab" data-panel="dashboard" role="tab" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
       {s.heroTabDashboard}
-    </button>
-    <button class="demo-tab" data-panel="ask" role="tab" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m11.5 14.5 1 1 2-2.5"/></svg>
-      {s.heroTabAsk}
     </button>
     <button class="demo-tab" data-panel="docs" role="tab" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V7.5L14.5 2Z"/><path d="M14 2V8H20"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
@@ -158,8 +153,6 @@ const s = getStrings(lang);
 
         <ChatPanel lang={lang} />
 
-        <AskDocPanel lang={lang} />
-
         <FilesPanel lang={lang} />
 
         <!-- Curtain wipe — a single sheet sweeps across on tab change (controller.ts). -->
@@ -176,14 +169,7 @@ const s = getStrings(lang);
       <div class="tour-tip" data-tour-tip="dash-3" aria-hidden="true"><p>{s.heroDashTip3}</p></div>
       <div class="tour-tip" data-tour-tip="files-1" aria-hidden="true"><p>{s.heroFilesTip1}</p></div>
       <div class="tour-tip" data-tour-tip="files-2" aria-hidden="true"><p>{s.heroFilesTip2}</p></div>
-      <div class="tour-tip" data-tour-tip="ask-1" aria-hidden="true"><p>{s.heroAskTip}</p></div>
       <span class="demo-cursor" data-demo-cursor aria-hidden="true"><span class="demo-cursor-dot"></span></span>
-      <!-- Drag payload — a document that rides the cursor in the "Fråga om dokument"
-           scene. Lives at shell level (like the cursor) so cursor.carry() can drive
-           it in the same coordinate space. -->
-      <span class="askdoc-payload" data-askdoc-payload aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-      </span>
     </div>
     </div>
   </div>
@@ -233,15 +219,6 @@ const s = getStrings(lang);
   grid-template-columns: 240px 1fr;
   gap: 16px;
   min-height: 560px;
-  transition: grid-template-columns .5s var(--ease-out-expo), gap .5s var(--ease-out-expo);
-}
-/* Focus mode (the "Fråga om dokument" tab) collapses the sidebar so the chat
-   centres and the document carousel can breathe. */
-.product-shell-inner.focus-mode { grid-template-columns: 0 1fr; gap: 0; }
-.product-shell-inner.focus-mode .product-sidebar {
-  opacity: 0;
-  transform: translateX(-12px);
-  pointer-events: none;
 }
 .product-sidebar {
   background: var(--bg-paper);
@@ -251,11 +228,6 @@ const s = getStrings(lang);
   display: flex;
   flex-direction: column;
   gap: 4px;
-  overflow: hidden;
-  transition: opacity .4s ease, transform .4s var(--ease-out-expo);
-}
-@media (prefers-reduced-motion: reduce) {
-  .product-shell-inner, .product-sidebar { transition: none; }
 }
 .product-sidebar .brand-row {
   display: flex; align-items: center; gap: 10px;
@@ -392,7 +364,7 @@ const s = getStrings(lang);
   position: absolute; left: 0; top: 0;
   z-index: 30; pointer-events: none;
   opacity: 0;
-  transition: transform .7s cubic-bezier(.5,.05,.2,1), opacity .3s ease;
+  transition: transform .45s cubic-bezier(.5,.05,.2,1), opacity .3s ease;
 }
 .demo-cursor.is-on { opacity: 1; }
 /* The pointer is the Lucra orb itself (same asset as the welcome/insights orb). */
@@ -415,24 +387,13 @@ const s = getStrings(lang);
   from { opacity: .7; transform: scale(.5); }
   to   { opacity: 0; transform: scale(2.4); }
 }
-/* Drag payload — the document chip that rides the cursor in the "ask" scene. */
-.askdoc-payload {
-  position: absolute; left: 0; top: 0;
-  z-index: 29; pointer-events: none;
-  width: 38px; height: 44px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 9px;
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
-  color: var(--brand-primary);
-  box-shadow: 0 12px 26px -10px rgba(61,80,109,.5);
-  opacity: 0;
-  transform: translate(-100px, -100px);
-  transition: opacity .2s ease, transform .7s cubic-bezier(.5,.05,.2,1);
+/* Outro hand-off — at the end the orb glides to the outro orb's spot and grows
+   to its size (~72px) before the blur reveals the card, so it reads as one orb. */
+.demo-cursor.is-grown .demo-cursor-dot {
+  transform: scale(3.2);
+  filter: drop-shadow(0 8px 22px rgba(86,179,235,.5));
+  transition: transform .55s var(--ease-out-expo), filter .55s ease;
 }
-.askdoc-payload svg { width: 18px; height: 18px; }
-.askdoc-payload.is-on { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .askdoc-payload { display: none; } }
 /* Hatch — the orb pops out of the big welcome orb when the chat tour begins. */
 .demo-cursor.is-hatching .demo-cursor-dot { animation: cursorHatch .62s var(--ease-out-expo) both; }
 @keyframes cursorHatch {
@@ -448,36 +409,31 @@ const s = getStrings(lang);
   position: absolute; left: 0; top: 0;
   z-index: 29; pointer-events: none;
   display: flex; align-items: center; gap: 8px;
-  width: max-content; max-width: 240px;
-  padding: 9px 13px 9px 11px;
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 10px 26px -12px rgba(61,80,109,.4), 0 2px 6px -3px rgba(61,80,109,.18);
-  font-size: 12px; font-weight: 500; line-height: 1.4;
-  color: var(--slate-600);
+  width: max-content; max-width: 260px;
+  padding: 10px 15px;
+  /* Same form + colour as the hero "Testa Lucra" button. */
+  background: var(--brand-gradient-2);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 12px 28px -12px rgba(61,80,109,.5), 0 3px 8px -4px rgba(15,23,42,.3);
+  font-size: 12.5px; font-weight: 600; line-height: 1.45;
+  color: #fff;
   opacity: 0;
   transform: translateY(6px) scale(.96);
   transition: opacity .3s ease, transform .3s ease;
 }
-.tour-tip::before {
-  content: "";
-  flex-shrink: 0;
-  width: 16px; height: 16px;
-  background: url(/assets/orb-avatar.png) center / contain no-repeat;
-}
 .tour-tip p { margin: 0; }
-/* Pointer — a small rotated square sharing the bubble's fill + border. */
+/* Pointer — a small rotated square in the bubble's fill, aimed at the anchor
+   centre by JS via --arrow-x / --arrow-y. */
 .tour-tip::after {
   content: "";
   position: absolute;
   width: 10px; height: 10px;
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
+  background: var(--brand-gradient-2);
   transform: rotate(45deg);
 }
-.tour-tip[data-side="below"]::after { top: -5.5px; left: 18px; border-right: 0; border-bottom: 0; }
-.tour-tip[data-side="right"]::after { left: -5.5px; top: 15px; border-top: 0; border-right: 0; }
+.tour-tip[data-side="below"]::after { top: -5px; left: var(--arrow-x, 18px); margin-left: -5px; }
+.tour-tip[data-side="right"]::after { left: -5px; top: var(--arrow-y, 15px); margin-top: -5px; }
 .tour-tip.is-shown { opacity: 1; transform: none; transition: opacity .4s ease, transform .5s var(--ease-out-expo); }
 @media (prefers-reduced-motion: reduce) {
   .demo-cursor, .tour-tip { transition: none; }
@@ -700,7 +656,7 @@ const s = getStrings(lang);
   border: 1px solid var(--border);
   border-radius: 999px;
   box-shadow: 0 12px 32px -12px rgba(61,80,109,0.20), 0 2px 4px rgba(15,23,42,0.04);
-  z-index: 12;
+  z-index: 21;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -18px);
@@ -1038,7 +994,6 @@ const s = getStrings(lang);
   import { initChat } from '../../scripts/demo/chat';
   import { initDashboard } from '../../scripts/demo/dashboard';
   import { initFiles } from '../../scripts/demo/files';
-  import { initAskDoc } from '../../scripts/demo/askDoc';
   import { initController } from '../../scripts/demo/controller';
   import { initScrollZoom } from '../../scripts/demo/scrollZoom';
 
@@ -1051,7 +1006,6 @@ const s = getStrings(lang);
       initDashboard();
       initFiles();
       initChat();
-      initAskDoc();
       initController();
       initScrollZoom();
     };

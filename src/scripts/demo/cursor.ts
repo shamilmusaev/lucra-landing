@@ -4,7 +4,7 @@ export interface DemoCursor {
   show(): void;
   hide(): void;
   hatch(anchor: HTMLElement | null): void;
-  carry(el: HTMLElement | null): void;
+  grow(anchor: HTMLElement | null): void;
   press(): void;
   showTip(tip: HTMLElement | null, anchor: HTMLElement | null, side?: 'below' | 'right', dx?: number, dy?: number): void;
   hideTips(): void;
@@ -23,7 +23,6 @@ export function createDemoCursor(): DemoCursor {
   var tips   = document.querySelectorAll('.tour-tip') as NodeListOf<HTMLElement>;
   var pressTimer: ReturnType<typeof setTimeout> | null = null;
   var hatchTimers: ReturnType<typeof setTimeout>[] = [];
-  var payload: HTMLElement | null = null; // an element that rides along with the cursor (drag)
 
   function liveScale(): number {
     if (!chrome) return 1;
@@ -51,12 +50,6 @@ export function createDemoCursor(): DemoCursor {
       var r = rect(el);
       if (!animate) cursor.style.transition = 'none';
       cursor.style.transform = 'translate(' + r.cx + 'px,' + r.cy + 'px)';
-      // A carried payload (a dragged document) rides along, offset below-right of the orb.
-      if (payload) {
-        if (!animate) payload.style.transition = 'none';
-        payload.style.transform = 'translate(' + (r.cx + 14) + 'px,' + (r.cy + 16) + 'px)';
-        if (!animate) { void payload.offsetWidth; payload.style.transition = ''; }
-      }
       if (!animate) { void cursor.offsetWidth; cursor.style.transition = ''; }
     },
     show: function () { if (cursor) cursor.classList.add('is-on'); },
@@ -80,9 +73,13 @@ export function createDemoCursor(): DemoCursor {
       hatchTimers.push(setTimeout(function () { if (cursor) cursor.classList.remove('is-hatching'); }, 650));
       hatchTimers.push(setTimeout(function () { anchor.classList.remove('is-emitting'); }, 700));
     },
-    carry: function (el) {
-      // Attach (or release) an element that follows the cursor on subsequent moveTo.
-      payload = el;
+    grow: function (anchor) {
+      // Glide the pointer orb onto an anchor and scale it up — used at the end of
+      // the demo to fly the orb onto the outro orb's spot before the blur reveals.
+      if (!cursor || !root || !anchor) return;
+      var r = rect(anchor);
+      cursor.classList.add('is-on', 'is-grown');
+      cursor.style.transform = 'translate(' + r.cx + 'px,' + r.cy + 'px)';
     },
     press: function () {
       if (!cursor) return;
@@ -95,13 +92,25 @@ export function createDemoCursor(): DemoCursor {
       if (!tip || !anchor || !root) return;
       var r = rect(anchor);
       var ox = dx || 0, oy = dy || 0;
-      tip.dataset.side = side === 'right' ? 'right' : 'below';  // aim the pointer arrow
-      var left = side === 'right' ? r.right + ox : r.left + ox;
-      var top = side === 'right' ? r.top + oy : r.bottom + oy;
-      // Keep the pill inside the shell so it never spills past the window edge.
-      var maxLeft = root.clientWidth - tip.offsetWidth - 8;
-      tip.style.left = Math.max(8, Math.min(left, maxLeft)) + 'px';
-      tip.style.top = top + 'px';
+      var isRight = side === 'right';
+      tip.dataset.side = isRight ? 'right' : 'below';
+      // Centre the bubble on the anchor, clamp it inside the shell, then aim the
+      // arrow at the anchor's centre so the tip always points at its object.
+      var w = tip.offsetWidth, h = tip.offsetHeight;
+      var maxLeft = root.clientWidth - w - 8;
+      if (isRight) {
+        var rLeft = Math.max(8, Math.min(r.right + (ox || 12), maxLeft));
+        var rTop = Math.max(8, Math.min(r.cy - h / 2 + oy, root.clientHeight - h - 8));
+        tip.style.left = rLeft + 'px';
+        tip.style.top = rTop + 'px';
+        tip.style.setProperty('--arrow-y', Math.max(12, Math.min(r.cy - rTop, h - 12)) + 'px');
+      } else {
+        var cx = r.cx + ox;
+        var bLeft = Math.max(8, Math.min(cx - w / 2, maxLeft));
+        tip.style.left = bLeft + 'px';
+        tip.style.top = (r.bottom + (oy || 8)) + 'px';
+        tip.style.setProperty('--arrow-x', Math.max(14, Math.min(cx - bLeft, w - 14)) + 'px');
+      }
       tip.classList.add('is-shown');
     },
     hideTips: function () { tips.forEach(function (t) { t.classList.remove('is-shown'); }); },
@@ -116,8 +125,7 @@ export function createDemoCursor(): DemoCursor {
     reset: function () {
       if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
       hatchTimers.forEach(function (t) { clearTimeout(t); }); hatchTimers = [];
-      payload = null;
-      if (cursor) { cursor.classList.remove('is-on', 'is-pressing', 'is-hatching'); }
+      if (cursor) { cursor.classList.remove('is-on', 'is-pressing', 'is-hatching', 'is-grown'); }
       tips.forEach(function (t) { t.classList.remove('is-shown'); });
     },
   };

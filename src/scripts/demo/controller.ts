@@ -1,3 +1,5 @@
+import { createDemoCursor } from './cursor';
+
 export function initController(): void {
     // Product demo — tabs reveal as the frame scrolls in, hide on scroll back up,
     // autorotate + click. Active state is a single "bubble" that flows tab-to-tab.
@@ -17,21 +19,24 @@ export function initController(): void {
     // once the frame is scrolled into focus, and hide again at the hero top or
     // after the frame leaves upward (scroll-gated, both directions).
     var chromeEl = (wrapEl.querySelector('.browser-chrome') as HTMLElement | null) || tabBarEl;
-    var ROT_MS = 5500;
+    var ROT_MS = 700;  // base delay before the first busy-poll; tours hold via lucra*Busy
     var idx = 0;
     var timer: ReturnType<typeof setTimeout> | null = null;
     var hintTimer: ReturnType<typeof setTimeout> | null = null;
     var visible = false;
-    // Panels shown during the current focus session — once all three have played
-    // through, the rotation ends and the outro takes over instead of looping.
-    var visited = new Set<string>();
+    // Auto-rotation advances since the demo became visible. The outro fires after
+    // a full sequential lap (one auto-advance per remaining tab). Scrolling away
+    // and back RESUMES the lap (autoSteps/idx are preserved) so it never wraps
+    // back to chat mid-way; a fresh restart only happens once the lap completed.
+    var autoSteps = 0;
+    var completed = false;
     var auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var reduceMotion = !auto;
     // Curtain wipe between tabs — a sheet sweeps across while the panel swaps under it.
     var curtain = wrapEl.querySelector('.panel-curtain') as HTMLElement | null;
-    var shellInner = wrapEl.querySelector('.product-shell-inner') as HTMLElement | null;
     var currentKey = tabs[idx].dataset.panel || '';
     var wiping = false;
+    var cur = createDemoCursor(); // reused at the end to fly the orb onto the outro
 
     function moveIndicator(animate: boolean) {
       if (!ind) return;
@@ -63,8 +68,6 @@ export function initController(): void {
       // panels is independent of the tab order.
       panels.forEach(function(p) { p.classList.toggle('is-active', p.dataset.panel === key); });
       sideItems.forEach(function(s) { s.classList.toggle('active', s.dataset.panel === key); });
-      // The "ask" tab is a focused chat — collapse the sidebar for it.
-      if (shellInner) shellInner.classList.toggle('focus-mode', key === 'ask');
       currentKey = key || '';
     }
     function runWipe(swap: () => void) {
@@ -92,7 +95,6 @@ export function initController(): void {
     function activate(i: number, animate?: boolean) {
       idx = i;
       var key = tabs[i].dataset.panel;
-      if (key) visited.add(key);
       tabs.forEach(function(t, j) { t.classList.toggle('is-active', j === i); });
       // Wipe only on a real, animated change; first reveal and reduced-motion swap instantly.
       if (animate !== false && !reduceMotion && key !== currentKey) {
@@ -104,41 +106,67 @@ export function initController(): void {
     }
     function endDemo() {
       if (timer) { clearTimeout(timer); timer = null; }
-      wrapEl.classList.add('demo-ended');
+      completed = true;
       (window as any).lucraCoachBusy = false;
+      (window as any).lucraChatBusy = false;
+      // Fly the tour orb onto the outro orb's spot and grow it, THEN blur + reveal
+      // the "Redo att testa" card — so the orb reads as one continuous element.
+      var outroOrb = wrapEl.querySelector('.demo-outro-orb') as HTMLElement | null;
+      if (outroOrb && cur.ok && !reduceMotion) {
+        cur.show();
+        cur.grow(outroOrb);
+        setTimeout(function() {
+          wrapEl.classList.add('demo-ended');
+          cur.hide();
+        }, 560);
+      } else {
+        wrapEl.classList.add('demo-ended');
+      }
     }
     function replay() {
       wrapEl.classList.remove('demo-ended');
-      visited.clear();
+      completed = false;
+      autoSteps = 0;
       activate(0); // back to the first tab (chat)
+      tick();
+    }
+    function step() {
+      if (!auto || !visible) return;
+      // While a panel's guided tour is still playing, poll frequently so we advance
+      // the instant it finishes instead of idling out the rest of a ROT_MS interval.
+      if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy) {
+        timer = setTimeout(step, 200);
+        return;
+      }
+      // End once every tab has auto-played exactly once (tabs.length-1 advances
+      // after the entry tab) — go straight to the outro, never re-show a tab.
+      if (autoSteps >= tabs.length - 1) { endDemo(); return; }
+      autoSteps++;
+      activate((idx + 1) % tabs.length);
       tick();
     }
     function tick() {
       if (!auto || !visible) return;
       if (timer) clearTimeout(timer);
-      timer = setTimeout(function() {
-        // Hold on the current tab while its guided-tour pointer is still playing
-        // out, so nothing is cut off mid-stream.
-        if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy) { tick(); return; }
-        var next = (idx + 1) % tabs.length;
-        // A full loop is complete once we'd wrap back to the first tab having
-        // shown them all — end the demo and reveal the outro instead.
-        if (next === 0 && visited.size >= tabs.length) { endDemo(); return; }
-        activate(next);
-        tick();
-      }, ROT_MS);
+      timer = setTimeout(step, ROT_MS);
     }
 
     tabs.forEach(function(t, i) {
       t.addEventListener('click', function() {
-        // Clicking a tab never stops the demo — it just jumps there and restarts
-        // the rotation countdown from the clicked tab. If the outro is up, it
-        // dismisses it (the click is the user choosing to keep exploring).
-        if (wrapEl.classList.contains('demo-ended')) {
-          wrapEl.classList.remove('demo-ended');
-          visited.clear();
-        }
+        // Clicking a tab jumps there and restarts the lap from it (so the outro
+        // only comes after a fresh full cycle), and dismisses the outro if up.
+        if (wrapEl.classList.contains('demo-ended')) wrapEl.classList.remove('demo-ended');
+        completed = false;
+        autoSteps = 0;
+        var wasCurrent = tabs[i].dataset.panel === currentKey;
         activate(i);
+        // If the tab was already active, its is-active class didn't change, so the
+        // panel-live observer won't replay the tour — ask the panel to replay so it
+        // shows something (and holds the rotation) instead of instantly advancing.
+        if (wasCurrent) {
+          var p = Array.prototype.find.call(panels, function(pp: HTMLElement) { return pp.dataset.panel === currentKey; }) as HTMLElement | undefined;
+          if (p) p.dispatchEvent(new Event('lucra:replay'));
+        }
         tick();
       });
     });
@@ -152,9 +180,13 @@ export function initController(): void {
       visible = v;
       wrapEl.classList.toggle('tabs-visible', v);
       if (v) {
-        // Seed the cycle tracker with whatever tab is showing on entry.
-        var startKey = tabs[idx].dataset.panel;
-        if (startKey) visited.add(startKey);
+        // If the previous lap already finished, start a fresh one from the first
+        // tab; otherwise RESUME where we left off so re-entry never jumps to chat.
+        if (completed) {
+          completed = false;
+          autoSteps = 0;
+          if (auto && idx !== 0) { idx = 0; activate(0, false); }
+        }
         moveIndicator(false);
         tick();
         // Show the "switch tab" hint long enough to read, then retire it for good.
@@ -169,9 +201,8 @@ export function initController(): void {
         if (hintTimer) clearTimeout(hintTimer);
         hintTimer = null;
         wrapEl.classList.remove('hint-dismissed');
-        // Re-arm the outro for the next visit.
+        // Re-arm the outro for the next visit (the lap position is preserved).
         wrapEl.classList.remove('demo-ended');
-        visited.clear();
       }
     }
     function onScroll() {

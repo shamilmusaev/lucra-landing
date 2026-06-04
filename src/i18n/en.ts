@@ -44,7 +44,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoOutroReplay: 'Play again',
   heroTabChat: 'Chat',
   heroTabDashboard: 'Get an overview',
-  heroTabAsk: 'Ask about a doc',
   heroTabDocs: 'Manage files',
 
   // Product demo window – sidebar
@@ -93,8 +92,8 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroChatCoLinked: 'Connected',
   heroChatCoUnlinked: 'Not connected',
   heroChatCoManage: 'Manage companies',
-  heroChatTourTip1: 'First pick which company you want to talk about – Lucra reads the books for you.',
-  heroChatTourTip2: 'All your companies in one place. We’ll pick Demobolaget AB.',
+  heroChatTourTip1: 'Pick a company – Lucra reads the books.',
+  heroChatTourTip2: 'All your companies in one place.',
   heroChatChip1Title: 'Registration',
   heroChatChip1Desc: 'How to register a new company in Sweden.',
   heroChatChip2Title: 'Financial analysis',
@@ -105,8 +104,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroChatAutoA: 'A quick overview for <strong>Demobolaget AB</strong> in April:<ul><li><strong>Revenue:</strong> up 12.5%, driven by three new business deals worth 85,000 SEK.</li><li><strong>Costs:</strong> down 5.2% thanks to lower SaaS spend.</li><li><strong>Watch:</strong> 3 overdue invoices totaling 42,000 SEK.</li></ul>',
   heroChatQ2: 'How does cash flow look right now?',
   heroChatA2: 'Cash flow is <strong>positive</strong> at <strong>+84,200 SEK</strong> in April. Three invoices totaling <strong>142,000 SEK</strong> are unpaid and due within 12 days.',
-  heroChatQ3: 'Which customers are behind on payments?',
-  heroChatA3: 'Three customers have overdue invoices: <strong>Saga Bygg AB</strong> (48,500 SEK), <strong>Lindberg Studio</strong> (62,000 SEK) and <strong>Klangverkstan</strong> (31,500 SEK). Want me to send reminders?',
 
   // Product demo window – files panel
   heroDemoFilesTitle: 'Files & Assets',
@@ -127,21 +124,13 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoSrSummary: 'Interactive demonstration of Lucra: chat, dashboard and files.',
 
   // Product demo window – dashboard guided-tour tips
-  heroDashTip1: 'AI Insights – Lucra summarises your finances and flags anomalies automatically.',
-  heroDashTip2: 'Key figures in real time – updated straight from your bookkeeping.',
-  heroDashTip3: 'Revenue vs costs over time – see the trend at a glance.',
+  heroDashTip1: 'AI summarises and flags anomalies.',
+  heroDashTip2: 'Key figures in real time.',
+  heroDashTip3: 'Revenue vs costs – the trend at a glance.',
 
   // Product demo window – files guided-tour tips
-  heroFilesTip1: 'Upload source documents – receipts, contracts, invoices. Lucra reads them for you.',
-  heroFilesTip2: 'Files you share in chat collect here – Lucra remembers them in the conversation.',
-
-  // Product demo window – "Ask about a doc" focus scene
-  heroAskTitle: 'Ask about a document',
-  heroAskSubtitle: 'Drop a document into the chat and Lucra reads it for you.',
-  heroAskDocName: 'Avtal_Kund_Norrsken_2026.pdf',
-  heroAskQuestion: 'What are the most important things to know in this contract?',
-  heroAskAnswer: 'Three things to keep an eye on in the <strong>Norrsken contract</strong>:<ul><li><strong>Term:</strong> 24 months with automatic renewal unless cancelled 3 months in advance.</li><li><strong>Payment:</strong> net 30 days, 8% late interest on overdue payments.</li><li><strong>Watch out:</strong> price is index-adjusted every year-end.</li></ul>',
-  heroAskTip: 'Drag in a document and ask – Lucra reads it and answers right away.',
+  heroFilesTip1: 'Upload documents – Lucra reads them.',
+  heroFilesTip2: 'Shared files collect here.',
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra is built for finance, not for everything',
