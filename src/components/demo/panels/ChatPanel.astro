@@ -223,7 +223,7 @@ const s = getStrings(lang);
   transition: background .25s ease, color .25s ease, transform .25s ease;
 }
 .chat-send svg { width: 17px; height: 17px; }
-[data-chat].is-typing .chat-send { background: var(--brand-primary); color: #fff; transform: scale(1.04); }
+[data-chat].is-typing .chat-send { background: var(--brand-primary); color: var(--white); transform: scale(1.04); }
 /* Suggestion chips */
 .chat-chips {
   display: grid;
@@ -242,7 +242,7 @@ const s = getStrings(lang);
   transition: border-color .25s ease, background .25s ease, transform .25s ease;
 }
 .chat-chip:hover {
-  border-color: var(--blue-20, #E0E7FF);
+  border-color: var(--blue-20);
   background: rgba(228,236,245,.5);
   transform: translateY(-2px);
 }
@@ -295,12 +295,12 @@ const s = getStrings(lang);
 [data-chat].is-typing2 .chat-bar-ph { display: none; }
 [data-chat].is-typing2 .chat-bar .chat-caret { display: inline-block; }
 .chat-bar .chat-send { width: 34px; height: 34px; }
-[data-chat].is-typing2 .chat-bar .chat-send { background: var(--brand-primary); color: #fff; }
+[data-chat].is-typing2 .chat-bar .chat-send { background: var(--brand-primary); color: var(--white); }
 .chat-convo .uin {
   align-self: flex-end;
   max-width: 78%;
   background: var(--brand-primary);
-  color: #fff;
+  color: var(--white);
   font-size: 14px;
   padding: 11px 16px;
   border-radius: 18px 18px 4px 18px;
@@ -315,7 +315,7 @@ const s = getStrings(lang);
 .chat-convo .ain .bubble {
   background: var(--bg-paper);
   border: 1px solid var(--border);
-  border-left: 3px solid #5B7A9B;
+  border-left: 3px solid var(--nav-icon-default);
   padding: 12px 16px;
   border-radius: 0 16px 16px 16px;
   font-size: 14px;
@@ -337,7 +337,7 @@ const s = getStrings(lang);
 .chat-dots.show { display: inline-flex; }
 .chat-dots i {
   width: 5px; height: 5px; border-radius: 50%;
-  background: #5B7A9B;
+  background: var(--nav-icon-default);
   animation: chatDot 1.6s infinite both;
   animation-timing-function: cubic-bezier(.4,0,.2,1);
 }
