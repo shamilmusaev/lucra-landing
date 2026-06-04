@@ -39,6 +39,42 @@ export function initController(): void {
     var wiping = false;
     var cur = createDemoCursor(); // reused at the end to fly the orb onto the outro
 
+    var indFill = wrapEl.querySelector('.demo-tab-ind-fill') as HTMLElement | null;
+    var DWELL_MS = 2000;
+    var dwelling = false;
+    var dwellStart = 0;
+    var dwellElapsed = 0;
+    var dwellRaf: number | null = null;
+    function setFill(p: number) {
+      if (indFill) indFill.style.width = Math.max(0, Math.min(1, p)) * 100 + '%';
+    }
+    function resetDwell() {
+      dwelling = false; dwellElapsed = 0; dwellStart = 0;
+      if (dwellRaf) { cancelAnimationFrame(dwellRaf); dwellRaf = null; }
+      setFill(0);
+    }
+    function dwellTick(now: number) {
+      if (!dwelling) return;
+      if (dwellStart === 0) dwellStart = now;
+      if (paused) { dwellStart = now - dwellElapsed; dwellRaf = requestAnimationFrame(dwellTick); return; }
+      dwellElapsed = now - dwellStart;
+      setFill(dwellElapsed / DWELL_MS);
+      if (dwellElapsed >= DWELL_MS) {
+        resetDwell();
+        autoSteps++;
+        activate((idx + 1) % tabs.length);
+        tick();
+        return;
+      }
+      dwellRaf = requestAnimationFrame(dwellTick);
+    }
+    function startDwell() {
+      if (autoSteps >= tabs.length - 1) { endDemo(); return; }
+      resetDwell();
+      dwelling = true;
+      dwellRaf = requestAnimationFrame(dwellTick);
+    }
+
     function moveIndicator(animate: boolean) {
       if (!ind) return;
       var indEl = ind;
@@ -94,6 +130,7 @@ export function initController(): void {
       }, 260);
     }
     function activate(i: number, animate?: boolean) {
+      resetDwell();
       idx = i;
       var key = tabs[i].dataset.panel;
       tabs.forEach(function(t, j) { t.classList.toggle('is-active', j === i); });
@@ -139,12 +176,9 @@ export function initController(): void {
         timer = setTimeout(step, 200);
         return;
       }
-      // End once every tab has auto-played exactly once (tabs.length-1 advances
-      // after the entry tab) — go straight to the outro, never re-show a tab.
-      if (autoSteps >= tabs.length - 1) { endDemo(); return; }
-      autoSteps++;
-      activate((idx + 1) % tabs.length);
-      tick();
+      // Tour for this tab finished — run the countdown dwell (drives the bubble
+      // fill); it advances to the next tab when the fill completes.
+      startDwell();
     }
     function tick() {
       if (!auto || !visible) return;
@@ -201,6 +235,7 @@ export function initController(): void {
       } else {
         if (timer) clearTimeout(timer);
         timer = null;
+        resetDwell();
         // Reset the hint when the demo leaves the viewport, so it shows again
         // (and re-arms its auto-hide) the next time the user scrolls back to it.
         if (hintTimer) clearTimeout(hintTimer);
