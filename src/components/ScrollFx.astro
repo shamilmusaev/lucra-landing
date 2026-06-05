@@ -1,0 +1,71 @@
+---
+// ScrollFx — no visible DOM output; only the scroll-progress driver.
+// Writes a normalized 0..1 progress var (--p) onto every [data-scrollfx]
+// element as it crosses the viewport. Sections map --p to transforms in their
+// own scoped CSS. One shared rAF loop, transforms-only, lazy by viewport.
+---
+<script>
+  // Scroll-linked (scrubbed) effects driver. Companion to RevealScript:
+  // reveal is one-shot (opacity/blur on enter); this drives a live --p that
+  // tracks the element's position through the viewport, so sections can scrub
+  // a transform as you scroll (and reverse on scroll-up).
+  //
+  //   --p = 0   → element centre sits at the bottom edge of the viewport
+  //   --p = 0.5 → element centre sits at the viewport centre
+  //   --p = 1   → element centre sits at the top edge of the viewport
+  //
+  // Reduced-motion users get nothing here; CSS defaults var(--p, <resting>) to
+  // the settled state, so sections look correct with no JS.
+  const targets = document.querySelectorAll<HTMLElement>('[data-scrollfx]');
+  const reduce =
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (targets.length > 0 && !reduce && 'IntersectionObserver' in window) {
+    const active = new Set<HTMLElement>();
+    let rafId = 0;
+
+    function update() {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      active.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const centre = rect.top + rect.height / 2;
+        // 0 when centre at viewport bottom, 1 when centre at viewport top.
+        let p = 1 - centre / vh;
+        if (p < 0) p = 0;
+        else if (p > 1) p = 1;
+        el.style.setProperty('--p', p.toFixed(4));
+      });
+      rafId = active.size > 0 ? requestAnimationFrame(update) : 0;
+    }
+
+    function start() {
+      if (rafId === 0 && active.size > 0 && !document.hidden) {
+        rafId = requestAnimationFrame(update);
+      }
+    }
+
+    // Only animate elements currently in (or near) the viewport.
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target as HTMLElement;
+          if (entry.isIntersecting) active.add(el);
+          else active.delete(el);
+        });
+        start();
+      },
+      { rootMargin: '40% 0px 40% 0px' },
+    );
+    targets.forEach((el) => io.observe(el));
+
+    // Pause the loop while backgrounded; resume on return.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+      } else {
+        start();
+      }
+    });
+  }
+</script>

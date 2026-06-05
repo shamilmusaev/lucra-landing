@@ -34,7 +34,7 @@ const partnerFeats = [
       <p class="section-sub">{s.priSub}</p>
     </div>
 
-    <div class="plans">
+    <div class="plans" data-scrollfx>
       <!-- Pilot — recommended, highlighted card -->
       <article class="plan plan-featured reveal">
         <div class="plan-tag"><span class="plan-badge">{s.priPilotBadge}</span></div>
@@ -88,6 +88,9 @@ const partnerFeats = [
 #upplagg {
   position: relative;
   background: var(--bg-paper);
+  /* The cards spread out horizontally on scroll-in — clip the overhang so it
+     never produces a horizontal scrollbar. */
+  overflow-x: clip;
 }
 /* Content sits above the cursor-reactive dot field. */
 #upplagg > .container { position: relative; z-index: 1; }
@@ -257,10 +260,25 @@ const partnerFeats = [
 :global(html.reveal-ready) #upplagg .plan.reveal.delay-1 { transform: translate( 32px, 18px); }
 :global(html.reveal-ready) #upplagg .plan.reveal.in-view { transform: none; }
 
+/* ---- Scroll-linked signature: the two plans start spread wide apart and glide
+   together as the section approaches centre. Driven by --p (ScrollFx) via the
+   individual translate prop so it composes with reveal + hover. ----
+   --q: 0 below the fold → 1 at centre (cards fully converged), then held. */
+.plans { --q: clamp(0, calc(var(--p, 0.5) * 2), 1); }
+.plans .plan-featured            { translate: calc(-80px * (1 - var(--q))) 0; will-change: translate; }
+.plans .plan:not(.plan-featured) { translate: calc( 80px * (1 - var(--q))) 0; will-change: translate; }
+@media (prefers-reduced-motion: reduce) {
+  .plans .plan-featured,
+  .plans .plan:not(.plan-featured) { translate: none; }
+}
+
 @media (max-width: 860px) {
   .plans { grid-template-columns: 1fr; }
   .plan { padding: 30px 26px; }
   .plan-name { font-size: 28px; }
   .plan:not(.plan-featured) .plan-tag { display: none; }
+  /* Single column — horizontal convergence makes no sense, so hold the cards. */
+  .plans .plan-featured,
+  .plans .plan:not(.plan-featured) { translate: none; }
 }
 </style>
