@@ -54,7 +54,7 @@ Om du väljer att koppla ditt Fortnox-konto får vi åtkomst till och behandlar 
 
 Vi behandlar dina personuppgifter för följande ändamål, vart och ett med en rättslig grund enligt GDPR:
 
-### Tillhandahållande av tjänsten (fullgörande av avtal — art. 6.1 b)
+### Tillhandahållande av tjänsten (fullgörande av avtal – art. 6.1 b)
 
 - Tillhandahålla och underhålla vår AI-plattform och dess funktioner
 - Behandla och analysera dina uppladdade dokument
@@ -62,7 +62,7 @@ Vi behandlar dina personuppgifter för följande ändamål, vart och ett med en 
 - Hantera ditt konto och din autentisering
 - Skicka tjänstrelaterade aviseringar (lösenordsåterställning, konversationsinbjudningar)
 
-### Plattformens stabilitet (berättigat intresse — art. 6.1 f)
+### Plattformens stabilitet (berättigat intresse – art. 6.1 f)
 
 - Övervaka systemets hälsa och upptäcka fel via vår felspårningstjänst
 - Förhindra missbruk och säkerställa plattformens säkerhet
@@ -98,10 +98,10 @@ Vi säljer inte dina personuppgifter. Vi delar uppgifter med följande kategorie
 
 ### Underbiträden
 
-- **Amazon Web Services (AWS)** — EU (Stockholm, eu-north-1). Leverantör av molninfrastruktur och hosting som används för applikationshosting, fillagring, databaser, loggning, innehållsleverans, e-postleverans och relaterad teknisk drift.
-- **OpenAI, LLC** — USA. Leverantör av AI-modeller för chattkompletteringar och dokumentanalys. Dina chattmeddelanden och ditt dokumentinnehåll skickas till OpenAI för behandling.
-- **Functional Software, Inc. (Sentry)** — EU (Tyskland). Felövervakning och prestandaspårning av applikationer. Tar emot felrapporter med teknisk kontext.
-- **Fortnox AB** — Sverige. Integration med bokföringsprogram (endast när du uttryckligen kopplar ditt Fortnox-konto via OAuth).
+- **Amazon Web Services (AWS)** – EU (Stockholm, eu-north-1). Leverantör av molninfrastruktur och hosting som används för applikationshosting, fillagring, databaser, loggning, innehållsleverans, e-postleverans och relaterad teknisk drift.
+- **OpenAI, LLC** – USA. Leverantör av AI-modeller för chattkompletteringar och dokumentanalys. Dina chattmeddelanden och ditt dokumentinnehåll skickas till OpenAI för behandling.
+- **Functional Software, Inc. (Sentry)** – EU (Tyskland). Felövervakning och prestandaspårning av applikationer. Tar emot felrapporter med teknisk kontext.
+- **Fortnox AB** – Sverige. Integration med bokföringsprogram (endast när du uttryckligen kopplar ditt Fortnox-konto via OAuth).
 
 ### Rättsliga skyldigheter
 
@@ -153,12 +153,12 @@ I händelse av en personuppgiftsincident som sannolikt leder till en risk för d
 
 Enligt dataskyddsförordningen har du följande rättigheter avseende dina personuppgifter:
 
-- **Rätt till tillgång (art. 15)** — Du kan begära en kopia av de personuppgifter vi har om dig.
-- **Rätt till rättelse (art. 16)** — Du kan be oss att korrigera felaktiga eller ofullständiga personuppgifter.
-- **Rätt till radering (art. 17)** — Du kan begära att dina personuppgifter raderas, med förbehåll för lagstadgade lagringskrav.
-- **Rätt till begränsning (art. 18)** — Du kan be oss att begränsa behandlingen av dina uppgifter under vissa omständigheter.
-- **Rätt till dataportabilitet (art. 20)** — Du kan få dina personuppgifter i ett strukturerat, allmänt använt och maskinläsbart format.
-- **Rätt att göra invändningar (art. 21)** — Du kan invända mot behandling som grundar sig på berättigat intresse.
+- **Rätt till tillgång (art. 15)** – Du kan begära en kopia av de personuppgifter vi har om dig.
+- **Rätt till rättelse (art. 16)** – Du kan be oss att korrigera felaktiga eller ofullständiga personuppgifter.
+- **Rätt till radering (art. 17)** – Du kan begära att dina personuppgifter raderas, med förbehåll för lagstadgade lagringskrav.
+- **Rätt till begränsning (art. 18)** – Du kan be oss att begränsa behandlingen av dina uppgifter under vissa omständigheter.
+- **Rätt till dataportabilitet (art. 20)** – Du kan få dina personuppgifter i ett strukturerat, allmänt använt och maskinläsbart format.
+- **Rätt att göra invändningar (art. 21)** – Du kan invända mot behandling som grundar sig på berättigat intresse.
 
 För att utöva någon av dessa rättigheter, kontakta oss på [privacy@lucra.ai](mailto:privacy@lucra.ai). Vi besvarar din begäran inom 30 dagar.
 

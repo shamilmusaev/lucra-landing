@@ -52,7 +52,7 @@ If you choose to connect your Fortnox account, we access and process data from F
 
 We process your personal data for the following purposes, each with a lawful basis under GDPR:
 
-### Service Delivery (Contract Performance — Art. 6(1)(b))
+### Service Delivery (Contract Performance – Art. 6(1)(b))
 
 - Providing and maintaining our AI platform and its features
 - Processing and analyzing your uploaded documents
@@ -60,7 +60,7 @@ We process your personal data for the following purposes, each with a lawful bas
 - Managing your account and authentication
 - Sending service-related notifications (password reset, conversation invites)
 
-### Platform Stability (Legitimate Interest — Art. 6(1)(f))
+### Platform Stability (Legitimate Interest – Art. 6(1)(f))
 
 - Monitoring system health and detecting errors via our error tracking service
 - Preventing abuse and ensuring platform security
@@ -96,10 +96,10 @@ We do not sell your personal data. We share data with the following categories o
 
 ### Sub-processors
 
-- **Amazon Web Services (AWS)** — EU (Stockholm, eu-north-1). Cloud infrastructure and hosting provider used for application hosting, file storage, databases, logging, content delivery, email delivery, and related technical operations.
-- **OpenAI, LLC** — United States. AI model provider for chat completions and document analysis. Your chat messages and document content are sent to OpenAI for processing.
-- **Functional Software, Inc. (Sentry)** — EU (Germany). Error monitoring and application performance tracking. Receives error reports with technical context.
-- **Fortnox AB** — Sweden. Accounting software integration (only when you explicitly connect your Fortnox account via OAuth).
+- **Amazon Web Services (AWS)** – EU (Stockholm, eu-north-1). Cloud infrastructure and hosting provider used for application hosting, file storage, databases, logging, content delivery, email delivery, and related technical operations.
+- **OpenAI, LLC** – United States. AI model provider for chat completions and document analysis. Your chat messages and document content are sent to OpenAI for processing.
+- **Functional Software, Inc. (Sentry)** – EU (Germany). Error monitoring and application performance tracking. Receives error reports with technical context.
+- **Fortnox AB** – Sweden. Accounting software integration (only when you explicitly connect your Fortnox account via OAuth).
 
 ### Legal Obligations
 
@@ -151,12 +151,12 @@ In the event of a personal data breach that is likely to result in a risk to you
 
 Under the General Data Protection Regulation, you have the following rights regarding your personal data:
 
-- **Right of Access (Art. 15)** — You can request a copy of the personal data we hold about you.
-- **Right to Rectification (Art. 16)** — You can ask us to correct inaccurate or incomplete personal data.
-- **Right to Erasure (Art. 17)** — You can request the deletion of your personal data, subject to legal retention requirements.
-- **Right to Restriction (Art. 18)** — You can ask us to restrict the processing of your data in certain circumstances.
-- **Right to Data Portability (Art. 20)** — You can receive your personal data in a structured, commonly used, machine-readable format.
-- **Right to Object (Art. 21)** — You can object to processing based on legitimate interests.
+- **Right of Access (Art. 15)** – You can request a copy of the personal data we hold about you.
+- **Right to Rectification (Art. 16)** – You can ask us to correct inaccurate or incomplete personal data.
+- **Right to Erasure (Art. 17)** – You can request the deletion of your personal data, subject to legal retention requirements.
+- **Right to Restriction (Art. 18)** – You can ask us to restrict the processing of your data in certain circumstances.
+- **Right to Data Portability (Art. 20)** – You can receive your personal data in a structured, commonly used, machine-readable format.
+- **Right to Object (Art. 21)** – You can object to processing based on legitimate interests.
 
 To exercise any of these rights, please contact us at [privacy@lucra.ai](mailto:privacy@lucra.ai). We will respond to your request within 30 days.
 
