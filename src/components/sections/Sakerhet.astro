@@ -7,7 +7,7 @@ const s = getStrings(lang);
 
 <section id="sakerhet" class="tone-slate">
   <div class="container">
-    <div class="security">
+    <div class="security" data-scrollfx>
       <div class="sec-head reveal">
         <h2 class="section-title">{s.sakerhetTitle}</h2>
         <p class="section-sub">
@@ -125,6 +125,25 @@ const s = getStrings(lang);
   color: var(--slate-500);
   margin: 0;
   line-height: 1.55;
+}
+
+/* ---- Scroll-linked signature: the sticky heading holds while the card list
+   eases into focus — a gentle zoom (--q) plus a slow parallax drift (--r) that
+   reads as depth against the pinned head. Driven by --p (ScrollFx). The effect
+   lives on .sec-list (a sibling), never on an ancestor of the sticky head, so
+   position: sticky stays intact. ---- */
+.security {
+  --q: clamp(0, calc(var(--p, 0.5) * 2), 1);
+  --r: calc(var(--p, 0.5) - 0.5);
+}
+.security .sec-list {
+  translate: 0 calc(-40px * var(--r));
+  scale: calc(0.93 + 0.07 * var(--q));
+  transform-origin: center top;
+  will-change: translate, scale;
+}
+@media (prefers-reduced-motion: reduce) {
+  .security .sec-list { translate: none; scale: none; }
 }
 
 @media (max-width: 960px) {

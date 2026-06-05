@@ -34,7 +34,7 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
       <h2 class="section-title">{s.cmpTitle}</h2>
     </div>
 
-    <div class="cmp reveal delay-1">
+    <div class="cmp reveal delay-1" data-scrollfx>
       <div class="cmp-grid" style={`grid-template-rows:${gridRows}`}>
         <!-- Highlighted Lucra column: a solid brand surface spanning every row,
              overhanging the top to carry the white logo. -->
@@ -312,8 +312,24 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
   .cmp-comp { margin-top: 14px; }
 }
 
+/* ---- Scroll-linked signature: the comparison table lays flat — it enters with
+   a slight backward tilt + scale and straightens as it reaches centre, like a
+   card set down in front of you. Driven by --p (ScrollFx) via individual
+   rotate/scale props (parent supplies the perspective), composing with reveal.
+   --q: 0 below the fold → 1 at centre, then held. ---- */
+#jamforelse .container { perspective: 1400px; }
+.cmp {
+  --q: clamp(0, calc(var(--p, 0.5) * 2), 1);
+  --r: calc(var(--p, 0.5) - 0.5);
+  rotate: x calc(9deg * (1 - var(--q)));
+  scale: calc(0.88 + 0.12 * var(--q));
+  translate: 0 calc(-30px * var(--r));
+  will-change: rotate, scale, translate;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cmp-panel { transition: none; }
   .cmp:hover .cmp-panel { transform: none; }
+  .cmp { rotate: none; scale: none; translate: none; }
 }
 </style>
