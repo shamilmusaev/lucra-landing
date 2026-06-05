@@ -8,7 +8,6 @@ const foretagareCards = [
   { icon: 'trending-up', tab: s.forVemCard1Tab, today: s.forVemCard1Today, lucra: s.forVemCard1Lucra },
   { icon: 'message-circle', tab: s.forVemCard2Tab, today: s.forVemCard2Today, lucra: s.forVemCard2Lucra },
   { icon: 'target', tab: s.forVemCard3Tab, today: s.forVemCard3Today, lucra: s.forVemCard3Lucra },
-  { icon: 'calendar-clock', tab: s.forVemCard4Tab, today: s.forVemCard4Today, lucra: s.forVemCard4Lucra },
 ];
 const byraCards = [
   { icon: 'building-2', tab: s.forVemCard5Tab, today: s.forVemCard5Today, lucra: s.forVemCard5Lucra },
@@ -46,7 +45,10 @@ const groups = [
                     <p class="fv-text fv-today">{card.today}</p>
                   </div>
                   <div class="fv-block fv-block-lucra">
-                    <span class="fv-blocklabel fv-lucra-label">{s.forVemLucraLabel}</span>
+                    <span class="fv-blocklabel fv-lucra-label">
+                      {s.forVemLucraLabel}
+                      <img class="fv-lucra-logo" src="/assets/logo.svg" alt="" width="11" height="10" aria-hidden="true" />
+                    </span>
                     <p class="fv-text fv-lucra">{card.lucra}</p>
                   </div>
                 </div>
@@ -209,7 +211,13 @@ const groups = [
 }
 
 .fv-today-label { color: var(--slate-400); }
-.fv-lucra-label { color: var(--brand-primary); }
+.fv-lucra-label {
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.fv-lucra-logo { width: 11px; height: 10px; display: block; }
 
 .fv-text {
   margin: 0;
@@ -220,6 +228,18 @@ const groups = [
 .fv-today { color: var(--slate-500); }
 .fv-lucra { color: var(--fg-primary); }
 
+/* ---- Scroll-linked side-swap: while the "För företagare" cards scroll past,
+   the heading sits on the right; as the "För redovisningsbyråer" group arrives,
+   the heading glides to the left and that group's cards take the right side.
+   --swap (0→1, transition progress) and --swapx (px distance between the two
+   columns) are set from JS; translate is the individual prop so it composes with
+   reveal + the sticky pin. ---- */
+.fv-aside { translate: calc(var(--swapx, 0px) * -1 * var(--swap, 0)) 0; }
+.fv-groups .fv-group:nth-child(2) {
+  translate: calc(var(--swapx, 0px) * var(--swap, 0)) 0;
+  will-change: translate;
+}
+
 @media (max-width: 860px) {
   .fv-layout { grid-template-columns: 1fr; }
   /* Restore source order: heading first, grouped cards below */
@@ -227,12 +247,17 @@ const groups = [
   .fv-groups { order: 1; gap: clamp(40px, 9vw, 64px); }
   .fv-card { position: static; }
   .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
+  /* Single column — no side-swap. */
+  .fv-aside,
+  .fv-groups .fv-group:nth-child(2) { translate: none; }
 }
 
 /* No scroll-driven overlap when motion is reduced — plain stacked list */
 @media (prefers-reduced-motion: reduce) {
   .fv-aside { position: static; }
   .fv-card { position: static; }
+  .fv-aside,
+  .fv-groups .fv-group:nth-child(2) { translate: none; }
 }
 </style>
 
@@ -250,6 +275,14 @@ const groups = [
   const allCards = stacks.flat();
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Side-swap targets: the sticky heading and the second audience group trade
+  // sides as the second group scrolls in (see the --swap/--swapx CSS).
+  const aside = section?.querySelector<HTMLElement>('.fv-aside') ?? null;
+  const groups = section?.querySelector<HTMLElement>('.fv-groups') ?? null;
+  const secondGroup = section
+    ? section.querySelectorAll<HTMLElement>('.fv-group')[1] ?? null
+    : null;
+
   if (allCards.length > 1 && !reduce) {
     const PIN = 120; // must match .fv-card top
     const COVER = 440; // distance over which the previous card recedes
@@ -263,7 +296,28 @@ const groups = [
         allCards.forEach((card) => {
           card.style.transform = '';
         });
+        section?.style.removeProperty('--swap');
+        section?.style.removeProperty('--swapx');
+        if (aside) aside.style.opacity = '';
+        if (secondGroup) secondGroup.style.opacity = '';
         return;
+      }
+      // Side-swap: progress runs 0→1 as the second group rises from the lower
+      // viewport toward the pin line; --swapx is the layout gap between the two
+      // columns (offsetLeft is unaffected by our own translate).
+      if (section && aside && groups && secondGroup) {
+        section.style.setProperty('--swapx', `${aside.offsetLeft - groups.offsetLeft}px`);
+        const vh = window.innerHeight;
+        const secondTop = secondGroup.getBoundingClientRect().top;
+        // Start the swap only after the first group's last card has settled at
+        // the pin line; finish it as the second group's first card pins.
+        const swap = Math.min(1, Math.max(0, (vh * 0.44 - secondTop) / (vh * 0.36)));
+        section.style.setProperty('--swap', swap.toFixed(4));
+        // Cross-dissolve the moving blocks so they never visibly overlap the
+        // pinned cards mid-swap (fully transparent at the halfway point).
+        const fade = Math.abs(swap * 2 - 1);
+        aside.style.opacity = fade.toFixed(4);
+        secondGroup.style.opacity = fade.toFixed(4);
       }
       for (const cards of stacks) {
         for (let index = 0; index < cards.length; index++) {
