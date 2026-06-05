@@ -346,7 +346,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   faqA8: 'Yes, the accounting firm has full control and visibility. The firm can see all questions and answers, escalate questions to a human consultant when needed, and review AI answers before they reach the client. Lucra is built to complement the firm, not replace it.',
   ogImageAlt: 'Lucra – AI economist connected to your bookkeeping',
   privacyMetaTitle: 'Privacy Policy · Lucra',
-  privacyMetaDescription: 'How LucrAI Tech AB collects, uses and protects your personal data — in line with the GDPR and Swedish data protection law.',
+  privacyMetaDescription: 'How LucrAI Tech AB collects, uses and protects your personal data – in line with the GDPR and Swedish data protection law.',
   termsMetaTitle: 'Terms of Service · Lucra',
   termsMetaDescription: 'The terms governing access to and use of the Lucra AI platform, operated by LucrAI Tech AB.',
   notFoundMetaTitle: '404 · Page not found · Lucra',
