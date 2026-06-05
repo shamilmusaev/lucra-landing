@@ -13,6 +13,18 @@ const faqs = [
   { q: s.faqQ7, a: s.faqA7 },
   { q: s.faqQ8, a: s.faqA8 },
 ];
+
+// FAQPage structured data for rich results. Answers are plain text (rendered
+// via {faq.a}); strip any markup defensively before emitting.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: { '@type': 'Answer', text: faq.a.replace(/<[^>]+>/g, '') },
+  })),
+};
 ---
 
 <section id="faq" class="tone-slate">
@@ -54,6 +66,8 @@ const faqs = [
     </div>
   </div>
 </section>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd).replace(/</g, '\\u003c')} />
 
 <style>
 .faq-grid {

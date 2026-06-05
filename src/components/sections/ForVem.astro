@@ -1,6 +1,7 @@
 ---
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
+import { CONTACT_MAILTO } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
@@ -25,7 +26,7 @@ const groups = [
     <aside class="fv-aside reveal">
       <h2 class="section-title">{s.forVemTitle}</h2>
       <p class="section-sub">{s.forVemSub}</p>
-      <a class="btn btn-primary btn-lg fv-cta" href="[CALENDLY_URL]">{s.forVemCta}</a>
+      <a class="btn btn-primary btn-lg fv-cta" href={CONTACT_MAILTO}>{s.forVemCta}</a>
     </aside>
 
     <div class="fv-groups">

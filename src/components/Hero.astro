@@ -4,6 +4,7 @@ import OrbIsland from './OrbIsland.astro';
 import HeroParticles from './HeroParticles.astro';
 import HeroBeams from './HeroBeams.astro';
 import ProductDemo from './demo/ProductDemo.astro';
+import { APP_URL, CONTACT_MAILTO } from '../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -46,12 +47,12 @@ const s = getStrings(lang);
     </p>
     <div class="hero-ctas reveal delay-2">
       <span class="cta-frame">
-        <a class="btn btn-primary btn-lg" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
+        <a class="btn btn-primary btn-lg" href={APP_URL} target="_blank" rel="noopener">
           {s.heroCtaPrimary}
           <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
       </span>
-      <a class="btn btn-ghost btn-lg" href="[CALENDLY_URL]">
+      <a class="btn btn-ghost btn-lg" href={CONTACT_MAILTO}>
         {s.heroCtaSecondary}
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>

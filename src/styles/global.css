@@ -15,6 +15,32 @@ img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
 
+/* Single global keyboard-focus indicator (was missing site-wide — only FAQ had
+   one). Shows only for keyboard/AT users; outline follows each element's radius. */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+/* Skip-to-content link — off-screen until focused (WCAG 2.4.1 bypass). */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -64px;
+  z-index: 1000;
+  background: var(--brand-primary);
+  color: var(--white);
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: top .15s ease;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
 .container {
   width: 100%;
   /* Scales with the viewport up to 1800px so content fills wide screens and
@@ -122,8 +148,8 @@ button { font: inherit; }
 section { padding: var(--section-py) 0; position: relative; }
 
 /* ============================================================
-   Shared section typography — used by Problem, Funktioner,
-   ForVem, Integrationer, Säkerhet, and other content sections.
+   Shared section typography — used by Funktioner, ForVem,
+   Säkerhet, and other content sections.
    Kept here so each section component does not duplicate it.
    ============================================================ */
 .section-eyebrow {
@@ -203,8 +229,8 @@ section { padding: var(--section-py) 0; position: relative; }
    The gate class `reveal-ready` is added to <html> by the hero
    script; the IntersectionObserver in RevealScript.astro adds
    `in-view` to each element as it enters the viewport.
-   Section-specific signatures (#for-vem, #integrationer/tilePop)
-   live scoped inside their own components, so they are NOT
+   Section-specific signatures (e.g. #for-vem) live scoped inside
+   their own components, so they are NOT
    duplicated here.
    ============================================================ */
 /* No-JS / fallback: everything visible. */

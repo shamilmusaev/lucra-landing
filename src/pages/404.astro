@@ -11,8 +11,9 @@ const lang = 'sv' as const;
 const s = getStrings(lang);
 const en = getStrings('en');
 ---
-<BaseLayout lang={lang} title={s.notFoundMetaTitle} description={s.notFoundBody} path="/404">
+<BaseLayout lang={lang} title={s.notFoundMetaTitle} description={s.notFoundBody} path="/404" noindex>
   <Nav lang={lang} />
+  <main id="main">
   <section class="nf">
     <div class="container">
       <p class="nf-code" aria-hidden="true">404</p>
@@ -21,6 +22,7 @@ const en = getStrings('en');
       <a class="btn btn-primary" href="/" data-nf-cta>{s.notFoundCta}</a>
     </div>
   </section>
+  </main>
   <Footer lang={lang} />
 </BaseLayout>
 

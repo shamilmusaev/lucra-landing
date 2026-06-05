@@ -11,12 +11,17 @@ export interface Props {
   description: string;
   /** Path of the current page without language prefix, e.g. "/" */
   path?: string;
+  /** Excludes the page from indexing and drops canonical/hreflang (404). */
+  noindex?: boolean;
 }
 
-const { lang, title, description, path = '/' } = Astro.props;
+const { lang, title, description, path = '/', noindex = false } = Astro.props;
 const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
-const svUrl = `${site}${path}`;
-const enUrl = `${site}/en${path === '/' ? '/' : path}`;
+// trailingSlash: 'always' — keep canonical/hreflang in the slashed form so they
+// match the emitted dir/index.html and the sitemap.
+const normalizedPath = path === '/' ? '/' : `${path.replace(/\/$/, '')}/`;
+const svUrl = `${site}${normalizedPath}`;
+const enUrl = `${site}/en${normalizedPath}`;
 const canonical = lang === 'sv' ? svUrl : enUrl;
 const s = getStrings(lang);
 // Per-language social card; everything else (title/description) reuses the props.
@@ -39,10 +44,16 @@ const jsonLd = [
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#3D506D" />
-    <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="sv" href={svUrl} />
-    <link rel="alternate" hreflang="en" href={enUrl} />
-    <link rel="alternate" hreflang="x-default" href={svUrl} />
+    {noindex ? (
+      <meta name="robots" content="noindex, follow" />
+    ) : (
+      <Fragment>
+        <link rel="canonical" href={canonical} />
+        <link rel="alternate" hreflang="sv" href={svUrl} />
+        <link rel="alternate" hreflang="en" href={enUrl} />
+        <link rel="alternate" hreflang="x-default" href={svUrl} />
+      </Fragment>
+    )}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -59,13 +70,15 @@ const jsonLd = [
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image:alt" content={s.ogImageAlt} />
+    <!-- Only the above-the-fold General Sans weights are preloaded. Inter /
+         Plus Jakarta Sans are product-demo-only (below the fold) and load on
+         demand, so they don't compete in the LCP window. -->
     <link rel="preload" href="/fonts/GeneralSans-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/GeneralSans-500.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/Inter-vf.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/PlusJakartaSans-vf.woff2" as="font" type="font/woff2" crossorigin />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <a class="skip-link" href="#main">{s.skipToContent}</a>
     <SmoothScroll />
     <ScrollFx />
     <slot />
