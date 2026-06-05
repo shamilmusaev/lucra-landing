@@ -12,7 +12,7 @@ const s = getStrings(lang);
 <!-- Product chrome preview -->
 <div class="container hero-chrome-wrap reveal delay-3">
   <div class="demo-tabs" role="tablist" aria-label={s.heroDemoTablistLabel}>
-    <span class="demo-tab-ind" aria-hidden="true"></span>
+    <span class="demo-tab-ind" aria-hidden="true"><span class="demo-tab-ind-fill"></span></span>
     <button class="demo-tab is-active" data-panel="chat" role="tab" type="button">
       <svg viewBox="0 0 19 19" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.9125 15.6319C7.58251 16.4886 9.50357 16.7206 11.3295 16.2862C13.1555 15.8518 14.7662 14.7795 15.8715 13.2625C16.9768 11.7456 17.504 9.88375 17.358 8.01252C17.212 6.14129 16.4025 4.38373 15.0753 3.05655C13.7482 1.72937 11.9906 0.919847 10.1194 0.773866C8.24813 0.627885 6.38629 1.15504 4.86934 2.26034C3.3524 3.36564 2.28011 4.9764 1.84569 6.80235C1.41128 8.6283 1.64332 10.5494 2.5 12.2194L0.75 17.3819L5.9125 15.6319Z"/></svg>
       {s.heroTabChat}
@@ -32,10 +32,6 @@ const s = getStrings(lang);
       <rect class="hint-pill" x="2.4" y="10.3" width="7.2" height="3.4" rx="1.7"/>
     </svg>
   </span>
-  <a class="demo-cta" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
-    {s.heroDemoCtaPill}
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-  </a>
   <div class="demo-drift" aria-hidden="true">
     <span class="drift-card d1"></span>
     <span class="drift-card d2"></span>
@@ -49,7 +45,6 @@ const s = getStrings(lang);
       <span class="dot red"></span>
       <span class="dot yellow"></span>
       <span class="dot green"></span>
-      <span class="demo-badge"><span class="demo-badge-dot"></span>{s.heroDemoBadge}</span>
     </div>
 
     <!-- Per-tab explainer callouts: arrowed, anchored to real elements, revealed
@@ -155,6 +150,8 @@ const s = getStrings(lang);
 
         <FilesPanel lang={lang} />
 
+        <!-- Curtain wipe — a single sheet sweeps across on tab change (controller.ts). -->
+        <span class="panel-curtain" aria-hidden="true"></span>
       </main>
 
       <!-- Guided-tour layer — a soft pointer dot the chat intro drives to the
@@ -171,6 +168,21 @@ const s = getStrings(lang);
     </div>
     </div>
   </div>
+
+  <!-- Mini CTA band below the demo — always rendered (independent of the tab
+       reveal) so it stays visible even while the demo holds focus. Deep tone
+       echoes the final CtaSection so it reads as an intentional section, not a
+       stray button, and differs from the hero's primary "Testa Lucra". -->
+  <aside class="demo-cta-band">
+    <span class="dcb-copy">
+      <strong class="dcb-title">{s.demoCtaTitle}</strong>
+      <span class="dcb-sub">{s.demoCtaSub}</span>
+    </span>
+    <a class="btn btn-primary btn-lg dcb-btn" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
+      {s.demoCtaBtn}
+      <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </aside>
 </div>
 
 <style>
@@ -249,14 +261,14 @@ const s = getStrings(lang);
 .sb-company .av {
   width: 36px; height: 36px; flex-shrink: 0;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3D506D 0%, #4A5F7F 55%, #56B3EB 130%);
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-light) 55%, var(--brand-accent) 130%);
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--font-display); font-weight: 700; font-size: 12px;
-  color: #fff;
+  color: var(--white);
 }
 .sb-co-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .sb-co-top { display: flex; align-items: center; gap: 6px; }
-.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--brand-primary); letter-spacing: -.012em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--brand-primary); letter-spacing: -.012em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sb-company .chev { width: 14px; height: 14px; color: var(--slate-400); flex-shrink: 0; transition: transform .2s ease, color .15s ease; }
 .sb-company-wrap.is-open .sb-company .chev { color: var(--brand-primary); transform: rotate(-90deg); }
 .sb-co-firm {
@@ -320,7 +332,7 @@ const s = getStrings(lang);
   font-family: var(--font-display); font-size: 9px; font-weight: 700;
   transition: background .2s ease, border-color .2s ease, color .2s ease;
 }
-.sb-co-item.is-picked .sb-co-mark { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+.sb-co-item.is-picked .sb-co-mark { background: var(--brand-primary); border-color: var(--brand-primary); color: var(--white); }
 .sb-co-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .sb-co-name { font-family: var(--font-display); font-size: 13px; font-weight: 500; color: var(--slate-600); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sb-co-item.is-picked .sb-co-name { color: var(--brand-primary); font-weight: 600; }
@@ -346,68 +358,69 @@ const s = getStrings(lang);
   position: absolute; left: 0; top: 0;
   z-index: 30; pointer-events: none;
   opacity: 0;
-  transition: transform .7s cubic-bezier(.5,.05,.2,1), opacity .3s ease;
+  transition: transform .45s cubic-bezier(.5,.05,.2,1), opacity .3s ease;
 }
 .demo-cursor.is-on { opacity: 1; }
+/* The pointer is the Lucra orb itself (same asset as the welcome/insights orb). */
 .demo-cursor-dot {
-  position: absolute; left: -9px; top: -9px;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: rgba(61,80,109,.92);
-  border: 2px solid rgba(255,255,255,.95);
-  box-shadow: 0 3px 10px -1px rgba(15,23,42,.35);
+  position: absolute; left: -11px; top: -11px;
+  width: 22px; height: 22px;
+  background: url(/assets/orb-avatar.png) center / contain no-repeat;
+  filter: drop-shadow(0 3px 8px rgba(61,80,109,.35));
   transition: transform .16s ease;
 }
-.demo-cursor.is-pressing .demo-cursor-dot { transform: scale(.66); }
+.demo-cursor.is-pressing .demo-cursor-dot { transform: scale(.82); }
 .demo-cursor.is-pressing::after {
-  content: ""; position: absolute; left: -9px; top: -9px;
-  width: 18px; height: 18px;
+  content: ""; position: absolute; left: -11px; top: -11px;
+  width: 22px; height: 22px;
   border-radius: 50%;
-  border: 2px solid rgba(61,80,109,.5);
+  border: 2px solid rgba(86,179,235,.55);
   animation: cursorRipple .5s ease-out forwards;
 }
 @keyframes cursorRipple {
   from { opacity: .7; transform: scale(.5); }
-  to   { opacity: 0; transform: scale(2.6); }
+  to   { opacity: 0; transform: scale(2.4); }
 }
-/* Guided-tour coachmarks — light bubbles with the Lucra orb as a marker and a
-   pointer toward the element they annotate, so they read as hints, not buttons
-   (the solid fill is reserved for real actions). Positioned by JS, which sets
-   data-side to aim the pointer (below the anchor, or to its right). */
+/* Hatch — the orb pops out of the big welcome orb when the chat tour begins. */
+.demo-cursor.is-hatching .demo-cursor-dot { animation: cursorHatch .62s var(--ease-out-expo) both; }
+@keyframes cursorHatch {
+  0%   { transform: scale(.05); }
+  55%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+/* Guided-tour coachmarks — dark gradient bubbles with a pointer toward the
+   element they annotate, so they read as hints, not buttons (the solid fill is
+   reserved for real actions). Positioned by JS, which sets data-side to aim the
+   pointer (below the anchor, or to its right). */
 .tour-tip {
   position: absolute; left: 0; top: 0;
   z-index: 29; pointer-events: none;
   display: flex; align-items: center; gap: 8px;
-  width: max-content; max-width: 240px;
-  padding: 9px 13px 9px 11px;
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 10px 26px -12px rgba(61,80,109,.4), 0 2px 6px -3px rgba(61,80,109,.18);
-  font-size: 12px; font-weight: 500; line-height: 1.4;
-  color: var(--slate-600);
+  width: max-content; max-width: 260px;
+  padding: 10px 15px;
+  /* Same form + colour as the hero "Testa Lucra" button. */
+  background: var(--brand-gradient-2);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 12px 28px -12px rgba(61,80,109,.5), 0 3px 8px -4px rgba(15,23,42,.3);
+  font-size: 12.5px; font-weight: 600; line-height: 1.45;
+  color: var(--white);
   opacity: 0;
   transform: translateY(6px) scale(.96);
   transition: opacity .3s ease, transform .3s ease;
 }
-.tour-tip::before {
-  content: "";
-  flex-shrink: 0;
-  width: 16px; height: 16px;
-  background: url(/assets/orb-avatar.png) center / contain no-repeat;
-}
-.tour-tip p { margin: 0; }
-/* Pointer — a small rotated square sharing the bubble's fill + border. */
+.tour-tip p { margin: 0; color: inherit; font-size: inherit; line-height: inherit; }
+/* Pointer — a small rotated square in the bubble's fill, aimed at the anchor
+   centre by JS via --arrow-x / --arrow-y. */
 .tour-tip::after {
   content: "";
   position: absolute;
   width: 10px; height: 10px;
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
+  background: var(--brand-gradient-2);
   transform: rotate(45deg);
 }
-.tour-tip[data-side="below"]::after { top: -5.5px; left: 18px; border-right: 0; border-bottom: 0; }
-.tour-tip[data-side="right"]::after { left: -5.5px; top: 15px; border-top: 0; border-right: 0; }
+.tour-tip[data-side="below"]::after { top: -5px; left: var(--arrow-x, 18px); margin-left: -5px; }
+.tour-tip[data-side="right"]::after { left: -5px; top: var(--arrow-y, 15px); margin-top: -5px; }
 .tour-tip.is-shown { opacity: 1; transform: none; transition: opacity .4s ease, transform .5s var(--ease-out-expo); }
 @media (prefers-reduced-motion: reduce) {
   .demo-cursor, .tour-tip { transition: none; }
@@ -507,7 +520,7 @@ const s = getStrings(lang);
   width: 30px; height: 30px; flex-shrink: 0;
   border-radius: 50%;
   background: var(--brand-primary);
-  color: #fff;
+  color: var(--white);
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--font-display); font-weight: 700; font-size: 11px;
 }
@@ -630,7 +643,7 @@ const s = getStrings(lang);
   border: 1px solid var(--border);
   border-radius: 999px;
   box-shadow: 0 12px 32px -12px rgba(61,80,109,0.20), 0 2px 4px rgba(15,23,42,0.04);
-  z-index: 12;
+  z-index: 21;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -18px);
@@ -684,6 +697,7 @@ const s = getStrings(lang);
   width: 0;
   background: var(--white);
   border-radius: 999px;
+  overflow: hidden;
   box-shadow: 0 1px 2px rgba(61,80,109,.16), 0 4px 10px -4px rgba(61,80,109,.20);
   z-index: 0;
   pointer-events: none;
@@ -694,6 +708,15 @@ const s = getStrings(lang);
     opacity .3s ease;
 }
 .demo-tab-ind.ready { opacity: 1; }
+/* Auto-advance countdown — a soft tinted fill sweeps across the active bubble over
+   the tab's full display, counting down to the next switch (driven by controller HOLD). */
+.demo-tab-ind-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: var(--bg-active);
+  pointer-events: none;
+}
 
 /* Coachmark just below the tabs — its arrow points up at them and gently bobs
    toward them, nudging the one available action (switch tabs). Sits below the
@@ -729,83 +752,99 @@ const s = getStrings(lang);
   100%     { transform: translateX(0); }
 }
 
-/* "Interactive demo" badge — reads as the window's title in the chrome bar,
-   so the simulated app is unmistakably a demo. */
-.demo-badge {
-  margin-left: 12px;
-  display: inline-flex;
+@media (prefers-reduced-motion: reduce) {
+  .hero-chrome-wrap.tabs-visible .demo-tabs-hint .hint-pill { animation: none; }
+  .demo-cta-band { transition: opacity .3s ease; transform: none; }
+}
+
+/* Mini CTA band — a compact light section under the demo, reusing the feature
+   cards' surface (cyan-tinted top glow over a soft vertical wash) so it sits in
+   the same visual family. Dark btn-primary mirrors the hero's "Testa Lucra".
+   Scroll- + dwell-gated: hidden until the demo has been scrolled into focus AND
+   held there for a few seconds, then slides up (controller.ts adds .cta-band-in
+   on a timer; the timer resets when the demo leaves focus). */
+.demo-cta-band {
+  margin-top: 44px;
+  display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 4px 11px 4px 9px;
-  border-radius: 999px;
-  background: rgba(61,80,109,0.06);
-  border: 1px solid rgba(61,80,109,0.10);
+  justify-content: space-between;
+  gap: 28px;
+  padding: 26px 34px;
+  border-radius: var(--radius-shell);
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--brand-accent) 8%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg-app), var(--slate-50));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
   font-family: var(--font-body);
-  font-size: 11.5px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.hero-chrome-wrap.cta-band-in .demo-cta-band {
+  opacity: 1;
+  transform: none;
+}
+/* Below the demo's interactive breakpoint the controller never runs (no
+   tabs-visible), so the scroll gate can't fire — keep the band visible there. */
+@media (max-width: 1199px) {
+  .demo-cta-band { opacity: 1; transform: none; }
+}
+.dcb-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.dcb-title {
+  font-family: var(--font-display);
+  font-size: 19px;
   font-weight: 600;
-  letter-spacing: .01em;
+  letter-spacing: -.01em;
   color: var(--brand-primary);
 }
-.demo-badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--brand-primary);
-  animation: demoBadgePulse 2.4s ease-out infinite;
-}
-@keyframes demoBadgePulse {
-  0%   { box-shadow: 0 0 0 0 rgba(61,80,109,0.40); }
-  70%  { box-shadow: 0 0 0 7px rgba(61,80,109,0); }
-  100% { box-shadow: 0 0 0 0 rgba(61,80,109,0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .demo-badge-dot { animation: none; }
-  .hero-chrome-wrap.tabs-visible .demo-tabs-hint .hint-pill { animation: none; }
-}
-
-/* Floating CTA pill — sits over the window's bottom edge (GitBook-style),
-   appears with the tabs once the window is in view. */
-.demo-cta {
-  position: absolute;
-  left: 50%;
-  bottom: -19px;
-  z-index: 13;
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 20px;
-  background: var(--brand-gradient-2);
-  color: #fff;
-  font-family: var(--font-body);
-  font-weight: 600;
+.dcb-sub {
   font-size: 14px;
-  border-radius: 999px;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 10px 24px -10px rgba(61,80,109,0.45), 0 4px 10px -6px rgba(15,23,42,0.25);
-  opacity: 0;
-  transform: translate(-50%, 10px);
-  transition: opacity .5s ease, transform .5s ease, box-shadow .25s ease;
+  color: var(--fg-secondary);
 }
-.hero-chrome-wrap.tabs-visible .demo-cta { opacity: 1; transform: translate(-50%, 0); }
-.demo-cta svg { width: 16px; height: 16px; transition: transform .25s ease; }
-.demo-cta:hover { box-shadow: 0 1px 0 rgba(255,255,255,0.14) inset, 0 16px 32px -10px rgba(61,80,109,0.50); }
-.demo-cta:hover svg { transform: translateX(3px); }
+.dcb-btn { flex: none; }
 
-/* Panel stack with cross-fade */
+@media (max-width: 720px) {
+  .demo-cta-band {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 24px 26px;
+  }
+  .dcb-btn { align-self: stretch; }
+}
+
+/* Panel stack — swap is instant under the curtain wipe (controller.ts runWipe). */
 .product-main { position: relative; min-height: 620px; padding: 0; }
 :global(.demo-panel) {
   position: absolute;
   inset: 22px 24px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(4px);
-  transition:
-    opacity .35s ease,
-    transform .45s var(--ease-out-expo),
-    visibility 0s linear .45s;
 }
 :global(.demo-panel.is-active) {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
-  transition: opacity .32s ease, transform .5s var(--ease-out-expo);
+}
+/* Curtain — a single sheet that sweeps left→right: covers the outgoing panel,
+   the swap happens underneath, then it slides off revealing the new one. The
+   transform is driven from JS (controller.ts); base state is parked off-left. */
+.panel-curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  transform: translateX(-100%);
+  background:
+    linear-gradient(90deg, transparent 0%, transparent 78%, rgba(86,179,235,.16) 94%, rgba(86,179,235,0) 100%),
+    var(--bg-app);
+  box-shadow: 0 0 40px rgba(61,80,109,.12);
+  will-change: transform;
 }
 /* Active panel children rise in a short stagger after the surface fades, so a
    tab switch feels composed. Targets only direct block children — the chat
@@ -832,6 +871,7 @@ const s = getStrings(lang);
   .demo-tabs, .demo-tab-ind { transition: none; }
   :global(.demo-panel) { transition: none; }
   :global(.demo-panel.is-active) > * { animation: none; }
+  .panel-curtain { display: none; }
 }
 
 /* Scroll-reveal — the demo window is NOT part of the hero load-intro. It stays
@@ -878,7 +918,7 @@ const s = getStrings(lang);
    static Dashboard — fully rendered at rest, no choreography. The per-panel
    controllers bail out at this width; this block forces the resting state. */
 @media (max-width: 1199px) {
-  .demo-tabs, .demo-cta, .demo-drift, .product-sidebar { display: none; }
+  .demo-tabs, .demo-drift, .product-sidebar { display: none; }
   .product-shell-inner { grid-template-columns: 1fr; }
   .product-main { min-height: 0; }
   :global(.demo-panel) { display: none; }

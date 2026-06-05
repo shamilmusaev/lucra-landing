@@ -17,5 +17,8 @@ export function onPanelLive(panel: HTMLElement, onPlay: () => void, onStop: () =
   const observer = new MutationObserver(sync);
   observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
   if (wrap) observer.observe(wrap, { attributes: true, attributeFilter: ['class'] });
+  // Explicit replay — clicking the already-active tab can't change is-active, so
+  // the controller dispatches this to restart the tour from the top.
+  panel.addEventListener('lucra:replay', () => { if (live()) { onStop(); onPlay(); } });
   sync();
 }

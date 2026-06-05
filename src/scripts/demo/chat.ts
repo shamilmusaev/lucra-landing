@@ -36,7 +36,7 @@ export function initChat(): void {
     var tip2     = document.querySelector('[data-tour-tip="chat-2"]') as HTMLElement | null;
 
     var EXCHANGES: { q: string; a: string }[] = [];
-    for (var k = 1; k <= 3; k++) {
+    for (var k = 1; k <= 2; k++) {
       var q = sceneEl.dataset['q' + k], a = sceneEl.dataset['a' + k];
       if (q && a) EXCHANGES.push({ q: q, a: a });
     }
@@ -64,7 +64,7 @@ export function initChat(): void {
             frag.appendChild(span);
             (function(target: HTMLElement, delay: number) {
               timers.push(setTimeout(function() { target.style.opacity = '1'; target.style.transform = 'none'; }, delay));
-            })(span, counter.i * 55);
+            })(span, counter.i * 32);
             counter.i++;
           });
           node.replaceChild(frag, child);
@@ -77,7 +77,7 @@ export function initChat(): void {
             elem.style.transition = 'opacity .26s ease';
             (function(target: HTMLElement, delay: number) {
               timers.push(setTimeout(function() { target.style.opacity = '1'; }, delay));
-            })(elem, counter.i * 55);
+            })(elem, counter.i * 32);
           }
           revealWords(child, counter);
         }
@@ -104,7 +104,6 @@ export function initChat(): void {
     }
     function reset() {
       clearTimers();
-      (window as any).lucraChatBusy = false;
       sceneEl.classList.remove('is-typing', 'is-typing2', 'is-sent');
       welcomeTypedEl.textContent = '';
       barTypedEl.textContent = '';
@@ -118,33 +117,40 @@ export function initChat(): void {
     // if the scene was reset mid-way.
     async function runTour(myGen: number) {
       if (reduce || !cur.ok || !coWrap || !coTrigger || !coPick) return true;
-      cur.moveTo(chatInput, false);
-      await wait(120); if (myGen !== gen) return false;
-      cur.show();
-      await wait(440); if (myGen !== gen) return false;
+      // The pointer orb hatches out of the big welcome orb, then flies to the
+      // company switcher. Falls back to a plain fade-in if the orb is absent.
+      var welcomeOrb = document.querySelector('.welcome-orb') as HTMLElement | null;
+      if (welcomeOrb) {
+        cur.hatch(welcomeOrb);
+      } else {
+        cur.moveTo(chatInput, false);
+        await wait(120); if (myGen !== gen) return false;
+        cur.show();
+      }
+      await wait(520); if (myGen !== gen) return false;
       cur.moveTo(coTrigger, true);
-      await wait(820); if (myGen !== gen) return false;
-      cur.showTip(tip1, coTrigger, 'below', 4, 10);
-      await wait(1700); if (myGen !== gen) return false;
+      await wait(520); if (myGen !== gen) return false;
+      cur.showTip(tip1, coTrigger, 'below', 0, 10);
+      await wait(1500); if (myGen !== gen) return false;
       cur.press();
-      await wait(180); if (myGen !== gen) return false;
+      await wait(130); if (myGen !== gen) return false;
       cur.hideTips();
       coWrap.classList.add('is-open');
-      await wait(560); if (myGen !== gen) return false;
-      cur.showTip(tip2, coDrop, 'right', 12, 14);
+      await wait(400); if (myGen !== gen) return false;
+      cur.showTip(tip2, coDrop, 'right', 12, 0);
       cur.moveTo(coPick, true);
-      await wait(1300); if (myGen !== gen) return false;
+      await wait(1500); if (myGen !== gen) return false;
       cur.press();
-      await wait(220); if (myGen !== gen) return false;
+      await wait(150); if (myGen !== gen) return false;
       cur.hideTips();
       coWrap.classList.remove('is-open');
-      await wait(480); if (myGen !== gen) return false;
+      await wait(360); if (myGen !== gen) return false;
       cur.moveTo(chatInput, true);
-      await wait(720); if (myGen !== gen) return false;
+      await wait(480); if (myGen !== gen) return false;
       cur.press();
-      await wait(320); if (myGen !== gen) return false;
+      await wait(240); if (myGen !== gen) return false;
       cur.hide();
-      await wait(280); if (myGen !== gen) return false;
+      await wait(200); if (myGen !== gen) return false;
       return true;
     }
     function showFinal() {
@@ -162,7 +168,7 @@ export function initChat(): void {
     async function typeInto(el: HTMLElement, text: string, myGen: number) {
       for (var n = 0; n < text.length; n++) {
         var ch = text[n];
-        await wait(/\s/.test(ch) ? 52 : /[.,:]/.test(ch) ? 120 : 34); if (myGen !== gen) return false;
+        await wait(/\s/.test(ch) ? 30 : /[.,:]/.test(ch) ? 70 : 20); if (myGen !== gen) return false;
         el.textContent = text.slice(0, n + 1);
       }
       return true;
@@ -171,15 +177,14 @@ export function initChat(): void {
       var myGen = ++gen;
       reset();
       if (reduce) { showFinal(); return; }
-      (window as any).lucraChatBusy = true;
-      await wait(700); if (myGen !== gen) return;
+      await wait(450); if (myGen !== gen) return;
       if (!(await runTour(myGen))) return;
       for (var i = 0; i < EXCHANGES.length; i++) {
         var ex = EXCHANGES[i];
         if (i === 0) {
           sceneEl.classList.add('is-typing');
           if (!(await typeInto(welcomeTypedEl, ex.q, myGen))) return;
-          await wait(460); if (myGen !== gen) return;
+          await wait(300); if (myGen !== gen) return;
           sceneEl.classList.remove('is-typing');
           sceneEl.classList.add('is-sent');
           // The conversation opened — seed the new history row.
@@ -187,32 +192,31 @@ export function initChat(): void {
         } else {
           sceneEl.classList.add('is-typing2');
           if (!(await typeInto(barTypedEl, ex.q, myGen))) return;
-          await wait(420); if (myGen !== gen) return;
+          await wait(280); if (myGen !== gen) return;
           sceneEl.classList.remove('is-typing2');
           barTypedEl.textContent = '';
         }
         addUser(ex.q, TIMES[i] || '');
         var ai = addAI();
         scrollDown();
-        await wait(950); if (myGen !== gen) return;
+        await wait(620); if (myGen !== gen) return;
         ai.dots.remove();
         ai.ans.innerHTML = ex.a;
         var counter = { i: 0 };
         revealWords(ai.ans, counter);
         scrollDown();
-        await wait(counter.i * 55 + 1700); if (myGen !== gen) return;
+        await wait(counter.i * 32 + 1000); if (myGen !== gen) return;
         scrollDown();
         // After the first answer, the app names the conversation: shimmer over the
         // default label, then "type" the generated title into the history row.
         if (i === 0 && histLive) {
           histLive.classList.add('is-generating');
-          await wait(900); if (myGen !== gen) return;
+          await wait(600); if (myGen !== gen) return;
           histLive.classList.remove('is-generating');
           histLive.textContent = '';
           if (!(await typeInto(histLive, histLive.dataset.title || '', myGen))) return;
         }
       }
-      (window as any).lucraChatBusy = false;
     }
 
     onPanelLive(panelEl, play, function() { gen++; reset(); });

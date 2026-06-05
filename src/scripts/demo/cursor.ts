@@ -3,6 +3,7 @@ export interface DemoCursor {
   moveTo(el: HTMLElement | null, animate: boolean): void;
   show(): void;
   hide(): void;
+  hatch(anchor: HTMLElement | null): void;
   press(): void;
   showTip(tip: HTMLElement | null, anchor: HTMLElement | null, side?: 'below' | 'right', dx?: number, dy?: number): void;
   hideTips(): void;
@@ -20,6 +21,7 @@ export function createDemoCursor(): DemoCursor {
   var chrome = document.querySelector('.browser-chrome') as HTMLElement | null;
   var tips   = document.querySelectorAll('.tour-tip') as NodeListOf<HTMLElement>;
   var pressTimer: ReturnType<typeof setTimeout> | null = null;
+  var hatchTimers: ReturnType<typeof setTimeout>[] = [];
 
   function liveScale(): number {
     if (!chrome) return 1;
@@ -51,6 +53,25 @@ export function createDemoCursor(): DemoCursor {
     },
     show: function () { if (cursor) cursor.classList.add('is-on'); },
     hide: function () { if (cursor) cursor.classList.remove('is-on'); },
+    hatch: function (anchor) {
+      // Spawn the pointer orb out of a larger parent orb (the chat welcome orb):
+      // snap into its centre hidden, then visibly pop out and drift down while the
+      // parent recoils + ripples, so it reads as a child being released.
+      if (!cursor || !root || !anchor) return;
+      hatchTimers.forEach(function (t) { clearTimeout(t); }); hatchTimers = [];
+      var r = rect(anchor);
+      cursor.style.transition = 'none';
+      cursor.style.transform = 'translate(' + r.cx + 'px,' + r.cy + 'px)';
+      void cursor.offsetWidth;
+      cursor.classList.add('is-on', 'is-hatching');
+      anchor.classList.add('is-emitting');
+      // Emerge: drift out of the orb with a slight overshoot.
+      cursor.style.transition = 'transform .5s cubic-bezier(.34,1.4,.5,1)';
+      cursor.style.transform = 'translate(' + r.cx + 'px,' + (r.cy + 34) + 'px)';
+      hatchTimers.push(setTimeout(function () { if (cursor) cursor.style.transition = ''; }, 520));
+      hatchTimers.push(setTimeout(function () { if (cursor) cursor.classList.remove('is-hatching'); }, 650));
+      hatchTimers.push(setTimeout(function () { anchor.classList.remove('is-emitting'); }, 700));
+    },
     press: function () {
       if (!cursor) return;
       cursor.classList.remove('is-pressing'); void cursor.offsetWidth;
@@ -62,13 +83,25 @@ export function createDemoCursor(): DemoCursor {
       if (!tip || !anchor || !root) return;
       var r = rect(anchor);
       var ox = dx || 0, oy = dy || 0;
-      tip.dataset.side = side === 'right' ? 'right' : 'below';  // aim the pointer arrow
-      var left = side === 'right' ? r.right + ox : r.left + ox;
-      var top = side === 'right' ? r.top + oy : r.bottom + oy;
-      // Keep the pill inside the shell so it never spills past the window edge.
-      var maxLeft = root.clientWidth - tip.offsetWidth - 8;
-      tip.style.left = Math.max(8, Math.min(left, maxLeft)) + 'px';
-      tip.style.top = top + 'px';
+      var isRight = side === 'right';
+      tip.dataset.side = isRight ? 'right' : 'below';
+      // Centre the bubble on the anchor, clamp it inside the shell, then aim the
+      // arrow at the anchor's centre so the tip always points at its object.
+      var w = tip.offsetWidth, h = tip.offsetHeight;
+      var maxLeft = root.clientWidth - w - 8;
+      if (isRight) {
+        var rLeft = Math.max(8, Math.min(r.right + (ox || 12), maxLeft));
+        var rTop = Math.max(8, Math.min(r.cy - h / 2 + oy, root.clientHeight - h - 8));
+        tip.style.left = rLeft + 'px';
+        tip.style.top = rTop + 'px';
+        tip.style.setProperty('--arrow-y', Math.max(12, Math.min(r.cy - rTop, h - 12)) + 'px');
+      } else {
+        var cx = r.cx + ox;
+        var bLeft = Math.max(8, Math.min(cx - w / 2, maxLeft));
+        tip.style.left = bLeft + 'px';
+        tip.style.top = (r.bottom + (oy || 8)) + 'px';
+        tip.style.setProperty('--arrow-x', Math.max(14, Math.min(cx - bLeft, w - 14)) + 'px');
+      }
       tip.classList.add('is-shown');
     },
     hideTips: function () { tips.forEach(function (t) { t.classList.remove('is-shown'); }); },
@@ -82,7 +115,8 @@ export function createDemoCursor(): DemoCursor {
     },
     reset: function () {
       if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
-      if (cursor) { cursor.classList.remove('is-on', 'is-pressing'); }
+      hatchTimers.forEach(function (t) { clearTimeout(t); }); hatchTimers = [];
+      if (cursor) { cursor.classList.remove('is-on', 'is-pressing', 'is-hatching'); }
       tips.forEach(function (t) { t.classList.remove('is-shown'); });
     },
   };

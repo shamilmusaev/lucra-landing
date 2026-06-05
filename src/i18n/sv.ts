@@ -36,11 +36,12 @@ export const sv = {
 
   // Product demo window – tabs
   heroDemoTablistLabel: 'Produktdemo',
-  heroDemoCtaPill: 'Testa Lucra',
-  heroDemoBadge: 'Förhandsvisning',
-  heroTabChat: 'Chatt',
-  heroTabDashboard: 'Dashboard',
-  heroTabDocs: 'Filer',
+  demoCtaTitle: 'Redo att testa med din egen bokföring?',
+  demoCtaSub: 'Koppla ditt system och se Lucra arbeta med dina siffror.',
+  demoCtaBtn: 'Kom igång',
+  heroTabChat: 'Chatta',
+  heroTabDashboard: 'Få överblick',
+  heroTabDocs: 'Hantera filer',
 
   // Product demo window – sidebar
   heroDemoSearch: 'Sök',
@@ -79,7 +80,7 @@ export const sv = {
   heroDemoChartTitle: 'Intäkter mot kostnader',
 
   // Product demo window – chat panel (welcome-home + auto-typed conversation)
-  heroChatGreeting: 'God morgon, Demo',
+  heroChatGreeting: 'God morgon',
   heroChatSubtitle: 'Hur kan jag hjälpa dig med din <span class="g">ekonomi</span> idag?',
   heroChatPlaceholder: 'Fråga om resultat, kassaflöde eller rapporter…',
   heroChatCoSearch: 'Sök företag…',
@@ -88,8 +89,8 @@ export const sv = {
   heroChatCoLinked: 'Ansluten',
   heroChatCoUnlinked: 'Ej ansluten',
   heroChatCoManage: 'Hantera företag',
-  heroChatTourTip1: 'Välj först vilket bolag du vill prata om – Lucra läser bokföringen åt dig.',
-  heroChatTourTip2: 'Alla dina bolag samlade på ett ställe. Vi väljer Demobolaget AB.',
+  heroChatTourTip1: 'Välj bolag – Lucra läser bokföringen.',
+  heroChatTourTip2: 'Alla dina bolag på ett ställe.',
   heroChatChip1Title: 'Registrering',
   heroChatChip1Desc: 'Hur man registrerar ett nytt företag i Sverige.',
   heroChatChip2Title: 'Finansiell analys',
@@ -100,8 +101,6 @@ export const sv = {
   heroChatAutoA: 'Här är en snabb översikt för <strong>Demobolaget AB</strong> i april:<ul><li><strong>Intäkter:</strong> upp 12,5 %, drivet av tre nya företagsavtal på 85 000 SEK.</li><li><strong>Kostnader:</strong> ned 5,2 % tack vare lägre SaaS-utgifter.</li><li><strong>Att bevaka:</strong> 3 förfallna fakturor på totalt 42 000 SEK.</li></ul>',
   heroChatQ2: 'Hur ser kassaflödet ut just nu?',
   heroChatA2: 'Kassaflödet är <strong>positivt</strong> med <strong>+84 200 SEK</strong> i april. Tre fakturor på totalt <strong>142 000 SEK</strong> är obetalda och förfaller inom 12 dagar.',
-  heroChatQ3: 'Vilka kunder ligger efter med betalningen?',
-  heroChatA3: 'Tre kunder har förfallna fakturor: <strong>Saga Bygg AB</strong> (48 500 SEK), <strong>Lindberg Studio</strong> (62 000 SEK) och <strong>Klangverkstan</strong> (31 500 SEK). Vill du att jag skickar påminnelser?',
 
   // Product demo window – files panel
   heroDemoFilesTitle: 'Filer & dokument',
@@ -122,13 +121,13 @@ export const sv = {
   heroDemoSrSummary: 'Interaktiv demonstration av Lucra: chatt, dashboard och filer.',
 
   // Product demo window – dashboard guided-tour tips
-  heroDashTip1: 'AI Insights – Lucra sammanfattar din ekonomi och flaggar avvikelser automatiskt.',
-  heroDashTip2: 'Nyckeltal i realtid – uppdateras direkt från din bokföring.',
-  heroDashTip3: 'Intäkter mot kostnader över tid – se trenden i en blick.',
+  heroDashTip1: 'AI sammanfattar och flaggar avvikelser.',
+  heroDashTip2: 'Nyckeltal i realtid.',
+  heroDashTip3: 'Intäkter mot kostnader – trenden i en blick.',
 
   // Product demo window – files guided-tour tips
-  heroFilesTip1: 'Ladda upp underlag – kvitton, avtal, fakturor. Lucra läser dem åt dig.',
-  heroFilesTip2: 'Filer du delar i chatten samlas här – Lucra minns dem i konversationen.',
+  heroFilesTip1: 'Ladda upp underlag – Lucra läser dem.',
+  heroFilesTip2: 'Delade filer samlas här.',
 
   // ---- Jämförelse (Lucra vs ChatGPT comparison table) ----
   cmpTitle: 'Lucra är byggt för ekonomi, inte för allt',

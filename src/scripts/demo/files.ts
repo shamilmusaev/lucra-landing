@@ -86,31 +86,30 @@ export function initFiles(): void {
     removeAddedRow();
     resetUpload();
     if (reduce || !cur.ok || !addBtn || !upload) return;
-    (window as any).lucraCoachBusy = true; // hold auto-rotation during the tour
-    await wait(820); if (myGen !== gen) return;
+    await wait(520); if (myGen !== gen) return;
     cur.moveTo(addBtn, false);
     cur.show();
-    await wait(420); if (myGen !== gen) return;
-    cur.showTip(tip1, addBtn, 'below', -150, 12);
-    await wait(1700); if (myGen !== gen) return;
+    await wait(300); if (myGen !== gen) return;
+    cur.showTip(tip1, addBtn, 'below', 0, 12);
+    await wait(1500); if (myGen !== gen) return;
     // Press "Add files" → the dropzone unfolds, button turns into "Cancel".
     cur.press();
-    await wait(260); if (myGen !== gen) return;
+    await wait(180); if (myGen !== gen) return;
     cur.hideTips();
     upload.classList.add('is-open');
     setUploadLabel(addBtn.dataset.labelCancel);
-    await wait(900); if (myGen !== gen) return;
+    await wait(600); if (myGen !== gen) return;
     // Move onto the dropzone and "drop" a file.
     if (dropzone) cur.moveTo(dropzone, true);
-    await wait(640); if (myGen !== gen) return;
+    await wait(440); if (myGen !== gen) return;
     upload.classList.add('is-armed');
     cur.press();
-    await wait(360); if (myGen !== gen) return;
+    await wait(260); if (myGen !== gen) return;
     upload.classList.remove('is-armed');
     showUploadStatus(false); // uploading…
-    await wait(1500); if (myGen !== gen) return;
+    await wait(1000); if (myGen !== gen) return;
     showUploadStatus(true); // complete!
-    await wait(1100); if (myGen !== gen) return;
+    await wait(700); if (myGen !== gen) return;
     // Collapse, drop the new row into the list, bump the counters.
     upload.classList.remove('is-open');
     setUploadLabel(addBtn.dataset.labelAdd);
@@ -118,20 +117,19 @@ export function initFiles(): void {
     addRow();
     if (countEl) countEl.textContent = '(11)';
     if (sizeEl) sizeEl.textContent = '5.70 MB';
-    await wait(1100); if (myGen !== gen) return;
+    await wait(700); if (myGen !== gen) return;
     // Open Conversation Files to show that chat-shared files live in memory.
     if (convTab) {
       cur.moveTo(convTab, true);
-      await wait(560); if (myGen !== gen) return;
+      await wait(400); if (myGen !== gen) return;
       cur.press();
-      await wait(180); if (myGen !== gen) return;
+      await wait(130); if (myGen !== gen) return;
       select('conversation');
     }
-    cur.showTip(tip2, convTab || addBtn, 'below', 6, 12);
-    await wait(2400); if (myGen !== gen) return;
+    cur.showTip(tip2, convTab || addBtn, 'below', 0, 12);
+    await wait(1500); if (myGen !== gen) return;
     cur.hideTips();
     cur.hide();
-    (window as any).lucraCoachBusy = false;
   }
 
   function stop() {
@@ -140,7 +138,6 @@ export function initFiles(): void {
     cur.reset();
     removeAddedRow();
     resetUpload();
-    (window as any).lucraCoachBusy = false;
     panelEl.scrollTop = 0;
     select('company');
   }

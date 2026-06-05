@@ -1,7 +1,8 @@
 export function initController(): void {
     // Product demo — tabs reveal as the frame scrolls in, hide on scroll back up,
-    // autorotate + click. Active state is a single "bubble" that flows tab-to-tab.
-    // Each panel's own intro (chat/dashboard/files) plays via the shared pointer.
+    // then auto-rotate continuously (chat → dashboard → files → chat …). Each tab
+    // shows for a fixed duration sized to outlast its guided tour; a fill in the
+    // active "bubble" counts that duration down so the viewer sees time-to-next.
     var wrap = document.querySelector('.hero-chrome-wrap') as HTMLElement | null;
     if (!wrap) return;
     if (window.matchMedia('(max-width: 1199px)').matches) return; // static dashboard — no tabs/rotation
@@ -13,17 +14,52 @@ export function initController(): void {
     var ind      = wrapEl.querySelector('.demo-tab-ind') as (HTMLElement & { _settle?: ReturnType<typeof setTimeout> }) | null;
     if (!tabBar || !tabs.length || !panels.length) return;
     var tabBarEl = tabBar;
-    // Visibility is keyed off the window's position so tabs + CTA reveal only
-    // once the frame is scrolled into focus, and hide again at the hero top or
-    // after the frame leaves upward (scroll-gated, both directions).
+    // Visibility is keyed off the window's position so tabs + CTA reveal only once
+    // the frame is scrolled into focus, and hide again at the hero top or after the
+    // frame leaves upward (scroll-gated, both directions).
     var chromeEl = (wrapEl.querySelector('.browser-chrome') as HTMLElement | null) || tabBarEl;
-    var ROT_MS = 5500;
     var idx = 0;
-    var timer: ReturnType<typeof setTimeout> | null = null;
     var hintTimer: ReturnType<typeof setTimeout> | null = null;
+    var ctaTimer: ReturnType<typeof setTimeout> | null = null;
     var visible = false;
     var auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var reduceMotion = !auto;
+    // Curtain wipe between tabs — a sheet sweeps across while the panel swaps under it.
+    var curtain = wrapEl.querySelector('.panel-curtain') as HTMLElement | null;
+    var currentKey = tabs[idx].dataset.panel || '';
+    var wiping = false;
+
+    // Per-tab display duration (ms). Each is sized to comfortably outlast that
+    // panel's guided tour, so the tour always finishes before the switch. The
+    // active bubble's fill counts this down, showing the viewer time-to-next.
+    var indFill = wrapEl.querySelector('.demo-tab-ind-fill') as HTMLElement | null;
+    var HOLD: { [key: string]: number } = { chat: 17000, dashboard: 9500, docs: 10500 };
+    var DEFAULT_HOLD = 10000;
+    var holdStart = 0;
+    var holdRaf: number | null = null;
+    function setFill(progress: number) {
+      if (indFill) indFill.style.width = Math.max(0, Math.min(1, progress)) * 100 + '%';
+    }
+    function stopHold() {
+      if (holdRaf) { cancelAnimationFrame(holdRaf); holdRaf = null; }
+      holdStart = 0;
+      setFill(0);
+    }
+    function holdTick(now: number) {
+      if (!auto || !visible) { holdRaf = null; return; }
+      if (holdStart === 0) holdStart = now;
+      var total = HOLD[currentKey] || DEFAULT_HOLD;
+      var progress = (now - holdStart) / total;
+      setFill(progress);
+      if (progress >= 1) { activate((idx + 1) % tabs.length); return; } // loop; activate restarts the hold
+      holdRaf = requestAnimationFrame(holdTick);
+    }
+    function startHold() {
+      if (!auto || !visible) return;
+      holdStart = 0;
+      if (holdRaf) cancelAnimationFrame(holdRaf);
+      holdRaf = requestAnimationFrame(holdTick);
+    }
 
     function moveIndicator(animate: boolean) {
       if (!ind) return;
@@ -50,34 +86,59 @@ export function initController(): void {
       }
       indEl.classList.add('ready');
     }
+    function swapPanels(key: string | undefined) {
+      // Match panels/sidebar by data-panel (not index) so the DOM order of
+      // panels is independent of the tab order.
+      panels.forEach(function(p) { p.classList.toggle('is-active', p.dataset.panel === key); });
+      sideItems.forEach(function(s) { s.classList.toggle('active', s.dataset.panel === key); });
+      currentKey = key || '';
+    }
+    function runWipe(swap: () => void) {
+      if (!curtain) { swap(); return; }
+      if (wiping) { swap(); return; } // mid-wipe re-entry: just swap, don't stack sheets
+      wiping = true;
+      var sheet = curtain;
+      // Close: slide the sheet in from the left until it covers the panel.
+      sheet.style.transition = 'transform .26s cubic-bezier(.5,.0,.5,1)';
+      sheet.style.transform = 'translateX(0)';
+      setTimeout(function() {
+        swap(); // swap panels while fully covered
+        // Open: continue off to the right, revealing the new panel.
+        sheet.style.transition = 'transform .34s cubic-bezier(.4,0,.2,1)';
+        sheet.style.transform = 'translateX(100%)';
+        setTimeout(function() {
+          // Park back off-left for the next switch, without animating the reset.
+          sheet.style.transition = 'none';
+          sheet.style.transform = 'translateX(-100%)';
+          void sheet.offsetWidth;
+          wiping = false;
+        }, 340);
+      }, 260);
+    }
     function activate(i: number, animate?: boolean) {
       idx = i;
       var key = tabs[i].dataset.panel;
-      // Match panels/sidebar by data-panel (not index) so the DOM order of
-      // panels is independent of the tab order.
       tabs.forEach(function(t, j) { t.classList.toggle('is-active', j === i); });
-      panels.forEach(function(p) { p.classList.toggle('is-active', p.dataset.panel === key); });
-      sideItems.forEach(function(s) { s.classList.toggle('active', s.dataset.panel === key); });
+      // Wipe only on a real, animated change; first reveal and reduced-motion swap instantly.
+      if (animate !== false && !reduceMotion && key !== currentKey) {
+        runWipe(function() { swapPanels(key); });
+      } else {
+        swapPanels(key);
+      }
       moveIndicator(animate !== false);
-    }
-    function tick() {
-      if (!auto || !visible) return;
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(function() {
-        // Hold on the current tab while its guided-tour pointer is still playing
-        // out, so nothing is cut off mid-stream.
-        if ((window as any).lucraChatBusy || (window as any).lucraCoachBusy) { tick(); return; }
-        activate((idx + 1) % tabs.length);
-        tick();
-      }, ROT_MS);
+      startHold(); // (re)start this tab's countdown; no-op while !auto or !visible
     }
 
     tabs.forEach(function(t, i) {
       t.addEventListener('click', function() {
-        // Clicking a tab never stops the demo — it just jumps there and restarts
-        // the rotation countdown from the clicked tab.
+        var wasCurrent = tabs[i].dataset.panel === currentKey;
         activate(i);
-        tick();
+        // Clicking the already-active tab can't change is-active, so the panel-live
+        // observer won't replay its tour — ask the panel to replay it explicitly.
+        if (wasCurrent) {
+          var p = Array.prototype.find.call(panels, function(pp: HTMLElement) { return pp.dataset.panel === currentKey; }) as HTMLElement | undefined;
+          if (p) p.dispatchEvent(new Event('lucra:replay'));
+        }
       });
     });
     window.addEventListener('resize', function() { moveIndicator(false); });
@@ -88,19 +149,27 @@ export function initController(): void {
       wrapEl.classList.toggle('tabs-visible', v);
       if (v) {
         moveIndicator(false);
-        tick();
+        startHold();
         // Show the "switch tab" hint long enough to read, then retire it for good.
         if (!hintTimer && !wrapEl.classList.contains('hint-dismissed')) {
-          hintTimer = setTimeout(function() { wrapEl.classList.add('hint-dismissed'); }, 5000);
+          hintTimer = setTimeout(function() { wrapEl.classList.add('hint-dismissed'); }, 7000);
+        }
+        // Reveal the bottom CTA band only after the viewer has dwelt in the demo
+        // for a few seconds — not the instant the frame scrolls into focus.
+        if (!ctaTimer && !wrapEl.classList.contains('cta-band-in')) {
+          ctaTimer = setTimeout(function() { wrapEl.classList.add('cta-band-in'); }, 2000);
         }
       } else {
-        if (timer) clearTimeout(timer);
-        timer = null;
+        stopHold();
         // Reset the hint when the demo leaves the viewport, so it shows again
         // (and re-arms its auto-hide) the next time the user scrolls back to it.
         if (hintTimer) clearTimeout(hintTimer);
         hintTimer = null;
         wrapEl.classList.remove('hint-dismissed');
+        // Cancel the dwell timer only while still pending — once the band has
+        // appeared it stays for good (no re-arming, no hide on scroll away).
+        if (ctaTimer) clearTimeout(ctaTimer);
+        ctaTimer = null;
       }
     }
     function onScroll() {
