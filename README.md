@@ -1,6 +1,6 @@
 # Lucra: Landing Page
 
-Marketing landing page for [lucra.se](https://lucra.se), an AI-powered personal finance platform for the Swedish market.
+Marketing landing page for [lucra-app](https://lucra-app.ai/), an AI-powered personal finance platform for the Swedish market.
 
 Built with Astro 6 as a fully static site. Swedish (`/`) and English (`/en/`) routes are generated from shared component templates and separate i18n string files.
 
