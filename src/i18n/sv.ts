@@ -1,12 +1,12 @@
 export const sv = {
-  // ---- Meta (Task 18) ----
+  // ---- Meta ----
   metaTitle: 'Lucra · AI för svensk bokföring',
   metaDescription: 'Lucra är en AI-ekonomassistent som hjälper svenska företagare att förstå sin ekonomi och redovisningsbyråer att minska repetitiva kundfrågor – alltid synkad med Fortnox.',
 
   // ---- A11y ----
   skipToContent: 'Hoppa till innehåll',
 
-  // ---- Nav (Task 5) ----
+  // ---- Nav ----
   navProduct: 'Produkt',
   navProductFeaturesLabel: 'Funktioner',
   navProductFeaturesTitle: 'Funktioner',
@@ -28,7 +28,7 @@ export const sv = {
   navLogin: 'Logga in',
   navGetStarted: 'Kom igång',
 
-  // ---- Hero (Task 6) ----
+  // ---- Hero ----
   heroPillBadge: 'Nyhet',
   heroPillDefault: 'Lucra för redovisningsbyråer',
   heroPillAlt: 'Lucra för företagare',
@@ -176,7 +176,7 @@ export const sv = {
   showcaseNavPrev: 'Föregående',
   showcaseNavNext: 'Nästa',
 
-  // ---- ForVem (Task 11) – stacking situation cards ----
+  // ---- ForVem – stacking situation cards ----
   forVemTitle: 'Företagare ska inte behöva känna sig osäkra på sin ekonomi',
   forVemSub: 'Många företagare har enkla men viktiga frågor om bokföring, moms, lön och resultat. Frågorna är ofta för små för ett formellt möte med byrån, men för viktiga för att ignorera. Resultatet blir oro för företagaren och repetitiv support för redovisningsbyrån.',
   forVemCta: 'Boka demo',
@@ -211,7 +211,7 @@ export const sv = {
   forVemCard7Lucra: 'Varje svar bygger på kundens egna siffror från Fortnox (läsåtkomst) – byrån kan lita på att underlaget stämmer.',
 
 
-  // ---- Säkerhet (Task 14) ----
+  // ---- Säkerhet ----
   sakerhetTitle: 'Din data är trygg.',
   sakerhetSub: 'Bygger man fintech bygger man också säkerhet från första raden kod. Lucra följer svenska och europeiska regelverk och håller dina underlag inom EU.',
   sakerhetCard1Title: 'GDPR-efterlevnad',
@@ -257,7 +257,7 @@ export const sv = {
   priPartnerCta: 'Boka partnerdemo',
   priFootnote: 'Pilot används för att validera värdet med en begränsad kundgrupp. Partner är nästa steg för byråer som vill göra Lucra till en löpande del av sitt kunderbjudande.',
 
-  // ---- Footer (Task 16) ----
+  // ---- Footer ----
   footerTagline: 'Din AI-ekonom, kopplad till bokföringen via Fortnox. Byggd för svenska företagare och redovisningsbyråer.',
   footerCopy: '© 2026 Lucra AI. Alla rättigheter förbehållna.',
   // Column headings

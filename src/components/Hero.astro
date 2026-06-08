@@ -131,10 +131,20 @@ const s = getStrings(lang);
   display: block;
   filter: blur(14px);
   mix-blend-mode: multiply;
+  opacity: 0;
+  animation: heroBeamsCanvasIn 1.2s ease forwards;
 }
 .hero-beams.is-animated::before,
 .hero-beams.is-animated::after,
-.hero-beams.is-animated span { display: none; }
+.hero-beams.is-animated span { animation: heroBeamsBlobsOut 1.2s ease forwards; }
+@keyframes heroBeamsCanvasIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroBeamsBlobsOut { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-beams__canvas { animation: none; opacity: 1; }
+  .hero-beams.is-animated::before,
+  .hero-beams.is-animated::after,
+  .hero-beams.is-animated span { animation: none; opacity: 0; }
+}
 /* ----------------------------------------------------------------
    Hero dot field — the dotted "cloud" from Landing.html, refined.
    A slate dot grid that fades out toward the edges. The dots are
@@ -460,21 +470,6 @@ const s = getStrings(lang);
 @media (prefers-reduced-motion: reduce) {
   .cta-frame { transition: box-shadow .25s ease, border-color .25s ease; }
 }
-.hero-microcopy {
-  font-size: 13px;
-  color: var(--slate-400);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.hero-microcopy .sep {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--slate-300);
-}
-.hero-microcopy svg { width: 14px; height: 14px; }
 
 /* ============================================================
    HERO LOAD-INTRO — the orb wakes, fires a "big-bang" burst, and
@@ -541,7 +536,7 @@ const s = getStrings(lang);
     //   block as the head reaches it → traces fade out. Clean hero.
     // Gated by html.hero-intro (set pre-paint, skipped for reduced motion).
     // The orb / fog hooks (window.lucraOrbIntro / lucraOrbPulse / lucraFogIntro)
-    // are provided by the Orb island (Task 7) and Particles island (Task 8);
+    // are provided by the Orb island and Particles island;
     // every call is optionally guarded so the cascade still runs without them.
     // ============================================================
     var root = document.documentElement;

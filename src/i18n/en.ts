@@ -1,14 +1,14 @@
 import type { sv } from './sv';
 // en must define exactly the same keys as sv (a missing/extra key is a compile error).
 export const en: { [K in keyof typeof sv]: string } = {
-  // ---- Meta (Task 18) ----
+  // ---- Meta ----
   metaTitle: 'Lucra · AI for Swedish business finances',
   metaDescription: 'Lucra is an AI finance assistant that helps Swedish business owners understand their finances and accounting firms reduce repetitive client questions – always synced with Fortnox.',
 
   // ---- A11y ----
   skipToContent: 'Skip to content',
 
-  // ---- Nav (Task 5) ----
+  // ---- Nav ----
   navProduct: 'Product',
   navProductFeaturesLabel: 'Features',
   navProductFeaturesTitle: 'Features',
@@ -30,7 +30,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   navLogin: 'Log in',
   navGetStarted: 'Get started',
 
-  // ---- Hero (Task 6) ----
+  // ---- Hero ----
   heroPillBadge: 'New',
   heroPillDefault: 'Lucra for accounting firms',
   heroPillAlt: 'Lucra for business owners',
@@ -178,7 +178,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   showcaseNavPrev: 'Previous',
   showcaseNavNext: 'Next',
 
-  // ---- ForVem (Task 11) – stacking situation cards ----
+  // ---- ForVem – stacking situation cards ----
   forVemTitle: "Business owners shouldn't have to feel unsure about their finances",
   forVemSub: 'Many business owners have simple but important questions about bookkeeping, VAT, payroll and results. The questions are often too small for a formal meeting with the firm, but too important to ignore. The result is worry for the owner and repetitive support for the accounting firm.',
   forVemCta: 'Book a demo',
@@ -213,7 +213,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   forVemCard7Lucra: "Every answer is built on the client's own figures from Fortnox (read access) – the firm can trust that the basis is correct.",
 
 
-  // ---- Säkerhet (Task 14) ----
+  // ---- Säkerhet ----
   sakerhetTitle: 'Your data is safe.',
   sakerhetSub: 'If you build fintech, you build security from the first line of code. Lucra follows Swedish and European regulations and keeps your records within the EU.',
   sakerhetCard1Title: 'GDPR compliance',
@@ -259,7 +259,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   priPartnerCta: 'Book a partner demo',
   priFootnote: 'The pilot validates the value with a limited group of clients. Partner is the next step for firms that want to make Lucra an ongoing part of their client offering.',
 
-  // ---- Footer (Task 16) ----
+  // ---- Footer ----
   footerTagline: 'Your AI economist, connected to your bookkeeping via Fortnox. Built for Swedish business owners and accounting firms.',
   footerCopy: '© 2026 Lucra AI. All rights reserved.',
   // Column headings

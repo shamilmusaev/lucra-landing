@@ -11,7 +11,3 @@ const dictionaries: Record<Lang, Strings> = { sv, en };
 export function getStrings(lang: Lang): Strings {
   return dictionaries[lang];
 }
-
-export function t(lang: Lang, key: keyof Strings): string {
-  return dictionaries[lang][key];
-}

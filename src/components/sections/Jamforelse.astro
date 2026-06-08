@@ -279,9 +279,9 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
 
   .cmp-cell {
     padding: 0;
-    border-top: none !important;
-    border-left: none !important;
   }
+  .cmp-cell:not(.cmp-head):not(.cmp-lucra) { border-top: none; }
+  .cmp-cell.c4 { border-left: none; }
   .cmp-tag {
     display: block;
     font-family: var(--font-display);

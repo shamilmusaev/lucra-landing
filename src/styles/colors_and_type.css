@@ -216,18 +216,6 @@ h4, .h4 {
   margin: 0;
 }
 
-.brand-wordmark {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 24px;
-  letter-spacing: -0.02em;
-  background: var(--brand-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
 .eyebrow {
   font-family: var(--font-display);
   font-size: 11px;
@@ -243,28 +231,6 @@ p, .body {
   line-height: 1.6;
   color: var(--slate-600);
   margin: 0;
-}
-
-.caption {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  color: var(--slate-400);
-}
-
-.label {
-  font-family: var(--font-display);
-  font-size: var(--text-base);
-  font-weight: 600;
-  color: var(--slate-600);
-  line-height: 1;
-}
-
-.metric-value {
-  font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--brand-primary);
-  line-height: 1;
 }
 
 button, .button {
