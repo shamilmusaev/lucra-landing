@@ -24,9 +24,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   navPromoDesc: 'All clients, one interface.',
   navPromoLink: 'Learn more',
 
-  navBlog: 'Blog',
-  navContact: 'Contact',
-
   navLogin: 'Log in',
   navGetStarted: 'Get started',
 
@@ -273,7 +270,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   footerLinkPricing: 'Plans',
   footerLinkSecurity: 'Security',
   // Company column links
-  footerLinkContact: 'Contact',
   footerLinkBookDemo: 'Book a demo',
   // Legal column links
   footerLinkPrivacy: 'Privacy policy',

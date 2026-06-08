@@ -22,9 +22,6 @@ export const sv = {
   navPromoDesc: 'Alla klienter, ett gränssnitt.',
   navPromoLink: 'Läs mer',
 
-  navBlog: 'Blogg',
-  navContact: 'Kontakt',
-
   navLogin: 'Logga in',
   navGetStarted: 'Kom igång',
 
@@ -271,7 +268,6 @@ export const sv = {
   footerLinkPricing: 'Upplägg',
   footerLinkSecurity: 'Säkerhet',
   // Company column links
-  footerLinkContact: 'Kontakt',
   footerLinkBookDemo: 'Boka demo',
   // Legal column links
   footerLinkPrivacy: 'Integritetspolicy',
