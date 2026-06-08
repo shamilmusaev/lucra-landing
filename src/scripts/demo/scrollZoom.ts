@@ -14,6 +14,11 @@ export function initScrollZoom(): void {
   var MIN = 0.9, MAX = 1.0;
   var MAX_BLUR = 8;   // px the hero copy blurs by at full zoom
   var ticking = false;
+  // Last values written to the DOM. Re-applying an unchanged style still costs a
+  // repaint (blur especially), so each frame writes only what actually changed —
+  // and the blur is stepped to 0.5px so a slow scroll repaints the hero copy a
+  // handful of times across the whole zoom instead of on every frame.
+  var lastScale = -1, lastBlur = -1, lastOpacity = -1, lastTop = NaN;
 
   function clamp01(v: number) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
 
@@ -30,11 +35,22 @@ export function initScrollZoom(): void {
     // (reversible on scroll-up). Nav focus below keeps the raw p so it never lags.
     var pe = 1 - Math.pow(1 - p, 2.2);
     var scale = MIN + (MAX - MIN) * pe;
-    chromeEl.style.transform = 'scale(' + scale.toFixed(4) + ')';
+    if (scale !== lastScale) {
+      chromeEl.style.transform = 'scale(' + scale.toFixed(4) + ')';
+      lastScale = scale;
+    }
     // Depth-of-field: as the window advances, the copy above it recedes — blur + slight fade.
     if (inner) {
-      inner.style.filter = pe > 0 ? 'blur(' + (pe * MAX_BLUR).toFixed(2) + 'px)' : '';
-      inner.style.opacity = (1 - pe * 0.5).toFixed(3);
+      var blur = Math.round(pe * MAX_BLUR * 2) / 2;   // 0.5px steps
+      if (blur !== lastBlur) {
+        inner.style.filter = blur > 0 ? 'blur(' + blur + 'px)' : '';
+        lastBlur = blur;
+      }
+      var opacity = Math.round((1 - pe * 0.5) * 100) / 100;
+      if (opacity !== lastOpacity) {
+        inner.style.opacity = String(opacity);
+        lastOpacity = opacity;
+      }
     }
     // Nav slides up out of view (it does NOT fade) while the window's TOP edge is in
     // the collision zone near the top. As that edge scrolls above the top, focus drops
@@ -43,7 +59,11 @@ export function initScrollZoom(): void {
     // backdrop-filter (glassmorphism). top keeps the blur intact the whole way.
     if (nav) {
       var focus = p * clamp01(1 + r.top / (vh * 0.30));
-      nav.style.top = (-focus * 110).toFixed(1) + 'px';
+      var top = Math.round(focus * 110 * 10) / 10;
+      if (top !== lastTop) {
+        nav.style.top = (-top) + 'px';
+        lastTop = top;
+      }
       if (navInner) navInner.style.pointerEvents = focus > 0.5 ? 'none' : 'auto';
     }
   }
