@@ -25,14 +25,6 @@ export interface ParticleFieldOptions {
   startCleared?: boolean;
   /** Dot opacity when fully fogged (0..1). Default 0.24. */
   dotAlpha?: number;
-  /** Hero-only: cursor makes nearby dots grow + glow cyan, and softens the wipe. Default false. */
-  interactiveBloom?: boolean;
-  /** Bloom only: CSS selector for elements whose area must stay calm (dots there don't grow/glow). */
-  bloomExcludeSelector?: string;
-  /** Bloom only: intensity multiplier for the outline thickness, dot size and glow. Default 1. */
-  bloomStrength?: number;
-  /** Bloom only: restrict the bloom to while the cursor is over this element; outside it the field wipes. */
-  bloomZoneSelector?: string;
   /** Dot RGB triple, e.g. '255,255,255' for dark panels. Default '61,80,109' (slate, for the light page). */
   dotColor?: string;
 }
@@ -63,24 +55,7 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   const GLOW_R = 175;                   // cursor glow radius (px)
   const GLOW_TINT = 0.55;               // how strongly the rim dots go cyan
   const GLOW_WASH = 0.06;               // faint cyan light in the cleared centre
-
-  const bloomEnabled = !!opts.interactiveBloom;
-  const TRI_H = 260;                    // bloom silhouette height (CSS px) — Lucra delta mark
-  const TRI_W = TRI_H * 1.1;            // base width (logo aspect ≈ 1.1)
-  const TRI_FEATHER = 22;               // px: soft rim so the outline edge isn't a hard cut
-  const TRI_STROKE = 32;                // px: outline thickness — hollow inside, like the logo mark
-  const BLOOM_SCALE = 2.8;              // max dot-size multiplier under the cursor
-  const BLOOM_A = 0.9;                  // peak cyan alpha of a bloomed dot
-  const STR = Math.max(0.1, opts.bloomStrength ?? 1);  // per-section intensity multiplier
-  const TRI_STROKE_EFF = TRI_STROKE * STR;             // thicker outline at higher strength
-  const BLOOM_SCALE_EFF = 1 + (BLOOM_SCALE - 1) * STR; // dots grow more
-  const BLOOM_A_EFF = Math.min(1, BLOOM_A * STR);      // and glow brighter (capped)
-  const BLOOM_FEATHER = 56;             // px: soft ramp around keep-out zones (no hard dot-line)
-  const TWINKLE_SPEED = 0.0024;         // bloom: per-dot shimmer speed (rad/ms)
-  const TWINKLE_MIN = 0.4;              // bloom: dimmest a twinkling dot gets (1 = no twinkle)
-  const FOLLOW = bloomEnabled ? 0.14 : 0.22;  // glow trailing speed (lower = smoother)
-  const BLOOM_EXCLUDE = opts.bloomExcludeSelector ?? '';  // areas (text/orb/UI) kept calm
-  const BLOOM_ZONE = bloomEnabled ? (opts.bloomZoneSelector ?? '') : '';  // bloom only over this element
+  const FOLLOW = 0.22;                  // glow trailing speed (lower = smoother)
 
   const canvas = document.createElement('canvas');
   canvas.className = opts.canvasClass;
@@ -93,18 +68,16 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   const pctx = pat.getContext('2d');
   const fog = document.createElement('canvas');
   const fctx = fog.getContext('2d');
-  const bloom = document.createElement('canvas');
-  const bctx = bloom.getContext('2d');
-  if (!ctx || !pctx || !fctx || !bctx) return null;
+  if (!ctx || !pctx || !fctx) return null;
 
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   let W = 0, H = 0;
   let px = 0, py = 0, hasPrev = false;  // previous pointer position (device px)
   let dirtyUntil = 0;                   // keep animating until this timestamp
   let running = false;
-  // Cap to 60fps: this is the heaviest loop (full-canvas fog fill + composite +
-  // bloom grid). The drift/glow reads the same at 60 as at 120 on this slow
-  // background, while halving the per-second paint work on ProMotion displays.
+  // Cap to 60fps: this is the heaviest loop (full-canvas fog fill + composite).
+  // The drift/glow reads the same at 60 as at 120 on this slow background, while
+  // halving the per-second paint work on ProMotion displays.
   const FRAME_INTERVAL = 1000 / 60;
   let lastRender = 0;
   let gx = 0, gy = 0, glowA = 0;        // eased glow position + intensity (0..1)
@@ -115,15 +88,6 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
   // Clear-sweep wavefront, shared with frame() so it can tint dots cyan at the
   // expanding edge (dots flash blue just before the wipe erases them).
   let sweepActive = false, sweepX = 0, sweepY = 0, sweepR = 0;
-  let pointerInside = false;            // bloom: hold the glow alive while the cursor hovers
-  // Whether the bloom (triangle) is currently the active mode. With a bloom zone
-  // set, this toggles on pointermove by cursor position; otherwise it follows
-  // bloomEnabled. When false the field behaves as the classic wipe.
-  let bloomActive = bloomEnabled && !BLOOM_ZONE;
-  let zoneElems: Element[] | null = null;  // cached bloom-zone elements (any may host the bloom)
-  let activeZone: Element | null = null;   // the zone the cursor is currently inside
-  let excludeRects: number[][] = [];    // bloom: [x0,y0,x1,y1] device-px boxes (text/orb/UI) to skip
-  let excludeFresh = false;             // bloom: recompute exclude boxes once after layout settles
 
   function buildPattern(): void {
     const s = DOT * dpr;
@@ -147,13 +111,10 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     canvas.style.width = cw + 'px';
     canvas.style.height = ch + 'px';
     fog.width = W; fog.height = H;
-    bloom.width = W; bloom.height = H;
     fctx!.globalCompositeOperation = 'source-over';
     buildPattern();
     buildGlowGradients();
     hasPrev = false;
-    refreshExclude();
-    excludeFresh = false;
     if (firstResize && opts.startCleared) {
       // First load (hero): start cleared and WAIT — reveal() bursts the dots in.
       firstResize = false;
@@ -166,24 +127,6 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
       fctx!.fillRect(0, 0, W, H);
       kick(900);
     }
-  }
-
-  // Bloom: snapshot the no-bloom zones (text/orb/UI) as device-px boxes relative
-  // to the surface. Scroll-invariant (element and surface move together), so this
-  // only needs refreshing on layout changes — call it on resize + once on first move.
-  function refreshExclude(): void {
-    if (!bloomEnabled || !BLOOM_EXCLUDE) { excludeRects = []; return; }
-    const sr = surface.getBoundingClientRect();
-    const pad = 6 * dpr;
-    excludeRects = Array.from(document.querySelectorAll(BLOOM_EXCLUDE)).map((el) => {
-      const r = el.getBoundingClientRect();
-      return [
-        (r.left - sr.left) * dpr - pad,
-        (r.top - sr.top) * dpr - pad,
-        (r.right - sr.left) * dpr + pad,
-        (r.bottom - sr.top) * dpr + pad,
-      ];
-    });
   }
 
   // Convert a CSS-px centre (relative to the surface) into device-px.
@@ -267,15 +210,6 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     }
   }
 
-  // Signed perpendicular distance from (x,y) to the line through P→Q (device px);
-  // the sign flips across the line, so combined with a reference sign it tells
-  // which side of a triangle edge a point lies on. Used by the bloom silhouette.
-  function edgeDist(pxv: number, pyv: number, qxv: number, qyv: number, x: number, y: number): number {
-    const ex = qxv - pxv, ey = qyv - pyv;
-    const len = Math.hypot(ex, ey) || 1;
-    return ((x - pxv) * ey - (y - pyv) * ex) / len;
-  }
-
   // Fog slowly regrows everywhere (alpha climbs back toward 1) — unless a clear()
   // is holding the field clear — then compose the visible canvas: the full dot
   // pattern masked by the fog alpha.
@@ -294,103 +228,13 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     ctx!.drawImage(fog, 0, 0);
   }
 
-  // Bloom: the Lucra delta silhouette centred on the cursor. Dots along the
-  // outline grow + glow cyan and twinkle; drawn on its own layer, masked by the
-  // fog, and clipped to the bloom zone so it never spills past the table/card.
-  function drawBloomTriangle(): void {
-    const s = DOT * dpr;                 // grid spacing in device px
-    const triH = TRI_H * dpr, triW = TRI_W * dpr, triF = TRI_FEATHER * dpr;
-    const triStroke = TRI_STROKE_EFF * dpr;
-    const vax = gx,            vay = gy - triH * 2 / 3;  // apex (top)
-    const vbx = gx + triW / 2, vby = gy + triH / 3;      // base-right
-    const vcx = gx - triW / 2, vcy = gy + triH / 3;      // base-left
-    // Reference signs (the centroid = cursor is inside) make each edge distance
-    // positive on the interior side; the min of the three = distance to the
-    // nearest edge (>=0 inside, <0 outside).
-    const sAB = Math.sign(edgeDist(vax, vay, vbx, vby, gx, gy)) || 1;
-    const sBC = Math.sign(edgeDist(vbx, vby, vcx, vcy, gx, gy)) || 1;
-    const sCA = Math.sign(edgeDist(vcx, vcy, vax, vay, gx, gy)) || 1;
-    bctx!.globalCompositeOperation = 'source-over';
-    bctx!.clearRect(0, 0, W, H);
-    // Clip the silhouette to the bloom zone (the table/card) so it never spills
-    // outside even when the cursor sits near an edge. Box in surface device-px.
-    let zx0 = -Infinity, zy0 = -Infinity, zx1 = Infinity, zy1 = Infinity;
-    if (BLOOM_ZONE && activeZone) {
-      const sr = surface.getBoundingClientRect();
-      const zr = activeZone.getBoundingClientRect();
-      zx0 = (zr.left - sr.left) * dpr;  zy0 = (zr.top - sr.top) * dpr;
-      zx1 = (zr.right - sr.left) * dpr; zy1 = (zr.bottom - sr.top) * dpr;
-    }
-    const iMin = Math.floor((gx - triW / 2 - triF - s / 2) / s);
-    const iMax = Math.ceil((gx + triW / 2 + triF - s / 2) / s);
-    const jMin = Math.floor((vay - triF - s / 2) / s);
-    const jMax = Math.ceil((vby + triF - s / 2) / s);
-    const now = performance.now();   // drives the per-dot twinkle
-    for (let i = iMin; i <= iMax; i++) {
-      const x = s / 2 + i * s;
-      if (x < 0 || x > W) continue;
-      if (x < zx0 || x > zx1) continue;    // clip to the bloom zone — x
-      for (let j = jMin; j <= jMax; j++) {
-        const y = s / 2 + j * s;
-        if (y < 0 || y > H) continue;
-        if (y < zy0 || y > zy1) continue;  // clip to the bloom zone — y
-        const sd = Math.min(
-          edgeDist(vax, vay, vbx, vby, x, y) * sAB,
-          edgeDist(vbx, vby, vcx, vcy, x, y) * sBC,
-          edgeDist(vcx, vcy, vax, vay, x, y) * sCA,
-        );
-        if (sd < -triF || sd > triStroke + triF) continue;  // outside, or the hollow interior
-        // Feathered keep-out: dots inside a text/orb/UI box stay silent; just
-        // outside they ramp back over BLOOM_FEATHER px, so there is no hard
-        // dot-line hugging the box edge.
-        let mask = 1;
-        const feather = BLOOM_FEATHER * dpr;
-        for (let k = 0; k < excludeRects.length; k++) {
-          const er = excludeRects[k];
-          const ox = Math.max(er[0] - x, 0, x - er[2]);
-          const oy = Math.max(er[1] - y, 0, y - er[3]);
-          const od = Math.hypot(ox, oy);
-          if (od <= 0) { mask = 0; break; }
-          const tt = Math.min(1, od / feather);
-          const m = tt * tt * (3 - 2 * tt);
-          if (m < mask) mask = m;
-        }
-        if (mask <= 0) continue;
-        // Outline profile: ramp in across the outer rim, full through the wall
-        // thickness, ramp down across the inner rim into the empty middle.
-        const wall = sd < 0
-          ? (sd + triF) / triF
-          : sd <= triStroke
-            ? 1
-            : 1 - (sd - triStroke) / triF;
-        const f = Math.max(0, Math.min(1, wall));
-        const ease = f * f * (3 - 2 * f) * mask;  // outline ramp × keep-out feather
-        // Twinkle: independent shimmer per dot. Phase is hashed from the grid
-        // index (not the triangle), so dots flicker in place as the shape moves.
-        const hash = Math.sin(i * 12.9898 + j * 78.233) * 43758.5453;
-        const phase = (hash - Math.floor(hash)) * Math.PI * 2;
-        const tw = TWINKLE_MIN + (1 - TWINKLE_MIN) * (0.5 + 0.5 * Math.sin(now * TWINKLE_SPEED + phase));
-        const rad = DOT_R * dpr * (1 + (BLOOM_SCALE_EFF - 1) * ease);
-        bctx!.fillStyle = 'rgba(' + CYAN + ',' + (BLOOM_A_EFF * ease * glowA * tw).toFixed(3) + ')';
-        bctx!.beginPath();
-        bctx!.arc(x, y, rad, 0, Math.PI * 2);
-        bctx!.fill();
-      }
-    }
-    bctx!.globalCompositeOperation = 'destination-in';
-    bctx!.drawImage(fog, 0, 0);
-    bctx!.globalCompositeOperation = 'source-over';
-    ctx!.globalCompositeOperation = 'source-over';
-    ctx!.drawImage(bloom, 0, 0);
-  }
-
   // Clear sweep: the dots in a band just ahead of the wavefront grow and glow
   // cyan, then vanish the instant the front reaches them — each dot "pops"
   // before it's wiped, rather than a smooth halo.
   function drawSweepPops(): void {
     const s = DOT * dpr;
     const BURST = 130 * dpr;          // band width ahead of the front where dots pop
-    const POP_SCALE = BLOOM_SCALE;    // swell to the same size as bloom (triangle) dots
+    const POP_SCALE = 2.8;            // swell factor for a popping dot
     const rOut = sweepR + BURST;
     const iLo = Math.max(0, Math.floor((sweepX - rOut) / s));
     const iHi = Math.min(Math.ceil(W / s), Math.ceil((sweepX + rOut) / s));
@@ -431,8 +275,7 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     washGrad.addColorStop(1, 'rgba(' + CYAN + ',0)');
   }
 
-  // Radial cyan glow under the cursor — wipe mode only. In bloom mode it would
-  // wash a round halo over the dots and drown the triangle silhouette.
+  // Radial cyan glow under the cursor.
   function drawCursorGlow(): void {
     if (!glowGrad || !washGrad) return;
     ctx!.save();
@@ -458,16 +301,13 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
 
     regrowAndComposeDots();
 
-    // Ease the glow position toward the pointer; bloom holds the glow alive while
-    // the cursor rests inside (keeps the loop running for the twinkle).
+    // Ease the glow position toward the pointer.
     gx += (px - gx) * FOLLOW;
     gy += (py - gy) * FOLLOW;
-    if (bloomActive && pointerInside) { glowA = 1; kick(700); }
 
-    if (bloomActive && glowA > 0.01) drawBloomTriangle();
     if (sweepActive) drawSweepPops();
     if (glowA > 0.004) {
-      if (!bloomActive) drawCursorGlow();
+      drawCursorGlow();
       glowA *= 0.9;
     }
     ctx!.globalCompositeOperation = 'source-over';
@@ -514,27 +354,12 @@ export function initParticleField(opts: ParticleFieldOptions): ParticleFieldCont
     curBrush += (target - curBrush) * 0.35;                  // ease to avoid jitter
     lastMoveT = now;
 
-    // Bloom zone: the triangle is active only while the cursor is over the
-    // configured element (e.g. the comparison table); outside it the field wipes.
-    if (bloomEnabled && BLOOM_ZONE) {
-      if (!zoneElems) zoneElems = Array.from(document.querySelectorAll(BLOOM_ZONE));
-      activeZone = null;
-      for (const el of zoneElems) {
-        const zr = el.getBoundingClientRect();
-        if (event.clientX >= zr.left && event.clientX <= zr.right
-          && event.clientY >= zr.top && event.clientY <= zr.bottom) { activeZone = el; break; }
-      }
-      bloomActive = !!activeZone;
-    }
-
-    if (!bloomActive) eraseSegment(px, py, x, y, curBrush);  // bloom mode: no wipe, dots stay intact
-    if (bloomEnabled && !excludeFresh) { refreshExclude(); excludeFresh = true; }  // catch settled layout
+    eraseSegment(px, py, x, y, curBrush);
     px = x; py = y;
     glowA = 1;                  // light up the glow under the cursor
-    pointerInside = true;
     kick(2800);                 // keep refogging running for a bit after we stop
   }, { passive: true });
-  pointer.addEventListener('pointerleave', function () { hasPrev = false; pointerInside = false; kick(2800); }, { passive: true });
+  pointer.addEventListener('pointerleave', function () { hasPrev = false; kick(2800); }, { passive: true });
 
   let rt: ReturnType<typeof setTimeout>;
   window.addEventListener('resize', function () {
