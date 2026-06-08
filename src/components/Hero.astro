@@ -93,7 +93,7 @@ const s = getStrings(lang);
   top: -180px;
   width: 560px;
   height: 1280px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   transform: rotate(-42deg);
   filter: blur(40px);
 }
@@ -237,7 +237,7 @@ const s = getStrings(lang);
   padding: 5px 6px 5px 6px;
   background: var(--bg-paper);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   box-shadow: 0 1px 2px rgba(15,23,42,0.05), 0 4px 12px -6px rgba(15,23,42,0.08);
   font-size: 13px;
   font-weight: 500;
@@ -256,7 +256,7 @@ const s = getStrings(lang);
   align-items: center;
   flex-shrink: 0;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--brand-gradient);
   color: var(--white);
   font-family: var(--font-body);
@@ -357,9 +357,9 @@ const s = getStrings(lang);
   background:
     radial-gradient(
       circle at var(--mx, 80%) var(--my, 50%),
-      #56B3EB 0%,
+      var(--brand-accent) 0%,
       #4A6B95 30%,
-      #3D506D 70%
+      var(--brand-primary) 70%
     );
   -webkit-background-clip: text;
   background-clip: text;
@@ -399,12 +399,12 @@ const s = getStrings(lang);
   --cta-fill: 0;
   background:
     conic-gradient(from -90deg,
-      #FFFFFF 0deg,
-      #FFFFFF calc(var(--cta-fill) * 180deg),
+      var(--white) 0deg,
+      var(--white) calc(var(--cta-fill) * 180deg),
       rgba(255,255,255,0) calc(var(--cta-fill) * 180deg),
       rgba(255,255,255,0) calc(360deg - var(--cta-fill) * 180deg),
-      #FFFFFF calc(360deg - var(--cta-fill) * 180deg),
-      #FFFFFF 360deg),
+      var(--white) calc(360deg - var(--cta-fill) * 180deg),
+      var(--white) 360deg),
     linear-gradient(rgba(61,80,109,0.10), rgba(61,80,109,0.10));
   border: 1px solid rgba(61,80,109,0.14);
   border-radius: 16px;

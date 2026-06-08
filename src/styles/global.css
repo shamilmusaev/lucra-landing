@@ -165,7 +165,7 @@ section { padding: var(--section-py) 0; position: relative; }
   padding: 6px 12px;
   background: var(--accent-light);
   border: 1px solid rgba(61,80,109,.12);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   margin-bottom: 18px;
 }
 .section-eyebrow::before {
