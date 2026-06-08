@@ -3,8 +3,7 @@ import { onPanelLive } from './panelGate';
 
 export function initDashboard(): void {
   // Dashboard — count the metric values up from zero, then run a pointer-driven
-  // walkthrough: AI Insights opens collapsed, the pointer expands and explains
-  // it, then scrolls down narrating the metrics and the income/cost chart.
+  // walkthrough that scrolls down narrating the metrics and the income/cost chart.
   var panel = document.querySelector('.demo-panel[data-panel="dashboard"]') as HTMLElement | null;
   if (!panel) return;
   var panelEl = panel;
@@ -18,12 +17,8 @@ export function initDashboard(): void {
   }
 
   var cur = createDemoCursor();
-  var aiInsights = panelEl.querySelector('.ai-insights') as HTMLElement | null;
-  var aiHead     = panelEl.querySelector('.ai-head') as HTMLElement | null;
-  var aiTitles   = panelEl.querySelector('.ai-titles') as HTMLElement | null;
   var firstMetric= panelEl.querySelector('.metric') as HTMLElement | null;
   var chartHead  = panelEl.querySelector('.chart-card-head') as HTMLElement | null;
-  var tip1 = document.querySelector('[data-tour-tip="dash-1"]') as HTMLElement | null;
   var tip2 = document.querySelector('[data-tour-tip="dash-2"]') as HTMLElement | null;
   var tip3 = document.querySelector('[data-tour-tip="dash-3"]') as HTMLElement | null;
 
@@ -59,23 +54,10 @@ export function initDashboard(): void {
   async function play() {
     var myGen = ++gen;
     panelEl.scrollTop = 0;
-    if (reduce || !cur.ok || !aiInsights || !aiHead) { countUp(); return; }
-    aiInsights.classList.add('is-collapsed');
+    if (reduce || !cur.ok || !firstMetric) { countUp(); return; }
     countUp();
-    await wait(520); if (myGen !== gen) return;
-    cur.moveTo(aiHead, false);
+    await wait(820); if (myGen !== gen) return;
     cur.show();
-    await wait(300); if (myGen !== gen) return;
-    // Anchor to the right of the title so the tip never overlaps the list that
-    // unfolds below the header once Insights expands.
-    cur.showTip(tip1, aiTitles || aiHead, 'right', 14, 0);
-    await wait(1500); if (myGen !== gen) return;
-    cur.press();
-    await wait(150); if (myGen !== gen) return;
-    // Hide the tip as the list unfolds, so it never overlaps the rows below.
-    cur.hideTips();
-    aiInsights.classList.remove('is-collapsed');
-    await wait(900); if (myGen !== gen) return;
     cur.scrollPanelTo(panelEl, firstMetric, 80);
     await wait(480); if (myGen !== gen) return;
     cur.moveTo(firstMetric, true);
@@ -97,7 +79,6 @@ export function initDashboard(): void {
     gen++;
     clearTimers();
     cur.reset();
-    if (aiInsights) aiInsights.classList.remove('is-collapsed');
     panelEl.scrollTop = 0;
   }
 

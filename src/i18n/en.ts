@@ -70,11 +70,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoPeriodMonth: 'This Month',
   heroDemoPeriodQuarter: 'Quarter',
   heroDemoPeriodYear: 'Year',
-  heroDemoAiTitle: 'AI Insights',
-  heroDemoAiSubtitle: 'Powered by Lucra AI',
-  heroDemoAiInsight1: 'Revenue grew <strong>12.5% this month</strong>, driven by three new enterprise contracts worth <strong>85,000 SEK</strong> combined.',
-  heroDemoAiInsight2: 'Expenses decreased by <strong>5.2%</strong> – your cost optimization on SaaS tools is paying off.',
-  heroDemoAiInsight3: 'You have <strong>3 overdue invoices</strong> totaling 42,000 SEK. Consider sending payment reminders.',
   heroDemoMetricRevenue: 'Revenue',
   heroDemoMetricCosts: 'Expenses',
   heroDemoMetricNet: 'Net profit',
@@ -126,7 +121,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   heroDemoSrSummary: 'Interactive demonstration of Lucra: chat, dashboard and files.',
 
   // Product demo window – dashboard guided-tour tips
-  heroDashTip1: 'AI summarises and flags anomalies.',
   heroDashTip2: 'Key figures in real time.',
   heroDashTip3: 'Revenue vs costs – the trend at a glance.',
 
@@ -305,9 +299,9 @@ export const en: { [K in keyof typeof sv]: string } = {
   faqQ6: 'How do I get started?',
   faqA6: 'Start by applying for a 30-day pilot with 5–10 client companies. During the pilot you get access to Lucra in a demo or test environment with real financial context. We follow up weekly and provide a summary after the pilot with a recommendation for the next step.',
   faqQ7: 'How is the accuracy of answers ensured?',
-  faqA7: 'Lucra bases all answers on current bookkeeping data from Fortnox and is specialized for Swedish finance and accounting. Human oversight is always available – questions that require deeper analysis or expertise are escalated to an accounting consultant. The firm has full visibility into all questions and answers.',
-  faqQ8: 'Can a human consultant review the AI answers?',
-  faqA8: 'Yes, the accounting firm has full control and visibility. The firm can see all questions and answers, escalate questions to a human consultant when needed, and review AI answers before they reach the client. Lucra is built to complement the firm, not replace it.',
+  faqA7: 'Lucra bases all answers on current bookkeeping data from Fortnox and is specialized for Swedish finance and accounting. Human oversight is always available – questions that require deeper analysis or expertise are escalated to an accounting consultant, and you can always ask to speak with a person.',
+  faqQ8: 'Can I always reach a real accounting consultant?',
+  faqA8: "Yes. You are never limited to AI alone. Lucra answers everyday questions instantly, but whenever something needs human judgement the question is handed over to your accounting consultant, who takes over with full context. Lucra complements the firm's advisory – it never replaces the people behind it.",
   ogImageAlt: 'Lucra – AI economist connected to your bookkeeping',
   privacyMetaTitle: 'Privacy Policy · Lucra',
   privacyMetaDescription: 'How LucrAI Tech AB collects, uses and protects your personal data – in line with the GDPR and Swedish data protection law.',

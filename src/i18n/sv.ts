@@ -68,11 +68,6 @@ export const sv = {
   heroDemoPeriodMonth: 'Månad',
   heroDemoPeriodQuarter: 'Kvartal',
   heroDemoPeriodYear: 'År',
-  heroDemoAiTitle: 'AI Insights',
-  heroDemoAiSubtitle: 'Drivet av Lucra AI',
-  heroDemoAiInsight1: 'Intäkterna ökade <strong>12,5 % denna månad</strong>, drivet av tre nya företagsavtal på totalt <strong>85 000 SEK</strong>.',
-  heroDemoAiInsight2: 'Kostnaderna minskade med <strong>5,2 %</strong> – din kostnadsoptimering på SaaS-verktyg ger resultat.',
-  heroDemoAiInsight3: 'Du har <strong>3 förfallna fakturor</strong> på totalt 42 000 SEK. Överväg att skicka betalningspåminnelser.',
   heroDemoMetricRevenue: 'Intäkter',
   heroDemoMetricCosts: 'Kostnader',
   heroDemoMetricNet: 'Nettoresultat',
@@ -124,7 +119,6 @@ export const sv = {
   heroDemoSrSummary: 'Interaktiv demonstration av Lucra: chatt, dashboard och filer.',
 
   // Product demo window – dashboard guided-tour tips
-  heroDashTip1: 'AI sammanfattar och flaggar avvikelser.',
   heroDashTip2: 'Nyckeltal i realtid.',
   heroDashTip3: 'Intäkter mot kostnader – trenden i en blick.',
 
@@ -303,9 +297,9 @@ export const sv = {
   faqQ6: 'Hur kommer jag igång?',
   faqA6: 'Börja med att ansöka om en 30-dagars pilot med 5–10 kundbolag. Under piloten får du tillgång till Lucra i demo- eller testmiljö med verklig ekonomisk kontext. Vi följer upp veckovis och ger en sammanställning efter piloten med rekommendation för nästa steg.',
   faqQ7: 'Hur säkerställs att svaren är korrekta?',
-  faqA7: 'Lucra baserar alla svar på aktuell bokföringsdata från Fortnox och är specialiserat för svensk ekonomi och redovisning. Mänsklig kontroll finns alltid tillgänglig – frågor som kräver djupare analys eller expertis eskaleras till redovisningskonsult. Byrån har full insyn i alla frågor och svar.',
-  faqQ8: 'Kan mänsklig konsult granska AI-svaren?',
-  faqA8: 'Ja, redovisningsbyrån har full kontroll och insyn. Byrån kan se alla frågor och svar, eskalera frågor till mänsklig konsult när det behövs, och granska AI-svar innan de når kunden. Lucra är byggt för att komplettera byrån, inte ersätta den.',
+  faqA7: 'Lucra baserar alla svar på aktuell bokföringsdata från Fortnox och är specialiserat för svensk ekonomi och redovisning. Mänsklig kontroll finns alltid tillgänglig – frågor som kräver djupare analys eller expertis lämnas vidare till en redovisningskonsult, och du kan alltid be om att få prata med en människa.',
+  faqQ8: 'Kan jag alltid nå en riktig redovisningskonsult?',
+  faqA8: 'Ja. Du är aldrig hänvisad enbart till AI. Lucra svarar direkt på vardagliga frågor, men när något kräver mänsklig bedömning lämnas frågan vidare till din redovisningskonsult, som tar över med full kontext. Lucra kompletterar byråns rådgivning – den ersätter aldrig människan bakom den.',
   ogImageAlt: 'Lucra – AI-ekonom kopplad till din bokföring',
   privacyMetaTitle: 'Integritetspolicy · Lucra',
   privacyMetaDescription: 'Så samlar LucrAI Tech AB in, använder och skyddar dina personuppgifter – i enlighet med GDPR och svensk dataskyddslag.',

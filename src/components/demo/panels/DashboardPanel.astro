@@ -24,23 +24,6 @@ const s = getStrings(lang);
     </div>
   </div>
 
-  <!-- AI Insights -->
-  <div class="ai-insights">
-    <div class="ai-head">
-      <svg class="ai-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      <span class="ai-orb" aria-hidden="true"></span>
-      <span class="ai-titles">
-        <span class="ai-title">{s.heroDemoAiTitle}</span>
-        <span class="ai-sub">{s.heroDemoAiSubtitle}</span>
-      </span>
-    </div>
-    <div class="ai-list">
-      <div class="ai-item"><span class="ai-bullet"></span><p set:html={s.heroDemoAiInsight1}></p></div>
-      <div class="ai-item"><span class="ai-bullet"></span><p set:html={s.heroDemoAiInsight2}></p></div>
-      <div class="ai-item"><span class="ai-bullet"></span><p set:html={s.heroDemoAiInsight3}></p></div>
-    </div>
-  </div>
-
   <!-- Metric cards -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
     <linearGradient id="sparkFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#3D506D" stop-opacity="0.16"/><stop offset="100%" stop-color="#3D506D" stop-opacity="0"/></linearGradient>
@@ -213,47 +196,6 @@ const s = getStrings(lang);
   box-shadow: var(--shadow-sm);
 }
 
-/* AI Insights panel */
-.ai-insights {
-  background: linear-gradient(135deg, var(--slate-50) 0%, var(--slate-100) 100%);
-  border: 1px solid rgba(61,80,109,0.10);
-  box-shadow: 0 1px 2px rgba(61,80,109,0.04);
-  border-radius: var(--radius-2xl);
-  padding: 22px;
-  margin-bottom: 16px;
-}
-.ai-head { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-.ai-chev { width: 18px; height: 18px; color: var(--slate-400); flex-shrink: 0; transition: transform .3s ease; }
-.ai-insights.is-collapsed .ai-chev { transform: rotate(-90deg); }
-/* AI Insights orb — static PNG of the real orb (no WebGL); only shown while the
-   dashboard panel is active, which already requires the demo to be in focus. */
-.ai-orb {
-  width: 32px; height: 32px;
-  flex-shrink: 0;
-  background: url(/assets/orb-avatar.png) center / contain no-repeat;
-}
-.ai-titles { display: flex; flex-direction: column; }
-.ai-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--brand-primary); }
-.ai-sub { font-size: 12px; font-weight: 500; color: var(--slate-500); }
-.ai-list {
-  display: flex; flex-direction: column; gap: 12px;
-  margin-top: 20px;
-  max-height: 420px;
-  overflow: hidden;
-  transition: max-height .5s var(--ease-out-expo), opacity .35s ease, margin-top .5s var(--ease-out-expo);
-}
-.ai-insights.is-collapsed .ai-list { max-height: 0; margin-top: 0; opacity: 0; }
-.ai-item {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 14px 16px;
-  background: var(--bg-paper);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-}
-.ai-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); margin-top: 7px; flex-shrink: 0; }
-.ai-item p { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.6; color: var(--slate-500); }
-.ai-item p strong { color: var(--brand-primary); font-weight: 600; }
-
 .metric-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -413,7 +355,6 @@ const s = getStrings(lang);
     transform: none;
     overflow: visible;
   }
-  .demo-panel[data-panel="dashboard"] .ai-list { max-height: none; transition: none; }
   .demo-panel[data-panel="dashboard"] .spark { clip-path: none; }
   .demo-panel[data-panel="dashboard"] .ch-area { opacity: 1; }
   .demo-panel[data-panel="dashboard"] .ch-line { stroke-dashoffset: 0; }
