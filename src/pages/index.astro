@@ -17,14 +17,16 @@ const s = getStrings(lang);
 ---
 <BaseLayout lang={lang} title={s.metaTitle} description={s.metaDescription} path="/">
   <Nav lang={lang} />
-  <Hero lang={lang} />
-  <FeatureShowcase lang={lang} />
-  <Jamforelse lang={lang} />
-  <ForVem lang={lang} />
-  <Sakerhet lang={lang} />
-  <Upplagg lang={lang} />
-  <FaqSection lang={lang} />
-  <CtaSection lang={lang} />
+  <main id="main">
+    <Hero lang={lang} />
+    <FeatureShowcase lang={lang} />
+    <Jamforelse lang={lang} />
+    <ForVem lang={lang} />
+    <Sakerhet lang={lang} />
+    <Upplagg lang={lang} />
+    <FaqSection lang={lang} />
+    <CtaSection lang={lang} />
+  </main>
   <Footer lang={lang} />
   <RevealScript />
 </BaseLayout>

@@ -4,6 +4,7 @@ import Icon from '../Icon.astro';
 import DashboardPanel from './panels/DashboardPanel.astro';
 import ChatPanel from './panels/ChatPanel.astro';
 import FilesPanel from './panels/FilesPanel.astro';
+import { APP_URL } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -143,7 +144,7 @@ const s = getStrings(lang);
         </div>
       </aside>
 
-      <main class="product-main">
+      <div class="product-main">
         <DashboardPanel lang={lang} />
 
         <ChatPanel lang={lang} />
@@ -152,7 +153,7 @@ const s = getStrings(lang);
 
         <!-- Curtain wipe — a single sheet sweeps across on tab change (controller.ts). -->
         <span class="panel-curtain" aria-hidden="true"></span>
-      </main>
+      </div>
 
       <!-- Guided-tour layer — a soft pointer dot the chat intro drives to the
            company switcher and then the chat input, with two explainer tips.
@@ -178,7 +179,7 @@ const s = getStrings(lang);
       <strong class="dcb-title">{s.demoCtaTitle}</strong>
       <span class="dcb-sub">{s.demoCtaSub}</span>
     </span>
-    <a class="btn btn-primary btn-lg dcb-btn" href="https://app.staging.lucra-app.ai" target="_blank" rel="noopener">
+    <a class="btn btn-primary btn-lg dcb-btn" href={APP_URL} target="_blank" rel="noopener">
       {s.demoCtaBtn}
       <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>

@@ -2,6 +2,7 @@
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
 import ParticleField from '../ParticleField.astro';
+import { CONTACT_MAILTO } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
@@ -51,7 +52,7 @@ const partnerFeats = [
             </li>
           ))}
         </ul>
-        <a class="btn btn-primary btn-lg plan-cta" href="[CALENDLY_URL]">
+        <a class="btn btn-primary btn-lg plan-cta" href={CONTACT_MAILTO}>
           {s.priPilotCta}
           <Icon name="arrow-right" class="arrow" />
         </a>
@@ -73,7 +74,7 @@ const partnerFeats = [
             </li>
           ))}
         </ul>
-        <a class="btn btn-outlined btn-lg plan-cta" href="[CALENDLY_URL]">
+        <a class="btn btn-outlined btn-lg plan-cta" href={CONTACT_MAILTO}>
           {s.priPartnerCta}
           <Icon name="arrow-right" class="arrow" />
         </a>

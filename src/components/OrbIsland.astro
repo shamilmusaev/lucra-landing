@@ -23,8 +23,15 @@
   // in the legacy), so Hero's guarded `if (window.lucraOrbIntro)` calls simply
   // no-op for the brief moment before the orb mounts — acceptable and matches
   // legacy sequencing.
+  // Skip the WebGL orb on small screens: a continuous noise shader is wasted
+  // battery/INP on phones for a decorative element. Yields the same no-orb
+  // state reduced-motion users already get (so no new visual gap).
   const el = document.getElementById('hero-orb');
-  if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (
+    el &&
+    !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+    !matchMedia('(max-width: 720px)').matches
+  ) {
     const ric: (cb: () => void) => void =
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)

@@ -3,6 +3,9 @@ export const sv = {
   metaTitle: 'Lucra · AI för svensk bokföring',
   metaDescription: 'Lucra är en AI-ekonomassistent som hjälper svenska företagare att förstå sin ekonomi och redovisningsbyråer att minska repetitiva kundfrågor – alltid synkad med Fortnox.',
 
+  // ---- A11y ----
+  skipToContent: 'Hoppa till innehåll',
+
   // ---- Nav (Task 5) ----
   navProduct: 'Produkt',
   navProductFeaturesLabel: 'Funktioner',
@@ -214,20 +217,6 @@ export const sv = {
   forVemCard7Lucra: 'Varje svar bygger på kundens egna siffror från Fortnox (läsåtkomst) – byrån kan lita på att underlaget stämmer.',
 
 
-  // ---- Integrationer (Task 13) ----
-  integrationerEyebrow: 'Integrationer',
-  integrationerTitle: 'Plugga in. Allt synkar.',
-  integrationerSub: 'Lucra ansluter till systemen där dina data redan finns. Fortnox är vår första djupa integration – och via Skatteverket håller vi koll på skatt och deklaration.',
-  integrationerFeatureTitle: 'Djup integration mot Fortnox',
-  integrationerFeatureBody: 'Verifikat, kontoplan, kunder och leverantörer hämtas automatiskt. Synkroniseringen körs i bakgrunden så dashboarden alltid speglar bokföringen.',
-  integrationerSyncLine: 'Senast synkad: 3 minuter sedan',
-  integrationerTile1: 'Verifikat & underlag',
-  integrationerTile2: 'Kontoplan',
-  integrationerTile3: 'Moms & deklaration',
-  integrationerTile4: 'Kunder & leverantörer',
-  integrationerTile5: 'Resultat & balans',
-  integrationerTile6: 'Skatteverket',
-
   // ---- Säkerhet (Task 14) ----
   sakerhetTitle: 'Din data är trygg.',
   sakerhetSub: 'Bygger man fintech bygger man också säkerhet från första raden kod. Lucra följer svenska och europeiska regelverk och håller dina underlag inom EU.',
@@ -240,32 +229,7 @@ export const sv = {
   sakerhetCard4Title: 'Granulär behörighet',
   sakerhetCard4Body: 'Tilldela åtkomst per bolag och roll. Byråer och kunder ser bara det de ska se.',
 
-  // ---- Så funkar det / howstack (Task 12) ----
-  howstackEyebrow: 'Så funkar det',
-  // Stage 0 – Grunden
-  howstackStage0Kicker: 'Grunden',
-  howstackStage0Title: 'Allt utgår från bolagets egna siffror.',
-  howstackStage0Body: 'Lucra kopplas till Fortnox och läser bolagets faktiska ekonomi – transaktioner, moms, resultat och lön. Alltid uppdaterat, aldrig gissat.',
-  // Stage 1 – Förståelsen
-  howstackStage1Kicker: 'Förståelsen',
-  howstackStage1Title: 'Lucra förstår vad siffrorna betyder.',
-  howstackStage1Body: 'Ovanpå datan bygger Lucra en levande bild av hur bolaget mår – och svarar på vardagens frågor på enkel svenska, direkt och dygnet runt.',
-  // Stage 2 – Expertlagret
-  howstackStage2Kicker: 'Expertlagret',
-  howstackStage2Title: 'Byrån kopplas in när det krävs.',
-  howstackStage2Body: 'Komplexa frågor eskaleras till redovisningskonsulten med full kontext bevarad. Människan gör det kvalificerade – Lucra sköter vardagen.',
-  // Deck layers (bottom-up: 01 → 04)
-  howstackLayer4Tag: 'Expert',
-  howstackLayer4Title: 'Redovisningsbyrån',
-  howstackLayer4Body: 'Kvalificerad rådgivning när frågan kräver en människa.',
-  howstackLayer3Title: 'Lucra-assistenten',
-  howstackLayer3Body: 'Svarar på vardagsfrågor på enkel svenska, dygnet runt.',
-  howstackLayer2Title: 'Lucras världsmodell',
-  howstackLayer2Body: 'En levande bild av hur bolaget faktiskt mår.',
-  howstackLayer1Tag: 'Fortnox',
-  howstackLayer1Title: 'Bolagets ekonomi',
-  howstackLayer1Body: 'Transaktioner, moms, resultat och lön – synkat i realtid.',
-  // Final CTA
+  // ---- Final CTA ----
   ctaTitle: 'Vill du se hur Lucra fungerar?',
   ctaBody: 'Boka en kort demo och se hur Lucra ger företagare koll på sina siffror och frigör tid åt byråns kvalificerade rådgivning.',
   ctaBookDemo: 'Boka demo',

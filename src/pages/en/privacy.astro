@@ -11,8 +11,10 @@ const s = getStrings(lang);
 ---
 <BaseLayout lang={lang} title={s.privacyMetaTitle} description={s.privacyMetaDescription} path="/privacy">
   <Nav lang={lang} />
-  <LegalArticle>
-    <Content />
-  </LegalArticle>
+  <main id="main">
+    <LegalArticle>
+      <Content />
+    </LegalArticle>
+  </main>
   <Footer lang={lang} />
 </BaseLayout>

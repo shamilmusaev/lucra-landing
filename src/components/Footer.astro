@@ -6,6 +6,7 @@
 // The current language is marked active via `aria-current="page"` and `.is-active`.
 // No lang-toggle JS is used — routing handles language selection.
 import { getStrings, type Lang } from '../i18n/utils';
+import { APP_LOGIN_URL, APP_SIGNUP_URL, CONTACT_MAILTO, CONTACT_EMAIL } from '../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 // Legal / homepage-section links must resolve from any route (incl. /privacy,
@@ -17,7 +18,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
   <div class="container">
     <div class="footer-grid">
       <div class="footer-about">
-        <a href="/" class="brand">
+        <a href={`${enPrefix}/`} class="brand">
           <img src="/assets/logo.svg" alt="Lucra" width="26" height="24" />
           <span class="brand-word">Lucra</span>
         </a>
@@ -26,33 +27,33 @@ const enPrefix = lang === 'en' ? '/en' : '';
       <div class="footer-col">
         <h5>{s.footerColProduct}</h5>
         <ul>
-          <li><a href="#funktioner">{s.footerLinkFeatures}</a></li>
-          <li><a href="#jamforelse">{s.footerLinkCompare}</a></li>
-          <li><a href="#upplagg">{s.footerLinkPricing}</a></li>
-          <li><a href="#sakerhet">{s.footerLinkSecurity}</a></li>
+          <li><a href={`${enPrefix}/#funktioner`}>{s.footerLinkFeatures}</a></li>
+          <li><a href={`${enPrefix}/#jamforelse`}>{s.footerLinkCompare}</a></li>
+          <li><a href={`${enPrefix}/#upplagg`}>{s.footerLinkPricing}</a></li>
+          <li><a href={`${enPrefix}/#sakerhet`}>{s.footerLinkSecurity}</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>{s.footerColCompany}</h5>
         <ul>
           <li><a href="/contact">{s.footerLinkContact}</a></li>
-          <li><a href="[CALENDLY_URL]">{s.footerLinkBookDemo}</a></li>
+          <li><a href={CONTACT_MAILTO}>{s.footerLinkBookDemo}</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>{s.footerColLegal}</h5>
         <ul>
-          <li><a href={`${enPrefix}/privacy`}>{s.footerLinkPrivacy}</a></li>
-          <li><a href={`${enPrefix}/terms`}>{s.footerLinkTerms}</a></li>
+          <li><a href={`${enPrefix}/privacy/`}>{s.footerLinkPrivacy}</a></li>
+          <li><a href={`${enPrefix}/terms/`}>{s.footerLinkTerms}</a></li>
           <li><a href={`${enPrefix}/#sakerhet`}>{s.footerLinkSecurityPage}</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>{s.footerColAccount}</h5>
         <ul>
-          <li><a href="https://app.staging.lucra-app.ai/login">{s.footerLinkLogin}</a></li>
-          <li><a href="https://app.staging.lucra-app.ai/signup">{s.footerLinkSignup}</a></li>
-          <li><a href="mailto:[KONTAKT_EMAIL]">[kontakt&#64;lucra.ai]</a></li>
+          <li><a href={APP_LOGIN_URL}>{s.footerLinkLogin}</a></li>
+          <li><a href={APP_SIGNUP_URL}>{s.footerLinkSignup}</a></li>
+          <li><a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a></li>
         </ul>
       </div>
     </div>
@@ -75,9 +76,6 @@ const enPrefix = lang === 'en' ? '/en' : '';
         <div class="social-row">
           <a href="[LINKEDIN_URL]" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3V9zm7 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.84 0-2.12 1.43-2.12 2.9V21h-4V9z"/></svg>
-          </a>
-          <a href="[X_URL]" aria-label="X">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21l-6.45 7.37L22.5 22h-6.84l-4.78-6.27L5.2 22H2.45l6.9-7.89L1.5 2h6.99l4.32 5.71L18.244 2zm-1.2 18h1.65L7.06 4H5.3l11.744 16z"/></svg>
           </a>
         </div>
       </div>

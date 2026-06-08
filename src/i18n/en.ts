@@ -5,6 +5,9 @@ export const en: { [K in keyof typeof sv]: string } = {
   metaTitle: 'Lucra · AI for Swedish business finances',
   metaDescription: 'Lucra is an AI finance assistant that helps Swedish business owners understand their finances and accounting firms reduce repetitive client questions – always synced with Fortnox.',
 
+  // ---- A11y ----
+  skipToContent: 'Skip to content',
+
   // ---- Nav (Task 5) ----
   navProduct: 'Product',
   navProductFeaturesLabel: 'Features',
@@ -216,20 +219,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   forVemCard7Lucra: "Every answer is built on the client's own figures from Fortnox (read access) – the firm can trust that the basis is correct.",
 
 
-  // ---- Integrationer (Task 13) ----
-  integrationerEyebrow: 'Integrations',
-  integrationerTitle: 'Plug in. Everything syncs.',
-  integrationerSub: 'Lucra connects to the systems where your data already lives. Fortnox is our first deep integration – and via Skatteverket we keep track of taxes and filing.',
-  integrationerFeatureTitle: 'Deep integration with Fortnox',
-  integrationerFeatureBody: 'Vouchers, chart of accounts, customers and suppliers are fetched automatically. Syncing runs in the background so the dashboard always mirrors the bookkeeping.',
-  integrationerSyncLine: 'Last synced: 3 minutes ago',
-  integrationerTile1: 'Vouchers & source data',
-  integrationerTile2: 'Chart of accounts',
-  integrationerTile3: 'VAT & filing',
-  integrationerTile4: 'Customers & suppliers',
-  integrationerTile5: 'P&L & balance',
-  integrationerTile6: 'Skatteverket',
-
   // ---- Säkerhet (Task 14) ----
   sakerhetTitle: 'Your data is safe.',
   sakerhetSub: 'If you build fintech, you build security from the first line of code. Lucra follows Swedish and European regulations and keeps your records within the EU.',
@@ -242,32 +231,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   sakerhetCard4Title: 'Granular permissions',
   sakerhetCard4Body: 'Assign access per company and role. Firms and clients see only what they should.',
 
-  // ---- Så funkar det / howstack (Task 12) ----
-  howstackEyebrow: 'How it works',
-  // Stage 0 – The foundation
-  howstackStage0Kicker: 'The foundation',
-  howstackStage0Title: "It all starts with the company's own numbers.",
-  howstackStage0Body: "Lucra connects to Fortnox and reads the company's actual finances – transactions, VAT, results and payroll. Always up to date, never guessed.",
-  // Stage 1 – The understanding
-  howstackStage1Kicker: 'The understanding',
-  howstackStage1Title: 'Lucra understands what the numbers mean.',
-  howstackStage1Body: 'On top of the data, Lucra builds a living picture of how the company is doing – and answers everyday questions in plain language, instantly and around the clock.',
-  // Stage 2 – The expert layer
-  howstackStage2Kicker: 'The expert layer',
-  howstackStage2Title: 'The firm steps in when needed.',
-  howstackStage2Body: 'Complex questions are escalated to the accountant with full context preserved. People handle the qualified work – Lucra handles the everyday.',
-  // Deck layers (bottom-up: 01 → 04)
-  howstackLayer4Tag: 'Expert',
-  howstackLayer4Title: 'The accounting firm',
-  howstackLayer4Body: 'Qualified advisory when the question needs a human.',
-  howstackLayer3Title: 'The Lucra assistant',
-  howstackLayer3Body: 'Answers everyday questions in plain language, around the clock.',
-  howstackLayer2Title: "Lucra's world model",
-  howstackLayer2Body: 'A living picture of how the company is really doing.',
-  howstackLayer1Tag: 'Fortnox',
-  howstackLayer1Title: "The company's finances",
-  howstackLayer1Body: 'Transactions, VAT, results and payroll – synced in real time.',
-  // Final CTA
+  // ---- Final CTA ----
   ctaTitle: 'Want to see how Lucra works?',
   ctaBody: "Book a short demo and see how Lucra gives business owners a clear view of their numbers and frees up the firm's time for qualified advisory.",
   ctaBookDemo: 'Book a demo',

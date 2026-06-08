@@ -1,7 +1,11 @@
 ---
 import { getStrings, type Lang } from '../i18n/utils';
+import { APP_LOGIN_URL, APP_SIGNUP_URL } from '../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
+// Section anchors must resolve from any route (incl. /privacy, /terms, 404),
+// so prefix with the active language home: sv → /#id, en → /en/#id.
+const enPrefix = lang === 'en' ? '/en' : '';
 ---
 
 <nav class="nav" id="nav">
@@ -24,28 +28,28 @@ const s = getStrings(lang);
           <div class="mega-inner">
             <div class="mega-col">
               <span class="mega-label">{s.navProductFeaturesLabel}</span>
-              <a class="mega-row" href="#funktioner">
+              <a class="mega-row" href={`${enPrefix}/#funktioner`}>
                 <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
                 <span class="mega-row-tx">
                   <span class="mega-row-t">{s.navProductFeaturesTitle}</span>
                   <span class="mega-row-d">{s.navProductFeaturesDesc}</span>
                 </span>
               </a>
-              <a class="mega-row" href="#jamforelse">
+              <a class="mega-row" href={`${enPrefix}/#jamforelse`}>
                 <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 3v18"/></svg></span>
                 <span class="mega-row-tx">
                   <span class="mega-row-t">{s.navProductCompareTitle}</span>
                   <span class="mega-row-d">{s.navProductCompareDesc}</span>
                 </span>
               </a>
-              <a class="mega-row" href="#upplagg">
+              <a class="mega-row" href={`${enPrefix}/#upplagg`}>
                 <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
                 <span class="mega-row-tx">
                   <span class="mega-row-t">{s.navProductPricingTitle}</span>
                   <span class="mega-row-d">{s.navProductPricingDesc}</span>
                 </span>
               </a>
-              <a class="mega-row" href="#sakerhet">
+              <a class="mega-row" href={`${enPrefix}/#sakerhet`}>
                 <span class="mega-row-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
                 <span class="mega-row-tx">
                   <span class="mega-row-t">{s.navProductSecurityTitle}</span>
@@ -53,7 +57,7 @@ const s = getStrings(lang);
                 </span>
               </a>
             </div>
-            <a class="mega-promo" href="#for-vem">
+            <a class="mega-promo" href={`${enPrefix}/#for-vem`}>
               <span class="mega-promo-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></span>
               <span class="mega-promo-eyebrow">{s.navPromoEyebrow}</span>
               <span class="mega-promo-title">{s.navPromoTitle}</span>
@@ -72,8 +76,8 @@ const s = getStrings(lang);
     </div>
     </div>
     <div class="nav-right">
-      <a class="btn btn-ghost" href="https://app.staging.lucra-app.ai/login">{s.navLogin}</a>
-      <a class="btn btn-primary" href="https://app.staging.lucra-app.ai/signup">
+      <a class="btn btn-ghost" href={APP_LOGIN_URL}>{s.navLogin}</a>
+      <a class="btn btn-primary" href={APP_SIGNUP_URL}>
         {s.navGetStarted}
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
@@ -427,6 +431,15 @@ const s = getStrings(lang);
       if (current === item) current = null;
     }
 
+    // Track input modality so keyboard focus opens the panel (making its links
+    // reachable by Tab) without a mouse/touch press opening-then-closing it via
+    // the click toggle below.
+    var usingKeyboard = false;
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') usingKeyboard = true;
+    }, true);
+    document.addEventListener('mousedown', function() { usingKeyboard = false; }, true);
+
     items.forEach(function(item) {
       var trig = item.querySelector('.nav-trigger') as HTMLElement | null;
       item.addEventListener('mouseenter', function() {
@@ -436,6 +449,17 @@ const s = getStrings(lang);
       item.addEventListener('mouseleave', function() {
         clearTimeout(openTimer);
         closeTimer = setTimeout(function() { close(item); }, CLOSE_DELAY);
+      });
+      // Keyboard: focusing into the item reveals the panel; leaving it closes.
+      item.addEventListener('focusin', function() {
+        if (!usingKeyboard) return;
+        clearTimeout(closeTimer);
+        open(item);
+      });
+      item.addEventListener('focusout', function(e) {
+        var next = (e as FocusEvent).relatedTarget as Node | null;
+        if (next && item.contains(next)) return; // focus still inside — keep open
+        close(item);
       });
       if (trig) {
         trig.addEventListener('click', function(e) {
