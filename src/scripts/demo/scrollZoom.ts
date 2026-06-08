@@ -12,6 +12,7 @@ export function initScrollZoom(): void {
   var navInner = nav && (nav.querySelector('.nav-inner') as HTMLElement | null);
 
   var MIN = 0.9, MAX = 1.0;
+  var MOTION_VIEWPORT_MAX_HEIGHT = 900;
   var MAX_BLUR = 8;   // px the hero copy blurs by at full zoom
   var ticking = false;
   // Last values written to the DOM. Re-applying an unchanged style still costs a
@@ -25,10 +26,13 @@ export function initScrollZoom(): void {
   function update() {
     ticking = false;
     var vh = window.innerHeight || document.documentElement.clientHeight;
+    // Keep tall desktop viewports from starting the zoom/blur while the page is
+    // still at the top.
+    var motionVh = Math.min(vh, MOTION_VIEWPORT_MAX_HEIGHT);
     var r = chromeEl.getBoundingClientRect();
     // p = 0 while the window is still low in the viewport, 1 once it reaches the top.
-    var start = vh * 0.72;   // begin zooming when the window top passes here
-    var end = vh * 0.08;     // fully zoomed when it nears the top
+    var start = motionVh * 0.72;   // begin zooming when the window top passes here
+    var end = motionVh * 0.08;     // fully zoomed when it nears the top
     var p = clamp01((start - r.top) / (start - end));
     // Shape the raw linear progress with an ease-out so the window decelerates
     // into its final size instead of tracking the scrollbar 1:1. Stays monotonic
