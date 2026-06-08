@@ -23,6 +23,11 @@
 
   if (targets.length > 0 && !reduce && 'IntersectionObserver' in window) {
     const active = new Set<HTMLElement>();
+    // Eased --p per element: the displayed progress lerps toward the raw scroll
+    // target each frame so scrubbed transforms carry weight instead of tracking
+    // the scroll 1:1. Lower SMOOTH = more inertia (and more trailing lag).
+    const smoothed = new WeakMap<HTMLElement, number>();
+    const SMOOTH = 0.15;
     let rafId = 0;
 
     function update() {
@@ -34,7 +39,11 @@
         let p = 1 - centre / vh;
         if (p < 0) p = 0;
         else if (p > 1) p = 1;
-        el.style.setProperty('--p', p.toFixed(4));
+        // First frame in view snaps to the target; afterwards it eases in.
+        const prev = smoothed.get(el);
+        const next = prev === undefined ? p : prev + (p - prev) * SMOOTH;
+        smoothed.set(el, next);
+        el.style.setProperty('--p', next.toFixed(4));
       });
       rafId = active.size > 0 ? requestAnimationFrame(update) : 0;
     }
@@ -51,7 +60,7 @@
         entries.forEach((entry) => {
           const el = entry.target as HTMLElement;
           if (entry.isIntersecting) active.add(el);
-          else active.delete(el);
+          else { active.delete(el); smoothed.delete(el); }
         });
         start();
       },

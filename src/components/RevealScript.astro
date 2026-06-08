@@ -21,8 +21,14 @@
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.add('in-view');
-              io.unobserve(entry.target);
+              const el = entry.target as HTMLElement;
+              el.classList.add('in-view');
+              io.unobserve(el);
+              // Drop the compositor hint once the reveal transition ends, so a
+              // revealed element stops holding its own layer for the rest of the
+              // session — leftover will-change inflated per-frame Commit/Layerize
+              // during scroll (the dominant cost in the scroll perf trace).
+              el.addEventListener('transitionend', () => { el.style.willChange = 'auto'; }, { once: true });
             }
           });
         },
