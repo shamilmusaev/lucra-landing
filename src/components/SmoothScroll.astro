@@ -37,7 +37,26 @@
     if (!link) return;
     const href = link.getAttribute('href') ?? '';
     const hashIndex = href.indexOf('#');
-    if (hashIndex === -1) return;
+    if (hashIndex === -1) {
+      // No hash. If the link points at the page we're already on (e.g. the logo
+      // links to the home route), scroll smoothly to the top instead of letting
+      // the browser reload the page. Modified clicks and new-tab links navigate.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (link.target === '_blank') return;
+      let url: URL;
+      try { url = new URL(link.href, location.href); } catch { return; }
+      if (url.origin !== location.origin || url.search) return;
+      if (url.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '')) return;
+
+      event.preventDefault();
+      const sameLenis = (window as any).lenis;
+      if (sameLenis) {
+        sameLenis.scrollTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      }
+      return;
+    }
 
     const id = href.slice(hashIndex + 1);
     if (!id) return;                                  // bare "#" → leave default
