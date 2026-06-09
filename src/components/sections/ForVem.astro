@@ -16,8 +16,8 @@ const byraCards = [
   { icon: 'shield-check', tab: s.forVemCard7Tab, today: s.forVemCard7Today, lucra: s.forVemCard7Lucra },
 ];
 const groups = [
-  { label: s.forVemGroupForetagare, cards: foretagareCards },
-  { label: s.forVemGroupByra, cards: byraCards },
+  { id: 'for-foretagare', label: s.forVemGroupForetagare, cards: foretagareCards },
+  { id: 'for-byra', label: s.forVemGroupByra, cards: byraCards },
 ];
 ---
 
@@ -31,7 +31,7 @@ const groups = [
 
     <div class="fv-groups">
       {groups.map((group) => (
-        <div class="fv-group">
+        <div class="fv-group" id={group.id}>
           <span class="section-eyebrow fv-grouplabel reveal">{group.label}</span>
           <div class="fv-stack">
             {group.cards.map((card, index) => (
@@ -63,6 +63,9 @@ const groups = [
 </section>
 
 <style>
+/* Clear the fixed nav when deep-linked from the Lösningar menu (matches the
+   .fv-card pin offset) */
+#for-foretagare, #for-byra { scroll-margin-top: 120px; }
 .fv-layout {
   display: grid;
   /* Columns sized to content and centered, so leftover space sits at the

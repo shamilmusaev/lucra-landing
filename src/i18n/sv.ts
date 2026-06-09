@@ -22,6 +22,17 @@ export const sv = {
   navPromoDesc: 'Alla klienter, ett gränssnitt.',
   navPromoLink: 'Läs mer',
 
+  navSolutions: 'Lösningar',
+  navSolutionsCompanyTitle: 'För företagare',
+  navSolutionsCompanyDesc: 'Svar på vardagens ekonomifrågor',
+  navSolutionsAgencyTitle: 'För redovisningsbyråer',
+  navSolutionsAgencyDesc: 'Mindre repetitiv kundsupport',
+  navPricing: 'Priser',
+  navPricingPilotTitle: 'Pilot',
+  navPricingPilotDesc: 'Testa med 5–10 kundbolag',
+  navPricingPartnerTitle: 'Partner',
+  navPricingPartnerDesc: 'Erbjud Lucra löpande till kunder',
+
   navLogin: 'Logga in',
   navBookDemo: 'Boka demo',
 

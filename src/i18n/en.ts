@@ -24,6 +24,17 @@ export const en: { [K in keyof typeof sv]: string } = {
   navPromoDesc: 'All clients, one interface.',
   navPromoLink: 'Learn more',
 
+  navSolutions: 'Solutions',
+  navSolutionsCompanyTitle: 'For business owners',
+  navSolutionsCompanyDesc: 'Answers to everyday finance questions',
+  navSolutionsAgencyTitle: 'For accounting firms',
+  navSolutionsAgencyDesc: 'Less repetitive client support',
+  navPricing: 'Pricing',
+  navPricingPilotTitle: 'Pilot',
+  navPricingPilotDesc: 'Test with 5–10 client companies',
+  navPricingPartnerTitle: 'Partner',
+  navPricingPartnerDesc: 'Offer Lucra continuously to clients',
+
   navLogin: 'Log in',
   navBookDemo: 'Book a demo',
 

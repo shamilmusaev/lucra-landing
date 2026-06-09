@@ -1,6 +1,7 @@
 ---
 import { getStrings, type Lang } from '../i18n/utils';
 import { APP_LOGIN_URL, CONTACT_MAILTO } from '../config';
+import Icon from './Icon.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 // Section anchors must resolve from any route (incl. /privacy, /terms, 404),
@@ -64,6 +65,58 @@ const enPrefix = lang === 'en' ? '/en' : '';
               <span class="mega-promo-desc">{s.navPromoDesc}</span>
               <span class="mega-promo-link">{s.navPromoLink}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- LÖSNINGAR — audiences (real För vem anchors) -->
+      <div class="nav-item has-menu" data-menu="losningar">
+        <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-losningar">
+          {s.navSolutions}
+          <svg class="nav-caret" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+        </button>
+        <div class="nav-dropdown" id="menu-losningar" role="region" aria-label={s.navSolutions}>
+          <div class="menu-inner">
+            <a class="mega-row" href={`${enPrefix}/#for-foretagare`}>
+              <span class="mega-row-ic"><Icon name="briefcase" /></span>
+              <span class="mega-row-tx">
+                <span class="mega-row-t">{s.navSolutionsCompanyTitle}</span>
+                <span class="mega-row-d">{s.navSolutionsCompanyDesc}</span>
+              </span>
+            </a>
+            <a class="mega-row" href={`${enPrefix}/#for-byra`}>
+              <span class="mega-row-ic"><Icon name="building-2" /></span>
+              <span class="mega-row-tx">
+                <span class="mega-row-t">{s.navSolutionsAgencyTitle}</span>
+                <span class="mega-row-d">{s.navSolutionsAgencyDesc}</span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRISER — plans (real Upplägg anchors) -->
+      <div class="nav-item has-menu" data-menu="priser">
+        <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-priser">
+          {s.navPricing}
+          <svg class="nav-caret" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+        </button>
+        <div class="nav-dropdown" id="menu-priser" role="region" aria-label={s.navPricing}>
+          <div class="menu-inner">
+            <a class="mega-row" href={`${enPrefix}/#pilot`}>
+              <span class="mega-row-ic"><Icon name="rocket" /></span>
+              <span class="mega-row-tx">
+                <span class="mega-row-t">{s.navPricingPilotTitle}</span>
+                <span class="mega-row-d">{s.navPricingPilotDesc}</span>
+              </span>
+            </a>
+            <a class="mega-row" href={`${enPrefix}/#partner`}>
+              <span class="mega-row-ic"><Icon name="handshake" /></span>
+              <span class="mega-row-tx">
+                <span class="mega-row-t">{s.navPricingPartnerTitle}</span>
+                <span class="mega-row-d">{s.navPricingPartnerDesc}</span>
               </span>
             </a>
           </div>
@@ -249,6 +302,22 @@ const enPrefix = lang === 'en' ? '/en' : '';
   grid-template-columns: minmax(300px, 1fr) 186px;
   gap: 12px;
   width: 552px;
+  max-width: calc(100vw - 32px);
+}
+/* Simple single-column dropdown (Lösningar, Priser) — same shell as the mega
+   panel, reusing .mega-row for the items. */
+.menu-inner {
+  background: rgba(255,255,255,0.94);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+          backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-pop);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 312px;
   max-width: calc(100vw - 32px);
 }
 .mega-col { display: flex; flex-direction: column; gap: 1px; }

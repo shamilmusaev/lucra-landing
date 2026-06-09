@@ -37,7 +37,7 @@ const partnerFeats = [
 
     <div class="plans" data-scrollfx>
       <!-- Pilot — recommended, highlighted card -->
-      <article class="plan plan-featured reveal">
+      <article id="pilot" class="plan plan-featured reveal">
         <div class="plan-tag"><span class="section-eyebrow">{s.priPilotBadge}</span></div>
         <h3 class="plan-name">{s.priPilotName}</h3>
         <p class="plan-desc">{s.priPilotDesc}</p>
@@ -59,7 +59,7 @@ const partnerFeats = [
       </article>
 
       <!-- Partner -->
-      <article class="plan reveal delay-1">
+      <article id="partner" class="plan reveal delay-1">
         <div class="plan-tag"></div>
         <h3 class="plan-name">{s.priPartnerName}</h3>
         <p class="plan-desc">{s.priPartnerDesc}</p>
@@ -86,6 +86,8 @@ const partnerFeats = [
 </section>
 
 <style>
+/* Clear the fixed nav when deep-linked from the Priser menu */
+#pilot, #partner { scroll-margin-top: 96px; }
 #upplagg {
   position: relative;
   background: var(--bg-paper);
