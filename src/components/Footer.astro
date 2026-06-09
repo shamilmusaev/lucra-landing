@@ -6,7 +6,7 @@
 // The current language is marked active via `aria-current="page"` and `.is-active`.
 // No lang-toggle JS is used — routing handles language selection.
 import { getStrings, type Lang } from '../i18n/utils';
-import { APP_LOGIN_URL, APP_SIGNUP_URL, CONTACT_MAILTO, CONTACT_EMAIL } from '../config';
+import { APP_LOGIN_URL, CONTACT_MAILTO, CONTACT_EMAIL } from '../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 // Legal / homepage-section links must resolve from any route (incl. /privacy,
@@ -51,7 +51,6 @@ const enPrefix = lang === 'en' ? '/en' : '';
         <h5>{s.footerColAccount}</h5>
         <ul>
           <li><a href={APP_LOGIN_URL}>{s.footerLinkLogin}</a></li>
-          <li><a href={APP_SIGNUP_URL}>{s.footerLinkSignup}</a></li>
           <li><a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a></li>
         </ul>
       </div>

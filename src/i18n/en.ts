@@ -25,7 +25,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   navPromoLink: 'Learn more',
 
   navLogin: 'Log in',
-  navGetStarted: 'Get started',
+  navBookDemo: 'Book a demo',
 
   // ---- Hero ----
   heroPillBadge: 'New',
@@ -277,7 +277,6 @@ export const en: { [K in keyof typeof sv]: string } = {
   footerLinkSecurityPage: 'Security',
   // Account column links
   footerLinkLogin: 'Log in',
-  footerLinkSignup: 'Create account',
 
   // ---- FAQ ----
   faqTitle: 'Frequently asked questions about Lucra',

@@ -23,7 +23,7 @@ export const sv = {
   navPromoLink: 'Läs mer',
 
   navLogin: 'Logga in',
-  navGetStarted: 'Kom igång',
+  navBookDemo: 'Boka demo',
 
   // ---- Hero ----
   heroPillBadge: 'Nyhet',
@@ -275,7 +275,6 @@ export const sv = {
   footerLinkSecurityPage: 'Säkerhet',
   // Account column links
   footerLinkLogin: 'Logga in',
-  footerLinkSignup: 'Skapa konto',
 
   // ---- FAQ ----
   faqTitle: 'Vanliga frågor om Lucra',
