@@ -459,7 +459,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
     if (!nav || !items.length) return;
     var navEl = nav;
     var navInner = nav.querySelector('.nav-inner') as HTMLElement | null;
-    var OPEN_DELAY = 60, CLOSE_DELAY = 160;
+    var OPEN_DELAY = 90, CLOSE_DELAY = 240;
     var openTimer: ReturnType<typeof setTimeout> | undefined;
     var closeTimer: ReturnType<typeof setTimeout> | undefined;
     var current: Element | null = null;
@@ -510,11 +510,15 @@ const enPrefix = lang === 'en' ? '/en' : '';
       var trig = item.querySelector('.nav-trigger') as HTMLElement | null;
       item.addEventListener('mouseenter', function() {
         clearTimeout(closeTimer);
+        clearTimeout(openTimer);
         openTimer = setTimeout(function() { open(item); }, OPEN_DELAY);
       });
       item.addEventListener('mouseleave', function() {
         clearTimeout(openTimer);
-        closeTimer = setTimeout(function() { close(item); }, CLOSE_DELAY);
+        clearTimeout(closeTimer);
+        // Close whatever panel is actually open, not this item: grazing a sibling
+        // must not leave the previously-open panel stuck (shared-timer race).
+        closeTimer = setTimeout(function() { if (current) close(current); }, CLOSE_DELAY);
       });
       // Keyboard: focusing into the item reveals the panel; leaving it closes.
       item.addEventListener('focusin', function() {
