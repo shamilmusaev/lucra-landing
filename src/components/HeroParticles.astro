@@ -10,9 +10,12 @@
 ---
 
 <script>
-  import { initParticleField } from '../scripts/particleField';
+  import type { initParticleField as InitParticleField } from '../scripts/particleField';
 
-  function initHeroParticles(field: HTMLElement): void {
+  function initHeroParticles(
+    field: HTMLElement,
+    initParticleField: typeof InitParticleField,
+  ): void {
     const hero = document.querySelector<HTMLElement>('.hero');
     const orb = document.getElementById('hero-orb');
     if (!hero) return;
@@ -70,7 +73,10 @@
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)
         : (cb) => { setTimeout(cb, 1); };
-    const start = (): void => ric(() => initHeroParticles(el));
+    const start = (): void => ric(async () => {
+      const { initParticleField } = await import('../scripts/particleField');
+      initHeroParticles(el, initParticleField);
+    });
     const io = new IntersectionObserver((entries, obs) => {
       if (entries.some((entry) => entry.isIntersecting)) {
         obs.disconnect();

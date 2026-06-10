@@ -10,8 +10,6 @@
 ---
 
 <script>
-  import { mountOrb } from '../scripts/orb';
-
   // ── Lazy init ─────────────────────────────────────────────────────────────
   // Hero centrepiece — wired into the load-intro + fog-wipe orchestration.
   // The orb sits at the top of the hero, so the IntersectionObserver (with a
@@ -36,7 +34,12 @@
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)
         : (cb) => { setTimeout(cb, 1); };
-    const start = (): void => ric(() => mountOrb('hero-orb', { intro: true, registerGlobalPulse: true }));
+    // Dynamic import so `ogl` (~53 KB) is fetched only when the orb actually
+    // mounts — never on phones (gated <720px) or for reduced-motion users.
+    const start = (): void => ric(async () => {
+      const { mountOrb } = await import('../scripts/orb');
+      mountOrb('hero-orb', { intro: true, registerGlobalPulse: true });
+    });
     const io = new IntersectionObserver((entries, obs) => {
       if (entries.some((entry) => entry.isIntersecting)) {
         obs.disconnect();

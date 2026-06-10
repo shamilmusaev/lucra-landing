@@ -60,9 +60,9 @@ const style = [
 </style>
 
 <script>
-  import { initParticleField } from '../scripts/particleField';
+  import type { initParticleField as InitParticleField } from '../scripts/particleField';
 
-  function mountField(field: HTMLElement): void {
+  function mountField(field: HTMLElement, initParticleField: typeof InitParticleField): void {
     const pointer = field.closest('section') ?? field.parentElement ?? field;
     const dotAlpha = Number(field.dataset.dotAlpha);
     initParticleField({
@@ -84,7 +84,10 @@ const style = [
       const io = new IntersectionObserver((entries, obs) => {
         if (entries.some((entry) => entry.isIntersecting)) {
           obs.disconnect();
-          ric(() => mountField(field));
+          ric(async () => {
+            const { initParticleField } = await import('../scripts/particleField');
+            mountField(field, initParticleField);
+          });
         }
       }, { rootMargin: '200px' });
       io.observe(field);

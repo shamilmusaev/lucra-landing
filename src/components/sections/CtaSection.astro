@@ -79,7 +79,8 @@ const s = getStrings(lang);
     height: 100% !important;
   }
   @media (max-width: 720px) {
-    .cta-orb { width: 96px; height: 96px; }
+    /* Orb is skipped on phones (JS gate) — drop its reserved space too. */
+    .cta-orb { display: none; }
     /* The side padding would clip the button row (the panel is overflow:hidden);
        narrower padding + wrap keeps both CTAs visible on phones. */
     .cta-panel { padding: 56px 24px; }
@@ -119,20 +120,28 @@ const s = getStrings(lang);
 
 <script>
   // ── CTA WebGL orb (shared module; mounted with no global coupling) ──────────
-  import { mountOrb } from '../../scripts/orb';
-
   // Lazy orb init — same pattern as the hero orb (OrbIsland), but with
   // { intro: false, registerGlobalPulse: false }: the CTA orb does NOT arm a
   // load-intro and does NOT register the global lucraOrbIntro/Pulse hooks. It
   // ripples on direct click only. IntersectionObserver (200px rootMargin)
   // defers mounting until the user scrolls near this far-down section.
+  // Skip on phones (gated <720px, matching the hero orb + the CSS that hides the
+  // orb spot there) so `ogl` is never fetched on mobile.
   const orbEl = document.getElementById('cta-orb');
-  if (orbEl && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (
+    orbEl &&
+    !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+    !matchMedia('(max-width: 720px)').matches
+  ) {
     const ric: (cb: () => void) => void =
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)
         : (cb) => { setTimeout(cb, 1); };
-    const start = (): void => ric(() => mountOrb('cta-orb', { intro: false, registerGlobalPulse: false }));
+    // Dynamic import so `ogl` loads only when this far-down orb actually mounts.
+    const start = (): void => ric(async () => {
+      const { mountOrb } = await import('../../scripts/orb');
+      mountOrb('cta-orb', { intro: false, registerGlobalPulse: false });
+    });
     const io = new IntersectionObserver((entries, obs) => {
       if (entries.some((entry) => entry.isIntersecting)) {
         obs.disconnect();
