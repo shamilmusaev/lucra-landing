@@ -131,6 +131,38 @@ const enPrefix = lang === 'en' ? '/en' : '';
         {s.navBookDemo}
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
+      <button class="nav-burger" type="button" aria-label={s.navMenuOpen} aria-expanded="false" aria-controls="nav-mobile" data-burger>
+        <span class="nav-burger-box" aria-hidden="true"><span class="nav-burger-bar"></span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu — same sections + anchors as the desktop mega-menus, flattened.
+       Hidden ≥960px; toggled by the burger. -->
+  <div class="nav-mobile" id="nav-mobile" data-mobile-menu data-close-label={s.navMenuClose} hidden>
+    <div class="nav-mobile-inner">
+      <nav class="nav-mobile-nav" aria-label={s.navProduct}>
+        <span class="nav-mobile-label">{s.navProduct}</span>
+        <a class="nav-mobile-link" href={`${enPrefix}/#funktioner`} data-mobile-close>{s.navProductFeaturesTitle}</a>
+        <a class="nav-mobile-link" href={`${enPrefix}/#jamforelse`} data-mobile-close>{s.navProductCompareTitle}</a>
+        <a class="nav-mobile-link" href={`${enPrefix}/#sakerhet`} data-mobile-close>{s.navProductSecurityTitle}</a>
+        <a class="nav-mobile-link" href={`${enPrefix}/#upplagg`} data-mobile-close>{s.navProductPricingTitle}</a>
+
+        <span class="nav-mobile-label">{s.navSolutions}</span>
+        <a class="nav-mobile-link" href={`${enPrefix}/#for-foretagare`} data-mobile-close>{s.navSolutionsCompanyTitle}</a>
+        <a class="nav-mobile-link" href={`${enPrefix}/#for-byra`} data-mobile-close>{s.navSolutionsAgencyTitle}</a>
+
+        <span class="nav-mobile-label">{s.navPricing}</span>
+        <a class="nav-mobile-link" href={`${enPrefix}/#pilot`} data-mobile-close>{s.navPricingPilotTitle}</a>
+        <a class="nav-mobile-link" href={`${enPrefix}/#partner`} data-mobile-close>{s.navPricingPartnerTitle}</a>
+      </nav>
+      <div class="nav-mobile-actions">
+        <a class="btn btn-ghost btn-lg nav-mobile-login" href={APP_LOGIN_URL} data-mobile-close>{s.navLogin}</a>
+        <a class="btn btn-primary btn-lg nav-mobile-demo" href={CONTACT_MAILTO} data-mobile-close>
+          {s.navBookDemo}
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </nav>
@@ -404,21 +436,110 @@ const enPrefix = lang === 'en' ? '/en' : '';
 :global(html.hero-intro.nav-in) .nav { opacity: 1; }
 
 /* ---------- Responsive ---------- */
+/* ---------- Burger + mobile menu ---------- */
+.nav-burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-paper);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.nav-burger-box {
+  position: relative;
+  width: 18px;
+  height: 12px;
+  display: block;
+}
+/* Three bars built from the middle bar + its two pseudo-elements; they morph
+   into an X when the menu is open. */
+.nav-burger-bar,
+.nav-burger-bar::before,
+.nav-burger-bar::after {
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-primary);
+  transition: transform .3s ease, opacity .2s ease;
+}
+.nav-burger-bar { top: 5px; }
+.nav-burger-bar::before { content: ""; top: -5px; }
+.nav-burger-bar::after { content: ""; top: 5px; }
+.nav-burger[aria-expanded="true"] .nav-burger-bar { transform: rotate(45deg); }
+.nav-burger[aria-expanded="true"] .nav-burger-bar::before { transform: translateY(5px) rotate(-90deg); }
+.nav-burger[aria-expanded="true"] .nav-burger-bar::after { opacity: 0; }
+
+.nav-mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  pointer-events: auto;
+  background: var(--bg-app);
+  /* Clear the fixed nav bar; the panel scrolls if the list overflows. */
+  padding: 88px 20px 28px;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .26s ease, transform .26s ease;
+}
+.nav-mobile[hidden] { display: none; }
+.nav-mobile.is-open { opacity: 1; transform: none; }
+.nav-mobile-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.nav-mobile-nav { display: flex; flex-direction: column; }
+.nav-mobile-label {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate-400);
+  margin: 22px 0 6px;
+}
+.nav-mobile-label:first-child { margin-top: 0; }
+.nav-mobile-link {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--brand-primary);
+  border-bottom: 1px solid var(--border);
+}
+.nav-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+.nav-mobile-actions .btn { width: 100%; justify-content: center; }
+
 @media (max-width: 960px) {
   .nav-inner { display: flex; justify-content: space-between; }
   .nav-center { gap: 0; }
   .nav-links { display: none; }
-}
-/* Below ~480px the brand + both buttons don't fit: the login link collides
-   with the wordmark and "Boka demo" spills past the pill. Login stays
-   reachable via the footer (Konto). The tighter paddings + smaller wordmark
-   keep the brand from being flex-shrunk (clipped) at 320px. */
-@media (max-width: 480px) {
-  .nav-right .btn-ghost { display: none; }
-  .nav-inner { padding: 10px 16px; }
+  /* The desktop login/demo buttons live in the mobile menu now. */
+  .nav-right .btn-ghost,
+  .nav-right .btn-primary { display: none; }
+  .nav-burger { display: inline-flex; }
   .brand { flex-shrink: 0; }
-  .brand-word { font-size: 24px; }
 }
+/* Lock background scroll while the menu is open (Lenis is also stopped in JS). */
+:global(html.nav-menu-open),
+:global(html.nav-menu-open body) { overflow: hidden; }
 </style>
 
 <script>
@@ -563,6 +684,69 @@ const enPrefix = lang === 'en' ? '/en' : '';
       if (current && !current.contains(e.target as Node)) close(current);
     });
     window.addEventListener('resize', function() { if (current) clampPanel(current); });
+  })();
+
+  (function() {
+    // Mobile burger menu — toggles the flat section list, with scroll lock,
+    // Lenis pause, Escape, focus trap and close-on-link.
+    var burger = document.querySelector('[data-burger]') as HTMLButtonElement | null;
+    var menu = document.querySelector('[data-mobile-menu]') as HTMLElement | null;
+    if (!burger || !menu) return;
+    var burgerEl = burger;
+    var menuEl = menu;
+    var openLabel = burgerEl.getAttribute('aria-label') || 'Open menu';
+    var closeLabel = menuEl.getAttribute('data-close-label') || openLabel;
+    var lenis = function() { return (window as any).lenis; };
+
+    function focusables() {
+      return Array.from(
+        menuEl.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter(function(el) { return el.offsetParent !== null; });
+    }
+    function onKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape') { closeMenu(); return; }
+      if (e.key !== 'Tab') return;
+      var items = focusables();
+      if (!items.length) return;
+      var first = items[0];
+      var last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    function openMenu() {
+      menuEl.hidden = false;
+      // Next frame so the transition runs from the hidden state.
+      requestAnimationFrame(function() { menuEl.classList.add('is-open'); });
+      burgerEl.setAttribute('aria-expanded', 'true');
+      burgerEl.setAttribute('aria-label', closeLabel);
+      document.documentElement.classList.add('nav-menu-open');
+      var l = lenis(); if (l && l.stop) l.stop();
+      document.addEventListener('keydown', onKeydown, true);
+      var items = focusables();
+      if (items.length) items[0].focus();
+    }
+    function closeMenu() {
+      if (menuEl.hidden) return;
+      menuEl.classList.remove('is-open');
+      burgerEl.setAttribute('aria-expanded', 'false');
+      burgerEl.setAttribute('aria-label', openLabel);
+      document.documentElement.classList.remove('nav-menu-open');
+      var l = lenis(); if (l && l.start) l.start();
+      document.removeEventListener('keydown', onKeydown, true);
+      var hide = function() { menuEl.hidden = true; menuEl.removeEventListener('transitionend', hide); };
+      menuEl.addEventListener('transitionend', hide);
+      burgerEl.focus();
+    }
+    burgerEl.addEventListener('click', function() {
+      menuEl.hidden ? openMenu() : closeMenu();
+    });
+    menuEl.querySelectorAll('[data-mobile-close]').forEach(function(link) {
+      link.addEventListener('click', function() { closeMenu(); });
+    });
+    // Leaving the mobile breakpoint (e.g. rotate to landscape) closes the menu.
+    window.addEventListener('resize', function() {
+      if (!menuEl.hidden && window.innerWidth > 960) closeMenu();
+    });
   })();
 
   (function() {

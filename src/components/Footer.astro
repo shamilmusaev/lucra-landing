@@ -25,7 +25,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
         <p>{s.footerTagline}</p>
       </div>
       <div class="footer-col">
-        <h5>{s.footerColProduct}</h5>
+        <h2>{s.footerColProduct}</h2>
         <ul>
           <li><a href={`${enPrefix}/#funktioner`}>{s.footerLinkFeatures}</a></li>
           <li><a href={`${enPrefix}/#jamforelse`}>{s.footerLinkCompare}</a></li>
@@ -34,13 +34,13 @@ const enPrefix = lang === 'en' ? '/en' : '';
         </ul>
       </div>
       <div class="footer-col">
-        <h5>{s.footerColCompany}</h5>
+        <h2>{s.footerColCompany}</h2>
         <ul>
           <li><a href={CONTACT_MAILTO}>{s.footerLinkBookDemo}</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h5>{s.footerColLegal}</h5>
+        <h2>{s.footerColLegal}</h2>
         <ul>
           <li><a href={`${enPrefix}/privacy/`}>{s.footerLinkPrivacy}</a></li>
           <li><a href={`${enPrefix}/terms/`}>{s.footerLinkTerms}</a></li>
@@ -48,7 +48,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
         </ul>
       </div>
       <div class="footer-col">
-        <h5>{s.footerColAccount}</h5>
+        <h2>{s.footerColAccount}</h2>
         <ul>
           <li><a href={APP_LOGIN_URL}>{s.footerLinkLogin}</a></li>
           <li><a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a></li>
@@ -151,7 +151,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
     margin: 16px 0 0;
     max-width: 280px;
   }
-  .footer-col h5 {
+  /* h2 for correct heading order (these follow the page's section h2s); the
+     small-label look is purely visual. */
+  .footer-col h2 {
     font-family: var(--font-display);
     font-size: 11px;
     font-weight: 700;
@@ -243,7 +245,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
       grid-template-columns: repeat(3, 1fr);
       align-items: start;
     }
-    .footer-grid .footer-col:last-child h5 { grid-column: 1 / -1; }
+    .footer-grid .footer-col:last-child h2 { grid-column: 1 / -1; }
   }
   @media (max-width: 960px) {
     .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -252,6 +254,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
       display: flex;
       flex-direction: column;
     }
+    /* Comfortable tap targets on touch: links get height, the lang pills grow. */
+    .footer-col a { display: flex; align-items: center; min-height: 40px; }
+    .footer-end .lang-opt { padding: 9px 16px; }
   }
   @media (max-width: 640px) {
     .footer-grid { grid-template-columns: 1fr; }

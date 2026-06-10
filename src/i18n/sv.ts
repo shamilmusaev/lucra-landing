@@ -35,6 +35,8 @@ export const sv = {
 
   navLogin: 'Logga in',
   navBookDemo: 'Boka demo',
+  navMenuOpen: 'Öppna meny',
+  navMenuClose: 'Stäng meny',
 
   // ---- Hero ----
   heroPillBadge: 'Nyhet',
