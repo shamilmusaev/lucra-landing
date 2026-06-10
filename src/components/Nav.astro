@@ -492,9 +492,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
 .nav-mobile-backdrop {
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--brand-primary) 28%, transparent);
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
+  /* Light scrim so the frosted panel reads against the page (like the nav bar),
+     not against a heavy dark wash. */
+  background: color-mix(in srgb, var(--brand-primary) 10%, transparent);
   opacity: 0;
   transition: opacity .26s ease;
 }
@@ -511,10 +511,13 @@ const enPrefix = lang === 'en' ? '/en' : '';
   display: flex;
   flex-direction: column;
   padding: 10px 16px 14px;
-  background: var(--bg-paper);
+  /* Same translucent frosted surface as the scrolled nav bar. */
+  background: rgba(255,255,255,0.72);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+          backdrop-filter: blur(18px) saturate(180%);
   border: 1px solid var(--border);
   border-radius: 22px;
-  box-shadow: 0 24px 60px -20px rgba(15,23,42,0.35), 0 8px 20px -12px rgba(15,23,42,0.2);
+  box-shadow: 0 6px 24px -10px rgba(15,23,42,0.18);
   opacity: 0;
   transform: translateY(-10px) scale(0.98);
   transform-origin: top center;
