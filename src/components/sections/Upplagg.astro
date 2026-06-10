@@ -2,7 +2,7 @@
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
 import ParticleField from '../ParticleField.astro';
-import { CONTACT_MAILTO } from '../../config';
+import { BOOK_DEMO_URL } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
@@ -59,7 +59,7 @@ const partnerFeats = [
             </li>
           ))}
         </ul>
-        <a class="btn btn-primary btn-lg plan-cta" href={CONTACT_MAILTO}>
+        <a class="btn btn-primary btn-lg plan-cta" href={BOOK_DEMO_URL} target="_blank" rel="noopener">
           {s.priPilotCta}
           <Icon name="arrow-right" class="arrow" />
         </a>
@@ -81,7 +81,7 @@ const partnerFeats = [
             </li>
           ))}
         </ul>
-        <a class="btn btn-outlined btn-lg plan-cta" href={CONTACT_MAILTO}>
+        <a class="btn btn-outlined btn-lg plan-cta" href={BOOK_DEMO_URL} target="_blank" rel="noopener">
           {s.priPartnerCta}
           <Icon name="arrow-right" class="arrow" />
         </a>
@@ -264,11 +264,24 @@ const partnerFeats = [
 @media (max-width: 860px) {
   .plans { grid-template-columns: 1fr; }
   .plan { padding: 30px 26px; }
-  .plan-name { font-size: 28px; }
+  .plan-name { font-size: 22px; }
   .plan:not(.plan-featured) .plan-tag { display: none; }
   /* Single column — horizontal convergence makes no sense, so hold the cards. */
   .plans .plan-featured,
   .plans .plan:not(.plan-featured) { translate: none; will-change: auto; }
+  /* Quiet tinted aside — mirrors the mobile .cmp-note in Jamforelse. slate-600
+     (not the base slate-400) clears the 4.5:1 contrast floor at this size. */
+  .plan-footnote {
+    max-width: none;
+    margin-top: 20px;
+    padding: 14px 16px;
+    background: var(--accent-light);
+    border: 1px solid color-mix(in srgb, var(--brand-primary) 12%, transparent);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+    text-align: left;
+    color: var(--slate-600);
+  }
 }
 
 /* Touch: the dot field behind the cards is static (canvas off), so drop the

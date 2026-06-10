@@ -8,7 +8,7 @@
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
 import ParticleField from '../ParticleField.astro';
-import { APP_URL, CONTACT_MAILTO } from '../../config';
+import { APP_URL, BOOK_DEMO_URL } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -25,7 +25,7 @@ const s = getStrings(lang);
         <h2 class="section-title">{s.ctaTitle}</h2>
         <p class="section-sub">{s.ctaBody}</p>
         <div class="cta-btns">
-          <a class="btn btn-primary btn-lg" href={CONTACT_MAILTO}>
+          <a class="btn btn-primary btn-lg" href={BOOK_DEMO_URL} target="_blank" rel="noopener">
             {s.ctaBookDemo}
             <Icon name="arrow-right" class="arrow" />
           </a>

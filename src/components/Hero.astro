@@ -3,7 +3,7 @@ import { getStrings, type Lang } from '../i18n/utils';
 import OrbIsland from './OrbIsland.astro';
 import HeroParticles from './HeroParticles.astro';
 import ProductDemo from './demo/ProductDemo.astro';
-import { APP_URL, CONTACT_MAILTO } from '../config';
+import { APP_URL, BOOK_DEMO_URL } from '../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
@@ -55,7 +55,7 @@ const s = getStrings(lang);
           <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
       </span>
-      <a class="btn btn-ghost btn-lg" href={CONTACT_MAILTO}>
+      <a class="btn btn-ghost btn-lg" href={BOOK_DEMO_URL} target="_blank" rel="noopener">
         {s.heroCtaSecondary}
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>

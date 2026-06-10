@@ -276,7 +276,19 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
 @media (max-width: 880px) {
   .cmp { margin-top: 0; }
   #jamforelse .section-head.center { margin-bottom: 32px; }
-  .cmp-note { margin-top: 24px; font-size: var(--text-lg); }
+  /* Quiet tinted aside (section-eyebrow vocabulary) — subordinate to the
+     criterion cards above instead of cloning their card recipe. */
+  .cmp-note {
+    margin-top: 20px;
+    max-width: none;
+    padding: 14px 16px;
+    background: var(--accent-light);
+    border: 1px solid color-mix(in srgb, var(--brand-primary) 12%, transparent);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    text-align: left;
+  }
 
   .cmp-grid {
     display: block;

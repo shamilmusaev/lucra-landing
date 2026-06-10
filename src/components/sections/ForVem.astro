@@ -1,7 +1,7 @@
 ---
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
-import { CONTACT_MAILTO } from '../../config';
+import { BOOK_DEMO_URL } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 
@@ -26,7 +26,7 @@ const groups = [
     <aside class="fv-aside reveal">
       <h2 class="section-title">{s.forVemTitle}</h2>
       <p class="section-sub">{s.forVemSub}</p>
-      <a class="btn btn-primary btn-lg fv-cta" href={CONTACT_MAILTO}>{s.forVemCta}</a>
+      <a class="btn btn-primary btn-lg fv-cta" href={BOOK_DEMO_URL} target="_blank" rel="noopener">{s.forVemCta}</a>
     </aside>
 
     <!-- Phone-only segmented switch: one audience at a time instead of the
@@ -274,7 +274,10 @@ const groups = [
   /* Keep the sticky stack so the active group's cards overlap as you scroll
      (like desktop) — pure CSS, no rAF. The JS scale-recede is desktop-only. */
   .fv-card { position: sticky; top: 76px; will-change: auto; }
-  .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
+  /* Tabs fan horizontally per index (mobile-scaled drawer) so the back tabs
+     stay visible while the pinned cards overlap. Step sized so the widest tab
+     ("Tillgänglighet" ≈ 152px) plus its 12px corner flare fits a 320px card. */
+  .fv-tab { margin-left: calc(10px + var(--i, 0) * clamp(42px, 13vw, 76px)); }
   /* Single column — no side-swap. */
   .fv-aside,
   .fv-groups .fv-group:nth-child(2) { translate: none; will-change: auto; }
@@ -338,6 +341,10 @@ const groups = [
   // Touch keeps the CSS sticky overlap but skips the JS scale-recede + side-swap
   // (no scroll-rAF on phones — perf).
   const coarse = window.matchMedia('(pointer: coarse)').matches;
+  // The recede/side-swap belongs to the desktop two-column layout: below 861px
+  // cards are still sticky, so the sticky check alone would let it run against
+  // the wrong pin offset and leave inline opacities the mobile CSS can't undo.
+  const wide = window.matchMedia('(min-width: 861px)');
 
   // Side-swap targets: the sticky heading and the second audience group trade
   // sides as the second group scrolls in (see the --swap/--swapx CSS).
@@ -355,8 +362,8 @@ const groups = [
 
     const frame = (): void => {
       ticking = false;
-      // Only run the stack effect while cards are actually sticky (desktop)
-      if (window.getComputedStyle(allCards[0]).position !== 'sticky') {
+      // Only run the stack effect in the desktop layout while cards are sticky
+      if (!wide.matches || window.getComputedStyle(allCards[0]).position !== 'sticky') {
         allCards.forEach((card) => {
           card.style.transform = '';
         });
