@@ -67,7 +67,9 @@ const s = getStrings(lang);
   /* Bottom padding lets the mac window float free: its soft drop-shadow
      renders fully (instead of being sliced by overflow:hidden) and there's
      breathing room before the problem section. */
-  padding: 140px 0 120px;
+  /* env() is 0 on desktop; on phones (viewport-fit=cover) it keeps content
+     clear of the notch while the hero background fills the safe area behind it. */
+  padding: calc(140px + env(safe-area-inset-top)) 0 120px;
   position: relative;
   overflow: hidden;
   background:
@@ -518,7 +520,7 @@ const s = getStrings(lang);
    RESPONSIVE (hero subset)
    ============================================================ */
 @media (max-width: 960px) {
-  .hero { padding-top: 120px; }
+  .hero { padding-top: calc(120px + env(safe-area-inset-top)); }
 }
 /* The hero orb never mounts below 720px (OrbIsland gate); drop its reserved
    space so the hero doesn't open with an empty gap above the pill. */
@@ -529,7 +531,7 @@ const s = getStrings(lang);
    of the demo window are all visible in the first viewport (no tall dead space
    before the demo). */
 @media (max-width: 640px) {
-  .hero { padding-top: 92px; padding-bottom: 48px; }
+  .hero { padding-top: calc(92px + env(safe-area-inset-top)); padding-bottom: 48px; }
   .hero-pill { font-size: 12px; padding-left: 5px; margin-bottom: 18px; }
   .hero h1 { font-size: clamp(33px, 9vw, 44px); margin-bottom: 14px; }
   .hero-sub { font-size: 15px; margin-bottom: 22px; }

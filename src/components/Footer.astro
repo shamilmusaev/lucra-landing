@@ -83,7 +83,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
       radial-gradient(120% 80% at 50% 0%,
         color-mix(in srgb, var(--brand-primary) 5%, transparent), transparent 60%),
       var(--bg-app);
-    padding: 72px 0 36px;
+    /* env() is 0 on desktop; keeps the footer clear of the home indicator on
+       phones (viewport-fit=cover). */
+    padding: 72px 0 calc(36px + env(safe-area-inset-bottom));
     border-top: 1px solid color-mix(in srgb, var(--brand-primary) 14%, var(--border));
   }
   /* Full-width brand accent rule on the top divider, with a soft highlight

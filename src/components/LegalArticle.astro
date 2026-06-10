@@ -13,7 +13,9 @@
 
 <style>
   .legal {
-    padding: clamp(104px, 13vh, 160px) 0 96px;
+    /* env() is 0 on desktop; on phones (viewport-fit=cover) it keeps the heading
+       clear of the notch + fixed nav. */
+    padding: calc(clamp(104px, 13vh, 160px) + env(safe-area-inset-top)) 0 96px;
   }
   .legal-prose {
     max-width: 760px;

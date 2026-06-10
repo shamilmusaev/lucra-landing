@@ -177,7 +177,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
   left: 0;
   right: 0;
   z-index: 50;
-  padding: 10px 16px 0;
+  /* env() is 0 on desktop, so this only shifts the bar down below the notch on
+     phones (viewport-fit=cover lets the page fill the safe areas). */
+  padding: calc(10px + env(safe-area-inset-top)) 16px 0;
   pointer-events: none;
 }
 .nav-inner {
@@ -503,10 +505,10 @@ const enPrefix = lang === 'en' ? '/en' : '';
    the dynamic viewport (dvh) so it never slides under Safari's bottom toolbar. */
 .nav-mobile-panel {
   position: absolute;
-  top: 84px;
+  top: calc(84px + env(safe-area-inset-top));
   left: 12px;
   right: 12px;
-  max-height: calc(100dvh - 96px - env(safe-area-inset-bottom));
+  max-height: calc(100dvh - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   overflow-y: auto;
   display: flex;
   flex-direction: column;

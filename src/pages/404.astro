@@ -39,7 +39,8 @@ const en = getStrings('en');
 
 <style>
   .nf {
-    padding: clamp(120px, 18vh, 220px) 0 120px;
+    /* env() is 0 on desktop; clears the notch + fixed nav on phones. */
+    padding: calc(clamp(120px, 18vh, 220px) + env(safe-area-inset-top)) 0 120px;
     text-align: center;
   }
   .nf-code {
