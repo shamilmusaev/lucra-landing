@@ -520,10 +520,20 @@ const s = getStrings(lang);
 @media (max-width: 960px) {
   .hero { padding-top: 120px; }
 }
+/* The hero orb never mounts below 720px (OrbIsland gate); drop its reserved
+   space so the hero doesn't open with an empty gap above the pill. */
+@media (max-width: 720px) {
+  .hero-orb { display: none; }
+}
+/* Compact mobile hero: tighten every gap so the headline, sub, CTA AND the top
+   of the demo window are all visible in the first viewport (no tall dead space
+   before the demo). */
 @media (max-width: 640px) {
-  .hero { padding-top: 110px; }
-  .hero-sub { font-size: 16px; }
-  .hero-pill { font-size: 12px; padding-left: 5px; }
+  .hero { padding-top: 92px; padding-bottom: 48px; }
+  .hero-pill { font-size: 12px; padding-left: 5px; margin-bottom: 18px; }
+  .hero h1 { font-size: clamp(33px, 9vw, 44px); margin-bottom: 14px; }
+  .hero-sub { font-size: 15px; margin-bottom: 22px; }
+  .hero-ctas { margin-bottom: 0; }
   /* The nav already carries "Boka demo" on phones — one CTA is enough here. */
   .hero-ctas .btn-ghost { display: none; }
 }

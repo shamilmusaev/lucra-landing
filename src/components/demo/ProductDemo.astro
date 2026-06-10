@@ -868,6 +868,11 @@ const s = getStrings(lang);
   }
   .browser-chrome .product-shell-inner { grid-template-columns: 200px 1fr; }
 }
+/* Pull the demo window up close to the hero CTA on phones so its top peeks into
+   the first viewport (matches the compact mobile hero). */
+@media (max-width: 640px) {
+  .hero-chrome-wrap { margin-top: 28px; }
+}
 </style>
 
 <script>
