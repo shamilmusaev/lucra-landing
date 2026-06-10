@@ -2,7 +2,6 @@
 import { getStrings, type Lang } from '../i18n/utils';
 import OrbIsland from './OrbIsland.astro';
 import HeroParticles from './HeroParticles.astro';
-import HeroBeams from './HeroBeams.astro';
 import ProductDemo from './demo/ProductDemo.astro';
 import { APP_URL, CONTACT_MAILTO } from '../config';
 const { lang } = Astro.props as { lang: Lang };
@@ -23,13 +22,11 @@ const s = getStrings(lang);
 
 <section class="hero">
   <div class="hero-falling" aria-hidden="true"></div>
-  <div class="hero-beams" aria-hidden="true"><span></span></div>
   <div class="hero-fade" aria-hidden="true"></div>
   <div class="container hero-inner">
     <span class="hero-orb reveal" id="hero-orb" aria-hidden="true"></span>
     <OrbIsland />
     <HeroParticles />
-    <HeroBeams />
     <a class="hero-pill reveal" href="#funktioner">
       <span class="pill-badge">{s.heroPillBadge}</span>
       <span class="pill-text">
@@ -76,76 +73,6 @@ const s = getStrings(lang);
     radial-gradient(circle at 50% 0%, rgba(86,179,235,0.10), transparent 55%),
     linear-gradient(180deg, var(--bg-paper) 0%, var(--bg-paper) 100%);
   isolation: isolate;
-}
-/* Diagonal slate beams — echo the tailark "night-background" sweep, in Lucra slate */
-.hero-beams {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0.7;
-}
-.hero-beams::before,
-.hero-beams::after,
-.hero-beams span {
-  content: "";
-  position: absolute;
-  left: -120px;
-  top: -180px;
-  width: 560px;
-  height: 1280px;
-  border-radius: var(--radius-pill);
-  transform: rotate(-42deg);
-  filter: blur(40px);
-}
-.hero-beams::before {
-  background: radial-gradient(60% 60% at 50% 35%,
-    rgba(61,80,109,0.16) 0%,
-    rgba(74,107,149,0.08) 45%,
-    transparent 80%);
-}
-.hero-beams::after {
-  left: 60px;
-  width: 220px;
-  background: radial-gradient(50% 50% at 50% 50%,
-    rgba(86,179,235,0.18) 0%,
-    rgba(86,179,235,0.06) 50%,
-    transparent 100%);
-}
-.hero-beams span {
-  left: 140px;
-  top: -200px;
-  width: 220px;
-  background: radial-gradient(50% 50% at 50% 50%,
-    rgba(61,80,109,0.10) 0%,
-    rgba(61,80,109,0.04) 60%,
-    transparent 100%);
-}
-/* Animated canvas beams (HeroBeams island). Soft, blurred slate shafts that
-   multiply onto the light page so they stay low-key. Once it mounts, the static
-   blobs above are hidden (they remain the reduced-motion / no-JS fallback). */
-.hero-beams__canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  filter: blur(14px);
-  mix-blend-mode: multiply;
-  opacity: 0;
-  animation: heroBeamsCanvasIn 1.2s ease forwards;
-}
-.hero-beams.is-animated::before,
-.hero-beams.is-animated::after,
-.hero-beams.is-animated span { animation: heroBeamsBlobsOut 1.2s ease forwards; }
-@keyframes heroBeamsCanvasIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes heroBeamsBlobsOut { from { opacity: 1; } to { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .hero-beams__canvas { animation: none; opacity: 1; }
-  .hero-beams.is-animated::before,
-  .hero-beams.is-animated::after,
-  .hero-beams.is-animated span { animation: none; opacity: 0; }
 }
 /* ----------------------------------------------------------------
    Hero dot field — the dotted "cloud" from Landing.html, refined.
@@ -531,7 +458,16 @@ const s = getStrings(lang);
    of the demo window are all visible in the first viewport (no tall dead space
    before the demo). */
 @media (max-width: 640px) {
-  .hero { padding-top: calc(92px + env(safe-area-inset-top)); padding-bottom: 48px; }
+  .hero {
+    padding-top: calc(92px + env(safe-area-inset-top));
+    padding-bottom: 48px;
+    /* Lead the hero with the app-shell tone at the very top so the area behind
+       the notch (which shares this background) matches the hero instead of being
+       a white strip; fades to the usual white within the first 240px. */
+    background:
+      radial-gradient(circle at 50% 0%, rgba(86,179,235,0.10), transparent 55%),
+      linear-gradient(180deg, var(--bg-app) 0%, var(--bg-paper) 240px);
+  }
   .hero-pill { font-size: 12px; padding-left: 5px; margin-bottom: 18px; }
   .hero h1 { font-size: clamp(33px, 9vw, 44px); margin-bottom: 14px; }
   .hero-sub { font-size: 15px; margin-bottom: 22px; }
