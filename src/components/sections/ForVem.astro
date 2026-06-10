@@ -29,6 +29,21 @@ const groups = [
       <a class="btn btn-primary btn-lg fv-cta" href={CONTACT_MAILTO}>{s.forVemCta}</a>
     </aside>
 
+    <!-- Phone-only segmented switch: one audience at a time instead of the
+         full stacked list (revealed by JS via data-fv-active; without JS both
+         groups stay visible and the switch stays hidden). -->
+    <div class="fv-switch">
+      {groups.map((group, index) => (
+        <button
+          class:list={['fv-switch-btn', index === 0 && 'is-active']}
+          type="button"
+          aria-pressed={index === 0 ? 'true' : 'false'}
+          aria-controls={group.id}
+          data-fv-switch={index}
+        >{group.label}</button>
+      ))}
+    </div>
+
     <div class="fv-groups">
       {groups.map((group) => (
         <div class="fv-group" id={group.id}>
@@ -247,16 +262,51 @@ const groups = [
   will-change: translate;
 }
 
+/* Hidden on desktop; shown on phones once JS arms data-fv-active. */
+.fv-switch { display: none; }
+
 @media (max-width: 860px) {
   .fv-layout { grid-template-columns: 1fr; }
-  /* Restore source order: heading first, grouped cards below */
+  /* Restore source order: heading first, switch, grouped cards below */
   .fv-aside { order: 0; position: static; }
-  .fv-groups { order: 1; gap: clamp(40px, 9vw, 64px); }
+  .fv-groups { order: 2; gap: clamp(40px, 9vw, 64px); }
   .fv-card { position: static; }
   .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
   /* Single column — no side-swap. */
   .fv-aside,
   .fv-groups .fv-group:nth-child(2) { translate: none; }
+
+  #for-vem[data-fv-active] .fv-switch {
+    display: flex;
+    order: 1;
+    gap: 4px;
+    padding: 4px;
+    margin-top: 28px;
+    background: var(--bg-app);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    width: fit-content;
+  }
+  .fv-switch-btn {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--slate-500);
+    padding: 10px 16px;
+    border-radius: var(--radius-pill);
+  }
+  .fv-switch-btn.is-active {
+    background: var(--bg-paper);
+    color: var(--brand-primary);
+    box-shadow: var(--shadow-sm);
+  }
+  /* One audience at a time; the eyebrow duplicates the active button label. */
+  #for-vem[data-fv-active] .fv-grouplabel { display: none; }
+  #for-vem[data-fv-active="0"] .fv-groups .fv-group:nth-child(2) { display: none; }
+  #for-vem[data-fv-active="1"] .fv-groups .fv-group:nth-child(1) { display: none; }
 }
 
 /* No scroll-driven overlap when motion is reduced — plain stacked list */
@@ -368,5 +418,36 @@ const groups = [
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     frame();
+  }
+
+  // Phone-only audience switch: arming data-fv-active reveals the segmented
+  // control and collapses the list to one group (see the ≤860px CSS). Deep
+  // links from the Lösningar menu must still land on their group.
+  const switchButtons = section
+    ? Array.from(section.querySelectorAll<HTMLButtonElement>('.fv-switch-btn'))
+    : [];
+  const groupElements = section
+    ? Array.from(section.querySelectorAll<HTMLElement>('.fv-group'))
+    : [];
+  if (section && switchButtons.length === groupElements.length && switchButtons.length > 0) {
+    const activate = (index: number): void => {
+      section.dataset.fvActive = String(index);
+      switchButtons.forEach((button, buttonIndex) => {
+        button.classList.toggle('is-active', buttonIndex === index);
+        button.setAttribute('aria-pressed', buttonIndex === index ? 'true' : 'false');
+      });
+    };
+    activate(0);
+    switchButtons.forEach((button, index) => {
+      button.addEventListener('click', () => activate(index));
+    });
+    const applyHash = (): void => {
+      const index = groupElements.findIndex((group) => `#${group.id}` === location.hash);
+      if (index < 0) return;
+      activate(index);
+      requestAnimationFrame(() => groupElements[index]?.scrollIntoView());
+    };
+    window.addEventListener('hashchange', applyHash);
+    if (location.hash) applyHash();
   }
 </script>

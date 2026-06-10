@@ -339,17 +339,14 @@ const s = getStrings(lang);
   .sync-chip .pulse { animation: none; }
 }
 
-@media (max-width: 640px) {
-  .metric-grid { grid-template-columns: repeat(2, 1fr); }
-  .dash-head-right { width: 100%; justify-content: space-between; }
-}
-
+/* Static screenshot mode (<1200): the panel renders its desktop layout inside
+   the scaled 1100px window (see ProductDemo), so no narrow-viewport reflow. */
 @media (max-width: 1199px) {
   .demo-panel[data-panel="dashboard"] {
     display: block;
     position: static;
     inset: auto;
-    padding: 4px 4px 8px;
+    padding: 22px 24px;
     opacity: 1;
     visibility: visible;
     transform: none;

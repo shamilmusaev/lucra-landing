@@ -267,6 +267,11 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
    ============================================================ */
 @media (max-width: 880px) {
   .cmp { margin-top: 0; }
+  /* No 3D entrance on phones: the tilt reads as jank mid-scroll and the
+     stacked list is long enough without extra travel. */
+  .cmp { rotate: none; scale: none; translate: none; will-change: auto; }
+  #jamforelse .section-head.center { margin-bottom: 36px; }
+  .cmp-note { margin-top: 24px; font-size: var(--text-lg); }
 
   .cmp-grid {
     display: block;
@@ -294,22 +299,22 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
   }
 
   .cmp-label {
-    padding-top: 26px;
-    margin-top: 24px;
+    padding-top: 18px;
+    margin-top: 18px;
     border-top: 1px solid var(--border);
   }
   .cmp-label.is-first { margin-top: 0; border-top: none; padding-top: 0; }
 
   .cmp-lucra {
-    margin-top: 12px;
-    padding: 14px 16px;
+    margin-top: 10px;
+    padding: 12px 16px;
     border-radius: var(--radius-lg);
     background: var(--brand-primary);
     box-shadow: var(--shadow-pop);
   }
   .cmp-lucra .cmp-tag { color: color-mix(in srgb, var(--white) 72%, transparent); }
 
-  .cmp-comp { margin-top: 14px; }
+  .cmp-comp { margin-top: 10px; }
 }
 
 /* ---- Scroll-linked signature: the comparison table lays flat — it enters with

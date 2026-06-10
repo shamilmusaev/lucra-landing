@@ -34,7 +34,10 @@ const s = getStrings(lang);
     </svg>
   </span>
   <!-- The simulated app screen is decorative; the sr-only summary above covers it.
-       Tabs and the CTA live outside this node, so they stay real, focusable controls. -->
+       Tabs and the CTA live outside this node, so they stay real, focusable controls.
+       Below 1200px the box scales the desktop-width window down like a product
+       screenshot (GitBook-style) instead of reflowing it. -->
+  <div class="demo-scale-box">
   <div class="browser-chrome" aria-hidden="true">
     <div class="browser-bar">
       <span class="dot red"></span>
@@ -161,6 +164,7 @@ const s = getStrings(lang);
       <span class="demo-cursor" data-demo-cursor aria-hidden="true"><span class="demo-cursor-dot"></span></span>
     </div>
     </div>
+  </div>
   </div>
 
   <!-- Mini CTA band below the demo — always rendered (independent of the tab
@@ -848,22 +852,21 @@ const s = getStrings(lang);
 /* ============================================================
    RESPONSIVE (demo subset)
    ============================================================ */
-@media (max-width: 1100px) {
-  .product-shell-inner { grid-template-columns: 200px 1fr; }
-}
-@media (max-width: 960px) {
-  .product-shell-inner { grid-template-columns: 1fr; }
-  .product-sidebar { display: none; }
-}
-/* Below 1200px the interactive multi-tab demo (tabs, sidebar, chat/docs,
-   guided-tour pointer, drift cards, scroll-zoom) is dropped in favour of a single
-   static Dashboard — fully rendered at rest, no choreography. The per-panel
-   controllers bail out at this width; this block forces the resting state. */
+/* Below 1200px the interactive multi-tab demo (tabs, chat/docs, guided-tour
+   pointer, scroll-zoom) is dropped in favour of a static Dashboard screenshot:
+   the window keeps its desktop layout at a fixed 1100px design width and is
+   scaled down to the container (GitBook-style). JS sets --demo-scale and the
+   box height; the per-panel controllers bail out at this width. */
 @media (max-width: 1199px) {
-  .demo-tabs, .product-sidebar { display: none; }
-  .product-shell-inner { grid-template-columns: 1fr; }
+  .demo-tabs { display: none; }
   .product-main { min-height: 0; }
   :global(.demo-panel) { display: none; }
+  .demo-scale-box .browser-chrome {
+    width: 1100px;
+    transform: scale(var(--demo-scale, 1));
+    transform-origin: top left;
+  }
+  .browser-chrome .product-shell-inner { grid-template-columns: 200px 1fr; }
 }
 </style>
 
@@ -890,5 +893,27 @@ const s = getStrings(lang);
       if (entries.some((e) => e.isIntersecting)) { obs.disconnect(); start(); }
     }, { rootMargin: '400px 0px' });
     io.observe(wrap);
+  }
+
+  // Static-preview scaling (<1200px): fit the 1100px desktop window to the
+  // container and reserve the scaled height (transforms don't affect layout).
+  const scaleBox = document.querySelector<HTMLElement>('.demo-scale-box');
+  const windowChrome = document.querySelector<HTMLElement>('.browser-chrome');
+  if (scaleBox && windowChrome) {
+    const DESIGN_WIDTH = 1100;
+    const updateScale = (): void => {
+      if (window.innerWidth >= 1200) {
+        scaleBox.style.removeProperty('--demo-scale');
+        scaleBox.style.removeProperty('height');
+        return;
+      }
+      const scale = scaleBox.clientWidth / DESIGN_WIDTH;
+      scaleBox.style.setProperty('--demo-scale', String(scale));
+      scaleBox.style.height = `${windowChrome.offsetHeight * scale}px`;
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale, { passive: true });
+    // Re-measure when fonts/content settle the window's natural height.
+    new ResizeObserver(updateScale).observe(windowChrome);
   }
 </script>

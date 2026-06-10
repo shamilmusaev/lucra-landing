@@ -155,5 +155,8 @@ const s = getStrings(lang);
     position: static;
     top: auto;
   }
+  /* No scroll-linked zoom/parallax on phones: mid-scroll the shrunken list
+     reads as misaligned against the heading. */
+  .security .sec-list { translate: none; scale: none; will-change: auto; }
 }
 </style>
