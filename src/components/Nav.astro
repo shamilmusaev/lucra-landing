@@ -409,6 +409,16 @@ const enPrefix = lang === 'en' ? '/en' : '';
   .nav-center { gap: 0; }
   .nav-links { display: none; }
 }
+/* Below ~480px the brand + both buttons don't fit: the login link collides
+   with the wordmark and "Boka demo" spills past the pill. Login stays
+   reachable via the footer (Konto). The tighter paddings + smaller wordmark
+   keep the brand from being flex-shrunk (clipped) at 320px. */
+@media (max-width: 480px) {
+  .nav-right .btn-ghost { display: none; }
+  .nav-inner { padding: 10px 16px; }
+  .brand { flex-shrink: 0; }
+  .brand-word { font-size: 24px; }
+}
 </style>
 
 <script>

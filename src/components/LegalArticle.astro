@@ -18,6 +18,9 @@
   .legal-prose {
     max-width: 760px;
     margin: 0 auto;
+    /* Long Swedish compounds ("personuppgiftsincidenter") and bare URLs would
+       otherwise stretch the page sideways on narrow phones. */
+    overflow-wrap: break-word;
   }
   .legal-prose :global(h1) {
     font-family: var(--font-display);

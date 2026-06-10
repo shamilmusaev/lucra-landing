@@ -80,6 +80,10 @@ const s = getStrings(lang);
   }
   @media (max-width: 720px) {
     .cta-orb { width: 96px; height: 96px; }
+    /* The side padding would clip the button row (the panel is overflow:hidden);
+       narrower padding + wrap keeps both CTAs visible on phones. */
+    .cta-panel { padding: 56px 24px; }
+    .cta-btns { flex-wrap: wrap; justify-content: center; }
   }
   /* Centre the shared section title/sub inside the panel (defaults are left-aligned). */
   .cta-panel .section-title {

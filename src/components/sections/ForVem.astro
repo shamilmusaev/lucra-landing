@@ -239,8 +239,11 @@ const groups = [
    columns) are set from JS; translate is the individual prop so it composes with
    reveal + the sticky pin. ---- */
 .fv-aside { translate: calc(var(--swapx, 0px) * -1 * var(--swap, 0)) 0; }
+/* The group travels its own (possibly clamped) distance: the card column is
+   wider than the aside column, so the full --swapx would push it past the
+   viewport edge on ~960–1240px screens (horizontal page scroll). */
 .fv-groups .fv-group:nth-child(2) {
-  translate: calc(var(--swapx, 0px) * var(--swap, 0)) 0;
+  translate: calc(var(--swapx-group, 0px) * var(--swap, 0)) 0;
   will-change: translate;
 }
 
@@ -302,6 +305,7 @@ const groups = [
         });
         section?.style.removeProperty('--swap');
         section?.style.removeProperty('--swapx');
+        section?.style.removeProperty('--swapx-group');
         if (aside) aside.style.opacity = '';
         if (secondGroup) secondGroup.style.opacity = '';
         return;
@@ -310,7 +314,15 @@ const groups = [
       // viewport toward the pin line; --swapx is the layout gap between the two
       // columns (offsetLeft is unaffected by our own translate).
       if (section && aside && groups && secondGroup) {
-        section.style.setProperty('--swapx', `${aside.offsetLeft - groups.offsetLeft}px`);
+        const swapx = aside.offsetLeft - groups.offsetLeft;
+        section.style.setProperty('--swapx', `${swapx}px`);
+        // Cap the group's travel so its right edge stays inside the viewport
+        // (.fv-groups is never translated, so its rect is the resting column).
+        const maxSwapx =
+          document.documentElement.clientWidth -
+          groups.getBoundingClientRect().left -
+          secondGroup.offsetWidth;
+        section.style.setProperty('--swapx-group', `${Math.min(swapx, maxSwapx)}px`);
         const vh = window.innerHeight;
         const secondTop = secondGroup.getBoundingClientRect().top;
         // Start the swap only after the first group's last card has settled at
