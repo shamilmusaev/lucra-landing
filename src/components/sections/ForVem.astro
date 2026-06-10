@@ -271,7 +271,9 @@ const groups = [
   /* Restore source order: heading first, switch, grouped cards below */
   .fv-aside { order: 0; position: static; }
   .fv-groups { order: 2; gap: clamp(40px, 9vw, 64px); }
-  .fv-card { position: static; will-change: auto; }
+  /* Keep the sticky stack so the active group's cards overlap as you scroll
+     (like desktop) — pure CSS, no rAF. The JS scale-recede is desktop-only. */
+  .fv-card { position: sticky; top: 76px; will-change: auto; }
   .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
   /* Single column — no side-swap. */
   .fv-aside,
@@ -333,6 +335,9 @@ const groups = [
     : [];
   const allCards = stacks.flat();
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Touch keeps the CSS sticky overlap but skips the JS scale-recede + side-swap
+  // (no scroll-rAF on phones — perf).
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
 
   // Side-swap targets: the sticky heading and the second audience group trade
   // sides as the second group scrolls in (see the --swap/--swapx CSS).
@@ -342,7 +347,7 @@ const groups = [
     ? section.querySelectorAll<HTMLElement>('.fv-group')[1] ?? null
     : null;
 
-  if (allCards.length > 1 && !reduce) {
+  if (allCards.length > 1 && !reduce && !coarse) {
     const PIN = 120; // must match .fv-card top
     const COVER = 440; // distance over which the previous card recedes
     let active = false;

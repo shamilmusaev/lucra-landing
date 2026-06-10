@@ -166,6 +166,10 @@ const enPrefix = lang === 'en' ? '/en' : '';
           <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
         <a class="nav-mobile-login" href={APP_LOGIN_URL} data-mobile-close>{s.navLogin}</a>
+        <div class="nav-mobile-lang lang-switch" role="group" aria-label="Språk / Language">
+          <a href="/" class:list={['lang-opt', { 'is-active': lang === 'sv' }]} aria-current={lang === 'sv' ? 'page' : undefined}>SV</a>
+          <a href="/en/" class:list={['lang-opt', { 'is-active': lang === 'en' }]} aria-current={lang === 'en' ? 'page' : undefined}>EN</a>
+        </div>
       </div>
     </div>
   </div>
@@ -576,6 +580,32 @@ const enPrefix = lang === 'en' ? '/en' : '';
   font-size: 14px;
   font-weight: 500;
   color: var(--slate-600);
+}
+/* Language switch inside the menu (Footer's .lang-switch styles are scoped,
+   so re-declare here). */
+.nav-mobile-lang {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--bg-app);
+}
+.nav-mobile-lang .lang-opt {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-500);
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+}
+.nav-mobile-lang .lang-opt.is-active,
+.nav-mobile-lang .lang-opt[aria-current="page"] {
+  background: var(--brand-primary);
+  color: var(--white);
 }
 
 @media (prefers-reduced-motion: reduce) {

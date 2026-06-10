@@ -14,7 +14,13 @@ const s = getStrings(lang);
 <script is:inline>
   document.documentElement.classList.add('reveal-ready');
   try {
-    if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    // Skip the orb-synced intro for reduced-motion AND on touch devices: the orb
+    // is gated off on phones, so the timeline would hold the hero copy hidden
+    // while the demo (revealed immediately) shows first. On touch the copy is
+    // visible up front (fast opacity reveal handles the rest).
+    var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce && !coarse) {
       document.documentElement.classList.add('hero-intro');
     }
   } catch (e) {}

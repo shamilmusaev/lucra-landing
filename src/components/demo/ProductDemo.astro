@@ -885,6 +885,10 @@ const s = getStrings(lang);
    the first viewport (matches the compact mobile hero). */
 @media (max-width: 640px) {
   .hero-chrome-wrap { margin-top: 28px; }
+  /* Side breathing room so the scaled window doesn't span the full width. The
+     scale JS measures .demo-scale-box clientWidth, so margin narrows it and the
+     scale + reserved height recompute automatically. */
+  .demo-scale-box { margin: 0 10px; }
 }
 </style>
 

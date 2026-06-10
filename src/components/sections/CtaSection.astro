@@ -43,6 +43,10 @@ const s = getStrings(lang);
     text-align: center;
     position: relative;
     overflow: hidden;
+    /* Safari doesn't clip the blurred ::before/::after blobs or the masked
+       particle field to the rounded corners with overflow:hidden alone, so the
+       corners bled light. clip-path forces the rounded clip on all descendants. */
+    clip-path: inset(0 round var(--radius-shell));
   }
   .cta-panel::before {
     content: "";

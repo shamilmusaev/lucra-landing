@@ -162,4 +162,24 @@ const s = getStrings(lang);
      reads as misaligned against the heading. (will-change already auto.) */
   .security .sec-list { translate: none; scale: none; will-change: auto; }
 }
+
+/* Phones: 2×2 grid with the icon on top — the 1-col left-icon cards were too
+   tall and the icon too small. */
+@media (max-width: 640px) {
+  .sec-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .sec-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 16px;
+  }
+  .sec-icon { width: 48px; height: 48px; border-radius: 14px; }
+  .sec-icon svg { width: 26px; height: 26px; }
+  .sec-item h3 { font-size: 15px; margin-bottom: 4px; }
+  .sec-item p { font-size: 13px; line-height: 1.5; }
+}
 </style>
