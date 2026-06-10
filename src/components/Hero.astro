@@ -132,6 +132,11 @@ const s = getStrings(lang);
 @media (prefers-reduced-motion: reduce) {
   .hero::after { animation: none; transform: translateX(-50%); }
 }
+/* Touch: drop the continuously-animating blur(80px) light blob — an off-thread
+   paint that runs forever. The hero gradient + static halo carry the look. */
+@media (hover: none) and (pointer: coarse) {
+  .hero::after { display: none; }
+}
 /* Bottom fade — washes any clipped hero effects (dot field, beams, light blob)
    to solid page-white before the hard section edge, so the hero blends
    seamlessly into the next (white) section instead of leaving a visible seam.

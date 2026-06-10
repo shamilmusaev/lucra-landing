@@ -17,11 +17,15 @@
   // Reduced-motion users get nothing here; CSS defaults var(--p, <resting>) to
   // the settled state, so sections look correct with no JS.
   const targets = document.querySelectorAll<HTMLElement>('[data-scrollfx]');
-  const reduce =
+  // Skip the rAF driver for reduced-motion AND on touch devices: every section's
+  // scroll-linked transform is already disabled at the mobile breakpoints, so the
+  // loop would only burn frames. Sections render at their resting var(--p,…).
+  const skip =
     typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(pointer: coarse)').matches);
 
-  if (targets.length > 0 && !reduce && 'IntersectionObserver' in window) {
+  if (targets.length > 0 && !skip && 'IntersectionObserver' in window) {
     const active = new Set<HTMLElement>();
     // Eased --p per element: the displayed progress lerps toward the raw scroll
     // target each frame so scrubbed transforms carry weight instead of tracking

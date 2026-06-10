@@ -271,11 +271,11 @@ const groups = [
   /* Restore source order: heading first, switch, grouped cards below */
   .fv-aside { order: 0; position: static; }
   .fv-groups { order: 2; gap: clamp(40px, 9vw, 64px); }
-  .fv-card { position: static; }
+  .fv-card { position: static; will-change: auto; }
   .fv-tab { margin-left: clamp(16px, 5vw, 28px); }
   /* Single column — no side-swap. */
   .fv-aside,
-  .fv-groups .fv-group:nth-child(2) { translate: none; }
+  .fv-groups .fv-group:nth-child(2) { translate: none; will-change: auto; }
 
   #for-vem[data-fv-active] .fv-switch {
     display: flex;

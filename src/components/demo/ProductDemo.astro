@@ -848,6 +848,19 @@ const s = getStrings(lang);
     transition: none;
   }
 }
+/* Touch: fast opacity-only reveal for the demo window (no blur/transform). */
+@media (hover: none) and (pointer: coarse) {
+  :global(html.reveal-ready) .hero-chrome-wrap {
+    transform: none;
+    filter: none;
+    will-change: auto;
+    transition: opacity .25s ease;
+  }
+  :global(html.reveal-ready) .hero-chrome-wrap.in-view {
+    transform: none;
+    filter: none;
+  }
+}
 
 /* ============================================================
    RESPONSIVE (demo subset)

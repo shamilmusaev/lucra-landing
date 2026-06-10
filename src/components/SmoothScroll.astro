@@ -1,8 +1,13 @@
 <script>
   import Lenis from '@studio-freight/lenis';
 
-  // Skip smooth-scroll entirely for reduced-motion users — native scroll, no rAF.
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Skip smooth-scroll for reduced-motion users AND on touch devices: Lenis
+  // hijacks native touch scrolling and adds inertia/lag on phones, where the
+  // OS scroll is already smooth. Touch → native scroll, no rAF.
+  const skipLenis =
+    matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    matchMedia('(pointer: coarse)').matches;
+  if (!skipLenis) {
     const lenis = new Lenis({
       duration: 0.9,   // snappier inertia (was 1.2 — long tail read as "not fast")
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -53,7 +58,7 @@
       if (sameLenis) {
         sameLenis.scrollTo(0);
       } else {
-        window.scrollTo({ top: 0, behavior: 'auto' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
       return;
     }
@@ -76,7 +81,7 @@
       lenis.scrollTo(target, { offset: -offset });
     } else {
       const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'auto' });
+      window.scrollTo({ top, behavior: 'smooth' });
     }
     history.pushState(null, '', '#' + id);
   });

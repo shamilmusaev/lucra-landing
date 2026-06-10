@@ -261,6 +261,16 @@ const partnerFeats = [
   .plan:not(.plan-featured) .plan-tag { display: none; }
   /* Single column — horizontal convergence makes no sense, so hold the cards. */
   .plans .plan-featured,
-  .plans .plan:not(.plan-featured) { translate: none; }
+  .plans .plan:not(.plan-featured) { translate: none; will-change: auto; }
+}
+
+/* Touch: the dot field behind the cards is static (canvas off), so drop the
+   per-element backdrop-filter and use a solid card surface. */
+@media (hover: none) and (pointer: coarse) {
+  .plan {
+    background: var(--bg-paper);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
 }
 </style>

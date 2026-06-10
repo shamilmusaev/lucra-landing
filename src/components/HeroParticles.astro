@@ -67,8 +67,15 @@
   // `if (window.lucraFogIntro)` call simply no-ops for the brief moment before
   // the field inits — acceptable and matches legacy sequencing. The internal
   // 2500ms watchdog reveals the dots even if the orchestrator never fires.
+  // Skip the canvas on touch devices: the field is cursor-reactive (pointless
+  // without a pointer) and a continuous rAF loop is wasted battery/jank on
+  // phones. The static CSS dot-grid in `.hero-falling` remains the visual.
   const el = document.querySelector<HTMLElement>('.hero-falling');
-  if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (
+    el &&
+    !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+    !matchMedia('(pointer: coarse)').matches
+  ) {
     const ric: (cb: () => void) => void =
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)

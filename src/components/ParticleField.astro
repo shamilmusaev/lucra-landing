@@ -74,7 +74,13 @@ const style = [
     });
   }
 
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Skip the canvas on touch (cursor-reactive + continuous rAF) — the static CSS
+  // dot-grid fallback in `.particle-field` remains. Removes all dot-field rAF
+  // loops on phones (hero/CTA/Jämförelse/Upplägg).
+  if (
+    !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+    !matchMedia('(pointer: coarse)').matches
+  ) {
     const ric: (cb: () => void) => void =
       (window as any).requestIdleCallback
         ? (cb) => (window as any).requestIdleCallback(cb)

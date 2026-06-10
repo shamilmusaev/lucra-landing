@@ -241,6 +241,21 @@ const cards = [
     .showcase-card h3 { font-size: 18px; }
     .showcase-card p { font-size: 14px; line-height: 1.5; }
   }
+
+  /* Touch: fast opacity-only card reveal (no blur/transform) — same reason as the
+     global reveal override. */
+  @media (hover: none) and (pointer: coarse) {
+    :global(html.reveal-ready) #funktioner .showcase-card.reveal {
+      transform: none;
+      filter: none;
+      will-change: auto;
+      transition: opacity .25s ease;
+    }
+    :global(html.reveal-ready) #funktioner .showcase-card.reveal.in-view {
+      transform: none;
+      filter: none;
+    }
+  }
 </style>
 
 <script>

@@ -284,6 +284,23 @@ html.reveal-ready .cta-section .cta-panel.reveal.in-view { transform: none; }
   }
 }
 
+/* Touch devices: a fast opacity-only fade — no blur/transform/will-change. The
+   animated filter:blur is GPU-expensive on phones and kept content dim for ~0.8s
+   after it entered the viewport (read as "section loads slowly"). */
+@media (hover: none) and (pointer: coarse) {
+  html.reveal-ready section:not(.hero) .reveal {
+    transform: none;
+    filter: none;
+    will-change: auto;
+    transition: opacity .25s ease;
+  }
+  html.reveal-ready section:not(.hero) .reveal.in-view {
+    transform: none;
+    filter: none;
+  }
+  html.reveal-ready .cta-section .cta-panel.reveal { transform: none; }
+}
+
 /* Panel-stack child entrance — used by the demo panel-stack contract in ProductDemo. */
 @keyframes panelChildIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
