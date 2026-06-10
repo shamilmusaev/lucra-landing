@@ -109,6 +109,10 @@ const cards = [
     -ms-overflow-style: none;
     padding: 16px 0 24px;
     cursor: grab;
+    /* Touch: only the arrows move the carousel — pan-y blocks horizontal finger
+       swipe while leaving vertical page scroll (and programmatic arrow scroll)
+       intact. Mouse drag on desktop is unaffected (touch-action is touch-only). */
+    touch-action: pan-y;
   }
   .showcase-viewport::-webkit-scrollbar { display: none; }
   .showcase-viewport.is-dragging {
