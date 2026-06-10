@@ -139,8 +139,13 @@ const cards = [
     .showcase-card { flex-basis: calc((100% - 24px) / 2); }
   }
   @media (max-width: 639px) {
-    .showcase-head { flex-direction: column; align-items: flex-start; gap: 24px; }
-    .showcase-card { flex-basis: 86%; }
+    #funktioner { padding-top: 40px; }
+    .showcase-head { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+    /* Narrower card + tighter gap so the next card clearly peeks in. */
+    .showcase-card { flex-basis: 80%; }
+    .showcase-track { gap: 14px; }
+    .showcase-viewport { padding: 8px 0 16px; }
+    .showcase-arrow { width: 42px; height: 42px; }
   }
 
   /* ---- Visual zone: full-bleed 4:5 loop video ---- */
@@ -224,6 +229,13 @@ const cards = [
       filter: none;
       transition: none;
     }
+  }
+
+  /* Phone card copy — placed after the base rules so these win the cascade. */
+  @media (max-width: 639px) {
+    .showcase-body { padding: 14px 4px 0; gap: 6px; }
+    .showcase-card h3 { font-size: 18px; }
+    .showcase-card p { font-size: 14px; line-height: 1.5; }
   }
 </style>
 

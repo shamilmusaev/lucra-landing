@@ -224,6 +224,14 @@ section { padding: var(--section-py) 0; position: relative; }
   :root { --section-py: 72px; }
   .section-title { font-size: 30px; }
 }
+/* Phones: scale section headers + rhythm down so they don't dwarf the compact
+   mobile hero. */
+@media (max-width: 640px) {
+  :root { --section-py: 56px; }
+  .section-title { font-size: 25px; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .section-sub { font-size: 15px; line-height: 1.55; }
+  .section-head { margin-bottom: 32px; }
+}
 
 /* ============================================================
    SCROLL REVEAL — generic base, shared by every content section.
