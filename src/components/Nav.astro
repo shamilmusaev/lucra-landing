@@ -145,10 +145,6 @@ const enPrefix = lang === 'en' ? '/en' : '';
 <div class="nav-mobile" id="nav-mobile" data-mobile-menu data-close-label={s.navMenuClose} hidden>
     <div class="nav-mobile-backdrop" data-mobile-close aria-hidden="true"></div>
     <div class="nav-mobile-panel" role="dialog" aria-modal="true" aria-label={s.navProduct}>
-      <a class="btn btn-primary btn-lg nav-mobile-demo" href={CONTACT_MAILTO} data-mobile-close>
-        {s.navBookDemo}
-        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
       <nav class="nav-mobile-nav">
         <span class="nav-mobile-label">{s.navProduct}</span>
         <a class="nav-mobile-link" href={`${enPrefix}/#funktioner`} data-mobile-close>{s.navProductFeaturesTitle}</a>
@@ -164,7 +160,13 @@ const enPrefix = lang === 'en' ? '/en' : '';
         <a class="nav-mobile-link" href={`${enPrefix}/#pilot`} data-mobile-close>{s.navPricingPilotTitle}</a>
         <a class="nav-mobile-link" href={`${enPrefix}/#partner`} data-mobile-close>{s.navPricingPartnerTitle}</a>
       </nav>
-      <a class="nav-mobile-login" href={APP_LOGIN_URL} data-mobile-close>{s.navLogin}</a>
+      <div class="nav-mobile-actions">
+        <a class="btn btn-primary btn-lg nav-mobile-demo" href={CONTACT_MAILTO} data-mobile-close>
+          {s.navBookDemo}
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a class="nav-mobile-login" href={APP_LOGIN_URL} data-mobile-close>{s.navLogin}</a>
+      </div>
     </div>
   </div>
 
@@ -508,8 +510,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 16px;
+  padding: 10px 16px 14px;
   background: var(--bg-paper);
   border: 1px solid var(--border);
   border-radius: 22px;
@@ -520,37 +521,44 @@ const enPrefix = lang === 'en' ? '/en' : '';
   transition: opacity .24s ease, transform .28s cubic-bezier(.32,.72,0,1);
 }
 .nav-mobile.is-open .nav-mobile-panel { opacity: 1; transform: none; }
-.nav-mobile-demo.btn { width: 100%; justify-content: center; margin-bottom: 6px; }
 .nav-mobile-nav { display: flex; flex-direction: column; }
 .nav-mobile-label {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--slate-400);
-  margin: 16px 0 2px;
+  margin: 12px 0 0;
 }
-.nav-mobile-label:first-child { margin-top: 6px; }
+.nav-mobile-label:first-child { margin-top: 4px; }
 .nav-mobile-link {
   display: flex;
   align-items: center;
-  min-height: 46px;
+  min-height: 40px;
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--brand-primary);
 }
 .nav-mobile-link + .nav-mobile-link { border-top: 1px solid var(--border); }
+/* Actions grouped at the bottom: primary CTA directly above the login link. */
+.nav-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.nav-mobile-demo.btn { width: 100%; justify-content: center; }
 .nav-mobile-login {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
-  margin-top: 10px;
-  border-top: 1px solid var(--border);
+  min-height: 40px;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--slate-600);
 }
