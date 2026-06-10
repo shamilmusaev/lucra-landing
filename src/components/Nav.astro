@@ -503,10 +503,10 @@ const enPrefix = lang === 'en' ? '/en' : '';
    the dynamic viewport (dvh) so it never slides under Safari's bottom toolbar. */
 .nav-mobile-panel {
   position: absolute;
-  top: 72px;
+  top: 84px;
   left: 12px;
   right: 12px;
-  max-height: calc(100dvh - 84px - env(safe-area-inset-bottom));
+  max-height: calc(100dvh - 96px - env(safe-area-inset-bottom));
   overflow-y: auto;
   display: flex;
   flex-direction: column;
