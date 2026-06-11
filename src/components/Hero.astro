@@ -447,6 +447,11 @@ const s = getStrings(lang);
   opacity: 1;
   transform: none;
   filter: blur(0);
+  /* Release the promoted compositing layer once revealed. A lingering
+     will-change:filter made Safari re-rasterise a STALE blurred layer when the
+     window was resized (computed style was blur(0), but the cached layer wasn't),
+     leaving the hero copy blurry until a reload. */
+  will-change: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
