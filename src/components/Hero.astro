@@ -447,11 +447,6 @@ const s = getStrings(lang);
   opacity: 1;
   transform: none;
   filter: blur(0);
-  /* Release the promoted compositing layer once revealed. A lingering
-     will-change:filter made Safari re-rasterise a STALE blurred layer when the
-     window was resized (computed style was blur(0), but the cached layer wasn't),
-     leaving the hero copy blurry until a reload. */
-  will-change: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -517,9 +512,27 @@ const s = getStrings(lang);
     var SELECTORS = ['.hero-pill', 'h1', '.hero-sub', '.hero-ctas'];
     var w = window as any;
 
+    // Light a hero block, then once the blur-in transition is done strip every
+    // GPU-compositing trigger off it (filter, the safety animation, will-change)
+    // via inline styles. Chrome (Blink) and Safari reused a STALE blurred tile
+    // from that promoted layer when the window was SHRUNK — a smaller viewport
+    // samples the old backing store instead of repainting — so the copy stayed
+    // blurry until reload. filter:blur(0) alone still keeps the layer; dropping it
+    // to none removes it, and inline styles win even if a rule re-asserts blur.
+    function light(el: Element) {
+      if (el.classList.contains('lucra-lit')) return;
+      el.classList.add('lucra-lit');
+      var node = el as HTMLElement;
+      setTimeout(function () {
+        node.style.filter = 'none';
+        node.style.animation = 'none';
+        node.style.willChange = 'auto';
+      }, 900);
+    }
+
     function revealAll() {
       var els = heroEl.querySelectorAll('.hero-inner > .reveal');
-      for (var i = 0; i < els.length; i++) els[i].classList.add('lucra-lit');
+      for (var i = 0; i < els.length; i++) light(els[i]);
     }
 
     // After the pulse, the copy simply rises + fades in, in order — a gentle
@@ -531,7 +544,7 @@ const s = getStrings(lang);
       els.forEach(function (el, i) {
         // Tapered cascade — first blocks lead, later ones follow faster.
         var d = i < 2 ? i * 90 : 180 + (i - 2) * 65;
-        setTimeout(function () { el.classList.add('lucra-lit'); }, d);
+        setTimeout(function () { light(el); }, d);
       });
     }
 
