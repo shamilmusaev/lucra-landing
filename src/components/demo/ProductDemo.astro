@@ -710,7 +710,7 @@ const s = getStrings(lang);
    held there for a few seconds, then slides up (controller.ts adds .cta-band-in
    on a timer; the timer resets when the demo leaves focus). */
 .demo-cta-band {
-  margin-top: 44px;
+  margin: 44px clamp(18px, 3.8vw, 48px) 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -760,7 +760,8 @@ const s = getStrings(lang);
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
-    padding: 28px 26px;
+    margin-inline: clamp(18px, 5vw, 28px);
+    padding: 28px 24px;
   }
   /* Button sizes to its content (left-aligned), not full-width — a stretched
      btn-lg here read as an oversized block. */
