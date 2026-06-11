@@ -377,7 +377,13 @@ const s = getStrings(lang);
     .cta-orb { display: none; }
   }
   @media (max-width: 560px) {
-    .cta-panel { padding: 48px 24px; }
+    /* Full-bleed dark band: break out of the container gutter so the panel spans
+       edge-to-edge (not a narrow floating card), then reuse the container's 32px
+       gutter as internal padding so the content still lines up with every other
+       section. Square corners + drop the clip-path (overflow:hidden clips a
+       rectangle fine — the clip-path was only needed for rounded corners). */
+    .cta-section > .container { max-width: none; padding: 0; }
+    .cta-panel { padding: 48px 32px; border-radius: 0; clip-path: none; }
     .field-row { grid-template-columns: 1fr; gap: 26px; }
     /* Full-width segmented control: the two role options split the row 50/50 so
        it never overflows the panel on narrow phones (inline-flex was too wide). */
