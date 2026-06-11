@@ -144,7 +144,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
      anchors as the desktop mega-menus, flattened. Hidden ≥960px. -->
 <div class="nav-mobile" id="nav-mobile" data-mobile-menu data-close-label={s.navMenuClose} hidden>
     <div class="nav-mobile-backdrop" data-mobile-close aria-hidden="true"></div>
-    <div class="nav-mobile-panel" role="dialog" aria-modal="true" aria-label={s.navProduct} tabindex="-1">
+    <div class="nav-mobile-panel" role="dialog" aria-modal="true" aria-label={s.navMenu} tabindex="-1">
       <nav class="nav-mobile-nav">
         <span class="nav-mobile-label">{s.navProduct}</span>
         <a class="nav-mobile-link" href={`${enPrefix}/#funktioner`} data-mobile-close>{s.navProductFeaturesTitle}</a>
@@ -850,15 +850,15 @@ const enPrefix = lang === 'en' ? '/en' : '';
         menuEl.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
       ).filter(function(el) { return el.offsetParent !== null; });
     }
-    function onKeydown(e: KeyboardEvent) {
-      if (e.key === 'Escape') { closeMenu(); return; }
-      if (e.key !== 'Tab') return;
+    function onKeydown(event: KeyboardEvent) {
+      if (event.key === 'Escape') { closeMenu(); return; }
+      if (event.key !== 'Tab') return;
       var items = focusables();
       if (!items.length) return;
       var first = items[0];
       var last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }
     function openMenu() {
       menuEl.hidden = false;
@@ -867,7 +867,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
       burgerEl.setAttribute('aria-expanded', 'true');
       burgerEl.setAttribute('aria-label', closeLabel);
       document.documentElement.classList.add('nav-menu-open');
-      var l = lenis(); if (l && l.stop) l.stop();
+      var lenisInstance = lenis(); if (lenisInstance && lenisInstance.stop) lenisInstance.stop();
       lockScroll();
       document.addEventListener('keydown', onKeydown, true);
       // Focus the dialog itself (tabindex=-1), not the first link — a programmatic
@@ -882,10 +882,27 @@ const enPrefix = lang === 'en' ? '/en' : '';
       burgerEl.setAttribute('aria-label', openLabel);
       document.documentElement.classList.remove('nav-menu-open');
       unlockScroll();
-      var l = lenis(); if (l && l.start) l.start();
+      var lenisInstance = lenis(); if (lenisInstance && lenisInstance.start) lenisInstance.start();
       document.removeEventListener('keydown', onKeydown, true);
-      var hide = function() { menuEl.hidden = true; menuEl.removeEventListener('transitionend', hide); };
-      menuEl.addEventListener('transitionend', hide);
+      // Hide once the close transition ends. Reduced-motion disables the panel
+      // transition (no transitionend fires), so hide synchronously; a timer also
+      // guards an interrupted transition so the invisible full-screen layer never
+      // lingers and swallows page taps.
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        menuEl.hidden = true;
+      } else {
+        var hidden = false;
+        var fallback = 0;
+        var hide = function() {
+          if (hidden) return;
+          hidden = true;
+          menuEl.hidden = true;
+          menuEl.removeEventListener('transitionend', hide);
+          window.clearTimeout(fallback);
+        };
+        menuEl.addEventListener('transitionend', hide);
+        fallback = window.setTimeout(hide, 400);
+      }
       burgerEl.focus();
     }
     burgerEl.addEventListener('click', function() {

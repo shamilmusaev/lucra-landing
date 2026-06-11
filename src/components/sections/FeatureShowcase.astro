@@ -347,8 +347,9 @@ const cards = [
 
 <script>
   // Showcase carousel — the prev/next arrows slide the native scroll-snap track
-  // one card at a time (smooth via CSS scroll-behavior). Touch swipe works
-  // natively; the arrows disable at each end. No-JS leaves a scrollable track.
+  // one card at a time (smooth via CSS scroll-behavior); the arrows disable at
+  // each end. On touch, `touch-action: pan-y` blocks horizontal finger-swipe
+  // (arrows only); pointer/trackpad drag on desktop still scrolls the track.
   (function () {
     const viewport = document.querySelector('[data-viewport]') as HTMLElement | null;
     const track = document.querySelector('[data-track]') as HTMLElement | null;

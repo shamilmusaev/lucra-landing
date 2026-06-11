@@ -37,6 +37,7 @@ export const en: { [K in keyof typeof sv]: string } = {
 
   navLogin: 'Log in',
   navBookDemo: 'Book a demo',
+  navMenu: 'Menu',
   navMenuOpen: 'Open menu',
   navMenuClose: 'Close menu',
 

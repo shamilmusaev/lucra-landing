@@ -41,6 +41,10 @@
     const link = (event.target as Element).closest('a[href]') as HTMLAnchorElement | null;
     if (!link) return;
     const href = link.getAttribute('href') ?? '';
+    // Native fallback (no Lenis) serves touch AND reduced-motion. Reduced-motion
+    // must not animate — jump instantly; touch keeps the smooth glide.
+    const scrollBehavior: ScrollBehavior =
+      matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     const hashIndex = href.indexOf('#');
     if (hashIndex === -1) {
       // No hash. If the link points at the page we're already on (e.g. the logo
@@ -58,7 +62,7 @@
       if (sameLenis) {
         sameLenis.scrollTo(0);
       } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: scrollBehavior });
       }
       return;
     }
@@ -81,7 +85,7 @@
       lenis.scrollTo(target, { offset: -offset });
     } else {
       const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
+      window.scrollTo({ top, behavior: scrollBehavior });
     }
     history.pushState(null, '', '#' + id);
   });

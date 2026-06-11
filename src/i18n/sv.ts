@@ -35,6 +35,7 @@ export const sv = {
 
   navLogin: 'Logga in',
   navBookDemo: 'Boka demo',
+  navMenu: 'Meny',
   navMenuOpen: 'Öppna meny',
   navMenuClose: 'Stäng meny',
 
