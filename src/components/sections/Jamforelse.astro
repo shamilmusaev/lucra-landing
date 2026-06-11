@@ -281,9 +281,9 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
    over the dot field.
    ============================================================ */
 @media (max-width: 880px) {
-  /* Drop the desktop "table lays flat" 3D tilt — there's no table on phones (the
-     rows become cards), and a transform here would box in the sticky card stack. */
-  .cmp { margin-top: 0; rotate: none; scale: none; translate: none; }
+  /* Drop the desktop "table lays flat" 3D tilt; keep top room for the Lucra
+     panel's overhang. */
+  .cmp { margin-top: 34px; rotate: none; scale: none; translate: none; }
   #jamforelse .section-head.center { margin-bottom: 32px; }
   /* Clear paper bubble — same surface vocabulary as the criterion cards so the
      closing note reads as part of the set, not faint text on the dot field. */
@@ -300,67 +300,40 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
     text-align: left;
   }
 
+  /* Two-column comparison: ChatGPT (left, plain) vs Lucra (right, highlighted —
+     the brand panel overhangs the top to carry the logo). The criterion-label
+     column and the "Manuellt idag" column are dropped on phones. */
   .cmp-grid {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(20px, 5vw, 40px);
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    -webkit-backdrop-filter: none;
-            backdrop-filter: none;
-    box-shadow: none;
-  }
-  .cmp-panel,
-  .cmp-head { display: none; }
-
-  .cmp-rowgroup {
-    /* Sticky stack: each criterion card pins under the nav and the next card
-       slides over it — the same overlap motion as the För vem cards. */
-    position: sticky;
-    top: 76px;
-    background: var(--bg-paper);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
-    padding: 16px;
+    background: var(--bg-paper);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
     box-shadow: var(--shadow-soft);
   }
+  /* Dropped pieces. */
+  .cmp-cell.c1, .cmp-head.c1,
+  .cmp-cell.c4, .cmp-head.c4 { display: none; }
+  /* Remap to two columns: ChatGPT → left, Lucra → right. */
+  .cmp-cell.c3 { grid-column: 1; }
+  .cmp-cell.c2 { grid-column: 2; }
+  /* Re-show the brand panel as the continuous Lucra column. */
+  .cmp-panel { display: block; border-radius: var(--radius-card); }
 
-  .cmp-cell {
-    padding: 0;
-  }
-  .cmp-cell:not(.cmp-head):not(.cmp-lucra) { border-top: none; }
-  .cmp-cell.c4 { border-left: none; }
-  .cmp-tag {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 10.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--slate-400);
-    margin-bottom: 2px;
-  }
+  /* Compact cells; plain text (drop the ✓/— marks and per-cell tags). */
+  .cmp-cell { padding: 14px 15px; font-size: var(--text-sm); gap: 0; }
+  .cmp-mark, .cmp-tag { display: none; }
+  .cmp-val { display: block; }
+  .cmp-comp .cmp-val { color: var(--slate-500); }
 
-  .cmp-label { padding-bottom: 12px; }
-
-  .cmp-lucra {
-    padding: 12px 14px;
-    border-radius: var(--radius-lg);
-    background: var(--brand-primary);
-  }
-  .cmp-lucra .cmp-tag { color: color-mix(in srgb, var(--white) 72%, transparent); }
-
-  /* All three rows share one mark column so the ✓ (LUCRA) and the — (competitors)
-     line up; the LUCRA pill and the competitor rows get the same horizontal inset. */
-  .cmp-val {
-    display: grid;
-    grid-template-columns: 16px 1fr;
-    gap: 10px;
-    align-items: start;
-  }
-  .cmp-comp { margin-top: 12px; padding-inline: 14px; }
-  .cmp-comp .cmp-val { color: var(--slate-500); font-size: var(--text-sm); }
+  /* Column headers at the top of each column. */
+  .cmp-head { display: flex; }
+  .cmp-head.c3 { justify-content: flex-start; align-items: flex-end; padding: 14px 15px; }
+  .cmp-head-lucra { padding-bottom: 16px; }
+  .cmp-lucra-logo { width: 26px; height: 24px; margin-top: -16px; }
+  .cmp-lucra-word { font-size: 16px; }
 }
 
 /* ---- Scroll-linked signature: the comparison table lays flat — it enters with
