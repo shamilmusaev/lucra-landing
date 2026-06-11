@@ -376,6 +376,11 @@ const s = getStrings(lang);
   @media (max-width: 720px) {
     .cta-orb { display: none; }
   }
+  /* Scale the lead title down on phones so it sits in line with the other section
+     titles (25px) instead of towering over them — it was clamped at a 40px min. */
+  @media (max-width: 640px) {
+    .cta-panel .section-title { font-size: clamp(28px, 8vw, 34px); margin-bottom: 14px; }
+  }
   @media (max-width: 560px) {
     /* Full-bleed dark band: break out of the container gutter so the panel spans
        edge-to-edge (not a narrow floating card), then reuse the container's 32px
