@@ -546,7 +546,16 @@ const enPrefix = lang === 'en' ? '/en' : '';
 /* Programmatic focus target on open — never show a ring on it (keyboard rings
    on the links themselves are preserved). */
 .nav-mobile-panel:focus { outline: none; }
-.nav-mobile-nav { display: flex; flex-direction: column; }
+.nav-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  /* Fill the space between the bar and the actions and centre the links so they
+     aren't crammed against the logo (no dead gap above the actions). Falls back
+     to top-aligned when the links are too tall to fit (safe). */
+  flex: 1 1 auto;
+  min-height: 0;
+  justify-content: safe center;
+}
 .nav-mobile-label {
   font-family: var(--font-display);
   font-size: 11px;
@@ -573,7 +582,6 @@ const enPrefix = lang === 'en' ? '/en' : '';
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: auto;
   padding-top: 14px;
 }
 .nav-mobile-demo.btn { width: 100%; justify-content: center; }

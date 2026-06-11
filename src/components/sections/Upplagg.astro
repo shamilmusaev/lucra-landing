@@ -169,9 +169,11 @@ const partnerFeats = [
   border-radius: var(--radius-card) 8px 8px 0;
   background: var(--brand-primary);
   color: var(--white);
-  padding: 9px 18px;
+  gap: 6px;
+  padding: 6px 13px;
+  font-size: 9.5px;
 }
-.plan-featured .plan-tag .section-eyebrow::before { background: var(--white); }
+.plan-featured .plan-tag .section-eyebrow::before { background: var(--white); width: 5px; height: 5px; }
 .plan-name {
   font-family: var(--font-display);
   font-size: 32px;
@@ -290,6 +292,18 @@ const partnerFeats = [
   .plan { padding: 30px 26px; }
   .plan-name { font-size: 22px; }
   .plan:not(.plan-featured) .plan-tag { display: none; }
+  /* Pilot: perch the tab ABOVE the card edge (not in the corner) and drop the
+     reserved tag row, so "Pilot" sits at the same height as "Partner" instead of
+     being pushed down. */
+  .plan-featured { overflow: visible; margin-top: 24px; }
+  .plan-featured .plan-tag { min-height: 0; margin-bottom: 0; }
+  .plan-featured .plan-tag .section-eyebrow {
+    top: auto;
+    bottom: 100%;
+    left: 4px;
+    margin-bottom: -1px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
   /* Single column — horizontal convergence makes no sense, so hold the cards. */
   .plans .plan-featured,
   .plans .plan:not(.plan-featured) { translate: none; will-change: auto; }
