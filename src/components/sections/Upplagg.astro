@@ -155,6 +155,23 @@ const partnerFeats = [
 
 /* Tag row — reserved on both cards so the plan names line up. */
 .plan-tag { min-height: 30px; margin-bottom: 18px; }
+
+/* "Rekommenderat" as a folder tab perched on the card's top-left corner — echoes
+   the Siffror/Frågor tabs in För vem. The reserved .plan-tag height above keeps
+   the Pilot/Partner names aligned; the tab itself is lifted onto the corner. */
+.plan-featured { overflow: hidden; }
+.plan-featured .plan-tag .section-eyebrow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  border: 0;
+  border-radius: var(--radius-card) 8px 8px 0;
+  background: var(--brand-primary);
+  color: var(--white);
+  padding: 9px 18px;
+}
+.plan-featured .plan-tag .section-eyebrow::before { background: var(--white); }
 .plan-name {
   font-family: var(--font-display);
   font-size: 32px;
@@ -238,10 +255,17 @@ const partnerFeats = [
   max-width: 640px;
   margin: 36px auto 0;
   text-align: center;
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   line-height: 1.6;
-  color: var(--slate-400);
+  color: var(--slate-500);
   text-wrap: pretty;
+  /* Contained bubble — paired with Jamforelse's .cmp-note so both closing notes
+     read as the same kind of callout, not stray lines on the dot field. */
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: 20px 28px;
 }
 
 /* Section reveal: cards slide in from opposite sides (mirrors #for-vem). */
@@ -269,15 +293,16 @@ const partnerFeats = [
   /* Single column — horizontal convergence makes no sense, so hold the cards. */
   .plans .plan-featured,
   .plans .plan:not(.plan-featured) { translate: none; will-change: auto; }
-  /* Quiet tinted aside — mirrors the mobile .cmp-note in Jamforelse. slate-600
+  /* Clear paper bubble — mirrors the mobile .cmp-note in Jamforelse. slate-600
      (not the base slate-400) clears the 4.5:1 contrast floor at this size. */
   .plan-footnote {
     max-width: none;
-    margin-top: 20px;
-    padding: 14px 16px;
-    background: var(--accent-light);
-    border: 1px solid color-mix(in srgb, var(--brand-primary) 12%, transparent);
-    border-radius: var(--radius-lg);
+    margin-top: 24px;
+    padding: 16px 18px;
+    background: var(--bg-paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
     font-size: var(--text-sm);
     text-align: left;
     color: var(--slate-600);

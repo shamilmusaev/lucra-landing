@@ -198,6 +198,17 @@ const groups = [
           mask: radial-gradient(circle at top right, transparent 12px, #000 12.5px);
 }
 
+/* Leftmost (front) tab of each group: sit flush with the card's left edge and
+   drop the left flare foot. Otherwise that foot overhangs the body's rounded
+   top-left corner and reads as a stray tail (the Siffror/Frågor "хвостик").
+   The tab now rounds the corner itself and the body squares it — one shape. */
+.fv-stack .fv-card:first-child .fv-tab {
+  margin-left: 0;
+  border-top-left-radius: var(--radius-card);
+}
+.fv-stack .fv-card:first-child .fv-tab::before { display: none; }
+.fv-stack .fv-card:first-child .fv-body { border-top-left-radius: 0; }
+
 .fv-body {
   background: var(--bg-paper);
   border-radius: var(--radius-card);

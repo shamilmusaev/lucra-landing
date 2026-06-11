@@ -96,10 +96,17 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
   max-width: 760px;
   margin: 36px auto 0;
   text-align: center;
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   line-height: 1.62;
   color: var(--slate-600);
   text-wrap: pretty;
+  /* Contained bubble — a single light surface so the closing note reads as an
+     intentional callout, not a stray line floating on the dot field. */
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: 20px 28px;
 }
 
 .cmp {
@@ -274,24 +281,29 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
    over the dot field.
    ============================================================ */
 @media (max-width: 880px) {
-  .cmp { margin-top: 0; }
+  /* Drop the desktop "table lays flat" 3D tilt — there's no table on phones (the
+     rows become cards), and a transform here would box in the sticky card stack. */
+  .cmp { margin-top: 0; rotate: none; scale: none; translate: none; }
   #jamforelse .section-head.center { margin-bottom: 32px; }
-  /* Quiet tinted aside (section-eyebrow vocabulary) — subordinate to the
-     criterion cards above instead of cloning their card recipe. */
+  /* Clear paper bubble — same surface vocabulary as the criterion cards so the
+     closing note reads as part of the set, not faint text on the dot field. */
   .cmp-note {
-    margin-top: 20px;
+    margin-top: 24px;
     max-width: none;
-    padding: 14px 16px;
-    background: var(--accent-light);
-    border: 1px solid color-mix(in srgb, var(--brand-primary) 12%, transparent);
-    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    background: var(--bg-paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
     font-size: var(--text-sm);
     line-height: 1.6;
     text-align: left;
   }
 
   .cmp-grid {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(20px, 5vw, 40px);
     border: none;
     border-radius: 0;
     background: transparent;
@@ -303,14 +315,16 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
   .cmp-head { display: none; }
 
   .cmp-rowgroup {
-    display: block;
+    /* Sticky stack: each criterion card pins under the nav and the next card
+       slides over it — the same overlap motion as the För vem cards. */
+    position: sticky;
+    top: 76px;
     background: var(--bg-paper);
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
     padding: 16px;
     box-shadow: var(--shadow-soft);
   }
-  .cmp-rowgroup + .cmp-rowgroup { margin-top: 12px; }
 
   .cmp-cell {
     padding: 0;
@@ -337,7 +351,15 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
   }
   .cmp-lucra .cmp-tag { color: color-mix(in srgb, var(--white) 72%, transparent); }
 
-  .cmp-comp { margin-top: 12px; }
+  /* All three rows share one mark column so the ✓ (LUCRA) and the — (competitors)
+     line up; the LUCRA pill and the competitor rows get the same horizontal inset. */
+  .cmp-val {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+  .cmp-comp { margin-top: 12px; padding-inline: 14px; }
   .cmp-comp .cmp-val { color: var(--slate-500); font-size: var(--text-sm); }
 }
 

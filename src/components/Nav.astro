@@ -138,10 +138,10 @@ const enPrefix = lang === 'en' ? '/en' : '';
   </div>
 </nav>
 
-<!-- Mobile menu — a dropdown card under the nav bar (the burger morphs to an X
-     that stays visible as the close affordance). Kept OUTSIDE <nav> so the nav
-     bar (z-50) stays above the backdrop and the X remains clickable. Same
-     sections + anchors as the desktop mega-menus, flattened. Hidden ≥960px. -->
+<!-- Mobile menu — a full-screen panel under the nav bar (the burger morphs to an
+     X that stays visible as the close affordance). Kept OUTSIDE <nav> so the nav
+     bar (z-50) stays above the panel and the X remains clickable. Same sections +
+     anchors as the desktop mega-menus, flattened. Hidden ≥960px. -->
 <div class="nav-mobile" id="nav-mobile" data-mobile-menu data-close-label={s.navMenuClose} hidden>
     <div class="nav-mobile-backdrop" data-mobile-close aria-hidden="true"></div>
     <div class="nav-mobile-panel" role="dialog" aria-modal="true" aria-label={s.navProduct}>
@@ -495,9 +495,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
 .nav-burger[aria-expanded="true"] .nav-burger-bar::before { transform: translateY(5px) rotate(-90deg); }
 .nav-burger[aria-expanded="true"] .nav-burger-bar::after { opacity: 0; }
 
-/* Full-screen layer that hosts the backdrop + the dropdown card. Sits below the
-   nav bar (z-50) so the logo and the burger-turned-X stay visible and clickable
-   on top of it — that X is the close affordance. */
+/* Full-screen layer that hosts the menu panel. Sits below the nav bar (z-50) so
+   the logo and the burger-turned-X stay visible and clickable on top of it —
+   that X is the close affordance. */
 .nav-mobile {
   position: fixed;
   inset: 0;
@@ -508,67 +508,64 @@ const enPrefix = lang === 'en' ? '/en' : '';
 .nav-mobile-backdrop {
   position: absolute;
   inset: 0;
-  /* Light scrim so the frosted panel reads against the page (like the nav bar),
-     not against a heavy dark wash. */
-  background: color-mix(in srgb, var(--brand-primary) 10%, transparent);
+  background: var(--bg-app);
   opacity: 0;
   transition: opacity .26s ease;
 }
 .nav-mobile.is-open .nav-mobile-backdrop { opacity: 1; }
-/* Rounded dropdown card under the nav bar; height fits content and is capped to
-   the dynamic viewport (dvh) so it never slides under Safari's bottom toolbar. */
+/* Full-screen menu panel. Covers the whole viewport (the page behind can't show
+   through) so a momentum-scroll bleed under the bar is never visible; the top
+   padding clears the fixed nav bar, the bottom padding clears the home indicator. */
 .nav-mobile-panel {
   position: absolute;
-  top: calc(84px + env(safe-area-inset-top));
-  left: 12px;
-  right: 12px;
-  max-height: calc(100dvh - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  inset: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 10px 16px 14px;
-  /* Same translucent frosted surface as the scrolled nav bar. */
-  background: rgba(255,255,255,0.72);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-          backdrop-filter: blur(18px) saturate(180%);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  box-shadow: 0 6px 24px -10px rgba(15,23,42,0.18);
+  /* Top padding equals the nav-bar height so panel content starts right below
+     the bar and, when the panel scrolls, slides up behind the opaque bar band. */
+  padding:
+    calc(74px + env(safe-area-inset-top)) 24px
+    calc(28px + env(safe-area-inset-bottom));
+  /* Near-opaque frosted surface (echoes the scrolled nav bar) — dense enough
+     that the page behind doesn't read through the full-screen sheet. */
+  background: rgba(255,255,255,0.96);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: blur(20px) saturate(180%);
   opacity: 0;
-  transform: translateY(-10px) scale(0.98);
-  transform-origin: top center;
-  transition: opacity .24s ease, transform .28s cubic-bezier(.32,.72,0,1);
+  transform: translateY(-8px);
+  transition: opacity .24s ease, transform .3s cubic-bezier(.32,.72,0,1);
 }
 .nav-mobile.is-open .nav-mobile-panel { opacity: 1; transform: none; }
 .nav-mobile-nav { display: flex; flex-direction: column; }
 .nav-mobile-label {
   font-family: var(--font-display);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--slate-400);
-  margin: 12px 0 0;
+  margin: 22px 0 2px;
 }
-.nav-mobile-label:first-child { margin-top: 4px; }
+.nav-mobile-label:first-child { margin-top: 0; }
 .nav-mobile-link {
   display: flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 48px;
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--brand-primary);
 }
 .nav-mobile-link + .nav-mobile-link { border-top: 1px solid var(--border); }
-/* Actions grouped at the bottom: primary CTA directly above the login link. */
+/* Actions pinned to the bottom of the full-screen sheet: primary CTA directly
+   above the login link, language switch last. */
 .nav-mobile-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 28px;
 }
 .nav-mobile-demo.btn { width: 100%; justify-content: center; }
 .nav-mobile-login {
@@ -608,6 +605,17 @@ const enPrefix = lang === 'en' ? '/en' : '';
   color: var(--white);
 }
 
+/* Touch: a full-screen backdrop-filter repaints on every in-menu scroll frame.
+   Swap the frost for an opaque solid — same look, no per-frame blur, and the
+   page behind is fully hidden. */
+@media (hover: none) and (pointer: coarse) {
+  .nav-mobile-panel {
+    background: var(--bg-paper);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-mobile-backdrop,
   .nav-mobile-panel { transition: none; }
@@ -623,9 +631,22 @@ const enPrefix = lang === 'en' ? '/en' : '';
   .nav-burger { display: inline-flex; }
   .brand { flex-shrink: 0; }
 }
-/* Lock background scroll while the menu is open (Lenis is also stopped in JS). */
+/* Lock background scroll while the menu is open (Lenis is also stopped in JS).
+   The JS position:fixed body lock is the real barrier on iOS; this is a fallback
+   for desktop/Android. */
 :global(html.nav-menu-open),
 :global(html.nav-menu-open body) { overflow: hidden; }
+/* While the full-screen menu is open, give the nav bar a solid full-width band so
+   panel content scrolling past the top is hidden behind the logo + X, and drop
+   the pill's scrolled frosting so the logo/X read cleanly on that band. */
+:global(html.nav-menu-open) .nav { background: var(--bg-paper); }
+:global(html.nav-menu-open) .nav-inner {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+}
 </style>
 
 <script>
@@ -784,6 +805,29 @@ const enPrefix = lang === 'en' ? '/en' : '';
     var closeLabel = menuEl.getAttribute('data-close-label') || openLabel;
     var lenis = function() { return (window as any).lenis; };
 
+    // iOS Safari ignores `overflow:hidden` on <body> for touch scrolling, so the
+    // page bleeds under the open menu. Pinning <body> with position:fixed is the
+    // only reliable lock; we restore the scroll position on close.
+    var scrollLockY = 0;
+    function lockScroll() {
+      scrollLockY = window.scrollY || window.pageYOffset || 0;
+      var style = document.body.style;
+      style.position = 'fixed';
+      style.top = -scrollLockY + 'px';
+      style.left = '0';
+      style.right = '0';
+      style.width = '100%';
+    }
+    function unlockScroll() {
+      var style = document.body.style;
+      style.position = '';
+      style.top = '';
+      style.left = '';
+      style.right = '';
+      style.width = '';
+      window.scrollTo(0, scrollLockY);
+    }
+
     function focusables() {
       return Array.from(
         menuEl.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
@@ -807,6 +851,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
       burgerEl.setAttribute('aria-label', closeLabel);
       document.documentElement.classList.add('nav-menu-open');
       var l = lenis(); if (l && l.stop) l.stop();
+      lockScroll();
       document.addEventListener('keydown', onKeydown, true);
       var items = focusables();
       if (items.length) items[0].focus();
@@ -817,6 +862,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
       burgerEl.setAttribute('aria-expanded', 'false');
       burgerEl.setAttribute('aria-label', openLabel);
       document.documentElement.classList.remove('nav-menu-open');
+      unlockScroll();
       var l = lenis(); if (l && l.start) l.start();
       document.removeEventListener('keydown', onKeydown, true);
       var hide = function() { menuEl.hidden = true; menuEl.removeEventListener('transitionend', hide); };
