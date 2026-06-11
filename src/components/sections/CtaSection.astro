@@ -379,6 +379,11 @@ const s = getStrings(lang);
   @media (max-width: 560px) {
     .cta-panel { padding: 48px 24px; }
     .field-row { grid-template-columns: 1fr; gap: 26px; }
+    /* Full-width segmented control: the two role options split the row 50/50 so
+       it never overflows the panel on narrow phones (inline-flex was too wide). */
+    .role-seg { display: flex; width: 100%; }
+    .chip { flex: 1; }
+    .chip span { width: 100%; justify-content: center; padding: 9px 10px; }
   }
 </style>
 
