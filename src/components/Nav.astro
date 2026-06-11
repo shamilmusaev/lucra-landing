@@ -144,7 +144,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
      anchors as the desktop mega-menus, flattened. Hidden ≥960px. -->
 <div class="nav-mobile" id="nav-mobile" data-mobile-menu data-close-label={s.navMenuClose} hidden>
     <div class="nav-mobile-backdrop" data-mobile-close aria-hidden="true"></div>
-    <div class="nav-mobile-panel" role="dialog" aria-modal="true" aria-label={s.navProduct}>
+    <div class="nav-mobile-panel" role="dialog" aria-modal="true" aria-label={s.navProduct} tabindex="-1">
       <nav class="nav-mobile-nav">
         <span class="nav-mobile-label">{s.navProduct}</span>
         <a class="nav-mobile-link" href={`${enPrefix}/#funktioner`} data-mobile-close>{s.navProductFeaturesTitle}</a>
@@ -494,6 +494,12 @@ const enPrefix = lang === 'en' ? '/en' : '';
 .nav-burger[aria-expanded="true"] .nav-burger-bar { transform: rotate(45deg); }
 .nav-burger[aria-expanded="true"] .nav-burger-bar::before { transform: translateY(5px) rotate(-90deg); }
 .nav-burger[aria-expanded="true"] .nav-burger-bar::after { opacity: 0; }
+/* When open the burger is the close (X) sitting on the white menu sheet — drop
+   its page affordance box so only the X shows, no stray bordered square. */
+.nav-burger[aria-expanded="true"] {
+  background: transparent;
+  border-color: transparent;
+}
 
 /* Full-screen layer that hosts the menu panel. Sits below the nav bar (z-50) so
    the logo and the burger-turned-X stay visible and clickable on top of it —
@@ -526,7 +532,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
      the bar and, when the panel scrolls, slides up behind the opaque bar band. */
   padding:
     calc(74px + env(safe-area-inset-top)) 24px
-    calc(28px + env(safe-area-inset-bottom));
+    calc(14px + env(safe-area-inset-bottom));
   /* Near-opaque frosted surface (echoes the scrolled nav bar) — dense enough
      that the page behind doesn't read through the full-screen sheet. */
   background: rgba(255,255,255,0.96);
@@ -537,6 +543,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
   transition: opacity .24s ease, transform .3s cubic-bezier(.32,.72,0,1);
 }
 .nav-mobile.is-open .nav-mobile-panel { opacity: 1; transform: none; }
+/* Programmatic focus target on open — never show a ring on it (keyboard rings
+   on the links themselves are preserved). */
+.nav-mobile-panel:focus { outline: none; }
 .nav-mobile-nav { display: flex; flex-direction: column; }
 .nav-mobile-label {
   font-family: var(--font-display);
@@ -545,15 +554,15 @@ const enPrefix = lang === 'en' ? '/en' : '';
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--slate-400);
-  margin: 22px 0 2px;
+  margin: 12px 0 2px;
 }
 .nav-mobile-label:first-child { margin-top: 0; }
 .nav-mobile-link {
   display: flex;
   align-items: center;
-  min-height: 48px;
+  min-height: 40px;
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--brand-primary);
 }
@@ -563,9 +572,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
 .nav-mobile-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   margin-top: auto;
-  padding-top: 28px;
+  padding-top: 14px;
 }
 .nav-mobile-demo.btn { width: 100%; justify-content: center; }
 .nav-mobile-login {
@@ -853,8 +862,10 @@ const enPrefix = lang === 'en' ? '/en' : '';
       var l = lenis(); if (l && l.stop) l.stop();
       lockScroll();
       document.addEventListener('keydown', onKeydown, true);
-      var items = focusables();
-      if (items.length) items[0].focus();
+      // Focus the dialog itself (tabindex=-1), not the first link — a programmatic
+      // link focus draws an ugly outline box on open. Tab still cycles the links.
+      var panel = menuEl.querySelector('.nav-mobile-panel') as HTMLElement | null;
+      if (panel) panel.focus();
     }
     function closeMenu() {
       if (menuEl.hidden) return;
