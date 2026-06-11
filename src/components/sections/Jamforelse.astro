@@ -281,9 +281,9 @@ const gridRows = `auto repeat(${rows.length}, auto)`;
    over the dot field.
    ============================================================ */
 @media (max-width: 880px) {
-  /* Drop the desktop "table lays flat" 3D tilt; keep top room for the Lucra
-     panel's overhang. */
-  .cmp { margin-top: 34px; rotate: none; scale: none; translate: none; }
+  /* Drop the desktop "table lays flat" 3D tilt; extra top room so the Lucra
+     panel's overhang clears the section title (the panel pulls up 34px). */
+  .cmp { margin-top: 64px; rotate: none; scale: none; translate: none; }
   #jamforelse .section-head.center { margin-bottom: 32px; }
   /* Clear paper bubble — same surface vocabulary as the criterion cards so the
      closing note reads as part of the set, not faint text on the dot field. */
