@@ -14,6 +14,7 @@ export function initController(): void {
     var ind      = wrapEl.querySelector('.demo-tab-ind') as (HTMLElement & { _settle?: ReturnType<typeof setTimeout> }) | null;
     if (!tabBar || !tabs.length || !panels.length) return;
     var tabBarEl = tabBar;
+    var compact = window.matchMedia('(max-width: 1199px)');
     // Visibility is keyed off the window's position so tabs + CTA reveal only once
     // the frame is scrolled into focus, and hide again at the hero top or after the
     // frame leaves upward (scroll-gated, both directions).
@@ -129,6 +130,27 @@ export function initController(): void {
       startHold(); // (re)start this tab's countdown; no-op while !auto or !visible
     }
 
+    function setStaticPreviewState() {
+      visible = false;
+      stopHold();
+      if (hintTimer) clearTimeout(hintTimer);
+      hintTimer = null;
+      if (ctaTimer) clearTimeout(ctaTimer);
+      ctaTimer = null;
+      wrapEl.classList.remove('tabs-visible', 'hint-dismissed');
+      if (ind) ind.classList.remove('ready');
+      if (curtain) {
+        curtain.style.transition = 'none';
+        curtain.style.transform = 'translateX(-100%)';
+      }
+      wiping = false;
+      var dashIdx = Array.prototype.findIndex.call(tabs, function (t: HTMLElement) { return t.dataset.panel === 'dashboard'; });
+      if (dashIdx >= 0) activate(dashIdx, false);
+      wrapEl.querySelectorAll<HTMLElement>('.metric .num[data-count]').forEach(function (element) {
+        element.textContent = element.dataset.count || element.textContent;
+      });
+    }
+
     tabs.forEach(function(t, i) {
       t.addEventListener('click', function() {
         var wasCurrent = tabs[i].dataset.panel === currentKey;
@@ -141,9 +163,14 @@ export function initController(): void {
         }
       });
     });
-    window.addEventListener('resize', function() { moveIndicator(false); });
+    window.addEventListener('resize', function() {
+      if (compact.matches) { setStaticPreviewState(); return; }
+      moveIndicator(false);
+      onScroll();
+    });
 
     function setVisible(v: boolean) {
+      if (compact.matches) v = false;
       if (v === visible) return;
       visible = v;
       wrapEl.classList.toggle('tabs-visible', v);
@@ -173,6 +200,10 @@ export function initController(): void {
       }
     }
     function onScroll() {
+      if (compact.matches) {
+        setStaticPreviewState();
+        return;
+      }
       // Tabs + CTA reveal once the window is scrolled into focus, and hide again
       // at the hero top or after the window leaves upward. Not visible on load
       // (scrollY ≈ 0), so the frame reads as a calm mockup until the user scrolls.

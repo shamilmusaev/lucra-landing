@@ -7,6 +7,7 @@ export function initScrollZoom(): void {
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (window.matchMedia('(max-width: 1199px)').matches) return; // static dashboard — no scroll-zoom
   var chromeEl = chrome;
+  var compact = window.matchMedia('(max-width: 1199px)');
   var inner = document.querySelector('.hero-inner') as HTMLElement | null; // text above the window — blurs as the window comes forward
   var nav = document.getElementById('nav');           // fixed top nav — steps aside while the demo is in focus
   var navInner = nav && (nav.querySelector('.nav-inner') as HTMLElement | null);
@@ -22,9 +23,32 @@ export function initScrollZoom(): void {
   var lastScale = -1, lastBlur = -1, lastOpacity = -1, lastTop = NaN;
 
   function clamp01(v: number) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function resetDesktopEffects() {
+    chromeEl.style.removeProperty('transform');
+    chromeEl.style.removeProperty('transform-origin');
+    chromeEl.style.removeProperty('will-change');
+    if (inner) {
+      inner.style.removeProperty('filter');
+      inner.style.removeProperty('opacity');
+      inner.style.removeProperty('will-change');
+    }
+    if (nav) {
+      nav.style.removeProperty('top');
+      if (navInner) navInner.style.removeProperty('pointer-events');
+    }
+    ticking = false;
+    lastScale = -1;
+    lastBlur = -1;
+    lastOpacity = -1;
+    lastTop = NaN;
+  }
 
   function update() {
     ticking = false;
+    if (compact.matches) {
+      resetDesktopEffects();
+      return;
+    }
     var vh = window.innerHeight || document.documentElement.clientHeight;
     // Keep tall desktop viewports from starting the zoom/blur while the page is
     // still at the top.
@@ -73,6 +97,10 @@ export function initScrollZoom(): void {
   }
   var active = false;
   function onScroll() {
+    if (compact.matches) {
+      resetDesktopEffects();
+      return;
+    }
     if (!active) return;            // no rAF work while the demo is far offscreen
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }
@@ -86,5 +114,12 @@ export function initScrollZoom(): void {
   chromeEl.style.transformOrigin = 'center center';
   io.observe(chromeEl);
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', function () {
+    if (compact.matches) {
+      resetDesktopEffects();
+      return;
+    }
+    chromeEl.style.transformOrigin = 'center center';
+    onScroll();
+  });
 }

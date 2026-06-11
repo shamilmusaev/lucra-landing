@@ -932,6 +932,8 @@ const s = getStrings(lang);
         scaleBox.style.removeProperty('height');
         return;
       }
+      windowChrome.style.removeProperty('transform');
+      windowChrome.style.removeProperty('transform-origin');
       const scale = scaleBox.clientWidth / DESIGN_WIDTH;
       scaleBox.style.setProperty('--demo-scale', String(scale));
       scaleBox.style.height = `${windowChrome.offsetHeight * scale}px`;
