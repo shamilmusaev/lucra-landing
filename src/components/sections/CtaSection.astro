@@ -38,7 +38,7 @@ const s = getStrings(lang);
         <div class="form-col reveal delay-1">
         <form class="kontakt-form" data-sending={s.formSending} data-error={s.formError}>
           <p class="hp" hidden aria-hidden="true">
-            <label>Lämna detta fält tomt: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            <label>{s.formHoneypot} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
           </p>
 
           <fieldset class="chip-group">
@@ -103,7 +103,6 @@ const s = getStrings(lang);
     /* Safari doesn't clip the blurred ::before/::after glow to the rounded
        corners with overflow:hidden alone, so the corners bled light. */
     clip-path: inset(0 round var(--radius-shell));
-    transform-origin: center center;
   }
   /* Soft brand glow — bottom-left anchor + faint top-right, no harsh edges. */
   .cta-panel::before {

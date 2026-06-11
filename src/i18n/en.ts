@@ -251,6 +251,7 @@ export const en: { [K in keyof typeof sv]: string } = {
   formRoleAgency: 'Accounting firm',
   formMessage: 'Message',
   formMessagePlaceholder: 'Tell us briefly what you want to know …',
+  formHoneypot: 'Leave this field empty:',
   formSubmit: 'Send message',
   formSending: 'Sending …',
   formError: 'Something went wrong. Please try again or email us directly.',

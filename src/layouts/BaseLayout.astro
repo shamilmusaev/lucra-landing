@@ -95,14 +95,26 @@ const jsonLd = [
       // interactive/static) so the page re-initialises in the right mode. Only on
       // pages that have the demo; debounced so it fires once dragging stops.
       if (document.querySelector('.hero-chrome-wrap')) {
-        const bucket = (w: number): number => (w >= 1200 ? 2 : w >= 720 ? 1 : 0);
+        // Orb gate is (max-width:720px) → orb is absent AT exactly 720, so the
+        // mid tier starts above 720, not at it.
+        const bucket = (w: number): number => (w >= 1200 ? 2 : w > 720 ? 1 : 0);
         let current = bucket(window.innerWidth);
         let timer = 0;
+        const formHasInput = (): boolean => {
+          const form = document.querySelector('.kontakt-form');
+          return !!form && Array.from(
+            form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea'),
+          ).some((field) => field.value.trim() !== '');
+        };
         window.addEventListener('resize', () => {
           window.clearTimeout(timer);
           timer = window.setTimeout(() => {
             const next = bucket(window.innerWidth);
-            if (next !== current) { current = next; location.reload(); }
+            if (next === current) return;
+            // Don't reload (and wipe) a contact form the visitor is filling in.
+            if (formHasInput()) return;
+            current = next;
+            location.reload();
           }, 250);
         });
       }

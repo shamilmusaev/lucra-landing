@@ -63,6 +63,9 @@
     document.addEventListener('click', (event) => {
       const trigger = (event.target as Element | null)?.closest('[data-calendly]');
       if (!trigger) return;
+      // Let the browser handle modified/non-primary clicks (Cmd/Ctrl/Shift/middle
+      // = open in a new tab) instead of hijacking them into the popup.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
       const url = trigger.getAttribute('href') || trigger.getAttribute('data-calendly');
       if (!url) return;
       event.preventDefault();
@@ -70,6 +73,8 @@
         .then(() => {
           const calendly = (window as unknown as { Calendly?: { initPopupWidget: (opts: { url: string }) => void } }).Calendly;
           if (calendly) calendly.initPopupWidget({ url });
+          // Widget loaded but the global is missing (blocked/stripped) — open the page.
+          else window.open(url, '_blank', 'noopener');
         })
         .catch(() => {
           // Network/asset failure — fall back to opening the scheduling page.

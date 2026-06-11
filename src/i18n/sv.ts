@@ -249,6 +249,7 @@ export const sv = {
   formRoleAgency: 'Redovisningsbyrå',
   formMessage: 'Meddelande',
   formMessagePlaceholder: 'Berätta kort vad du vill veta …',
+  formHoneypot: 'Lämna detta fält tomt:',
   formSubmit: 'Skicka meddelande',
   formSending: 'Skickar …',
   formError: 'Något gick fel. Försök igen eller mejla oss direkt.',

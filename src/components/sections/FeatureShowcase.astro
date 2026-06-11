@@ -269,18 +269,21 @@ const cards = [
       document.querySelectorAll('#funktioner .showcase-card'),
     ) as HTMLElement[];
     if (cards.length === 0) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const section = document.querySelector('#funktioner');
-    const viewport = document.querySelector('[data-viewport]') as HTMLElement | null;
     const videoOf = (card: HTMLElement): HTMLVideoElement | null =>
       card.querySelector<HTMLVideoElement>('video');
 
     // iOS Safari won't paint a <video preload="none"> poster until the element is
-    // load()ed, so a not-yet-engaged (e.g. peeking) card showed blank. Prime each
-    // card's poster on init — load() honours preload="none", so no video data is
-    // fetched, it just renders the poster frame.
+    // load()ed, so a not-yet-engaged (e.g. peeking) card showed blank. Prime every
+    // card's poster up front — BEFORE the reduced-motion gate, since those users
+    // get no playback and rely on the poster most. load() honours preload="none",
+    // so no video data is fetched, it just renders the poster frame.
     cards.forEach((card) => { const v = videoOf(card); if (v) v.load(); });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const section = document.querySelector('#funktioner');
+    const viewport = document.querySelector('[data-viewport]') as HTMLElement | null;
 
     let active: HTMLElement | null = null;
     let onScreen = false;

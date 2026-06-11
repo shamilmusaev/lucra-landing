@@ -274,10 +274,6 @@ html.reveal-ready section:not(.hero) .reveal.in-view {
   filter: blur(0);
 }
 
-/* ---- Section signature: final CTA — panel scales up as it floats in ---- */
-html.reveal-ready .cta-section .cta-panel.reveal { transform: translateY(24px) scale(.96); }
-html.reveal-ready .cta-section .cta-panel.reveal.in-view { transform: none; }
-
 @media (prefers-reduced-motion: reduce) {
   html.reveal-ready section:not(.hero) .reveal {
     opacity: 1;
@@ -301,7 +297,6 @@ html.reveal-ready .cta-section .cta-panel.reveal.in-view { transform: none; }
     transform: none;
     filter: none;
   }
-  html.reveal-ready .cta-section .cta-panel.reveal { transform: none; }
 }
 
 /* Panel-stack child entrance — used by the demo panel-stack contract in ProductDemo. */
