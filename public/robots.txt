@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lucra.se/sitemap-index.xml
+Sitemap: https://lucra-app.ai/sitemap-index.xml
