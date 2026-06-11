@@ -3,6 +3,7 @@ import '../styles/colors_and_type.css';
 import '../styles/global.css';
 import SmoothScroll from '../components/SmoothScroll.astro';
 import ScrollFx from '../components/ScrollFx.astro';
+import CalendlyPopup from '../components/CalendlyPopup.astro';
 import { getStrings } from '../i18n/utils';
 
 export interface Props {
@@ -82,5 +83,8 @@ const jsonLd = [
     <SmoothScroll />
     <ScrollFx />
     <slot />
+    <!-- Global Calendly popup loader — any [data-calendly] trigger (every "Boka
+         demo" button) opens the in-page scheduling popup, on all pages. -->
+    <CalendlyPopup />
   </body>
 </html>

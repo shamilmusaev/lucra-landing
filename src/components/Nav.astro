@@ -127,7 +127,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
     </div>
     <div class="nav-right">
       <a class="btn btn-ghost" href={APP_LOGIN_URL}>{s.navLogin}</a>
-      <a class="btn btn-primary" href={BOOK_DEMO_URL} target="_blank" rel="noopener">
+      <a class="btn btn-primary" href={BOOK_DEMO_URL} data-calendly>
         {s.navBookDemo}
         <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
       </a>
@@ -161,7 +161,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
         <a class="nav-mobile-link" href={`${enPrefix}/#partner`} data-mobile-close>{s.navPricingPartnerTitle}</a>
       </nav>
       <div class="nav-mobile-actions">
-        <a class="btn btn-primary btn-lg nav-mobile-demo" href={BOOK_DEMO_URL} target="_blank" rel="noopener" data-mobile-close>
+        <a class="btn btn-primary btn-lg nav-mobile-demo" href={BOOK_DEMO_URL} data-calendly data-mobile-close>
           {s.navBookDemo}
           <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
