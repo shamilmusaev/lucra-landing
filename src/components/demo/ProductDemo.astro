@@ -33,6 +33,20 @@ const s = getStrings(lang);
       <rect class="hint-pill" x="2.4" y="10.3" width="7.2" height="3.4" rx="1.7"/>
     </svg>
   </span>
+  <div class="static-demo-switch" role="group" aria-label={s.heroDemoTablistLabel}>
+    <button class="static-demo-btn" type="button" data-static-panel="chat" aria-pressed="false">
+      <Icon name="message-circle" size={14} stroke={2} class="static-demo-ic" />
+      {s.heroTabChat}
+    </button>
+    <button class="static-demo-btn is-active" type="button" data-static-panel="dashboard" aria-pressed="true">
+      <Icon name="layout-grid" size={14} stroke={2} class="static-demo-ic" />
+      {s.heroTabDashboard}
+    </button>
+    <button class="static-demo-btn" type="button" data-static-panel="docs" aria-pressed="false">
+      <Icon name="folder" size={14} stroke={2} class="static-demo-ic" />
+      {s.heroTabDocs}
+    </button>
+  </div>
   <!-- The simulated app screen is decorative; the sr-only summary above covers it.
        Tabs and the CTA live outside this node, so they stay real, focusable controls.
        Below 1200px the box scales the desktop-width window down like a product
@@ -62,12 +76,12 @@ const s = getStrings(lang);
             <span class="av">DB</span>
             <span class="sb-co-text">
               <span class="sb-co-top">
-                <span class="nm" data-co-current>Demobolaget AB</span>
+                <span class="nm" data-co-current><span class="co-name-full">Demobolaget AB</span><span class="co-name-compact">Demobolaget</span></span>
                 <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </span>
               <span class="sb-co-firm">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                Exempel Redovisning
+                <span class="firm-prefix">Exempel</span><span>Redovisning</span>
               </span>
             </span>
           </button>
@@ -269,6 +283,7 @@ const s = getStrings(lang);
 .sb-company .nm { flex: 1; min-width: 0; font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--brand-primary); letter-spacing: -.012em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sb-company .chev { width: 14px; height: 14px; color: var(--slate-400); flex-shrink: 0; transition: transform .2s ease, color .15s ease; }
 .sb-company-wrap.is-open .sb-company .chev { color: var(--brand-primary); transform: rotate(-90deg); }
+.co-name-compact { display: none; }
 .sb-co-firm {
   display: inline-flex; align-items: center; gap: 5px;
   font-size: 11.5px; font-weight: 600; color: var(--slate-500);
@@ -622,9 +637,8 @@ const s = getStrings(lang);
   width: 14px;
   height: 14px;
   flex-shrink: 0;
-  display: none;
+  display: inline-block;
 }
-.demo-tab.is-active svg { display: inline-block; }
 .demo-tab:hover:not(.is-active) {
   color: var(--brand-primary);
 }
@@ -702,6 +716,8 @@ const s = getStrings(lang);
   .hero-chrome-wrap.tabs-visible .demo-tabs-hint .hint-pill { animation: none; }
   .demo-cta-band { transition: opacity .3s ease; transform: none; }
 }
+
+.static-demo-switch { display: none; }
 
 /* Mini CTA band — a compact light section under the demo, reusing the feature
    cards' surface (cyan-tinted top glow over a soft vertical wash) so it sits in
@@ -875,14 +891,108 @@ const s = getStrings(lang);
    box height; the per-panel controllers bail out at this width. */
 @media (max-width: 1199px) {
   .demo-tabs { display: none; }
+  .static-demo-switch {
+    display: flex;
+    gap: 2px;
+    width: fit-content;
+    max-width: calc(100% - 24px);
+    margin: 0 auto 18px;
+    padding: 5px;
+    background: var(--bg-app);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 12px 32px -12px rgba(61,80,109,0.20), 0 2px 4px rgba(15,23,42,0.04);
+    opacity: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    pointer-events: none;
+    scrollbar-width: none;
+    transform: translateY(-8px);
+    visibility: hidden;
+    transition: opacity .28s ease, transform .36s var(--ease-out-expo), visibility 0s linear .36s;
+  }
+  .hero-chrome-wrap.static-tabs-visible .static-demo-switch {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    visibility: visible;
+    transition: opacity .28s ease, transform .36s var(--ease-out-expo);
+  }
+  .static-demo-switch::-webkit-scrollbar {
+    display: none;
+  }
+  .static-demo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: var(--slate-500);
+    cursor: pointer;
+    min-width: 0;
+    padding: 9px 14px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .static-demo-btn:hover:not(.is-active) {
+    color: var(--brand-primary);
+  }
+  :global(.static-demo-ic) {
+    flex-shrink: 0;
+  }
+  .static-demo-btn.is-active {
+    background: var(--white);
+    color: var(--brand-primary);
+    box-shadow: 0 1px 2px rgba(61,80,109,.16), 0 4px 10px -4px rgba(61,80,109,.20);
+  }
+  .sb-company .nm {
+    text-overflow: clip;
+  }
+  .sb-company .chev,
+  .co-name-full,
+  .firm-prefix {
+    display: none;
+  }
+  .co-name-compact {
+    display: inline;
+  }
   .product-main { min-height: 0; }
   :global(.demo-panel) { display: none; }
+  :global(.demo-panel.is-active > *) { animation: none; }
+  :global(.demo-panel.is-static-active) {
+    display: block;
+    position: static;
+    inset: auto;
+    padding: 22px 24px;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    overflow: visible;
+    animation: staticPanelIn .42s var(--ease-out-expo) both;
+  }
+  :global(.demo-panel.is-static-active > *) { animation: none; }
+  :global(.demo-panel[data-panel="chat"].is-static-active .chat-scene) {
+    height: 600px;
+  }
   .demo-scale-box .browser-chrome {
     width: 1100px;
     transform: scale(var(--demo-scale, 1));
     transform-origin: top left;
   }
   .browser-chrome .product-shell-inner { grid-template-columns: 200px 1fr; }
+}
+@keyframes staticPanelIn {
+  from { opacity: 0; transform: translateY(12px) scale(.985); filter: blur(5px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :global(.demo-panel.is-static-active) { animation: none; }
 }
 /* Pull the demo window up close to the hero CTA on phones so its top peeks into
    the first viewport (matches the compact mobile hero). */
@@ -902,7 +1012,7 @@ const s = getStrings(lang);
   import { initController } from '../../scripts/demo/controller';
   import { initScrollZoom } from '../../scripts/demo/scrollZoom';
 
-  const wrap = document.querySelector('.hero-chrome-wrap');
+  const wrap = document.querySelector<HTMLElement>('.hero-chrome-wrap');
   if (wrap) {
     let started = false;
     const start = () => {
@@ -924,9 +1034,10 @@ const s = getStrings(lang);
   // container and reserve the scaled height (transforms don't affect layout).
   const scaleBox = document.querySelector<HTMLElement>('.demo-scale-box');
   const windowChrome = document.querySelector<HTMLElement>('.browser-chrome');
+  let updateScale = (): void => {};
   if (scaleBox && windowChrome) {
     const DESIGN_WIDTH = 1100;
-    const updateScale = (): void => {
+    updateScale = (): void => {
       if (window.innerWidth >= 1200) {
         scaleBox.style.removeProperty('--demo-scale');
         scaleBox.style.removeProperty('height');
@@ -943,4 +1054,176 @@ const s = getStrings(lang);
     // Re-measure when fonts/content settle the window's natural height.
     new ResizeObserver(updateScale).observe(windowChrome);
   }
+
+  const compactMode = window.matchMedia('(max-width: 1199px)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const staticButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.static-demo-btn'));
+  const staticPanels = Array.from(document.querySelectorAll<HTMLElement>('.demo-panel[data-panel]'));
+  const staticOrder = ['dashboard', 'chat', 'docs'];
+  let staticKey = 'dashboard';
+  let staticVisible = false;
+  let staticTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const setDashboardFinal = (): void => {
+    document.querySelectorAll<HTMLElement>('.metric .num[data-count]').forEach((element) => {
+      element.textContent = element.dataset.count || element.textContent;
+    });
+  };
+
+  const setStaticChat = (): void => {
+    const scene = document.querySelector<HTMLElement>('[data-chat]');
+    const thread = scene?.querySelector<HTMLElement>('[data-chat-thread]');
+    const userTemplate = scene?.querySelector<HTMLElement>('[data-tpl="uin"]');
+    const aiTemplate = scene?.querySelector<HTMLElement>('[data-tpl="ain"]');
+    const histLive = document.querySelector<HTMLElement>('[data-hist-live]');
+    if (!scene || !thread || !userTemplate || !aiTemplate) return;
+    scene.classList.remove('is-typing', 'is-typing2');
+    scene.classList.add('is-sent');
+    thread.innerHTML = '';
+    const times = ['09:24', '09:25'];
+    for (let index = 1; index <= 2; index++) {
+      const question = scene.dataset[`q${index}`];
+      const answer = scene.dataset[`a${index}`];
+      if (!question || !answer) continue;
+      const userMessage = userTemplate.cloneNode(true) as HTMLElement;
+      userMessage.removeAttribute('data-tpl');
+      userMessage.querySelector<HTMLElement>('.utext')!.textContent = question;
+      userMessage.querySelector<HTMLElement>('.utime')!.textContent = times[index - 1] || '';
+      thread.appendChild(userMessage);
+      const aiMessage = aiTemplate.cloneNode(true) as HTMLElement;
+      aiMessage.removeAttribute('data-tpl');
+      aiMessage.querySelector<HTMLElement>('.chat-dots')?.remove();
+      aiMessage.querySelector<HTMLElement>('.chat-answer')!.innerHTML = answer;
+      thread.appendChild(aiMessage);
+    }
+    if (histLive) {
+      histLive.textContent = histLive.dataset.title || '';
+      histLive.classList.add('is-new');
+    }
+  };
+
+  const resetStaticChat = (): void => {
+    const scene = document.querySelector<HTMLElement>('[data-chat]');
+    if (!scene) return;
+    scene.classList.remove('is-sent', 'is-typing', 'is-typing2');
+    const thread = scene.querySelector<HTMLElement>('[data-chat-thread]');
+    const typed = scene.querySelector<HTMLElement>('[data-chat-typed]');
+    const typed2 = scene.querySelector<HTMLElement>('[data-chat-typed2]');
+    if (thread) thread.innerHTML = '';
+    if (typed) typed.textContent = '';
+    if (typed2) typed2.textContent = '';
+  };
+
+  const setStaticFiles = (): void => {
+    const panel = document.querySelector<HTMLElement>('.demo-panel[data-panel="docs"]');
+    if (!panel) return;
+    panel.querySelectorAll<HTMLElement>('.files-tab').forEach((tab) => {
+      tab.classList.toggle('is-active', tab.dataset.ftab === 'conversation');
+    });
+    panel.querySelectorAll<HTMLElement>('[data-flist]').forEach((list) => {
+      list.hidden = list.dataset.flist !== 'conversation';
+    });
+    panel.querySelectorAll<HTMLElement>('[data-files-added]').forEach((row) => row.remove());
+    const upload = panel.querySelector<HTMLElement>('[data-files-upload]');
+    upload?.classList.remove('is-open', 'is-armed', 'is-uploading', 'is-done');
+    const count = panel.querySelector<HTMLElement>('[data-files-count]');
+    const size = panel.querySelector<HTMLElement>('[data-files-size]');
+    const add = panel.querySelector<HTMLElement>('[data-files-add]');
+    const addLabel = panel.querySelector<HTMLElement>('[data-files-add-label]');
+    if (count) count.textContent = '(7)';
+    if (size) size.textContent = '1.89 MB';
+    if (addLabel && add) addLabel.textContent = add.dataset.labelAdd || addLabel.textContent;
+  };
+
+  const resetStaticFiles = (): void => {
+    const panel = document.querySelector<HTMLElement>('.demo-panel[data-panel="docs"]');
+    if (!panel) return;
+    panel.querySelectorAll<HTMLElement>('.files-tab').forEach((tab) => {
+      tab.classList.toggle('is-active', tab.dataset.ftab === 'company');
+    });
+    panel.querySelectorAll<HTMLElement>('[data-flist]').forEach((list) => {
+      list.hidden = list.dataset.flist !== 'company';
+    });
+    const count = panel.querySelector<HTMLElement>('[data-files-count]');
+    const size = panel.querySelector<HTMLElement>('[data-files-size]');
+    if (count) count.textContent = '(10)';
+    if (size) size.textContent = '4.58 MB';
+  };
+
+  const queueStaticRotation = (): void => {
+    if (staticTimer) clearTimeout(staticTimer);
+    staticTimer = null;
+    if (!compactMode.matches || !staticVisible || reduceMotion.matches) return;
+    staticTimer = setTimeout(() => {
+      const nextIndex = (staticOrder.indexOf(staticKey) + 1) % staticOrder.length;
+      activateStaticPanel(staticOrder[nextIndex]);
+      queueStaticRotation();
+    }, 5200);
+  };
+
+  const updateStaticFocus = (): void => {
+    const rect = windowChrome?.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const focused = Boolean(
+      compactMode.matches &&
+      wrap &&
+      rect &&
+      window.scrollY > 40 &&
+      rect.top < viewportHeight * 0.72 &&
+      rect.bottom > viewportHeight * 0.22
+    );
+    wrap?.classList.toggle('static-tabs-visible', focused);
+    if (focused === staticVisible) return;
+    staticVisible = focused;
+    queueStaticRotation();
+  };
+
+  const activateStaticPanel = (key: string): void => {
+    const nextKey = staticOrder.includes(key) ? key : 'dashboard';
+    const alreadyActive = staticPanels.some((panel) => (
+      panel.dataset.panel === nextKey && panel.classList.contains('is-static-active')
+    ));
+    staticKey = nextKey;
+    staticPanels.forEach((panel) => {
+      panel.classList.toggle('is-static-active', panel.dataset.panel === staticKey);
+    });
+    staticButtons.forEach((button) => {
+      const active = button.dataset.staticPanel === staticKey;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    wrap?.querySelectorAll<HTMLElement>('.sidebar-item[data-panel]').forEach((item) => {
+      item.classList.toggle('active', item.dataset.panel === staticKey);
+    });
+    setDashboardFinal();
+    if (!alreadyActive && staticKey === 'chat') setStaticChat();
+    if (!alreadyActive && staticKey === 'docs') setStaticFiles();
+    requestAnimationFrame(updateScale);
+  };
+
+  const syncStaticMode = (): void => {
+    if (compactMode.matches) {
+      activateStaticPanel(staticKey);
+      updateStaticFocus();
+      return;
+    }
+    if (staticTimer) clearTimeout(staticTimer);
+    staticTimer = null;
+    staticVisible = false;
+    wrap?.classList.remove('static-tabs-visible');
+    staticPanels.forEach((panel) => panel.classList.remove('is-static-active'));
+    resetStaticChat();
+    resetStaticFiles();
+  };
+
+  staticButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activateStaticPanel(button.dataset.staticPanel || 'dashboard');
+      queueStaticRotation();
+    });
+  });
+
+  window.addEventListener('scroll', updateStaticFocus, { passive: true });
+  window.addEventListener('resize', syncStaticMode, { passive: true });
+  syncStaticMode();
 </script>

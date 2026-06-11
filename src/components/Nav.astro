@@ -569,13 +569,22 @@ const enPrefix = lang === 'en' ? '/en' : '';
 .nav-mobile-link {
   display: flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 44px;
+  padding: 0 12px;
+  margin: 1px -12px;
+  border-radius: var(--radius-lg);
   font-family: var(--font-display);
   font-size: 16px;
   font-weight: 500;
   color: var(--brand-primary);
+  transition: background .18s ease, color .18s ease, transform .18s ease;
 }
-.nav-mobile-link + .nav-mobile-link { border-top: 1px solid var(--border); }
+.nav-mobile-link:hover,
+.nav-mobile-link:focus-visible {
+  background: var(--bg-active);
+  color: var(--brand-primary);
+  transform: translateX(2px);
+}
 /* Actions pinned to the bottom of the full-screen sheet: primary CTA directly
    above the login link, language switch last. */
 .nav-mobile-actions {
@@ -639,7 +648,19 @@ const enPrefix = lang === 'en' ? '/en' : '';
 }
 
 @media (max-width: 960px) {
-  .nav-inner { display: flex; justify-content: space-between; }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.94);
+    border-color: var(--border);
+    box-shadow: 0 6px 24px -10px rgba(15,23,42,0.18);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+  .nav.scrolled .nav-inner {
+    max-width: clamp(1200px, 94vw, 1800px);
+    padding: 14px 28px;
+  }
   .nav-center { gap: 0; }
   .nav-links { display: none; }
   /* The desktop login/demo buttons live in the mobile menu now. */

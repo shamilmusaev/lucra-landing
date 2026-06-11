@@ -144,8 +144,6 @@ export function initController(): void {
         curtain.style.transform = 'translateX(-100%)';
       }
       wiping = false;
-      var dashIdx = Array.prototype.findIndex.call(tabs, function (t: HTMLElement) { return t.dataset.panel === 'dashboard'; });
-      if (dashIdx >= 0) activate(dashIdx, false);
       wrapEl.querySelectorAll<HTMLElement>('.metric .num[data-count]').forEach(function (element) {
         element.textContent = element.dataset.count || element.textContent;
       });

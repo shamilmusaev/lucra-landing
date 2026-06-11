@@ -342,19 +342,9 @@ const s = getStrings(lang);
 /* Static screenshot mode (<1200): the panel renders its desktop layout inside
    the scaled 1100px window (see ProductDemo), so no narrow-viewport reflow. */
 @media (max-width: 1199px) {
-  .demo-panel[data-panel="dashboard"] {
-    display: block;
-    position: static;
-    inset: auto;
-    padding: 22px 24px;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    overflow: visible;
-  }
-  .demo-panel[data-panel="dashboard"] .spark { clip-path: none; }
-  .demo-panel[data-panel="dashboard"] .ch-area { opacity: 1; }
-  .demo-panel[data-panel="dashboard"] .ch-line { stroke-dashoffset: 0; }
-  .demo-panel[data-panel="dashboard"] .ch-pt { opacity: 1; transform: scale(1); }
+  .demo-panel[data-panel="dashboard"].is-static-active .spark { clip-path: none; }
+  .demo-panel[data-panel="dashboard"].is-static-active .ch-area { opacity: 1; }
+  .demo-panel[data-panel="dashboard"].is-static-active .ch-line { stroke-dashoffset: 0; }
+  .demo-panel[data-panel="dashboard"].is-static-active .ch-pt { opacity: 1; transform: scale(1); }
 }
 </style>
