@@ -1,75 +1,80 @@
 ---
-// CalendlyPopup — no visible DOM; only the lazy popup loader.
-// Any element with [data-calendly] opens the Calendly scheduling popup on click.
-// The widget is preconnected immediately and prefetched on idle (bytes cached,
-// not executed), then loaded + run on the first click — so the popup opens fast
-// without fetching the widget eagerly. Without JS, the element's href still opens
-// Calendly directly.
+// CalendlyPopup — no visible DOM; only the DESKTOP popup loader.
+// Any element with [data-calendly] opens the Calendly scheduling popup on click,
+// on desktop only: the widget is preconnected immediately and prefetched on idle
+// (bytes cached, not executed), then loaded + run on the first click. On touch
+// devices the popup is skipped — it triggers iOS Safari font-boosting and loads
+// slowly — so there the button's target="_blank" opens Calendly in a new tab.
+// Without JS, the element's href opens Calendly directly.
 ---
 <script>
-  const ASSET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
-  const ASSET_JS = 'https://assets.calendly.com/assets/external/widget.js';
-  let loadingPromise: Promise<void> | null = null;
+  // Desktop only (see the note above). On touch, [data-calendly] buttons fall
+  // through to their target="_blank" (new tab), so this loader does nothing.
+  if (!matchMedia('(pointer: coarse)').matches) {
+    const ASSET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
+    const ASSET_JS = 'https://assets.calendly.com/assets/external/widget.js';
+    let loadingPromise: Promise<void> | null = null;
 
-  // Warm Calendly so the first "Boka demo" click opens fast: preconnect now
-  // (DNS/TLS — the main first-click cost), then prefetch the widget on idle so
-  // its bytes are cached before the click. The widget JS still runs only on
-  // click. The popup's own scheduling-iframe loading screen is Calendly's and
-  // can't be skipped, but it appears much sooner.
-  function addLink(rel: string, href: string, as?: string): void {
-    if (document.querySelector(`link[rel="${rel}"][href="${href}"]`)) return;
-    const link = document.createElement('link');
-    link.rel = rel;
-    link.href = href;
-    if (as) link.as = as;
-    document.head.appendChild(link);
-  }
-  addLink('preconnect', 'https://assets.calendly.com');
-  addLink('preconnect', 'https://calendly.com');
-  const onIdle: (callback: () => void) => void =
-    (window as any).requestIdleCallback
-      ? (callback) => (window as any).requestIdleCallback(callback)
-      : (callback) => { setTimeout(callback, 1200); };
-  onIdle(() => {
-    addLink('prefetch', ASSET_CSS, 'style');
-    addLink('prefetch', ASSET_JS, 'script');
-  });
-
-  function loadCalendly(): Promise<void> {
-    if (loadingPromise) return loadingPromise;
-    loadingPromise = new Promise<void>((resolve, reject) => {
-      // Scope to rel="stylesheet" so the idle prefetch <link> (same href) doesn't
-      // satisfy this check and leave the popup unstyled/invisible.
-      if (!document.querySelector(`link[rel="stylesheet"][href="${ASSET_CSS}"]`)) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = ASSET_CSS;
-        document.head.appendChild(link);
-      }
-      const script = document.createElement('script');
-      script.src = ASSET_JS;
-      script.async = true;
-      script.addEventListener('load', () => resolve());
-      script.addEventListener('error', () => reject(new Error('Calendly failed to load')));
-      document.head.appendChild(script);
+    // Warm Calendly so the first "Boka demo" click opens fast: preconnect now
+    // (DNS/TLS — the main first-click cost), then prefetch the widget on idle so
+    // its bytes are cached before the click. The widget JS still runs only on
+    // click. The popup's own scheduling-iframe loading screen is Calendly's and
+    // can't be skipped, but it appears much sooner.
+    function addLink(rel: string, href: string, as?: string): void {
+      if (document.querySelector(`link[rel="${rel}"][href="${href}"]`)) return;
+      const link = document.createElement('link');
+      link.rel = rel;
+      link.href = href;
+      if (as) link.as = as;
+      document.head.appendChild(link);
+    }
+    addLink('preconnect', 'https://assets.calendly.com');
+    addLink('preconnect', 'https://calendly.com');
+    const onIdle: (callback: () => void) => void =
+      (window as any).requestIdleCallback
+        ? (callback) => (window as any).requestIdleCallback(callback)
+        : (callback) => { setTimeout(callback, 1200); };
+    onIdle(() => {
+      addLink('prefetch', ASSET_CSS, 'style');
+      addLink('prefetch', ASSET_JS, 'script');
     });
-    return loadingPromise;
-  }
 
-  document.addEventListener('click', (event) => {
-    const trigger = (event.target as Element | null)?.closest('[data-calendly]');
-    if (!trigger) return;
-    const url = trigger.getAttribute('href') || trigger.getAttribute('data-calendly');
-    if (!url) return;
-    event.preventDefault();
-    loadCalendly()
-      .then(() => {
-        const calendly = (window as unknown as { Calendly?: { initPopupWidget: (opts: { url: string }) => void } }).Calendly;
-        if (calendly) calendly.initPopupWidget({ url });
-      })
-      .catch(() => {
-        // Network/asset failure — fall back to opening the scheduling page.
-        window.open(url, '_blank', 'noopener');
+    function loadCalendly(): Promise<void> {
+      if (loadingPromise) return loadingPromise;
+      loadingPromise = new Promise<void>((resolve, reject) => {
+        // Scope to rel="stylesheet" so the idle prefetch <link> (same href)
+        // doesn't satisfy this check and leave the popup unstyled/invisible.
+        if (!document.querySelector(`link[rel="stylesheet"][href="${ASSET_CSS}"]`)) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = ASSET_CSS;
+          document.head.appendChild(link);
+        }
+        const script = document.createElement('script');
+        script.src = ASSET_JS;
+        script.async = true;
+        script.addEventListener('load', () => resolve());
+        script.addEventListener('error', () => reject(new Error('Calendly failed to load')));
+        document.head.appendChild(script);
       });
-  });
+      return loadingPromise;
+    }
+
+    document.addEventListener('click', (event) => {
+      const trigger = (event.target as Element | null)?.closest('[data-calendly]');
+      if (!trigger) return;
+      const url = trigger.getAttribute('href') || trigger.getAttribute('data-calendly');
+      if (!url) return;
+      event.preventDefault();
+      loadCalendly()
+        .then(() => {
+          const calendly = (window as unknown as { Calendly?: { initPopupWidget: (opts: { url: string }) => void } }).Calendly;
+          if (calendly) calendly.initPopupWidget({ url });
+        })
+        .catch(() => {
+          // Network/asset failure — fall back to opening the scheduling page.
+          window.open(url, '_blank', 'noopener');
+        });
+    });
+  }
 </script>

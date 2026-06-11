@@ -4,6 +4,9 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+/* Stop iOS Safari from inflating page fonts ("text autosizing" / font boosting)
+   when a full-screen overlay changes layout — keeps text at its authored size. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   /* App-shell tone (not white) so the iOS safe area behind the notch shows a
      real background that matches the hero/footer, not a blank white strip. */
