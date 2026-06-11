@@ -86,5 +86,26 @@ const jsonLd = [
     <!-- Global Calendly popup loader — any [data-calendly] trigger (every "Boka
          demo" button) opens the in-page scheduling popup, on all pages. -->
     <CalendlyPopup />
+    <script>
+      // The product demo's interactive controllers and the hero orb gate on
+      // viewport width ONCE at load and don't tear down — a desktop window
+      // dragged across a breakpoint keeps the interactive demo running over the
+      // static layout (it can't switch to static without a reload). Reload when
+      // the width crosses a major JS breakpoint (720 = orb, 1200 = demo
+      // interactive/static) so the page re-initialises in the right mode. Only on
+      // pages that have the demo; debounced so it fires once dragging stops.
+      if (document.querySelector('.hero-chrome-wrap')) {
+        const bucket = (w: number): number => (w >= 1200 ? 2 : w >= 720 ? 1 : 0);
+        let current = bucket(window.innerWidth);
+        let timer = 0;
+        window.addEventListener('resize', () => {
+          window.clearTimeout(timer);
+          timer = window.setTimeout(() => {
+            const next = bucket(window.innerWidth);
+            if (next !== current) { current = next; location.reload(); }
+          }, 250);
+        });
+      }
+    </script>
   </body>
 </html>
