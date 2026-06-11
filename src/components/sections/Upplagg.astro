@@ -296,11 +296,16 @@ const partnerFeats = [
      reserved tag row, so "Pilot" sits at the same height as "Partner" instead of
      being pushed down. */
   .plan-featured { overflow: visible; margin-top: 24px; }
+  /* Square the top-left corner so the tab seats flush against it — a rounded
+     corner here would peek out past the tab's square base as a stray curl. */
+  .plan-featured { border-top-left-radius: 0; }
   .plan-featured .plan-tag { min-height: 0; margin-bottom: 0; }
   .plan-featured .plan-tag .section-eyebrow {
     top: auto;
     bottom: 100%;
-    left: 4px;
+    /* Flush with the card's outer-left edge — covers the 1px border seam so the
+       tab and card share one continuous left edge. */
+    left: -1px;
     margin-bottom: -1px;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
