@@ -236,11 +236,28 @@ export const en: { [K in keyof typeof sv]: string } = {
   sakerhetCard4Title: 'Granular permissions',
   sakerhetCard4Body: 'Assign access per company and role. Firms and clients see only what they should.',
 
-  // ---- Final CTA ----
-  ctaTitle: 'Want to see how Lucra works?',
-  ctaBody: "Book a short demo and see how Lucra gives business owners a clear view of their numbers and frees up the firm's time for qualified advisory.",
+  // ---- Final CTA / contact ----
+  ctaTitle: 'Want to know more?',
+  ctaBody: "Drop us a few lines about what you're wondering, and we'll get back to you soon.",
   ctaBookDemo: 'Book a demo',
-  ctaTryLucra: 'Try Lucra',
+
+  // Contact form (lives inside the final CTA section)
+  formName: 'Name',
+  formEmail: 'Email',
+  formCompany: 'Company',
+  formCompanyOptional: 'optional',
+  formRole: 'I am',
+  formRoleBusiness: 'Business owner',
+  formRoleAgency: 'Accounting firm',
+  formMessage: 'Message',
+  formMessagePlaceholder: 'Tell us briefly what you want to know …',
+  formSubmit: 'Send message',
+  formSending: 'Sending …',
+  formError: 'Something went wrong. Please try again or email us directly.',
+  formSuccessTitle: 'Thank you for your message!',
+  formSuccessBody: 'We have received your request and will get back to you as soon as we can.',
+  kontaktDemoTitle: 'Prefer to talk directly?',
+  kontaktDemoBody: 'Book a short demo and we will show how Lucra works with your finances.',
 
   // ---- Upplägg (Pilot & Partner plans for accounting firms) ----
   priTitle: 'Plans for accounting firms',

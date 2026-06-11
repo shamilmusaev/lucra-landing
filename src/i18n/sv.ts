@@ -234,11 +234,28 @@ export const sv = {
   sakerhetCard4Title: 'Granulär behörighet',
   sakerhetCard4Body: 'Tilldela åtkomst per bolag och roll. Byråer och kunder ser bara det de ska se.',
 
-  // ---- Final CTA ----
-  ctaTitle: 'Vill du se hur Lucra fungerar?',
-  ctaBody: 'Boka en kort demo och se hur Lucra ger företagare koll på sina siffror och frigör tid åt byråns kvalificerade rådgivning.',
+  // ---- Final CTA / contact ----
+  ctaTitle: 'Vill du veta mer?',
+  ctaBody: 'Skriv några rader om vad du undrar, så återkommer vi snart med svar.',
   ctaBookDemo: 'Boka demo',
-  ctaTryLucra: 'Testa Lucra',
+
+  // Contact form (lives inside the final CTA section)
+  formName: 'Namn',
+  formEmail: 'E-post',
+  formCompany: 'Företag',
+  formCompanyOptional: 'valfritt',
+  formRole: 'Jag är',
+  formRoleBusiness: 'Företagare',
+  formRoleAgency: 'Redovisningsbyrå',
+  formMessage: 'Meddelande',
+  formMessagePlaceholder: 'Berätta kort vad du vill veta …',
+  formSubmit: 'Skicka meddelande',
+  formSending: 'Skickar …',
+  formError: 'Något gick fel. Försök igen eller mejla oss direkt.',
+  formSuccessTitle: 'Tack för ditt meddelande!',
+  formSuccessBody: 'Vi har tagit emot din förfrågan och hör av oss så snart vi kan.',
+  kontaktDemoTitle: 'Hellre prata direkt?',
+  kontaktDemoBody: 'Boka en kort demo så visar vi hur Lucra fungerar med er ekonomi.',
 
   // ---- Upplägg (Pilot & Partner plans for accounting firms) ----
   priTitle: 'Upplägg för redovisningsbyråer',

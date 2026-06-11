@@ -1,78 +1,153 @@
 ---
-// CtaSection — the final call-to-action (ported from index.html 3961–3983).
-// Layers here:
-//   • the shared dot-field (<ParticleField>) as a calm background fog, and
-//   • a small WebGL orb (`#cta-orb`) reusing the shared `mountOrb` module.
-// Both are lazy (IntersectionObserver + reduced-motion guarded) — the section
-// sits far down the page, so they defer until the user scrolls near.
+// CtaSection — the final call-to-action, doubling as the contact section.
+// Editorial split: left = "book a demo" lead (title, contact, Calendly CTA),
+// right = the contact form. The dark panel scales up slightly as it scrolls
+// into view (continuous scroll-zoom, mirroring the product demo feel).
+// The form submits via fetch() to FORM_ENDPOINT (an AWS Lambda that relays the
+// message through SES) and shows an inline success state — no page reload.
 import { getStrings, type Lang } from '../../i18n/utils';
 import Icon from '../Icon.astro';
-import ParticleField from '../ParticleField.astro';
-import { APP_URL, BOOK_DEMO_URL } from '../../config';
+import CalendlyPopup from '../CalendlyPopup.astro';
+import { BOOK_DEMO_URL } from '../../config';
 const { lang } = Astro.props as { lang: Lang };
 const s = getStrings(lang);
 ---
 
-<section class="cta-section">
+<section id="kontakt" class="cta-section">
   <div class="container">
-    <div class="cta-panel tone-deep reveal">
-      <ParticleField
-        dotColor="255, 255, 255"
-        dotAlpha={0.3}
-      />
-      <div class="cta-inner">
-        <span class="cta-orb" id="cta-orb" aria-hidden="true"></span>
-        <h2 class="section-title">{s.ctaTitle}</h2>
-        <p class="section-sub">{s.ctaBody}</p>
-        <div class="cta-btns">
-          <a class="btn btn-primary btn-lg" href={BOOK_DEMO_URL} target="_blank" rel="noopener">
-            {s.ctaBookDemo}
-            <Icon name="arrow-right" class="arrow" />
-          </a>
-          <a class="btn btn-outlined btn-lg" href={APP_URL} target="_blank" rel="noopener">{s.ctaTryLucra}</a>
+    <div class="cta-panel tone-deep">
+      <div class="cta-grid">
+        <!-- Lead: title + contact + book-a-demo (opens Calendly popup) -->
+        <div class="cta-lead reveal">
+          <span class="cta-orb" id="cta-orb" aria-hidden="true"></span>
+          <h2 class="section-title">{s.ctaTitle}</h2>
+          <p class="section-sub">{s.ctaBody}</p>
+
+          <div class="lead-foot">
+            <div class="lead-demo">
+              <p class="lead-demo-title">{s.kontaktDemoTitle}</p>
+              <p class="lead-demo-body">{s.kontaktDemoBody}</p>
+              <a class="btn btn-lg demo-cta" href={BOOK_DEMO_URL} data-calendly target="_blank" rel="noopener">
+                {s.ctaBookDemo}
+                <Icon name="arrow-right" class="arrow" size={15} />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact form — submitted via fetch() to the SES relay endpoint -->
+        <div class="form-col reveal delay-1">
+        <form class="kontakt-form" data-sending={s.formSending} data-error={s.formError}>
+          <p class="hp" hidden aria-hidden="true">
+            <label>Lämna detta fält tomt: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+          </p>
+
+          <fieldset class="chip-group">
+            <legend>{s.formRole}</legend>
+            <div class="role-seg">
+              <label class="chip">
+                <input type="radio" name="roll" value={s.formRoleBusiness} checked />
+                <span><Icon name="user" size={14} stroke={1.8} />{s.formRoleBusiness}</span>
+              </label>
+              <label class="chip">
+                <input type="radio" name="roll" value={s.formRoleAgency} />
+                <span><Icon name="building-2" size={14} stroke={1.8} />{s.formRoleAgency}</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="namn">{s.formName} <span class="req">*</span></label>
+              <input id="namn" name="namn" type="text" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="epost">{s.formEmail} <span class="req">*</span></label>
+              <input id="epost" name="epost" type="email" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="foretag">{s.formCompany} <span class="opt">({s.formCompanyOptional})</span></label>
+            <input id="foretag" name="foretag" type="text" autocomplete="organization" />
+          </div>
+
+          <div class="field">
+            <label for="meddelande">{s.formMessage} <span class="req">*</span></label>
+            <textarea id="meddelande" name="meddelande" rows="3" required placeholder={s.formMessagePlaceholder}></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-lg form-submit">
+            <span class="form-submit-label">{s.formSubmit}</span>
+            <Icon name="arrow-right" class="arrow" size={15} />
+          </button>
+          <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="form-success" data-form-success hidden>
+          <span class="form-success-ic" aria-hidden="true"><Icon name="check" size={28} /></span>
+          <h3>{s.formSuccessTitle}</h3>
+          <p>{s.formSuccessBody}</p>
+        </div>
         </div>
       </div>
     </div>
+
+    <CalendlyPopup />
   </div>
 </section>
 
 <style>
   .cta-panel {
     border-radius: var(--radius-shell);
-    padding: 72px 56px;
-    text-align: center;
+    padding: 72px 64px;
     position: relative;
     overflow: hidden;
-    /* Safari doesn't clip the blurred ::before/::after blobs or the masked
-       particle field to the rounded corners with overflow:hidden alone, so the
-       corners bled light. clip-path forces the rounded clip on all descendants. */
+    /* Safari doesn't clip the blurred ::before/::after glow to the rounded
+       corners with overflow:hidden alone, so the corners bled light. */
     clip-path: inset(0 round var(--radius-shell));
+    transform-origin: center center;
   }
+  /* Soft brand glow — bottom-left anchor + faint top-right, no harsh edges. */
   .cta-panel::before {
     content: "";
     position: absolute;
-    top: -100px; right: -120px;
-    width: 380px; height: 380px;
+    bottom: -180px; left: -140px;
+    width: 520px; height: 520px;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--brand-accent) 18%, transparent);
-    filter: blur(80px);
+    background: radial-gradient(circle,
+      color-mix(in srgb, var(--brand-accent) 22%, transparent),
+      transparent 68%);
+    filter: blur(60px);
+    pointer-events: none;
   }
   .cta-panel::after {
     content: "";
     position: absolute;
-    bottom: -120px; left: -80px;
-    width: 360px; height: 360px;
+    top: -160px; right: -120px;
+    width: 420px; height: 420px;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--brand-primary) 60%, transparent);
-    filter: blur(100px);
+    background: color-mix(in srgb, var(--brand-primary-light) 50%, transparent);
+    filter: blur(110px);
+    pointer-events: none;
   }
-  .cta-inner { position: relative; z-index: 1; }
-  /* WebGL orb — CTA centrepiece (same shader as the hero orb). */
+
+  .cta-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 72px;
+    align-items: start;
+  }
+
+  /* ---- Left lead ---- */
+  /* WebGL orb — brand accent above the lead (same shader as the hero orb). */
   .cta-orb {
     display: block;
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 26px;
+    width: 84px;
+    height: 84px;
+    margin: 0 0 24px;
     position: relative;
     pointer-events: auto;   /* clickable: tap to ripple */
     cursor: pointer;
@@ -82,55 +157,290 @@ const s = getStrings(lang);
     width: 100% !important;
     height: 100% !important;
   }
-  @media (max-width: 720px) {
-    /* Orb is skipped on phones (JS gate) — drop its reserved space too. */
-    .cta-orb { display: none; }
-    /* The side padding would clip the button row (the panel is overflow:hidden);
-       narrower padding + wrap keeps both CTAs visible on phones. */
-    .cta-panel { padding: 56px 24px; }
-    .cta-btns { flex-wrap: wrap; justify-content: center; }
-  }
-  /* Centre the shared section title/sub inside the panel (defaults are left-aligned). */
   .cta-panel .section-title {
-    margin: 0 auto 18px;
-    max-width: 720px;
+    margin: 0 0 18px;
+    max-width: 460px;
+    font-size: clamp(40px, 4.6vw, 56px);
   }
   .cta-panel .section-sub {
-    margin: 0 auto 36px;
-    max-width: 540px;
+    margin: 0;
+    max-width: 420px;
+    color: rgba(255, 255, 255, .66);
   }
-  .cta-btns {
+  .lead-foot {
+    margin-top: 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .lead-demo { display: flex; flex-direction: column; gap: 4px; }
+  .lead-demo-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    margin: 0;
+  }
+  .lead-demo-body {
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, .6);
+    margin: 0 0 12px;
+    max-width: 340px;
+  }
+  .demo-cta {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, .06);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, .22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+    transition: border-color .25s cubic-bezier(.32, .72, 0, 1),
+                background .25s cubic-bezier(.32, .72, 0, 1),
+                transform .25s cubic-bezier(.32, .72, 0, 1);
+  }
+  .demo-cta:hover {
+    border-color: rgba(255, 255, 255, .5);
+    background: rgba(255, 255, 255, .1);
+    transform: translateY(-1px);
+  }
+  /* ---- Right form ---- */
+  .kontakt-form {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+  /* A class `display` would otherwise defeat the [hidden] attribute the script
+     toggles on submit, so restore it explicitly for both form and success. */
+  .kontakt-form[hidden] { display: none; }
+  .hp { position: absolute; left: -9999px; }
+
+  /* Role chips (segmented pill selector) */
+  .chip-group { border: 0; margin: 0; padding: 0; }
+  .chip-group legend {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .55);
+    padding: 0;
+    margin-bottom: 12px;
+  }
+  /* Segmented control — same pattern as the product-demo tabs (.demo-tab),
+     adapted for the dark panel: a track with a white "bubble" on the active
+     segment; the icon only shows when active. CSS-only via :has(). */
+  .role-seg {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 2px;
+    padding: 5px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: var(--radius-pill);
   }
-  .cta-btns .btn-primary {
+  .chip { cursor: pointer; }
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .chip span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, .7);
+    white-space: nowrap;
+    transition: color .42s cubic-bezier(.4, 0, .2, 1),
+                background .42s cubic-bezier(.4, 0, .2, 1);
+  }
+  .chip span :global(svg) { width: 14px; height: 14px; flex-shrink: 0; display: none; }
+  .chip:hover:not(:has(input:checked)) span { color: var(--white); }
+  .chip:has(input:checked) span {
     background: var(--white);
     color: var(--brand-primary-dark);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .16), 0 4px 10px -4px rgba(15, 23, 42, .3);
   }
-  .cta-btns .btn-primary:hover {
-    background: var(--accent-light);
+  .chip:has(input:checked) span :global(svg) { display: inline-block; }
+  .chip input:focus-visible + span {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(86, 179, 235, .35);
   }
-  .cta-btns .btn-outlined {
-    background: transparent;
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .55);
+  }
+  .field .opt { font-weight: 400; color: rgba(255, 255, 255, .4); font-size: 12px; }
+  .field .req { color: var(--brand-accent); }
+
+  /* Underline-only inputs — minimal editorial style. */
+  .field input,
+  .field textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 16px;
     color: var(--white);
-    border-color: color-mix(in srgb, var(--white) 40%, transparent);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 0;
+    padding: 8px 0;
+    transition: border-color .25s cubic-bezier(.32, .72, 0, 1);
   }
-  .cta-btns .btn-outlined:hover {
-    border-color: var(--white);
-    background: color-mix(in srgb, var(--white) 8%, transparent);
+  .field textarea { resize: vertical; min-height: 64px; line-height: 1.6; }
+  .field input::placeholder,
+  .field textarea::placeholder { color: rgba(255, 255, 255, .34); }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--brand-accent);
+  }
+
+  /* White primary button — the site's convention for a primary CTA on a dark
+     panel (matches the original CTA buttons). Standard btn shape/size. */
+  .form-submit {
+    width: 100%;
+    margin-top: 6px;
+    background: var(--white);
+    color: var(--brand-primary-dark);
+    box-shadow: var(--shadow-sm);
+  }
+  .form-submit:hover {
+    background: var(--accent-light);
+    transform: translateY(-1px);
+  }
+  .form-submit[data-loading] { opacity: .7; cursor: progress; }
+  .form-submit:disabled { pointer-events: none; }
+
+  .form-status {
+    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--error);
+  }
+  .form-status:empty { display: none; }
+
+  /* Inline success state — shown in place of the form after a successful send. */
+  .form-col { display: flex; flex-direction: column; }
+  .form-success {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+  }
+  .form-success[hidden] { display: none; }
+  .form-success-ic {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    background: linear-gradient(150deg, var(--brand-primary-light), var(--brand-accent));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2);
+  }
+  .form-success h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin: 0;
+  }
+  .form-success p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, .7);
+    margin: 0;
+    max-width: 380px;
+  }
+
+  @media (max-width: 900px) {
+    .cta-grid { grid-template-columns: 1fr; gap: 48px; }
+    .cta-panel .section-title,
+    .cta-panel .section-sub,
+    .lead-demo-body { max-width: none; }
+  }
+  /* Orb is skipped on phones (JS gate, <720px) — drop its reserved space too. */
+  @media (max-width: 720px) {
+    .cta-orb { display: none; }
+  }
+  @media (max-width: 560px) {
+    .cta-panel { padding: 48px 24px; }
+    .field-row { grid-template-columns: 1fr; gap: 26px; }
   }
 </style>
 
 <script>
+  // ── Scroll-zoom — the panel scales 0.94 → 1 as it enters the viewport ───────
+  // rAF loop runs only while the section is on screen (IntersectionObserver
+  // gate), so there's no always-on scroll listener — plays nicely with Lenis.
+  // Writes only `transform` (GPU-safe). Skipped under reduced-motion.
+  // Skipped under reduced-motion AND on touch (no scroll-linked rAF on phones;
+  // the panel rests at its default scale 1).
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarsePointer = matchMedia('(pointer: coarse)').matches;
+  if (!reduceMotion && !coarsePointer) {
+    const panel = document.querySelector('.cta-section .cta-panel') as HTMLElement | null;
+    if (panel) {
+      const MIN = 0.94;
+      let active = false;
+
+      const apply = (): void => {
+        const rect = panel.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        let progress = (vh - rect.top) / (vh * 0.65);
+        progress = Math.max(0, Math.min(1, progress));
+        progress = 1 - (1 - progress) * (1 - progress); // easeOut
+        const scale = MIN + (1 - MIN) * progress;
+        panel.style.transform = `scale(${scale.toFixed(4)})`;
+      };
+
+      const loop = (): void => {
+        if (!active) return;
+        apply();
+        requestAnimationFrame(loop);
+      };
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !active) {
+            active = true;
+            panel.style.willChange = 'transform';
+            requestAnimationFrame(loop);
+          } else if (!entry.isIntersecting) {
+            active = false;
+            panel.style.willChange = '';
+          }
+        });
+      }, { rootMargin: '0px' });
+
+      io.observe(panel);
+      apply(); // set initial scale in case the section starts in view
+    }
+  }
+</script>
+
+<script>
   // ── CTA WebGL orb (shared module; mounted with no global coupling) ──────────
-  // Lazy orb init — same pattern as the hero orb (OrbIsland), but with
-  // { intro: false, registerGlobalPulse: false }: the CTA orb does NOT arm a
-  // load-intro and does NOT register the global lucraOrbIntro/Pulse hooks. It
-  // ripples on direct click only. IntersectionObserver (200px rootMargin)
-  // defers mounting until the user scrolls near this far-down section.
-  // Skip on phones (gated <720px, matching the hero orb + the CSS that hides the
-  // orb spot there) so `ogl` is never fetched on mobile.
+  // { intro: false, registerGlobalPulse: false }: ripples on direct click only,
+  // no load-intro and no global hooks. Lazy: IntersectionObserver (200px) +
+  // requestIdleCallback defer the mount until the user scrolls near. Skipped on
+  // phones (gated <720px, matching the CSS that hides the orb spot there).
   const orbEl = document.getElementById('cta-orb');
   if (
     orbEl &&
@@ -153,5 +463,52 @@ const s = getStrings(lang);
       }
     }, { rootMargin: '200px' });
     io.observe(orbEl);
+  }
+</script>
+
+<script>
+  // ── Contact form — submit via fetch() to the AWS SES relay endpoint ─────────
+  // Sends the fields as JSON, swaps the button to a sending state, then reveals
+  // the inline success block (or shows an error). A honeypot field silently
+  // drops bots. Strings come from data-* attributes (set server-side from i18n).
+  import { FORM_ENDPOINT } from '../../config';
+
+  const form = document.querySelector('.cta-section .kontakt-form') as HTMLFormElement | null;
+  if (form) {
+    const submit = form.querySelector('.form-submit') as HTMLButtonElement | null;
+    const label = form.querySelector('.form-submit-label') as HTMLElement | null;
+    const status = form.querySelector('[data-form-status]') as HTMLElement | null;
+    const success = form.parentElement?.querySelector('[data-form-success]') as HTMLElement | null;
+    const honeypot = form.querySelector('[name="bot-field"]') as HTMLInputElement | null;
+    const sendingText = form.dataset.sending ?? 'Skickar …';
+    const errorText = form.dataset.error ?? 'Något gick fel.';
+    const idleText = label?.textContent ?? '';
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (honeypot && honeypot.value) return; // bot — drop silently
+      if (status) status.textContent = '';
+
+      const payload = Object.fromEntries(new FormData(form).entries());
+      delete payload['bot-field'];
+
+      if (submit) { submit.disabled = true; submit.dataset.loading = 'true'; }
+      if (label) label.textContent = sendingText;
+
+      try {
+        const response = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        form.hidden = true;
+        if (success) success.hidden = false;
+      } catch {
+        if (status) status.textContent = errorText;
+        if (submit) { submit.disabled = false; delete submit.dataset.loading; }
+        if (label) label.textContent = idleText;
+      }
+    });
   }
 </script>
