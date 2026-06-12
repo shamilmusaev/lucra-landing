@@ -292,7 +292,7 @@ export const en: { [K in keyof typeof sv]: string } = {
 
   // ---- Footer ----
   footerTagline: 'Your AI economist, connected to your bookkeeping via Fortnox. Built for Swedish business owners and accounting firms.',
-  footerCopy: '© 2026 Lucra AI. All rights reserved.',
+  footerCopy: 'LucrAI Tech AB',
   // Column headings
   footerColProduct: 'Product',
   footerColCompany: 'Company',

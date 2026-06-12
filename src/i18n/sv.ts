@@ -290,7 +290,7 @@ export const sv = {
 
   // ---- Footer ----
   footerTagline: 'Din AI-ekonom, kopplad till bokföringen via Fortnox. Byggd för svenska företagare och redovisningsbyråer.',
-  footerCopy: '© 2026 Lucra AI. Alla rättigheter förbehållna.',
+  footerCopy: 'LucrAI Tech AB',
   // Column headings
   footerColProduct: 'Produkt',
   footerColCompany: 'Företag',
