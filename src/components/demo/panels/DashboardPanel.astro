@@ -5,7 +5,12 @@ const s = getStrings(lang);
 ---
 
 <!-- Panel: Dashboard -->
-<div class="demo-panel" data-panel="dashboard">
+<!-- is-static-active server-side so the compact (<1200px) static demo paints the
+     default panel immediately, before the deferred demo module runs (otherwise
+     all panels are display:none and the content area is blank until JS loads).
+     Inert on desktop: every .is-static-active rule lives inside the compact media
+     query, and syncStaticMode() strips the class there. -->
+<div class="demo-panel is-static-active" data-panel="dashboard">
   <div class="product-main-head">
     <div class="dash-head-left">
       <div class="dash-title">{s.heroDemoDashTitle}</div>
