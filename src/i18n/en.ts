@@ -35,6 +35,8 @@ export const en: { [K in keyof typeof sv]: string } = {
   navPricingPartnerTitle: 'Partner',
   navPricingPartnerDesc: 'Offer Lucra continuously to clients',
 
+  navContact: 'Contact',
+  navContactLink: 'Contact us',
   navLogin: 'Log in',
   navBookDemo: 'Book a demo',
   navMenu: 'Menu',

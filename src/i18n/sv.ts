@@ -33,6 +33,8 @@ export const sv = {
   navPricingPartnerTitle: 'Partner',
   navPricingPartnerDesc: 'Erbjud Lucra löpande till kunder',
 
+  navContact: 'Kontakt',
+  navContactLink: 'Kontakta oss',
   navLogin: 'Logga in',
   navBookDemo: 'Boka demo',
   navMenu: 'Meny',

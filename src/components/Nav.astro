@@ -123,6 +123,11 @@ const enPrefix = lang === 'en' ? '/en' : '';
         </div>
       </div>
 
+      <!-- KONTAKT — direct link to the contact section -->
+      <div class="nav-item">
+        <a class="nav-link" href={`${enPrefix}/#kontakt`}>{s.navContact}</a>
+      </div>
+
     </div>
     </div>
     <div class="nav-right">
@@ -156,9 +161,8 @@ const enPrefix = lang === 'en' ? '/en' : '';
         <a class="nav-mobile-link" href={`${enPrefix}/#for-foretagare`} data-mobile-close>{s.navSolutionsCompanyTitle}</a>
         <a class="nav-mobile-link" href={`${enPrefix}/#for-byra`} data-mobile-close>{s.navSolutionsAgencyTitle}</a>
 
-        <span class="nav-mobile-label">{s.navPricing}</span>
-        <a class="nav-mobile-link" href={`${enPrefix}/#pilot`} data-mobile-close>{s.navPricingPilotTitle}</a>
-        <a class="nav-mobile-link" href={`${enPrefix}/#partner`} data-mobile-close>{s.navPricingPartnerTitle}</a>
+        <span class="nav-mobile-label">{s.navContact}</span>
+        <a class="nav-mobile-link" href={`${enPrefix}/#kontakt`} data-mobile-close>{s.navContactLink}</a>
       </nav>
       <div class="nav-mobile-actions">
         <a class="btn btn-primary btn-lg nav-mobile-demo" href={BOOK_DEMO_URL} data-calendly target="_blank" rel="noopener" data-mobile-close>
@@ -465,6 +469,7 @@ const enPrefix = lang === 'en' ? '/en' : '';
   border-radius: var(--radius-md);
   background: var(--bg-paper);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -500,6 +505,9 @@ const enPrefix = lang === 'en' ? '/en' : '';
   background: transparent;
   border-color: transparent;
 }
+/* Closing the menu programmatically focuses the burger; suppress the focus ring
+   for pointer interaction (keyboard users keep :focus-visible). */
+.nav-burger:focus:not(:focus-visible) { outline: none; }
 
 /* Full-screen layer that hosts the menu panel. Sits below the nav bar (z-50) so
    the logo and the burger-turned-X stay visible and clickable on top of it —
