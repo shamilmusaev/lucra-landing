@@ -36,7 +36,7 @@ const s = getStrings(lang);
 
         <!-- Contact form — submitted via fetch() to the SES relay endpoint -->
         <div class="form-col reveal delay-1">
-        <form class="kontakt-form" data-sending={s.formSending} data-error={s.formError}>
+        <form class="kontakt-form" data-sending={s.formSending} data-error={s.formError} data-lang={lang}>
           <p class="hp" hidden aria-hidden="true">
             <label>{s.formHoneypot} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
           </p>
@@ -494,6 +494,7 @@ const s = getStrings(lang);
     const honeypot = form.querySelector('[name="bot-field"]') as HTMLInputElement | null;
     const sendingText = form.dataset.sending ?? 'Skickar …';
     const errorText = form.dataset.error ?? 'Något gick fel.';
+    const lang = form.dataset.lang ?? 'sv'; 
     const idleText = label?.textContent ?? '';
 
     form.addEventListener('submit', async (event) => {
@@ -508,7 +509,8 @@ const s = getStrings(lang);
       if (label) label.textContent = sendingText;
 
       try {
-        const response = await fetch(FORM_ENDPOINT, {
+        const endpoint = `${FORM_ENDPOINT}?lang=${encodeURIComponent(lang)}`;
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
